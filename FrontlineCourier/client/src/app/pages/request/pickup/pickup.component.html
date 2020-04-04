@@ -1,0 +1,88 @@
+<div class="container body-container">
+    <div class="main-container">
+        <h2>Pickup Request</h2>
+        <hr />
+
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" class="form-control" id="name" name="name"
+                                    placeholder="Enter your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="Enter email">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone"
+                                    placeholder="Enter phone number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Pickup Location</label>
+                                <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <div class="row">
+                                    <legend class="col-form-label col-sm-4 pt-0">Shipment Type</legend>
+                                    <div class="col-sm-8">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="shipmentType"
+                                                id="shipmentType1" value="Dox" checked>
+                                            <label class="form-check-label" for="gridRadios1">
+                                                Document
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="shipmentType"
+                                                id="shipmentType2" value="NonDox">
+                                            <label class="form-check-label" for="gridRadios2">
+                                                Non Document
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="form-group">
+                                <label for="shipmentQty">No of Shipment</label>
+                                <input type="number" class="form-control" id="shipmentQty" name="shipmentQty"
+                                    placeholder="Number of Shipment">
+                            </div>
+                            <div class="form-group">
+                                <label for="shipmentWeight">Total Weight</label>
+                                <input type="text" class="form-control" id="shipmentWeight" name="shipmentWeight"
+                                    placeholder="Total Weight">
+                            </div>
+                            <div class="form-group">
+                                <label for="deliveryAddress">Shipment/Delivery Location</label>
+                                <textarea class="form-control" id="deliveryAddress" name="deliveryAddress" rows="3"
+                                    required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary btn-block float-right">Submit</button>
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>

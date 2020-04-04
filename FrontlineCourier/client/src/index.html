@@ -1,13 +1,172 @@
 <!doctype html>
 <html lang="en">
+
 <head>
+  <!-- Required meta tags -->
   <meta charset="utf-8">
-  <title>FrontlineClient</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Frontline Courier Service</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
+
 <body>
+
+  <!-- start of nav -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="nav-link navbar-brand" href="/">
+      <img src="assets/logo.png" width="240" alt="frontline-courier-logo">
+      <span class="sr-only">(current)</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <ul class="navbar-nav ml-auto">
+        <!-- <li class="nav-item active">
+            
+          </li> -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="serviceDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Services
+          </a>
+          <div class="dropdown-menu" aria-labelledby="serviceDropdown">
+            <a class="dropdown-item" href="#">Domestic</a>
+            <a class="dropdown-item" href="#">International</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Air</a>
+            <a class="dropdown-item" href="#">Cargo</a>
+            <a class="dropdown-item" href="#">Surface</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Priority Service</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="bookingDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Booking
+          </a>
+          <div class="dropdown-menu" aria-labelledby="bookingDropdown">
+            <a class="dropdown-item" href="#">Price</a>
+            <a class="dropdown-item" href="#">Volumetric Weight</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="requestDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Request
+          </a>
+          <div class="dropdown-menu" aria-labelledby="requestDropdown">
+            <a class="dropdown-item" href="#">Pickup Request</a>
+            <a class="dropdown-item" href="#">Get a Quote</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="companyDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Company
+          </a>
+          <div class="dropdown-menu" aria-labelledby="companyDropdown">
+            <a class="dropdown-item" href="#">Contact Us</a>
+            <a class="dropdown-item" href="#">Reach Us</a>
+            <a class="dropdown-item" href="#">About Us</a>
+          </div>
+        </li>   
+      </ul>
+
+      <form class="form-inline my-2 my-lg-0" id="nav-search">
+        <input class="form-control mr-sm-2" type="text" id="awbNumber" name="awbNumber" placeholder="POD/Reference #" aria-label="awbNumber">
+        <select class="form-control mr-sm-2" id="awbType" name="awbType" aria-label="awbType">
+          <option value="1" selected="">POD No.</option>
+          <option value="2">Ref No.</option>
+        </select>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <!-- end of nav -->
+
+  <!-- start of body -->
   <app-root></app-root>
+  <!-- end of body -->
+
+  <!-- start of footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <h4>Services</h4>
+          <hr class="fl-hr">
+          <ul>
+            <li>Book a Shipment</li>
+            <li>Bulk Booking</li>
+            <li>Shipment Tracking</li>
+            <li>Volumetric Weight</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h4>Our Partners</h4>
+          <hr class="fl-hr">
+          <div class="row">
+            <div class="col-md">
+              <ul>
+                <li>DHL</li>
+                <li>Bluedart</li>
+                <li>Aramex</li>
+                <li>UPS</li>
+                <li>FedEx</li>
+                <li>TNT</li>
+                <li>DPD</li>
+                <li>Overnite Express</li>
+                <li>CityLink</li>
+              </ul>
+            </div>
+            <div class="col-md">
+              <ul>
+                <li>DPEX</li>
+                <li>Network Courier</li>
+                <li>DTDC</li>
+                <li>FirstFlight</li>
+                <li>OnDot</li>
+                <li>Franch Express</li>
+                <li>SkyKing</li>
+                <li>Mahavir Express</li>
+                <li>Overnite Express</li>
+                <li>Trackon</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-3">
+          <h4>Company</h4>
+          <hr class="fl-hr">
+          <ul>
+            <li>About Us</li>
+            <li>Contact us</li>
+            <li>Our Location</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="fl-hr">
+
+      <div class="row">
+        <div class="col-md">
+          © 2020 - Frontline Courier.
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- end of footer -->
+
 </body>
+
 </html>

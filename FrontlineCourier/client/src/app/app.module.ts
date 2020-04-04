@@ -3,10 +3,38 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './pages/home/home.component';
+import { DomesticComponent } from './pages/service/domestic/domestic.component';
+import { InternationalComponent } from './pages/service/international/international.component';
+import { AirComponent } from './pages/service/air/air.component';
+import { CargoComponent } from './pages/service/cargo/cargo.component';
+import { SurfaceComponent } from './pages/service/surface/surface.component';
+import { PriorityComponent } from './pages/service/priority/priority.component';
+import { PriceComponent } from './pages/service/price/price.component';
+import { VolumeComponent } from './pages/service/volume/volume.component';
+import { PickupComponent } from './pages/request/pickup/pickup.component';
+import { QuoteComponent } from './pages/request/quote/quote.component';
+import { ContactComponent } from './pages/company/contact/contact.component';
+import { AboutComponent } from './pages/company/about/about.component';
+import { ReachComponent } from './pages/company/reach/reach.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    DomesticComponent,
+    InternationalComponent,
+    AirComponent,
+    CargoComponent,
+    SurfaceComponent,
+    PriorityComponent,
+    PriceComponent,
+    VolumeComponent,
+    PickupComponent,
+    QuoteComponent,
+    ContactComponent,
+    AboutComponent,
+    ReachComponent
   ],
   imports: [
     BrowserModule,
