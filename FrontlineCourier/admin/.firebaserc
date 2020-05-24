@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "varun-enterprises"
+  },
+  "targets": {
+    "varun-enterprises": {
+      "hosting": {
+        "admin": [
+          "varun-enterprises"
+        ]
+      }
+    }
   }
 }
