@@ -10,12 +10,15 @@ import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMenuModule } from '@angular/material/menu';
 
+import { RouterModule } from '@angular/router';
+
 const components = [
   ShellComponent,
 ];
 
 const modules = [
   CommonModule,
+  RouterModule,
   LayoutModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatFormFieldModule, MatMenuModule
 ];
 
