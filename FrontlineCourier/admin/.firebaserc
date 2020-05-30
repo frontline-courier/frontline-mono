@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "varun-enterprises": {
+      "hosting": {
+        "admin": [
+          "varun-enterprises"
+        ]
+      }
+    }
+  }
+}
