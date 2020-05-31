@@ -14,6 +14,11 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -28,7 +33,8 @@ const modules = [
   CommonModule,
   RouterModule,
   LayoutModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatFormFieldModule, MatMenuModule
-  , MatSnackBarModule, MatDialogModule, MatInputModule, MatDatepickerModule, MatSelectModule,
+  , MatSnackBarModule, MatDialogModule, MatInputModule, MatDatepickerModule, MatSelectModule, MatTableModule,
+  MatPaginatorModule, MatSortModule, MatProgressSpinnerModule,
   FlexLayoutModule, FormsModule, ReactiveFormsModule,
 ];
 

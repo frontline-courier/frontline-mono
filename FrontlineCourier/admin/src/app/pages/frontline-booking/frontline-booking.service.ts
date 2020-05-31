@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Booking } from './booking';
-import { switchMap } from 'rxjs/operators';
-import { pipe, observable } from 'rxjs';
+import { Booking } from './booking';  
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +18,11 @@ export class FrontlineBookingService {
   // lookup shipment status
   async lookupStatus() {
     return this.db.collection('frontline-status');
+  }
+
+  // lookup booking list
+  async lookupBooking() {
+    return this.db.collection('frontline-booking');
   }
 
   // create a booking
@@ -48,7 +51,7 @@ export class FrontlineBookingService {
       bookingAmount: formData.bookingAmount,
       billAmount: formData.billAmount,
       createTimestamp: new Date(),
-      createdBy: 'Admin',
+      createdBy: user.displayName,
     };
     return this.db.collection('frontline-booking').add(data).then((res) => console.log(res))
     .catch((err) => console.log(err));

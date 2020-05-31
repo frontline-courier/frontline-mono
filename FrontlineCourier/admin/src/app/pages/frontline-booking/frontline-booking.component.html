@@ -7,14 +7,116 @@
         <mat-icon>add</mat-icon>
         Add Booking
       </button>
-      <button mat-raised-button (click)="lookupCourier()">Populate Data</button>
+      <!-- <button mat-raised-button (click)="lookupCourier()">Populate Data</button> -->
     </div>
   </div>
 
   <!-- row 2-->
   <div fxLayout="row">
-    <div fxFlex="100%">
-      <span>hello</span>
+    <div fxFlex class="mat-elevation-z8">
+
+      <mat-form-field style="width: 95%; padding: 5px;">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium">
+      </mat-form-field>
+
+      <div class="spinner-container" *ngIf="!dataSource">
+        <mat-spinner></mat-spinner>
+    </div>
+
+      <table mat-table [dataSource]="dataSource" matSort style="width: 100%;" *ngIf="dataSource">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+      
+        <!-- Position Column -->
+        <ng-container matColumnDef="awbNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> AWB </th>
+          <td mat-cell *matCellDef="let element"> {{element.awbNumber}} </td>
+        </ng-container>
+      
+        <!-- Name Column -->
+        <ng-container matColumnDef="referenceNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Reference </th>
+          <td mat-cell *matCellDef="let element"> {{element.referenceNumber}} </td>
+        </ng-container>
+      
+        <!-- Weight Column -->
+        <ng-container matColumnDef="courier">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight </th>
+          <td mat-cell *matCellDef="let element"> {{element.courier}} </td>
+        </ng-container>
+      
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="bookedDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> BookedDate </th>
+          <td mat-cell *matCellDef="let element"> {{element.bookedDate}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="shipperName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ShipperName </th>
+          <td mat-cell *matCellDef="let element"> {{element.shipperName}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="receiverName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ReceiverName </th>
+          <td mat-cell *matCellDef="let element"> {{element.receiverName}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="destination">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Destination </th>
+          <td mat-cell *matCellDef="let element"> {{element.destination}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="doxType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> DoxType </th>
+          <td mat-cell *matCellDef="let element"> {{getDoxTypes(element.doxType)}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="shipmentMode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ShipmentMode </th>
+          <td mat-cell *matCellDef="let element"> {{getShipmentModes(element.shipmentMode)}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="transportMode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> TransportMode </th>
+          <td mat-cell *matCellDef="let element"> {{getTransportModes(element.transportMode)}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="additionalLeaf">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Leaf </th>
+          <td mat-cell *matCellDef="let element"> {{element.additionalLeaf}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="shipmentStatus">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Shipment Status </th>
+          <td mat-cell *matCellDef="let element"> {{getShipmentStatus(element.shipmentStatus)}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+          <td mat-cell *matCellDef="let element"> {{ element.billAmount }} | {{ element.bookingAmount}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      
+      <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[1, 5, 10, 25, 100]"
+              showFirstLastButtons>
+</mat-paginator>
+
     </div>
   </div>
 </div>
