@@ -7,11 +7,11 @@ export interface Booking {
     origin?: string;
     receiverName?: string;
     destination: string;
-    courier: string;
-    doxType: 'Dox' | 'NonDox' | 'NA';
-    shipmentMode: 'Domestic' | 'International' | 'Local' | 'NA';
-    transportMode: 'Air' | 'Air Cargo' | 'Sea Cargo' | 'Surface Cargo' | 'Surface' | 'Train Surface' | 'Road Surface' | 'NA';
-    shipmentStatus: string;
+    courier: number;
+    doxType: number;
+    shipmentMode: number;
+    transportMode: number;
+    shipmentStatus: number;
     deliveredDate?: string;
     receivedPersonName?: string;
     receivedPersonRelation?: string;
@@ -22,8 +22,8 @@ export interface Booking {
     additionalLeaf?: string;
     bookingAmount?: number;
     billAmount?: number;
-    createTimestamp?: string;
+    createTimestamp?: Date;
     createdBy?: string;
-    updatedTimestamp?: string;
+    updatedTimestamp?: Date;
     updatedBy?: string;
 }

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Booking } from './booking';
+import { switchMap } from 'rxjs/operators';
+import { pipe, observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,20 +12,43 @@ export class FrontlineBookingService {
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) { }
 
+  // lookup courier list
+  async lookupCourier() {
+    return this.db.collection('frontline-courier');
+  }
+
+  // lookup shipment status
+  async lookupStatus() {
+    return this.db.collection('frontline-status');
+  }
+
   // create a booking
-  async addBooking() {
+  async addBooking(formData: any) {
     const user = await this.afAuth.currentUser;
 
+    console.log('data', formData);
     const data: Booking = {
-      awbNumber: '122',
-      referenceNumber: '232',
-      bookedDate: '2323',
-      destination: 'london',
-      courier: 'fedex',
-      doxType: 'Dox',
-      shipmentMode: 'Domestic',
-      transportMode: 'Air',
-      shipmentStatus: 'A',
+      awbNumber: formData.awb,
+      referenceNumber: formData.referenceNumber,
+      bookedDate: formData.bookingDate,
+      shipperName: formData.shipperName,
+      origin: formData.origin,
+      receiverName: formData.receiverName,
+      destination: formData.destination,
+      courier: formData.courier,
+      doxType: formData.doxType,
+      shipmentMode: formData.shipmentMode,
+      transportMode: formData.transportMode,
+      shipmentStatus: 1,
+      remarks: formData.remarks,
+      deliveryOfficeAddress: formData.deliveryOfficeLocation,
+      additionalContacts: formData.additionalPhoneNumber,
+      additionalWeights: formData.volumetricWeightOrSize,
+      additionalLeaf: formData.leafNumber,
+      bookingAmount: formData.bookingAmount,
+      billAmount: formData.billAmount,
+      createTimestamp: new Date(),
+      createdBy: 'Admin',
     };
     return this.db.collection('frontline-booking').add(data).then((res) => console.log(res))
     .catch((err) => console.log(err));
