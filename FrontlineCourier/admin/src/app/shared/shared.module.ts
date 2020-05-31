@@ -10,6 +10,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatInputModule} from '@angular/material/input';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { RouterModule } from '@angular/router';
 
@@ -21,12 +26,13 @@ const modules = [
   CommonModule,
   RouterModule,
   LayoutModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatFormFieldModule, MatMenuModule
-  , MatSnackBarModule
+  , MatSnackBarModule, MatDialogModule, MatInputModule, MatDatepickerModule,
+  FlexLayoutModule
 ];
 
 @NgModule({
   declarations: [...components],
   imports: [...modules],
-  exports: [...components, ...modules]
+  exports: [...components, ...modules],
 })
 export class SharedModule { }

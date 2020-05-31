@@ -20,10 +20,14 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>admin</span>
+      <span>Admin</span>
 
       <span class="fill-space"></span>
       <div *ngIf="!(isHandset$ | async)">
+        <span class="loggedUser" *ngIf="afAuth.authState | async as user" >
+          <a mat-button routerLink="/pages/frontline-booking">🧾 Frontline Booking </a>
+        </span>
+
         <a mat-button routerLink="/login" *ngIf="!(afAuth.authState | async)">🔑 Login</a>
         <a mat-button routerLink="/login" *ngIf="afAuth.authState | async as user" >
           <img class="avatar" [src]="user.photoURL || 'assets/default-user.svg'">

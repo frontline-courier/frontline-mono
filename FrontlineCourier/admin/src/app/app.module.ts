@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
+import { UserModule } from './user/user.module';
 
 // 1. Import the libs you need
 import { AngularFireModule } from '@angular/fire';
@@ -22,6 +23,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     BrowserModule,
     BrowserAnimationsModule,
     SharedModule,
+    UserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // firestore
     AngularFireAuthModule, // auth

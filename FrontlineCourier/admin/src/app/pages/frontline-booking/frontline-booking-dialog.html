@@ -1,0 +1,150 @@
+<h2 mat-dialog-title>Add Booking</h2>
+<mat-dialog-content class="mat-typography">
+
+    <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>AWB</mat-label>
+                <input matInput placeholder="Air Way Bill Number">
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Reference Number</mat-label>
+                <input matInput placeholder="Reference Number">
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Courier</mat-label>
+                <input matInput placeholder="Courier">
+              </mat-form-field>
+        </div>
+    </div>
+
+    <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Booking Date</mat-label>
+                <input type="date" matInput placeholder="Booking Date">
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Shipper's Name</mat-label>
+                <input matInput placeholder="From Name">
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Origin</mat-label>
+                <input matInput placeholder="From City/Pincode">
+              </mat-form-field>
+        </div>
+    </div>
+
+    <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Booking Amount</mat-label>
+                <input matInput placeholder="Booked Amount">
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Bill Amount</mat-label>
+                <input matInput placeholder="Bill Amount">
+              </mat-form-field>
+        </div>
+        
+    </div>
+
+    <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Dox Type</mat-label>
+                <input matInput placeholder="Dox Type">
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Receiver's Name</mat-label>
+                <input matInput placeholder="To Name">
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Destination</mat-label>
+                <input matInput placeholder="To City/Pincode">
+              </mat-form-field>
+        </div>
+    </div>
+
+    <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Shipment Mode</mat-label>
+                <input matInput placeholder="Shipment Mode">
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Transport Mode</mat-label>
+                <input matInput placeholder="Transport Mode">
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Shipment Status</mat-label>
+                <input matInput placeholder="">
+              </mat-form-field>
+        </div>
+    </div>
+
+    <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>From/To Phone Number</mat-label>
+                <input matInput placeholder="From or To Phone Number">
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Volume Weight/Size</mat-label>
+                <input matInput placeholder="l * b * h">
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Leaf/Pouch Number</mat-label>
+                <input matInput placeholder="Leaf/Pouch Number">
+              </mat-form-field>
+        </div>
+    </div>
+
+    <div fxLayout='row' fxLayoutAlign="space-evenly" fxLayoutGap="2%">
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Remarks</mat-label>
+                <textarea matInput placeholder="Remarks" rows="4"></textarea>
+              </mat-form-field>
+        </div>
+        <div fxFlex>
+            <mat-form-field class="example-full-width">
+                <mat-label>Delivery Office Location</mat-label>
+                <textarea matInput placeholder="Delivery Office Location" rows="4"></textarea>
+              </mat-form-field>
+        </div>
+    </div>
+  
+      
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
+  <button mat-raised-button [mat-dialog-close]="true" cdkFocusInitial color="primary">Save</button>
+</mat-dialog-actions>
+
+
+<!-- Copyright 2019 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->
