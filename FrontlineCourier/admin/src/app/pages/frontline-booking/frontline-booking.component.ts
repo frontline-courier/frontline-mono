@@ -7,6 +7,9 @@ import { getTransportMode } from '../../models/transportMode';
 import { FirebaseFirestoreService } from 'src/app/services/firebase-firestore.service';
 import { Booking } from '../../models/booking';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { courierLists } from '../../constants/courier-list';
+import { courierStatus } from '../../constants/courier-status';
+
 
 export interface DialogData {
   couriers: any;
@@ -14,8 +17,8 @@ export interface DialogData {
   deleteId: string;
 }
 
-let courierList: any;
-let statusList: any;
+const courierList = courierLists;
+const statusList = courierStatus;
 let bookingList: any;
 
 @Component({
@@ -47,24 +50,29 @@ export class FrontlineBookingComponent implements OnInit {
   getTransportModes = getTransportMode;
 
   dataSource = this.afs.getDocument('frontline-booking');
+  loader = true;
 
   constructor(
     private afs: FirebaseFirestoreService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.afs.getDocument('frontline-courier')
-      .subscribe((data) => courierList = data);
-    this.afs.getDocument('frontline-status')
-      .subscribe((data) => statusList = data);
-    this.afs.getDocument('frontline-booking')
-      .subscribe((data) => bookingList = data);
 
-    setTimeout(() => console.log(bookingList), 2000);
+    this.afs.getDocument('frontline-booking')
+      .subscribe((data) => {
+        bookingList = data;
+        this.loader = false;
+      });
+
   }
 
+  // get data from list
   getShipmentStatus(status: number): string {
-    return statusList.find((s) => s.statusId === status).shipmentStatus;
+    return statusList.find((s) => s.StatusId === status).ShipmentStatus;
+  }
+
+  getCourierName(courierId: number): string {
+    return courierList.find((c) => c.CourierId === courierId).Courier;
   }
 
   applyFilter(event: Event) {

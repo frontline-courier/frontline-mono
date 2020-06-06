@@ -20,8 +20,8 @@
                 <mat-form-field class="example-full-width">
                     <mat-label>Courier</mat-label>
                     <mat-select formControlName="courier">
-                        <mat-option *ngFor="let courier of data.couriers" [value]='courier.courierId'>
-                            {{ courier.courier }} </mat-option>
+                        <mat-option *ngFor="let courier of data.couriers" [value]='courier.CourierId'>
+                            {{ courier.Courier }} </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -71,7 +71,7 @@
                     <mat-label>Dox Type</mat-label>
                     <mat-select formControlName="doxType">
                         <mat-option [value]='1'> Dox </mat-option>
-                        <mat-option [value]='2'> Dox Type </mat-option>
+                        <mat-option [value]='2'> Non Dox </mat-option>
                         <mat-option [value]='0'> NA </mat-option>
                     </mat-select>
                     <!-- <input matInput placeholder="Dox Type"> -->
