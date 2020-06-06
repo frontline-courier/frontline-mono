@@ -12,12 +12,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 // import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
+import { FrontlineStatusComponent } from './frontline-status/frontline-status.component';
 
 
 
 @NgModule({
   entryComponents: [FrontLineBookingDialogComponent, FrontLineBookingDeleteDialogComponent],
-  declarations: [FrontlineBookingComponent, FrontLineBookingDialogComponent, FrontLineBookingDeleteDialogComponent],
+  declarations: [FrontlineBookingComponent, FrontLineBookingDialogComponent, FrontLineBookingDeleteDialogComponent, FrontlineStatusComponent],
   imports: [
     CommonModule,
     RouterModule,

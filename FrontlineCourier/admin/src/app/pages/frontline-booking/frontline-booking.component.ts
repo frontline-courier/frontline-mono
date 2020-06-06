@@ -21,7 +21,6 @@ let bookingList: any;
 @Component({
   selector: 'app-frontline-booking',
   templateUrl: './frontline-booking.component.html',
-  styleUrls: ['./frontline-booking.component.scss']
 })
 
 export class FrontlineBookingComponent implements OnInit {
