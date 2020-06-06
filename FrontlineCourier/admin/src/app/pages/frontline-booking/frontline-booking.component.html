@@ -106,6 +106,22 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
           <td mat-cell *matCellDef="let element"> {{ element.billAmount }} | {{ element.bookingAmount}} </td>
         </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-button [matMenuTriggerFor]="menu">
+              <button mat-icon-button><mat-icon color="primary">more_vert</mat-icon></button>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-icon-button><mat-icon color="primary" (click)="openDialog('view', element)">visibility</mat-icon></button>
+              <button mat-icon-button><mat-icon color="primary" (click)="openDialog('edit', element)">create</mat-icon></button>
+              <button mat-icon-button><mat-icon color="primary" (click)="openDeleteDialog(element.id)">delete</mat-icon></button>
+              <button mat-icon-button><mat-icon color="primary">update</mat-icon></button>
+            </mat-menu>
+          </td>
+        </ng-container>
       
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

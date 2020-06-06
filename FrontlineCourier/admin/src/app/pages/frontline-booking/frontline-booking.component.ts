@@ -1,23 +1,22 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { FrontlineBookingService } from './frontline-booking.service';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-import {getDoxType } from '../../models/doxType';
-import {getShipmentMode } from '../../models/shipmentMode';
+import { getDoxType } from '../../models/doxType';
+import { getShipmentMode } from '../../models/shipmentMode';
 import { getTransportMode } from '../../models/transportMode';
-import { MatPaginator } from '@angular/material/paginator';
-
+import { FirebaseFirestoreService } from 'src/app/services/firebase-firestore.service';
+import { Booking } from '../../models/booking';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface DialogData {
   couriers: any;
   status: any;
+  deleteId: string;
 }
 
-const courierList = [];
-const statusList = [];
-const bookingList = [];
+let courierList: any;
+let statusList: any;
+let bookingList: any;
 
 @Component({
   selector: 'app-frontline-booking',
@@ -25,81 +24,61 @@ const bookingList = [];
   styleUrls: ['./frontline-booking.component.scss']
 })
 
-
 export class FrontlineBookingComponent implements OnInit {
 
   displayedColumns: string[] =
     ['awbNumber',
-    'referenceNumber',
-    'courier',
-    'bookedDate',
-    'shipperName',
-    'receiverName',
-    'destination',
-    'doxType',
-    'shipmentMode',
-    'transportMode',
-    'additionalLeaf',
-    'shipmentStatus',
-    'amount',
-  ];
+      'referenceNumber',
+      'courier',
+      'bookedDate',
+      'shipperName',
+      'receiverName',
+      'destination',
+      'doxType',
+      'shipmentMode',
+      'transportMode',
+      'additionalLeaf',
+      'shipmentStatus',
+      'amount',
+      'id'
+    ];
 
   getDoxTypes = getDoxType;
   getShipmentModes = getShipmentMode;
   getTransportModes = getTransportMode;
 
-  dataSource: MatTableDataSource<any>;
+  dataSource = this.afs.getDocument('frontline-booking');
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-
-  constructor(private service: FrontlineBookingService, public dialog: MatDialog) { }
+  constructor(
+    private afs: FirebaseFirestoreService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.lookupCourier();
-    this.lookupStatus();
-    this.lookupBooking();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    console.log(this.dataSource)
-  }
+    this.afs.getDocument('frontline-courier')
+      .subscribe((data) => courierList = data);
+    this.afs.getDocument('frontline-status')
+      .subscribe((data) => statusList = data);
+    this.afs.getDocument('frontline-booking')
+      .subscribe((data) => bookingList = data);
 
-  async lookupCourier() {
-    (await this.service.lookupCourier())
-      .valueChanges().subscribe((observable => courierList.push(observable)));
-  }
-
-  async lookupStatus() {
-    (await this.service.lookupStatus())
-      .valueChanges().subscribe((observable => statusList.push(observable)));
-  }
-
-  async lookupBooking() {
-    (await this.service.lookupBooking())
-      .valueChanges().subscribe(data => {
-        this.dataSource = new MatTableDataSource(data);
-      });
+    setTimeout(() => console.log(bookingList), 2000);
   }
 
   getShipmentStatus(status: number): string {
-    return statusList[0].find((s) => s.statusId === status).shipmentStatus;
+    return statusList.find((s) => s.statusId === status).shipmentStatus;
   }
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  populateData() {
-    this.service.populateData();
-  }
-
-  openDialog() {
+  openDialog(viewType?: string, row?: any) {
     const dialogRef = this.dialog.open(FrontLineBookingDialogComponent, {
       data: {
+        viewType,
+        row,
         couriers: courierList,
-        // status: this.statusList,
       }
     });
 
@@ -108,21 +87,36 @@ export class FrontlineBookingComponent implements OnInit {
     });
   }
 
+  openDeleteDialog(docId: string) {
+    const dialogRef = this.dialog.open(FrontLineBookingDeleteDialogComponent, {
+      data: {
+        deleteId: docId,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 }
 
 @Component({
   selector: 'app-frontline-booking-dialog',
-  templateUrl: './frontline-booking-dialog.html',
+  templateUrl: './dialog/frontline-booking-dialog.html',
 })
 export class FrontLineBookingDialogComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
-    private service: FrontlineBookingService,
+    private afs: FirebaseFirestoreService,
     public dialogRef: MatDialogRef<FrontLineBookingDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) { }
 
   bookingForm: FormGroup;
+  enableSubmitButton = true;
+  enableCancelButton = true;
+  enableCloseButton = false;
+  enableUpdateButton = false;
 
   ngOnInit() {
     this.bookingForm = this.formBuilder.group({
@@ -146,13 +140,124 @@ export class FrontLineBookingDialogComponent implements OnInit {
       remarks: [''],
       deliveryOfficeLocation: [''],
     });
+
+    if (this.data.viewType
+      && this.data.row) {
+      this.bookingForm.patchValue({
+        awb: this.data.row.awbNumber,
+        referenceNumber: this.data.row.referenceNumber,
+        courier: this.data.row.courier,
+        bookingDate: this.data.row.bookedDate,
+        shipperName: this.data.row.shipperName,
+        origin: this.data.row.origin,
+        bookingAmount: this.data.row.bookingAmount,
+        billAmount: this.data.row.billAmount,
+        doxType: this.data.row.doxType,
+        receiverName: this.data.row.receiverName,
+        destination: this.data.row.destination,
+        shipmentMode: this.data.row.shipmentMode,
+        transportMode: this.data.row.transportMode,
+        additionalPhoneNumber: this.data.row.additionalContacts,
+        volumetricWeightOrSize: this.data.row.additionalWeights,
+        leafNumber: this.data.row.additionalLeaf,
+        remarks: this.data.row.remarks,
+        deliveryOfficeLocation: this.data.row.deliveryOfficeAddress,
+      });
+    }
+
+    if (this.data.viewType === 'edit') {
+      this.enableSubmitButton = false;
+      this.enableUpdateButton = true;
+    } else if (this.data.viewType === 'view') {
+      this.bookingForm.disable();
+      this.enableSubmitButton = false;
+      this.enableCancelButton = false;
+      this.enableCloseButton = true;
+    }
   }
 
-  addBooking() {
-    this.service.addBooking(this.bookingForm.value);
+  async addBooking() {
+    const data: Booking = {
+      awbNumber: this.bookingForm.value.awb,
+      referenceNumber: this.bookingForm.value.referenceNumber,
+      bookedDate: this.bookingForm.value.bookingDate,
+      shipperName: this.bookingForm.value.shipperName,
+      origin: this.bookingForm.value.origin,
+      receiverName: this.bookingForm.value.receiverName,
+      destination: this.bookingForm.value.destination,
+      courier: this.bookingForm.value.courier,
+      doxType: this.bookingForm.value.doxType,
+      shipmentMode: this.bookingForm.value.shipmentMode,
+      transportMode: this.bookingForm.value.transportMode,
+      shipmentStatus: 1,
+      remarks: this.bookingForm.value.remarks,
+      deliveryOfficeAddress: this.bookingForm.value.deliveryOfficeLocation,
+      additionalContacts: this.bookingForm.value.additionalPhoneNumber,
+      additionalWeights: this.bookingForm.value.volumetricWeightOrSize,
+      additionalLeaf: this.bookingForm.value.leafNumber,
+      bookingAmount: this.bookingForm.value.bookingAmount,
+      billAmount: this.bookingForm.value.billAmount,
+      createTimestamp: new Date(),
+      createdBy: '',
+    };
+    this.afs.createDocument('frontline-booking', data);
+  }
+
+  async updateBooking() {
+    const data: Booking = {
+      awbNumber: this.bookingForm.value.awb,
+      referenceNumber: this.bookingForm.value.referenceNumber,
+      bookedDate: this.bookingForm.value.bookingDate,
+      shipperName: this.bookingForm.value.shipperName,
+      origin: this.bookingForm.value.origin,
+      receiverName: this.bookingForm.value.receiverName,
+      destination: this.bookingForm.value.destination,
+      courier: this.bookingForm.value.courier,
+      doxType: this.bookingForm.value.doxType,
+      shipmentMode: this.bookingForm.value.shipmentMode,
+      transportMode: this.bookingForm.value.transportMode,
+      shipmentStatus: 1,
+      remarks: this.bookingForm.value.remarks,
+      deliveryOfficeAddress: this.bookingForm.value.deliveryOfficeLocation,
+      additionalContacts: this.bookingForm.value.additionalPhoneNumber,
+      additionalWeights: this.bookingForm.value.volumetricWeightOrSize,
+      additionalLeaf: this.bookingForm.value.leafNumber,
+      bookingAmount: this.bookingForm.value.bookingAmount,
+      billAmount: this.bookingForm.value.billAmount,
+      createTimestamp: new Date(),
+      createdBy: '',
+    };
+    this.afs.updateDocument('frontline-booking', this.data.row.id, data);
+  }
+
+  async deleteBooking() {
+    this.afs.deleteDocument('frontline-booking', this.data.row.id)
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 }
+
+
+@Component({
+  selector: 'app-frontline-booking-delete-dialog',
+  templateUrl: './dialog/frontline-booking-delete-dialog.html',
+})
+
+export class FrontLineBookingDeleteDialogComponent {
+  constructor(
+    private afs: FirebaseFirestoreService,
+    public dialogRef: MatDialogRef<FrontLineBookingDeleteDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private snackBar: MatSnackBar,
+    ) {}
+
+  confirmDelete(docId: string) {
+    this.afs.deleteDocument('frontline-booking', docId);
+    this.snackBar.open('Booking Deleted', 'OK', {
+      duration: 2000,
+    });
+  }
+}
+

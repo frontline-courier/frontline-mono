@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { PagesRoutingModule } from './pages-routing.module';
-import { FrontlineBookingComponent, FrontLineBookingDialogComponent } from './frontline-booking/frontline-booking.component';
+import { FrontlineBookingComponent, FrontLineBookingDialogComponent, FrontLineBookingDeleteDialogComponent } from './frontline-booking/frontline-booking.component';
 import { SharedModule } from '../shared/shared.module';
 
 // duplicate import for popup
@@ -16,8 +16,8 @@ import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
-  entryComponents: [FrontLineBookingDialogComponent],
-  declarations: [FrontlineBookingComponent, FrontLineBookingDialogComponent],
+  entryComponents: [FrontLineBookingDialogComponent, FrontLineBookingDeleteDialogComponent],
+  declarations: [FrontlineBookingComponent, FrontLineBookingDialogComponent, FrontLineBookingDeleteDialogComponent],
   imports: [
     CommonModule,
     RouterModule,
