@@ -18,11 +18,8 @@
             </div>
             <div fxFlex>
                 <mat-form-field class="example-full-width">
-                    <mat-label>Courier</mat-label>
-                    <mat-select formControlName="courier">
-                        <mat-option *ngFor="let courier of data.couriers" [value]='courier.CourierId'>
-                            {{ courier.Courier }} </mat-option>
-                    </mat-select>
+                    <mat-label>Booking Date</mat-label>
+                    <input formControlName="bookingDate" type="datetime-local" matInput placeholder="Booking Date">
                 </mat-form-field>
             </div>
         </div>
@@ -30,8 +27,11 @@
         <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
             <div fxFlex>
                 <mat-form-field class="example-full-width">
-                    <mat-label>Booking Date</mat-label>
-                    <input formControlName="bookingDate" type="date" matInput placeholder="Booking Date">
+                    <mat-label>Courier</mat-label>
+                    <mat-select formControlName="courier">
+                        <mat-option *ngFor="let courier of data.couriers" [value]='courier.CourierId'>
+                            {{ courier.Courier }} </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
             <div fxFlex>
@@ -45,23 +45,6 @@
                     <mat-label>Origin</mat-label>
                     <input formControlName="origin" matInput placeholder="From City/Zip">
                 </mat-form-field>
-            </div>
-        </div>
-
-        <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
-            <div fxFlex>
-                <mat-form-field class="example-full-width">
-                    <mat-label>Booking Amount (₹)</mat-label>
-                    <input formControlName="bookingAmount" type="number" min="0" matInput placeholder="Booked Amount (₹)">
-                </mat-form-field>
-            </div>
-            <div fxFlex>
-                <mat-form-field class="example-full-width">
-                    <mat-label>Bill Amount (₹)</mat-label>
-                    <input formControlName="billAmount" type="number" min="0" matInput placeholder="Bill Amount (₹)">
-                </mat-form-field>
-            </div>
-            <div fxFlex>
             </div>
         </div>
 
@@ -135,6 +118,23 @@
         <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
             <div fxFlex>
                 <mat-form-field class="example-full-width">
+                    <mat-label>Booking Amount (₹)</mat-label>
+                    <input formControlName="bookingAmount" type="number" min="0" matInput placeholder="Booked Amount (₹)">
+                </mat-form-field>
+            </div>
+            <div fxFlex>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Bill Amount (₹)</mat-label>
+                    <input formControlName="billAmount" type="number" min="0" matInput placeholder="Bill Amount (₹)">
+                </mat-form-field>
+            </div>
+            <div fxFlex>
+            </div>
+        </div>
+
+        <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
+            <div fxFlex>
+                <mat-form-field class="example-full-width">
                     <mat-label>From/To Phone Number</mat-label>
                     <input formControlName="additionalPhoneNumber" matInput placeholder="From or To Phone Number">
                 </mat-form-field>
@@ -153,7 +153,7 @@
             </div>
         </div>
 
-        <div fxLayout='row' fxLayoutAlign="space-evenly" fxLayoutGap="2%">
+        <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
             <div fxFlex>
                 <mat-form-field class="example-full-width">
                     <mat-label>Remarks</mat-label>

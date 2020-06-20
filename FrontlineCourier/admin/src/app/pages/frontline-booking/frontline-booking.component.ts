@@ -54,6 +54,10 @@ export class FrontlineBookingComponent implements OnInit {
   getShipmentModes = getShipmentMode;
   getTransportModes = getTransportMode;
 
+  // local consts
+  couriers = courierList;
+  statuses = statusList;
+
   dataSource: any[];
   loader = true;
 
@@ -65,10 +69,13 @@ export class FrontlineBookingComponent implements OnInit {
   // MatPaginator Output
   pageEvent: PageEvent;
 
+  searchForm: FormGroup;
+
   constructor(
     private afs: FirebaseFirestoreService,
     public dialog: MatDialog,
     private bottomSheet: MatBottomSheet,
+    private formBuilder: FormBuilder,
     ) { }
 
   ngOnInit(): void {
@@ -76,6 +83,15 @@ export class FrontlineBookingComponent implements OnInit {
       this.dataSource = data;
       this.length = data[0].count;
       this.loader = false;
+    });
+
+    this.searchForm = this.formBuilder.group({
+      courier: [''],
+      shipmentMode: [''],
+      transportMode: [''],
+      doxType: [''],
+      shipmentStatus: [''],
+      searchText: [''],
     });
   }
 
@@ -102,6 +118,27 @@ export class FrontlineBookingComponent implements OnInit {
     return this.pageEvent;
   }
 
+  getSearchData() {
+    if ((this.searchForm.value.courier === undefined
+      || this.searchForm.value.courier === '')
+      && (this.searchForm.value.shipmentMode === undefined
+        || this.searchForm.value.shipmentMode === '')
+      && (this.searchForm.value.transportMode === undefined
+        || this.searchForm.value.transportMode === '')
+      && (this.searchForm.value.doxType === undefined
+        || this.searchForm.value.doxType === '')
+      && (this.searchForm.value.shipmentStatus === undefined
+        || this.searchForm.value.shipmentStatus === '')
+      && (this.searchForm.value.searchText === undefined
+      || this.searchForm.value.searchText === '')
+      )
+    {
+      return;
+    }
+
+    console.log(this.searchForm.value)
+  }
+
   // get data from list
   getShipmentStatus(status: number): string {
     return statusList.find((s) => s.StatusId === status).ShipmentStatus;
@@ -109,11 +146,6 @@ export class FrontlineBookingComponent implements OnInit {
 
   getCourierName(courierId: number): string {
     return courierList.find((c) => c.CourierId === courierId).Courier;
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    // this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   openDialog(viewType?: string, row?: any) {
@@ -126,7 +158,7 @@ export class FrontlineBookingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      // console.log(`Dialog result: ${result}`);
     });
   }
 
@@ -138,7 +170,7 @@ export class FrontlineBookingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      // console.log(`Dialog result: ${result}`);
     });
   }
 
@@ -151,7 +183,7 @@ export class FrontlineBookingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      // console.log(`Dialog result: ${result}`);
     });
   }
 
@@ -178,7 +210,8 @@ export class FrontLineBookingDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private afs: FirebaseFirestoreService,
     public dialogRef: MatDialogRef<FrontLineBookingDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private snackBar: MatSnackBar,
   ) { }
 
   bookingForm: FormGroup;
@@ -192,7 +225,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       awb: ['', [Validators.required]],
       referenceNumber: [''],
       courier: ['', [Validators.required]],
-      bookingDate: ['', [Validators.required]],
+      bookingDate: [moment().format(moment.HTML5_FMT.DATETIME_LOCAL), [Validators.required]],
       shipperName: [''],
       origin: [''],
       bookingAmount: [''],
@@ -216,7 +249,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
         awb: this.data.row.awbNumber,
         referenceNumber: this.data.row.referenceNumber,
         courier: this.data.row.courier,
-        bookingDate: moment(this.data.row.bookedDate).format('YYYY-MM-DD'),
+        bookingDate: moment(this.data.row.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL),
         shipperName: this.data.row.shipperName,
         origin: this.data.row.origin,
         bookingAmount: this.data.row.bookingAmount,
@@ -269,7 +302,17 @@ export class FrontLineBookingDialogComponent implements OnInit {
       createTimestamp: new Date(),
       createdBy: '',
     };
-    this.afs.createDocument('frontline-booking', data);
+    this.afs.createDocument('frontline-booking', data)
+      .then(() => {
+        this.snackBar.open('Booking Added', 'OK', {
+          duration: 2000,
+        });
+      })
+      .catch((err) => {
+        this.snackBar.open(err, 'OK', {
+          duration: 2000,
+        });
+      });
   }
 
   async updateBooking() {
@@ -296,11 +339,31 @@ export class FrontLineBookingDialogComponent implements OnInit {
       createTimestamp: new Date(),
       createdBy: '',
     };
-    this.afs.updateDocument('frontline-booking', this.data.row.id, data);
+    this.afs.updateDocument('frontline-booking', this.data.row.id, data)
+      .then(() => {
+        this.snackBar.open('Booking Updated', 'OK', {
+          duration: 2000,
+        });
+      })
+      .catch((err) => {
+        this.snackBar.open(err, 'OK', {
+          duration: 2000,
+        });
+      });
   }
 
-  async deleteBooking() {
-    this.afs.deleteDocument('frontline-booking', this.data.row.id);
+  deleteBooking() {
+    this.afs.deleteDocument('frontline-booking', this.data.row.id)
+      .then(() => {
+        this.snackBar.open('Booking Deleted', 'OK', {
+          duration: 2000,
+        });
+      })
+      .catch((err) => {
+        this.snackBar.open(err, 'OK', {
+          duration: 2000,
+        });
+      })
   }
 
   onNoClick(): void {

@@ -15,15 +15,26 @@ export class FirebaseFirestoreService {
 
   // create
   async createDocument(doc: string, data: any) {
-    return this.db.collection(doc).add(data);
+
+    // get existing count
+    this.db.collection('meta').doc(doc).get()
+      .subscribe((db: any) => {
+        // increment the count
+        data.id = db.data().count + 1;
+
+        // save the data
+        this.db.collection(doc).doc((data.id).toString()).set(data);
+        // update the count in meta
+        this.db.collection('meta').doc(doc).set({ count: data.id });
+      });
   }
 
   // read
-  getDocument(doc: string, limit) {
+  getDocument(doc: string, limit: number) {
 
     let count = 0;
 
-    this.db.collection('meta').doc(doc).valueChanges()
+    this.db.collection('meta').doc(doc).get()
       .subscribe((data: any) => count = data.count );
 
     return this.db.collection(doc, ref => ref.orderBy('id', 'desc').limit(limit))
@@ -32,7 +43,7 @@ export class FirebaseFirestoreService {
           map((actions) => actions.map(a => {
             const data = a.payload.doc.data() as any;
             const id = a.payload.doc.id;
-            return { id,...data, count };
+            return { id, ...data, count };
           }))
         );
   }
@@ -41,7 +52,7 @@ export class FirebaseFirestoreService {
 
     let count = 0;
 
-    this.db.collection('meta').doc(doc).valueChanges()
+    this.db.collection('meta').doc(doc).get()
       .subscribe((data: any) => count = data.count );
 
     return this.db.collection(doc, ref => ref.orderBy('id', 'desc').startAfter(docId).limit(limit))
@@ -59,7 +70,7 @@ export class FirebaseFirestoreService {
 
     let count = 0;
 
-    this.db.collection('meta').doc(doc).valueChanges()
+    this.db.collection('meta').doc(doc).get()
       .subscribe((data: any) => count = data.count );
 
     return this.db.collection(doc, ref => ref.orderBy('id', 'desc').endBefore(docId).limitToLast(limit))
@@ -74,13 +85,23 @@ export class FirebaseFirestoreService {
   }
 
   // update
-  deleteDocument(doc: string, docId: string) {
-    return this.db.collection(doc).doc(docId).delete();
+  async deleteDocument(doc: string, docId: string) {
+    // get existing count
+    this.db.collection('meta').doc(doc).get()
+      .subscribe((db: any) => {
+        // decrement the count
+        const count = db.data().count - 1;
+
+        // delete the data
+        this.db.collection(doc).doc(docId.toString()).delete();
+        // update the count in meta
+        this.db.collection('meta').doc(doc).set({ count });
+      });
   }
 
   // delete
   updateDocument(doc: string, docId: string, data: any) {
-    return this.db.collection(doc).doc(docId).update(data);
+    return this.db.collection(doc).doc(docId.toString()).update(data);
   }
 
   updateDocumentArray(doc: string, docId: string, data: any) {
