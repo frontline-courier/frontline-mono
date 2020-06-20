@@ -11,7 +11,6 @@ import { UserModule } from './user/user.module';
 import { AngularFireModule, FirebaseApp } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { firestore } from 'firebase/app';
 import { environment } from 'src/environments/environment';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
