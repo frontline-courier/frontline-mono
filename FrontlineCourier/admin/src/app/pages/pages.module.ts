@@ -3,7 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { PagesRoutingModule } from './pages-routing.module';
-import { FrontlineBookingComponent, FrontLineBookingDialogComponent, FrontLineBookingDeleteDialogComponent } from './frontline-booking/frontline-booking.component';
+import { FrontlineBookingComponent,
+  FrontLineBookingDialogComponent,
+  FrontLineBookingDeleteDialogComponent,
+  FrontLineBookingStatusDialogComponent,
+  DeliveryBottomSheetOverviewComponent } from './frontline-booking/frontline-booking.component';
 import { SharedModule } from '../shared/shared.module';
 
 // duplicate import for popup
@@ -14,11 +18,20 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FrontlineStatusComponent } from './frontline-status/frontline-status.component';
 
-
-
 @NgModule({
-  entryComponents: [FrontLineBookingDialogComponent, FrontLineBookingDeleteDialogComponent],
-  declarations: [FrontlineBookingComponent, FrontLineBookingDialogComponent, FrontLineBookingDeleteDialogComponent, FrontlineStatusComponent],
+  entryComponents: [
+    FrontLineBookingDialogComponent,
+    FrontLineBookingDeleteDialogComponent,
+    FrontLineBookingStatusDialogComponent,
+    DeliveryBottomSheetOverviewComponent,
+  ],
+  declarations: [
+    FrontlineBookingComponent,
+    FrontLineBookingDialogComponent,
+    FrontLineBookingDeleteDialogComponent,
+    FrontLineBookingStatusDialogComponent,
+    DeliveryBottomSheetOverviewComponent,
+    FrontlineStatusComponent],
   imports: [
     CommonModule,
     RouterModule,

@@ -19,3 +19,12 @@ input[type=number]::-webkit-outer-spin-button {
   justify-content: center;
   align-items: center;
 }
+
+
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+  padding: 0 7.5px 0 7.5px !important;
+}
+
+.mat-cell, .mat-footer-cell {
+  font-size: 12px;
+}

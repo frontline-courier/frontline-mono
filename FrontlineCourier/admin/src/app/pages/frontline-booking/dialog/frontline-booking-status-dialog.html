@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>Status Update - {{ data.docId }}</h2>
+<form cdkTrapFocus [formGroup]="statusForm">
+
+  <mat-dialog-content class="mat-typography">
+
+    <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
+      <div fxFlex>
+        <div class="example-full-width">
+          <mat-form-field>
+            <input formControlName="statusDate" matInput type="datetime-local" placeholder="Stats Date">
+          </mat-form-field>
+          <br>
+        </div>
+      </div>
+      <div fxFlex>
+      </div>
+      <div fxFlex>
+      </div>
+    </div>
+
+    <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
+      <div fxFlex>
+        <mat-form-field class="example-full-width">
+          <mat-label>Shipment Status</mat-label>
+          <mat-select formControlName="statusId">
+            <mat-option  *ngFor="let status of data.shipmentStatus" [value]='status.StatusId'>
+              {{ status.ShipmentStatus}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex>
+      </div>
+      <div fxFlex>
+      </div>
+    </div>
+
+    <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
+      <div fxFlex>
+        <mat-form-field class="example-full-width">
+          <mat-label>Remarks</mat-label>
+          <textarea formControlName="remark" matInput placeholder="Remarks" rows="3"></textarea>
+      </mat-form-field>
+      </div>
+      <div fxFlex>
+      </div>
+      <div fxFlex>
+      </div>
+    </div>
+
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close color="accent" (click)="onNoClick()">Cancel</button>
+        <button mat-raised-button [mat-dialog-close]="true" color="primary"
+            [disabled]="statusForm.invalid" type="submit" (click)="saveDeliveryStatus()">Save</button>
+  </mat-dialog-actions>
+
+</form>
+
+
+
+<!-- Copyright 2019 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->

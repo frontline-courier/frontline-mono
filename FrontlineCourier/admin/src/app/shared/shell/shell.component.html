@@ -26,7 +26,6 @@
       <div *ngIf="!(isHandset$ | async)">
         <span class="loggedUser" *ngIf="afAuth.authState | async as user" >
           <a mat-button routerLink="/pages/frontline-booking">🧾 Frontline Booking </a>
-          <a mat-button routerLink="/pages/frontline-status">📍 Frontline Status </a>
         </span>
 
         <a mat-button routerLink="/login" *ngIf="!(afAuth.authState | async)">🔑 Login</a>

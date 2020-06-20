@@ -1,0 +1,11 @@
+<mat-nav-list>
+  <a mat-list-item *ngFor="let delivery of data.row.delivery">
+    <span mat-line> <strong> {{getStatus(delivery.statusId)}} </strong> as on 
+      {{ delivery.statusDate | date:'medium'}} </span>
+    <span mat-line>{{ delivery.remark }} </span>
+  </a>
+  <a mat-list-item>
+    <span mat-line> <strong> Booked </strong> as on 
+      {{ data.row.bookedDate | date:'medium'}} </span>
+  </a>
+</mat-nav-list>

@@ -1,5 +1,5 @@
 export interface Booking {
-    id?: string;
+    id?: number;
     awbNumber: string;
     referenceNumber: string;
     bookedDate: string;

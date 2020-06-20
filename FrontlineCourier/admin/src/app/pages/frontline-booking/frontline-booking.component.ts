@@ -4,12 +4,17 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { getDoxType } from '../../models/doxType';
 import { getShipmentMode } from '../../models/shipmentMode';
 import { getTransportMode } from '../../models/transportMode';
+import { getShipmentStatus } from '../../models/shipmentStatus';
 import { FirebaseFirestoreService } from 'src/app/services/firebase-firestore.service';
 import { Booking } from '../../models/booking';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { courierLists } from '../../constants/courier-list';
 import { courierStatus } from '../../constants/courier-status';
-
+import {PageEvent} from '@angular/material/paginator';
+import * as moment from 'moment';
+import { shipmentStatus } from 'src/app/models/shipmentStatus';
+import {MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
+// import { FrontlineBookingService } from './frontline-booking.service';
 
 export interface DialogData {
   couriers: any;
@@ -19,7 +24,6 @@ export interface DialogData {
 
 const courierList = courierLists;
 const statusList = courierStatus;
-let bookingList: any;
 
 @Component({
   selector: 'app-frontline-booking',
@@ -28,6 +32,7 @@ let bookingList: any;
 
 export class FrontlineBookingComponent implements OnInit {
 
+  // table inputs
   displayedColumns: string[] =
     ['awbNumber',
       'referenceNumber',
@@ -49,21 +54,52 @@ export class FrontlineBookingComponent implements OnInit {
   getShipmentModes = getShipmentMode;
   getTransportModes = getTransportMode;
 
-  dataSource = this.afs.getDocument('frontline-booking');
+  dataSource: any[];
   loader = true;
+
+  // MatPaginator Inputs
+  length = 0;
+  pageSize = 20;
+  pageSizeOptions: number[] = [this.pageSize];
+
+  // MatPaginator Output
+  pageEvent: PageEvent;
 
   constructor(
     private afs: FirebaseFirestoreService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private bottomSheet: MatBottomSheet,
+    ) { }
 
   ngOnInit(): void {
+    this.afs.getDocument('frontline-booking', this.pageSize).subscribe((data) => {
+      this.dataSource = data;
+      this.length = data[0].count;
+      this.loader = false;
+    });
+  }
 
-    this.afs.getDocument('frontline-booking')
-      .subscribe((data) => {
-        bookingList = data;
+  // get paginated data
+  getPageData(event?: PageEvent): PageEvent {
+
+    if (event.previousPageIndex < event.pageIndex) {
+      this.loader = true;
+      const lastDocId = this.dataSource[this.dataSource.length - 1].id;
+      this.afs.getNextDocument('frontline-booking', lastDocId, this.pageSize).subscribe((data) => {
+        this.dataSource = data;
         this.loader = false;
       });
+    }
+    else {
+      this.loader = true;
+      const firstDocId = this.dataSource[0].id;
+      this.afs.getPrevDocument('frontline-booking', firstDocId, this.pageSize).subscribe((data) => {
+        this.dataSource = data;
+        this.loader = false;
+      });
+    }
 
+    return this.pageEvent;
   }
 
   // get data from list
@@ -105,6 +141,32 @@ export class FrontlineBookingComponent implements OnInit {
       console.log(`Dialog result: ${result}`);
     });
   }
+
+  openUpdateStatusDialog(docId: string) {
+    const dialogRef = this.dialog.open(FrontLineBookingStatusDialogComponent, {
+      data: {
+        docId,
+        shipmentStatus,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openBottomSheet(row: any): void {
+    const bottomSheetRef = this.bottomSheet.open(DeliveryBottomSheetOverviewComponent, {
+      data: {
+        row,
+        shipmentStatus,
+      }
+    });
+  }
+
+  // populateData() {
+  //   this.service.populateData();
+  // }
 }
 
 @Component({
@@ -154,7 +216,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
         awb: this.data.row.awbNumber,
         referenceNumber: this.data.row.referenceNumber,
         courier: this.data.row.courier,
-        bookingDate: this.data.row.bookedDate,
+        bookingDate: moment(this.data.row.bookedDate).format('YYYY-MM-DD'),
         shipperName: this.data.row.shipperName,
         origin: this.data.row.origin,
         bookingAmount: this.data.row.bookingAmount,
@@ -238,7 +300,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
   }
 
   async deleteBooking() {
-    this.afs.deleteDocument('frontline-booking', this.data.row.id)
+    this.afs.deleteDocument('frontline-booking', this.data.row.id);
   }
 
   onNoClick(): void {
@@ -266,5 +328,57 @@ export class FrontLineBookingDeleteDialogComponent {
       duration: 2000,
     });
   }
+
 }
 
+@Component({
+  selector: 'app-frontline-booking-status-dialog',
+  templateUrl: './dialog/frontline-booking-status-dialog.html',
+})
+
+export class FrontLineBookingStatusDialogComponent implements OnInit {
+  constructor(
+    private afs: FirebaseFirestoreService,
+    public dialogRef: MatDialogRef<FrontLineBookingStatusDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private formBuilder: FormBuilder,
+    ) {}
+
+    statusForm: FormGroup;
+
+
+    ngOnInit(): void {
+      this.statusForm = this.formBuilder.group({
+        remark: [''],
+        statusDate: [moment().format(moment.HTML5_FMT.DATETIME_LOCAL), [Validators.required]],
+        statusId: ['', [Validators.required]],
+      });
+    }
+
+    saveDeliveryStatus() {
+      this.afs.updateDocumentArray('frontline-booking', this.data.docId, this.statusForm.value);
+    }
+
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
+
+}
+
+@Component({
+  selector: 'app-delivery-bottom-sheet-overview',
+  templateUrl: 'bottom-sheet/delivery-bottom-sheet-overview.html',
+})
+export class DeliveryBottomSheetOverviewComponent {
+  constructor(
+    private bottomSheetRef: MatBottomSheetRef<DeliveryBottomSheetOverviewComponent>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
+    ) {}
+
+  getStatus = getShipmentStatus;
+
+  openLink(event: MouseEvent): void {
+    this.bottomSheetRef.dismiss();
+    event.preventDefault();
+  }
+}
