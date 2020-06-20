@@ -13,7 +13,7 @@
 
   <!-- row 2-->
   <div fxLayout="row">
-    <div fxFlex class="mat-elevation-z8">
+    <div fxFlex class="mat-elevation-z8" style="overflow-x: auto;" >
 
       <mat-form-field style="width: 95%; padding: 5px;">
         <mat-label>Filter</mat-label>
@@ -24,7 +24,7 @@
         <mat-spinner></mat-spinner>
     </div>
 
-      <table mat-table [dataSource]="dataSource" matSort style="width: 100%;" *ngIf="!loader">
+      <table mat-table [dataSource]="dataSource" matSort *ngIf="!loader">
 
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
