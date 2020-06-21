@@ -8,7 +8,7 @@ import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
 
 // 1. Import the libs you need
-import { AngularFireModule, FirebaseApp } from '@angular/fire';
+import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
