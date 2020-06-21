@@ -1,13 +1,17 @@
 <div class="page-container">
   <!-- row 1 -->
   <div fxLayout="row" fxLayoutAlign="space-between start" fxLayout.xs="column" fxLayout.sm="column">
-    <div fxFlex="80%">
+    <div fxFlex="75%">
       <h2>Frontline Booking</h2>
     </div>
-    <div fxFlex="20%">
+    <div fxFlex="25%">
       <button mat-raised-button color="accent" (click)="openDialog()">
         <mat-icon>add</mat-icon>
         Add Booking
+      </button>
+      <button mat-raised-button color="primary" (click)="getInitialData()">
+        <mat-icon>refresh</mat-icon>
+        Refresh
       </button>
       <!-- <button mat-raised-button (click)="populateData()">Populate Data</button> -->
     </div>
@@ -17,76 +21,109 @@
   <form [formGroup]="searchForm">
     <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="2px" fxLayout.xs="column" fxLayout.sm="column">
       <div fxFlex>
-        <mat-form-field>
-          <mat-label>Courier</mat-label>
-          <mat-select formControlName="courier">
-            <mat-option> - courier - </mat-option>
-            <mat-option *ngFor="let courier of couriers" [value]="courier.CourierId"> {{ courier.Courier }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Search
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div fxLayout="row" fxLayoutAlign="start stretch">
+              <div fxFlex>
+                <mat-form-field>
+                  <mat-label>Courier</mat-label>
+                  <mat-select formControlName="courier">
+                    <mat-option> - courier - </mat-option>
+                    <mat-option *ngFor="let courier of couriers" [value]="courier.CourierId"> {{ courier.Courier }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex>
+                <mat-form-field>
+                  <mat-label>Shipment Mode</mat-label>
+                  <mat-select formControlName="shipmentMode">
+                    <mat-option> - shipment mode - </mat-option>
+                    <mat-option [value]='1'> Domestic </mat-option>
+                    <mat-option [value]='2'> International </mat-option>
+                    <mat-option [value]='3'> Local </mat-option>
+                    <mat-option [value]='0'> NA </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex>
+                <mat-form-field>
+                  <mat-label>Transport Mode</mat-label>
+                  <mat-select formControlName="transportMode">
+                    <mat-option> - transport mode - </mat-option>
+                    <mat-option [value]='1'> Air </mat-option>
+                    <mat-option [value]='2'> Cargo </mat-option>
+                    <mat-option [value]='3'> Air Cargo </mat-option>
+                    <mat-option [value]='4'> Sea Cargo </mat-option>
+                    <mat-option [value]='5'> Surface Cargo </mat-option>
+                    <mat-option [value]='6'> Surface </mat-option>
+                    <mat-option [value]='7'> Train Surface </mat-option>
+                    <mat-option [value]='8'> Road Surface </mat-option>
+                    <mat-option [value]='0'> NA </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex>
+                <mat-form-field>
+                  <mat-label>Dox Type</mat-label>
+                  <mat-select formControlName="doxType">
+                    <mat-option> - dox type - </mat-option>
+                    <mat-option [value]='1'> Dox </mat-option>
+                    <mat-option [value]='2'> Non Dox </mat-option>
+                    <mat-option [value]='0'> NA </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex>
+                <mat-form-field>
+                  <mat-label>Status</mat-label>
+                  <mat-select formControlName="shipmentStatus">
+                    <mat-option> - status - </mat-option>
+                    <mat-option *ngFor="let status of statuses" [value]="status.StatusId"> {{ status.ShipmentStatus }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex>
+                <mat-form-field>
+                  <mat-label>Search</mat-label>
+                  <input formControlName="searchText" matInput placeholder="Search Text" value="">
+                </mat-form-field>
+              </div>
+              <div fxFlex>
+                <mat-form-field>
+                  <mat-label>Search Field</mat-label>
+                  <mat-select formControlName="searchField">
+                    <mat-option> - Field To Search - </mat-option>
+                    <mat-option [value]="'awbNumber'"> AWB Number </mat-option>
+                    <mat-option [value]="'referenceNumber'"> Reference Number </mat-option>
+                    <mat-option [value]="'shipperName'"> Shipper Name </mat-option>
+                    <mat-option [value]="'receiverName'"> Receiver Name </mat-option>
+                    <mat-option [value]="'origin'"> Origin </mat-option>
+                    <mat-option [value]="'destination'"> Destination </mat-option>
+                    <mat-option [value]="'additionalContacts'"> Contact </mat-option>
+                    <mat-option [value]="'additionalLeaf'"> Leaf </mat-option>
+                    <mat-option [value]="'additionalWeights'"> Weight </mat-option>
+                    <mat-option [value]="'deliveryOfficeAddress'"> Office Address </mat-option>
+                    <mat-option [value]="'remarks'"> Remarks </mat-option>
+                    
+                  </mat-select>
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="getSearchData()"> <mat-icon>search</mat-icon> Search</button>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
       </div>
-      <div fxFlex>
-        <mat-form-field>
-          <mat-label>Shipment Mode</mat-label>
-          <mat-select formControlName="shipmentMode">
-            <mat-option> - shipment mode - </mat-option>
-            <mat-option [value]='1'> Domestic </mat-option>
-            <mat-option [value]='2'> International </mat-option>
-            <mat-option [value]='3'> Local </mat-option>
-            <mat-option [value]='0'> NA </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div fxFlex>
-        <mat-form-field>
-          <mat-label>Transport Mode</mat-label>
-          <mat-select formControlName="transportMode">
-            <mat-option> - transport mode - </mat-option>
-            <mat-option [value]='1'> Air </mat-option>
-            <mat-option [value]='2'> Cargo </mat-option>
-            <mat-option [value]='3'> Air Cargo </mat-option>
-            <mat-option [value]='4'> Sea Cargo </mat-option>
-            <mat-option [value]='5'> Surface Cargo </mat-option>
-            <mat-option [value]='6'> Surface </mat-option>
-            <mat-option [value]='7'> Train Surface </mat-option>
-            <mat-option [value]='8'> Road Surface </mat-option>
-            <mat-option [value]='0'> NA </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div fxFlex>
-        <mat-form-field>
-          <mat-label>Dox Type</mat-label>
-          <mat-select formControlName="doxType">
-            <mat-option> - dox type - </mat-option>
-            <mat-option [value]='1'> Dox </mat-option>
-            <mat-option [value]='2'> Non Dox </mat-option>
-            <mat-option [value]='0'> NA </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div fxFlex>
-        <mat-form-field>
-          <mat-label>Status</mat-label>
-          <mat-select formControlName="shipmentStatus">
-            <mat-option> - status - </mat-option>
-            <mat-option *ngFor="let status of statuses" [value]="status.StatusId"> {{ status.ShipmentStatus }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div fxFlex>
-        <mat-form-field>
-          <mat-label>AWB/Ref/Shipper/Receiver/Dist</mat-label>
-          <input formControlName="searchText" matInput placeholder="Search Text" value="">
-        </mat-form-field>
-      </div>
-      <div fxFlex>
-        <div>
-          <button mat-raised-button color="primary" (click)="getSearchData()">Search</button>
-        </div>
-      </div>
+
     </div>
   </form>
 

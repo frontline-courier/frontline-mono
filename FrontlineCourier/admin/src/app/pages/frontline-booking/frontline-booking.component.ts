@@ -76,22 +76,28 @@ export class FrontlineBookingComponent implements OnInit {
     public dialog: MatDialog,
     private bottomSheet: MatBottomSheet,
     private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar,
     ) { }
 
   ngOnInit(): void {
-    this.afs.getDocument('frontline-booking', this.pageSize).subscribe((data) => {
+    this.getInitialData();
+
+    this.searchForm = this.formBuilder.group({
+      courier: [null],
+      shipmentMode: [null],
+      transportMode: [null],
+      doxType: [null],
+      shipmentStatus: [null],
+      searchText: [null],
+      searchField: [null],
+    });
+  }
+
+  async getInitialData() {
+    (await this.afs.getDocument('frontline-booking', this.pageSize)).subscribe((data) => {
       this.dataSource = data;
       this.length = data[0].count;
       this.loader = false;
-    });
-
-    this.searchForm = this.formBuilder.group({
-      courier: [''],
-      shipmentMode: [''],
-      transportMode: [''],
-      doxType: [''],
-      shipmentStatus: [''],
-      searchText: [''],
     });
   }
 
@@ -101,24 +107,34 @@ export class FrontlineBookingComponent implements OnInit {
     if (event.previousPageIndex < event.pageIndex) {
       this.loader = true;
       const lastDocId = this.dataSource[this.dataSource.length - 1].id;
-      this.afs.getNextDocument('frontline-booking', lastDocId, this.pageSize).subscribe((data) => {
-        this.dataSource = data;
-        this.loader = false;
-      });
+      this.getNextPage(lastDocId);
     }
     else {
       this.loader = true;
       const firstDocId = this.dataSource[0].id;
-      this.afs.getPrevDocument('frontline-booking', firstDocId, this.pageSize).subscribe((data) => {
-        this.dataSource = data;
-        this.loader = false;
-      });
+      this.getPrevPage(firstDocId);
     }
 
     return this.pageEvent;
   }
 
-  getSearchData() {
+  async getNextPage(lastDocId) {
+    (await this.afs.getNextDocument('frontline-booking', lastDocId, this.pageSize)).subscribe((data) => {
+      this.dataSource = data;
+      this.length = data[0].count;
+      this.loader = false;
+    });
+  }
+
+  async getPrevPage(firstDocId) {
+    (await this.afs.getPrevDocument('frontline-booking', firstDocId, this.pageSize)).subscribe((data) => {
+      this.dataSource = data;
+      this.length = data[0].count;
+      this.loader = false;
+    });
+  }
+
+  async getSearchData() {
     if ((this.searchForm.value.courier === undefined
       || this.searchForm.value.courier === '')
       && (this.searchForm.value.shipmentMode === undefined
@@ -131,12 +147,38 @@ export class FrontlineBookingComponent implements OnInit {
         || this.searchForm.value.shipmentStatus === '')
       && (this.searchForm.value.searchText === undefined
       || this.searchForm.value.searchText === '')
+      && (this.searchForm.value.searchField === undefined
+        || this.searchForm.value.searchField === '')
       )
     {
       return;
     }
 
-    console.log(this.searchForm.value)
+    this.loader = true;
+    (await this.afs.getSearchResultForBooking(
+      'frontline-booking',
+      this.pageSize,
+      this.searchForm.value.courier,
+      this.searchForm.value.shipmentMode,
+      this.searchForm.value.transportMode,
+      this.searchForm.value.doxType,
+      this.searchForm.value.shipmentStatus,
+      this.searchForm.value.searchText,
+      this.searchForm.value.searchField,
+      )).subscribe((data) => {
+        if (data.length === 0) {
+          this.snackBar.open('No Search Result Found, Loading all data', 'OK', {
+            duration: 5000,
+          });
+          this.getInitialData();
+        }
+        else {
+          this.dataSource = data;
+          this.length = data[0].count;
+        }
+        this.loader = false;
+
+    });
   }
 
   // get data from list
@@ -303,14 +345,14 @@ export class FrontLineBookingDialogComponent implements OnInit {
       createdBy: '',
     };
     this.afs.createDocument('frontline-booking', data)
-      .then(() => {
+      .then((data) => {       
         this.snackBar.open('Booking Added', 'OK', {
-          duration: 2000,
+          duration: 5000,
         });
       })
       .catch((err) => {
         this.snackBar.open(err, 'OK', {
-          duration: 2000,
+          duration: 5000,
         });
       });
   }
@@ -342,12 +384,12 @@ export class FrontLineBookingDialogComponent implements OnInit {
     this.afs.updateDocument('frontline-booking', this.data.row.id, data)
       .then(() => {
         this.snackBar.open('Booking Updated', 'OK', {
-          duration: 2000,
+          duration: 5000,
         });
       })
       .catch((err) => {
         this.snackBar.open(err, 'OK', {
-          duration: 2000,
+          duration: 5000,
         });
       });
   }
@@ -356,14 +398,14 @@ export class FrontLineBookingDialogComponent implements OnInit {
     this.afs.deleteDocument('frontline-booking', this.data.row.id)
       .then(() => {
         this.snackBar.open('Booking Deleted', 'OK', {
-          duration: 2000,
+          duration: 5000,
         });
       })
       .catch((err) => {
         this.snackBar.open(err, 'OK', {
-          duration: 2000,
+          duration: 5000,
         });
-      })
+      });
   }
 
   onNoClick(): void {
@@ -388,7 +430,7 @@ export class FrontLineBookingDeleteDialogComponent {
   confirmDelete(docId: string) {
     this.afs.deleteDocument('frontline-booking', docId);
     this.snackBar.open('Booking Deleted', 'OK', {
-      duration: 2000,
+      duration: 5000,
     });
   }
 

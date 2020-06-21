@@ -13,6 +13,19 @@ export class FirebaseFirestoreService {
 
   // TODO: add failure condition
 
+  // get meta data
+
+  async getMeta(doc: string) {
+
+    return this.db.collection('meta').doc(doc).get()
+      .toPromise()
+      .then((data) => {
+        console.log(data.data());
+        return data.data().count as number;
+      });
+
+  }
+
   // create
   async createDocument(doc: string, data: any) {
 
@@ -27,15 +40,15 @@ export class FirebaseFirestoreService {
         // update the count in meta
         this.db.collection('meta').doc(doc).set({ count: data.id });
       });
+
   }
 
   // read
-  getDocument(doc: string, limit: number) {
+  async getDocument(doc: string, limit: number) {
 
     let count = 0;
 
-    this.db.collection('meta').doc(doc).get()
-      .subscribe((data: any) => count = data.count );
+    count = await this.getMeta(doc);
 
     return this.db.collection(doc, ref => ref.orderBy('id', 'desc').limit(limit))
       .snapshotChanges()
@@ -48,12 +61,10 @@ export class FirebaseFirestoreService {
         );
   }
 
-  getNextDocument(doc: string, docId: string, limit) {
+  // read next
+  async getNextDocument(doc: string, docId: string, limit) {
 
-    let count = 0;
-
-    this.db.collection('meta').doc(doc).get()
-      .subscribe((data: any) => count = data.count );
+    const count = await this.getMeta(doc);
 
     return this.db.collection(doc, ref => ref.orderBy('id', 'desc').startAfter(docId).limit(limit))
       .snapshotChanges()
@@ -66,12 +77,10 @@ export class FirebaseFirestoreService {
         );
   }
 
-  getPrevDocument(doc: string, docId: string, limit) {
+  // read prev
+  async getPrevDocument(doc: string, docId: string, limit) {
 
-    let count = 0;
-
-    this.db.collection('meta').doc(doc).get()
-      .subscribe((data: any) => count = data.count );
+    const count = await this.getMeta(doc);
 
     return this.db.collection(doc, ref => ref.orderBy('id', 'desc').endBefore(docId).limitToLast(limit))
       .snapshotChanges()
@@ -82,6 +91,57 @@ export class FirebaseFirestoreService {
             return { id, ...data, count };
           }))
         );
+  }
+
+  // specific to booking
+  async getSearchResultForBooking(
+    doc: string,
+    limit: number,
+    courier: number,
+    shipmentMode: number,
+    transportMode: number,
+    doxType: number,
+    shipmentStatus: number,
+    searchText: string,
+    searchField: string,
+    ) {
+
+      let count = 0;
+
+      this.db.collection('meta').doc(doc).get()
+        .subscribe((data: any) => count = data.count );
+
+      let query = this.db.collection(doc).ref.orderBy('id', 'desc');
+
+      if (courier) {
+        query = query.where('courier', '==', courier);
+      }
+      if (shipmentMode) {
+        query = query.where('shipmentMode', '==', shipmentMode);
+      }
+      if (transportMode) {
+        query = query.where('transportMode', '==', transportMode);
+      }
+      if (doxType) {
+        query = query.where('doxType', '==', doxType);
+      }
+      if (shipmentStatus) {
+        query = query.where('shipmentStatus', '==', shipmentStatus);
+      }
+      if (searchText && searchField) {
+        query = query.where(searchField, '==', searchText);
+      }
+
+      return this.db.collection(doc, (ref) => query.limit(limit))
+      .snapshotChanges()
+        .pipe(
+          map((actions) => actions.map(a => {
+            const data = a.payload.doc.data() as any;
+            const id = a.payload.doc.id;
+            return { id, ...data, count };
+          }))
+        );
+
   }
 
   // update
@@ -99,12 +159,13 @@ export class FirebaseFirestoreService {
       });
   }
 
-  // delete
-  updateDocument(doc: string, docId: string, data: any) {
+  // update
+  async updateDocument(doc: string, docId: string, data: any) {
     return this.db.collection(doc).doc(docId.toString()).update(data);
   }
 
-  updateDocumentArray(doc: string, docId: string, data: any) {
+  // update array
+  async updateDocumentArray(doc: string, docId: string, data: any) {
     const ref = this.db.collection(doc).doc(docId.toString());
 
     const arrUnion = ref.update({
