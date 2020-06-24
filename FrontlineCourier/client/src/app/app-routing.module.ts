@@ -14,6 +14,7 @@ import { QuoteComponent } from './pages/request/quote/quote.component';
 import { AboutComponent } from './pages/company/about/about.component';
 import { ContactComponent } from './pages/company/contact/contact.component';
 import { ReachComponent } from './pages/company/reach/reach.component';
+import { TrackComponent } from './pages/track/track.component';
 
 
 const routes: Routes = [
@@ -61,6 +62,9 @@ const routes: Routes = [
   },
   {
     path: 'reach', component: ReachComponent,
+  },
+  {
+    path: 'track', component: TrackComponent,
   },
   {
     path: '**', component: HomeComponent,

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +18,9 @@ import { QuoteComponent } from './pages/request/quote/quote.component';
 import { ContactComponent } from './pages/company/contact/contact.component';
 import { AboutComponent } from './pages/company/about/about.component';
 import { ReachComponent } from './pages/company/reach/reach.component';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+import { environment } from 'src/environments/environment';
+import { TrackComponent } from './pages/track/track.component';
 
 @NgModule({
   declarations: [
@@ -34,13 +38,19 @@ import { ReachComponent } from './pages/company/reach/reach.component';
     QuoteComponent,
     ContactComponent,
     AboutComponent,
-    ReachComponent
+    ReachComponent,
+    TrackComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    RecaptchaV3Module,
+    FormsModule,
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment.reCaptcha.siteKey }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
