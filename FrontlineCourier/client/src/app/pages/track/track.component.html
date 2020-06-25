@@ -1,1 +1,109 @@
-<p>track works!</p>
+<div class="container body-container">
+    <div class="main-container">
+        <h2>Track Your Shipment</h2>
+        <hr />
+
+        <div class="row" *ngIf="!loader && status">
+            <div class="col-md-6">
+                <h3 >Your Tracking: {{ trackResult.awbNumber }}</h3>
+                <table class="table table-hover">
+                  <tbody>
+                    <tr>
+                      <th scope="row">AWB Number</th>
+                      <td>{{ trackResult.awbNumber }}</td>
+                    </tr>
+                    <tr>
+                     <th scope="row">Reference Number</th>
+                     <td>{{ trackResult.referenceNumber }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Booked Date</th>
+                     <td>{{ trackResult.bookedDate }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Shipper Name</th>
+                     <td>{{ trackResult.shipperName }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Origin</th>
+                     <td>{{ trackResult.origin }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Receiver Name</th>
+                     <td>{{ trackResult.receiverName }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Destination</th>
+                     <td>{{ trackResult.destination }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Package Type</th>
+                     <td>{{ getDoxType(trackResult.doxType) }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Shipment Mode</th>
+                     <td>{{ getShipmentMode(trackResult.shipmentMode) }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Transport Mode</th>
+                     <td>{{ getTransportMode(trackResult.shipmentStatus) }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Received By</th>
+                     <td>{{ trackResult.receivedPersonName }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Relation</th>
+                     <td *ngIf="trackResult.receivedPersonRelation  && trackResult.receivedPersonRelation !== 'NULL'">{{ getStatusRelation(trackResult.receivedPersonRelation) }}</td>
+                     <td *ngIf="!(trackResult.receivedPersonRelation  && trackResult.receivedPersonRelation !== 'NULL')"></td>
+                   </tr>
+                   <tr>
+                      <th scope="row">Delivery Office Location</th>
+                      <td>{{ trackResult.deliveryOfficeAddress }}</td>
+                    </tr>
+                    <tr>
+                     <th scope="row">Remarks</th>
+                     <td>{{ trackResult.remarks }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Courier</th>
+                     <td>{{ getCourierName(trackResult.courier) }}</td>
+                   </tr>
+                   <tr>
+                     <th scope="row">Website</th>
+                     <td>{{ getCourierUrl(trackResult.courier) }}</td>
+                   </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <div id="tracking-pre"></div>
+         <div id="tracking">
+            <div class="text-center tracking-status-intransit">
+               <p class="tracking-status text-tight">{{statusList[statusList.length - 1].status}}</p>
+            </div>
+            <div class="tracking-list">
+               <div class="tracking-item" *ngFor="let status of statusList">
+                  <div class="tracking-icon status-intransit">
+                     <svg class="svg-inline--fa fa-circle fa-w-16" aria-hidden="true" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                        <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path>
+                     </svg>
+                     <!-- <i class="fas fa-circle"></i> -->
+                  </div>
+                  <div class="tracking-date">{{ status.statusDate }}<span> {{ status.statusTime}} </span></div>
+                  <div class="tracking-content"> {{ status.status}} <span> {{ status.remark }} </span></div>
+               </div>
+            </div>
+         </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="loader">
+           <p>Status Loading...</p>
+        </div>
+
+        <div class="row" *ngIf="!loader && !status">
+         <p><strong>Provided AWB/Reference Number is invalid. Please check the air way bill number or contact us.</strong></p>
+      </div>
+    </div>
+</div>

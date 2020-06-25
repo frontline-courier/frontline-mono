@@ -22,6 +22,10 @@ import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { environment } from 'src/environments/environment';
 import { TrackComponent } from './pages/track/track.component';
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,6 +51,9 @@ import { TrackComponent } from './pages/track/track.component';
     RecaptchaV3Module,
     FormsModule,
     ReactiveFormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule.enablePersistence(),
+    AngularFireAnalyticsModule,
   ],
   providers: [
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment.reCaptcha.siteKey }
