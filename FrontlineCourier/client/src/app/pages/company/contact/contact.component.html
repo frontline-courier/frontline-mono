@@ -37,27 +37,27 @@
             <div class="col-md-6">
 
                 <h3>Write to us: </h3>
-                <form method="post">
+                <form method="post" [formGroup]='contactForm'>
                     <div class="form-group">
-                        <label for="name">Your Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name"
+                        <label for="name">Your Name*</label>
+                        <input formControlName='name' type="text" class="form-control" id="name" name="name" placeholder="Enter your name"
                             required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                        <input formControlName='email' type="email" class="form-control" id="email" name="email" placeholder="Enter email">
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone number</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number"
+                        <input formControlName='phone' type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number"
                             required>
                     </div>
                     <div class="form-group">
-                        <label for="message">Your message</label>
-                        <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+                        <label for="message">Your message*</label>
+                        <textarea formControlName='body' class="form-control" id="message" name="message" rows="3" required></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-success btn-block float-right">Submit</button>
+                    <button type="submit" class="btn btn-success btn-block float-right" (click)="sendEmail()">Submit</button>
                 </form>
 
             </div>

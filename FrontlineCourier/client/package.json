@@ -22,8 +22,9 @@
     "@angular/platform-browser-dynamic": "~9.1.0",
     "@angular/router": "~9.1.0",
     "bootstrap": "^4.4.1",
+    "crypto-js": "^4.0.0",
     "firebase": "^7.15.4",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.1",
     "moment": "^2.27.0",
     "ng-recaptcha": "^5.0.0",
     "rxjs": "~6.5.5",
@@ -31,19 +32,23 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
+    "@angular-devkit/architect": ">= 0.900 < 0.1100",
     "@angular-devkit/build-angular": "~0.901.0",
     "@angular/cli": "~9.1.0",
     "@angular/compiler-cli": "~9.1.0",
     "@angular/language-service": "~9.1.0",
-    "@types/node": "^12.11.1",
-    "ts-node": "~8.3.0",
-    "tslint": "~5.18.0",
-    "typescript": "~3.7.5",
-    "@angular-devkit/architect": ">= 0.900 < 0.1100",
+    "@types/crypto-js": "^3.1.47",
+    "@types/node": "^12.12.47",
     "firebase-tools": "^8.0.0",
     "fuzzy": "^0.1.3",
     "inquirer": "^6.2.2",
     "inquirer-autocomplete-prompt": "^1.0.1",
-    "open": "^7.0.3"
+    "open": "^7.0.3",
+    "ts-node": "~8.3.0",
+    "tslint": "~5.18.0",
+    "typescript": "~3.7.5"
+  },
+  "browser": {
+    "crypto": false
   }
 }
