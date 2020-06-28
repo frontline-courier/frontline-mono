@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { MD5, enc } from 'crypto-js';
 import * as moment from 'moment';
@@ -15,7 +13,7 @@ export class HttpServiceService {
     private http: HttpClient,
   ) { }
 
-  sendEmail(emailBody: string) {
+  async sendEmail(emailBody: string): Promise<boolean> {
 
     const currentTime = moment().utc().format();
 
@@ -28,7 +26,14 @@ export class HttpServiceService {
       headers,
     };
 
-    this.http.post(environment.apiUrl + environment.apiPaths.email, emailBody, options)
-      .subscribe((data) => console.log(data));
+    let status = false;
+
+   this.http.post(environment.apiUrl + environment.apiPaths.email, emailBody, options)
+      .subscribe(
+        (data) => { status = true},
+        (err) => { status = false});
+
+
+    return status;
   }
 }

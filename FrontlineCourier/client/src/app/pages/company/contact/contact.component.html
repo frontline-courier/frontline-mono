@@ -3,7 +3,6 @@
         <h2>Contact Us</h2>
         <hr />
 
-
         <div class="row">
             <div class="col-md-6">
                 <h3>Ambattur O.T branch</h3>
@@ -26,16 +25,23 @@
 
                 <address>
                     <strong>Email:</strong> <a
-                        href="/cdn-cgi/l/email-protection#6b180a070e18450d1904051f0702050e08041e19020e19182b0c060a0207450804064b"><span
-                            class="__cf_email__"
-                            data-cfemail="f685979a9385d890849998829a9f9893959983849f938485b6919b979f9ad895999b">[email&#160;protected]</span>
+                        href="mailto:varunn.cliquee@gmail.com">
+                        varunn.cliquee@gmail.com
                     </a><br />
                     <strong>Mobile:</strong> +91 8144111180 / 9941302000 / 9941312000
                 </address>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="mailCompleted">
+                <div class="alert alert-success" role="alert" *ngIf="mailSent">
+                    Email Send Successfully! Our Team will contact you.
+                </div>
+                <div class="alert alert-danger" role="alert" *ngIf="!mailSent">
+                    Failed to send your request! Please contact us through email or phone.
+                </div>
+            </div>
 
+            <div class="col-md-6" *ngIf="!mailCompleted">
                 <h3>Write to us: </h3>
                 <form method="post" [formGroup]='contactForm'>
                     <div class="form-group">
@@ -57,7 +63,7 @@
                         <textarea formControlName='body' class="form-control" id="message" name="message" rows="3" required></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-success btn-block float-right" (click)="sendEmail()">Submit</button>
+                    <button [disabled]="contactForm.invalid"  type="submit" class="btn btn-success btn-block float-right" (click)="sendEmail()">Submit</button>
                 </form>
 
             </div>
