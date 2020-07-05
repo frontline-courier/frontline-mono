@@ -1,11 +1,13 @@
 <div class="container body-container">
     <div class="main-container">
-        <h2>Track Your Shipment</h2>
+        <h3>Track Your Shipment</h3>
         <hr />
 
         <div class="row" *ngIf="!loader && status">
-            <div class="col-md-6">
-                <h3 >Your Tracking: {{ trackResult.awbNumber }}</h3>
+            <div class="col-md-6" id="track-column-1">
+                <strong >Your Tracking: {{ trackResult.awbNumber }}</strong>
+                <br>
+                <br>
                 <table class="table table-hover">
                   <tbody>
                     <tr>
@@ -18,7 +20,7 @@
                    </tr>
                    <tr>
                      <th scope="row">Booked Date</th>
-                     <td>{{ trackResult.bookedDate }}</td>
+                     <td>{{ trackResult.bookedDate.toDate() | date:'medium' }}</td>
                    </tr>
                    <tr>
                      <th scope="row">Shipper Name</th>

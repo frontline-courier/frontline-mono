@@ -2,7 +2,7 @@ export interface Booking {
     id?: number;
     awbNumber: string;
     referenceNumber: string;
-    bookedDate: string;
+    bookedDate: Date;
     shipperName?: string;
     origin?: string;
     receiverName?: string;
@@ -12,7 +12,7 @@ export interface Booking {
     shipmentMode: number;
     transportMode: number;
     shipmentStatus: number;
-    deliveredDate?: string;
+    deliveredDate?: Date;
     receivedPersonName?: string;
     receivedPersonRelation?: string;
     remarks?: string;
@@ -22,7 +22,7 @@ export interface Booking {
     additionalLeaf?: string;
     bookingAmount?: number;
     billAmount?: number;
-    createTimestamp?: Date;
+    createdDateTime?: Date;
     createdBy?: string;
     updatedTimestamp?: Date;
     updatedBy?: string;

@@ -53,20 +53,21 @@ export class TrackComponent implements OnInit {
 
   async getTrackingInfo(id: string, track: string) {
 
-    const searchType = (track === '1') ? 'awbNumber' : 'referenceNumber'
+    const searchType = (track === '1') ? 'awbNumber' : 'referenceNumber';
+  
     return this.firestore.collection('frontline-booking', (query) => query.where(searchType, '==', id))
       .valueChanges()
       .subscribe((data) => {
-        if (data.length) {
+        if (data.length === 1) {
           this.status = true;
           this.trackResult = data[0];
-          console.log(data[0])
           this.constructStatus();
         } else {
           this.status = false;
         }
         this.loader = false;
       }, ((err) => {
+        console.log('err', err)
         this.loader = false;
         this.status = false;
       }));
@@ -76,9 +77,9 @@ export class TrackComponent implements OnInit {
 
     if (this.trackResult) {
       const status: DeliveryResult = {
-        statusDate: moment(this.trackResult.bookedDate).format('MMM DD, YYYY'),
-        statusTime: moment(this.trackResult.bookedDate).format('ddd, h:mm:ss a'),
-        fullDateTime: moment(this.trackResult.bookedDate).unix(),
+        statusDate: moment((this.trackResult.bookedDate).toDate()).format('MMM DD, YYYY'),
+        statusTime: moment((this.trackResult.bookedDate).toDate()).format('ddd, h:mm:ss a'),
+        fullDateTime: moment((this.trackResult.bookedDate).toDate()).unix(),
         status: 'Booked',
         remark: '',
       }

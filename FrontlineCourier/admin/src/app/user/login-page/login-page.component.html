@@ -1,9 +1,9 @@
-<div *ngIf="!(afAuth.authState | async)">
+<main>
+  <div *ngIf="!(afAuth.authState | async)">
     <h1>Login</h1>
 
-    <button mat-raised-button appGoogleSignin>
-      <img src="/assets/google-logo.svg" /> Login with Google
-    </button>
+
+    <app-email-login></app-email-login>
   </div>
 
   <div *ngIf="afAuth.authState | async as user" class="logout">
@@ -13,3 +13,4 @@
 
     <button mat-stroked-button (click)="afAuth.signOut()">Logout</button>
   </div>
+</main>

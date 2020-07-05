@@ -20,6 +20,7 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCardModule} from '@angular/material/card';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -35,7 +36,7 @@ const modules = [
   RouterModule,
   LayoutModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatFormFieldModule, MatMenuModule
   , MatSnackBarModule, MatDialogModule, MatInputModule, MatDatepickerModule, MatSelectModule, MatTableModule,
-  MatPaginatorModule, MatSortModule, MatProgressSpinnerModule, MatBottomSheetModule, MatExpansionModule,
+  MatPaginatorModule, MatSortModule, MatProgressSpinnerModule, MatBottomSheetModule, MatExpansionModule, MatCardModule,
   FlexLayoutModule, FormsModule, ReactiveFormsModule,
 ];
 

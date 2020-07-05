@@ -161,7 +161,7 @@
         <!-- Symbol Column -->
         <ng-container matColumnDef="bookedDate">
           <th mat-header-cell *matHeaderCellDef> BookedDate </th>
-          <td mat-cell *matCellDef="let element"> {{element.bookedDate | date:'dd-MM-yyyy' }} </td>
+          <td mat-cell *matCellDef="let element"> {{ element.bookedDate.toDate() | date:'dd-MM-yyyy' }} </td>
         </ng-container>
 
         <!-- Symbol Column -->

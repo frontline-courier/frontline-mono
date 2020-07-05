@@ -63,7 +63,7 @@ export class FrontlineBookingComponent implements OnInit {
 
   // MatPaginator Inputs
   length = 0;
-  pageSize = 20;
+  pageSize = 50;
   pageSizeOptions: number[] = [this.pageSize];
 
   // MatPaginator Output
@@ -77,10 +77,11 @@ export class FrontlineBookingComponent implements OnInit {
     private bottomSheet: MatBottomSheet,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
+    // private service: FrontlineBookingService,
     ) { }
 
   ngOnInit(): void {
-    this.getInitialData();
+    // this.getInitialData();
 
     this.searchForm = this.formBuilder.group({
       courier: [null],
@@ -96,6 +97,7 @@ export class FrontlineBookingComponent implements OnInit {
   async getInitialData() {
     (await this.afs.getDocument('frontline-booking', this.pageSize)).subscribe((data) => {
       this.dataSource = data;
+      console.log(this.dataSource);
       this.length = data[0].count;
       this.loader = false;
     });
@@ -183,11 +185,12 @@ export class FrontlineBookingComponent implements OnInit {
 
   // get data from list
   getShipmentStatus(status: number): string {
-    return statusList.find((s) => s.StatusId === status).ShipmentStatus;
+    return statusList.find((s) => s.StatusId === status).ShipmentStatus || 'NA';
   }
 
   getCourierName(courierId: number): string {
-    return courierList.find((c) => c.CourierId === courierId).Courier;
+    if (courierId === null || courierId === undefined) { return 'NA'; }
+    return courierList.find((c) => c.CourierId === courierId)?.Courier || 'NA';
   }
 
   openDialog(viewType?: string, row?: any) {
@@ -238,9 +241,13 @@ export class FrontlineBookingComponent implements OnInit {
     });
   }
 
-  // populateData() {
-  //   this.service.populateData();
+  // getDateTime(dateTime: string, format: string) {
+  //   return moment(dateTime, format).format();
   // }
+
+  populateData() {
+    this.service.populateData();
+  }
 }
 
 @Component({
@@ -291,7 +298,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
         awb: this.data.row.awbNumber,
         referenceNumber: this.data.row.referenceNumber,
         courier: this.data.row.courier,
-        bookingDate: moment(this.data.row.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL),
+        bookingDate: moment(this.data.row.bookedDate.toDate(), 'DD-MM-YYYY HH:mm').format(moment.HTML5_FMT.DATETIME_LOCAL),
         shipperName: this.data.row.shipperName,
         origin: this.data.row.origin,
         bookingAmount: this.data.row.bookingAmount,
@@ -324,7 +331,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
     const data: Booking = {
       awbNumber: this.bookingForm.value.awb,
       referenceNumber: this.bookingForm.value.referenceNumber,
-      bookedDate: this.bookingForm.value.bookingDate,
+      bookedDate: moment(this.bookingForm.value.bookingDate, moment.HTML5_FMT.DATETIME_LOCAL).toDate(),
       shipperName: this.bookingForm.value.shipperName,
       origin: this.bookingForm.value.origin,
       receiverName: this.bookingForm.value.receiverName,
@@ -341,11 +348,11 @@ export class FrontLineBookingDialogComponent implements OnInit {
       additionalLeaf: this.bookingForm.value.leafNumber,
       bookingAmount: this.bookingForm.value.bookingAmount,
       billAmount: this.bookingForm.value.billAmount,
-      createTimestamp: new Date(),
+      createdDateTime: new Date(),
       createdBy: '',
     };
     this.afs.createDocument('frontline-booking', data)
-      .then((data) => {       
+      .then((data) => {
         this.snackBar.open('Booking Added', 'OK', {
           duration: 5000,
         });
@@ -361,7 +368,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
     const data: Booking = {
       awbNumber: this.bookingForm.value.awb,
       referenceNumber: this.bookingForm.value.referenceNumber,
-      bookedDate: this.bookingForm.value.bookingDate,
+      bookedDate: moment(this.bookingForm.value.bookingDate, moment.HTML5_FMT.DATETIME_LOCAL).toDate(),
       shipperName: this.bookingForm.value.shipperName,
       origin: this.bookingForm.value.origin,
       receiverName: this.bookingForm.value.receiverName,
@@ -378,7 +385,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       additionalLeaf: this.bookingForm.value.leafNumber,
       bookingAmount: this.bookingForm.value.bookingAmount,
       billAmount: this.bookingForm.value.billAmount,
-      createTimestamp: new Date(),
+      createdDateTime: new Date(),
       createdBy: '',
     };
     this.afs.updateDocument('frontline-booking', this.data.row.id, data)
@@ -485,5 +492,9 @@ export class DeliveryBottomSheetOverviewComponent {
   openLink(event: MouseEvent): void {
     this.bottomSheetRef.dismiss();
     event.preventDefault();
+  }
+
+  getDateTime(dateTime: string, format: string) {
+    return moment(dateTime, format).format();
   }
 }
