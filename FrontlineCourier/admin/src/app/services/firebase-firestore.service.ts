@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import { firestore } from 'firebase/app';
+import { shipmentStatus } from '../models/shipmentStatus';
 
 
 @Injectable({
@@ -20,7 +21,6 @@ export class FirebaseFirestoreService {
     return this.db.collection('meta').doc(doc).get()
       .toPromise()
       .then((data) => {
-        console.log(data.data());
         return data.data().count as number;
       });
 
@@ -165,12 +165,29 @@ export class FirebaseFirestoreService {
   }
 
   // update array
-  async updateDocumentArray(doc: string, docId: string, data: any) {
+  async updateDocumentArray(
+    doc: string, docId: string, data: any, receivedPerson: string, receivedPersonRelation: string) {
     const ref = this.db.collection(doc).doc(docId.toString());
 
-    const arrUnion = ref.update({
-      delivery: firestore.FieldValue.arrayUnion(data)
-    });
+    let updateData: any;
+
+    if (data.statusId === 7)
+    {
+      updateData = {
+        receivedPerson: receivedPerson || null,
+        receivedPersonRelation: receivedPersonRelation || null,
+        shipmentStatus: data.statusId || null,
+        delivery: firestore.FieldValue.arrayUnion(data)
+      };
+    }
+    else
+    {
+      updateData = {
+        delivery: firestore.FieldValue.arrayUnion(data)
+      };
+    }
+
+    const arrUnion = ref.update(updateData);
   }
 
 }

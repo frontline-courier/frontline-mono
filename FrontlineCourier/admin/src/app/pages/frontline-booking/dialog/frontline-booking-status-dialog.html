@@ -23,7 +23,7 @@
         <mat-form-field class="example-full-width">
           <mat-label>Shipment Status</mat-label>
           <mat-select formControlName="statusId">
-            <mat-option  *ngFor="let status of data.shipmentStatus" [value]='status.StatusId'>
+            <mat-option  *ngFor="let status of data.shipmentStatus" [value]='status.StatusId' #status>
               {{ status.ShipmentStatus}}
             </mat-option>
           </mat-select>
@@ -41,6 +41,36 @@
           <mat-label>Remarks</mat-label>
           <textarea formControlName="remark" matInput placeholder="Remarks" rows="3"></textarea>
       </mat-form-field>
+      </div>
+      <div fxFlex>
+      </div>
+      <div fxFlex>
+      </div>
+    </div>
+
+    <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%" >
+      <div fxFlex>
+        <div class="example-full-width">
+          <mat-form-field>
+            <input formControlName="receivedPerson" matInput placeholder="Received Person">
+          </mat-form-field>
+          <br>
+        </div>
+      </div>
+      <div fxFlex>
+      </div>
+      <div fxFlex>
+      </div>
+    </div>
+
+    <div fxLayout='row' fxLayoutAlign="space-between" fxLayoutGap="2%">
+      <div fxFlex>
+        <div class="example-full-width">
+          <mat-form-field>
+            <input formControlName="receivedPersonRelation" matInput placeholder="Received Person Relation">
+          </mat-form-field>
+          <br>
+        </div>
       </div>
       <div fxFlex>
       </div>

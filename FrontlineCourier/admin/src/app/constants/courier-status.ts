@@ -37,7 +37,7 @@ export const courierStatus = [
     },
     {
         StatusId: 7,
-        ShipmentStatus: 'DELIVERED',
+        ShipmentStatus: 'Delivered',
         Sequence: 'NULL',
         Description: 'NULL'
     },

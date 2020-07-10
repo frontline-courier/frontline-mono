@@ -81,7 +81,7 @@ export class FrontlineBookingComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    // this.getInitialData();
+    this.getInitialData();
 
     this.searchForm = this.formBuilder.group({
       courier: [null],
@@ -97,7 +97,6 @@ export class FrontlineBookingComponent implements OnInit {
   async getInitialData() {
     (await this.afs.getDocument('frontline-booking', this.pageSize)).subscribe((data) => {
       this.dataSource = data;
-      console.log(this.dataSource);
       this.length = data[0].count;
       this.loader = false;
     });
@@ -245,9 +244,9 @@ export class FrontlineBookingComponent implements OnInit {
   //   return moment(dateTime, format).format();
   // }
 
-  populateData() {
-    this.service.populateData();
-  }
+  // populateData() {
+  //   this.service.populateData();
+  // }
 }
 
 @Component({
@@ -464,11 +463,24 @@ export class FrontLineBookingStatusDialogComponent implements OnInit {
         remark: [''],
         statusDate: [moment().format(moment.HTML5_FMT.DATETIME_LOCAL), [Validators.required]],
         statusId: ['', [Validators.required]],
+        receivedPerson: [''],
+        receivedPersonRelation: [],
       });
     }
 
     saveDeliveryStatus() {
-      this.afs.updateDocumentArray('frontline-booking', this.data.docId, this.statusForm.value);
+      const status = {
+        remark: this.statusForm.value.remark,
+        statusDate: this.statusForm.value.statusDate,
+        statusId: this.statusForm.value.statusId,
+      };
+
+      this.afs.updateDocumentArray(
+        'frontline-booking',
+        this.data.docId,
+        status,
+        this.statusForm.value.receivedPerson,
+        this.statusForm.value.receivedPersonRelation);
     }
 
     onNoClick(): void {
