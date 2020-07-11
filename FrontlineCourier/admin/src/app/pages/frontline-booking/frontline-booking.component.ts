@@ -291,6 +291,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       leafNumber: [''],
       remarks: [''],
       deliveryOfficeLocation: [''],
+      internalRemark: [''],
     });
 
     if (this.data.viewType
@@ -314,6 +315,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
         leafNumber: this.data.row.additionalLeaf,
         remarks: this.data.row.remarks,
         deliveryOfficeLocation: this.data.row.deliveryOfficeAddress,
+        internalRemark: this.data.row.internalRemark,
       });
     }
 
@@ -351,6 +353,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       billAmount: this.bookingForm.value.billAmount,
       createdDateTime: new Date(),
       createdBy: '',
+      internalRemark: this.bookingForm.value.internalRemark,
     };
     this.afs.createDocument('frontline-booking', data)
       .then((data) => {
@@ -388,6 +391,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       billAmount: this.bookingForm.value.billAmount,
       createdDateTime: new Date(),
       createdBy: '',
+      internalRemark: this.bookingForm.value.internalRemark,
     };
     this.afs.updateDocument('frontline-booking', this.data.row.id, data)
       .then(() => {

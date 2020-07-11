@@ -67,7 +67,6 @@ export class TrackComponent implements OnInit {
         }
         this.loader = false;
       }, ((err) => {
-        console.log('err', err)
         this.loader = false;
         this.status = false;
       }));

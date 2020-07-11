@@ -26,4 +26,5 @@ export interface Booking {
     createdBy?: string;
     updatedTimestamp?: Date;
     updatedBy?: string;
+    internalRemark?: string,
 }
