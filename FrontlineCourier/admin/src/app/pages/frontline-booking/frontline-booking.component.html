@@ -222,7 +222,7 @@
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            <button mat-button [matMenuTriggerFor]="menu">
+            <button mat-button [matMenuTriggerFor]="menu" matTooltip="{{ element.remarks }}  {{ element.internalRemark }}">
               <button mat-icon-button>
                 <mat-icon color="primary">more_vert</mat-icon>
               </button>
