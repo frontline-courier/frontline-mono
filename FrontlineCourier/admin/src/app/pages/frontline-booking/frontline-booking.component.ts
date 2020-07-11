@@ -95,7 +95,17 @@ export class FrontlineBookingComponent implements OnInit {
   }
 
   async getInitialData() {
-    (await this.afs.getDocument('frontline-booking', this.pageSize)).subscribe((data) => {
+    (await this.afs.getDocument(
+      'frontline-booking',
+      this.pageSize,
+      this.searchForm?.value?.courier || undefined,
+      this.searchForm?.value?.shipmentMode || undefined,
+      this.searchForm?.value?.transportMode || undefined,
+      this.searchForm?.value?.doxType || undefined,
+      this.searchForm?.value?.shipmentStatus || undefined,
+      this.searchForm?.value?.searchText || undefined,
+      this.searchForm?.value?.searchField || undefined,
+      )).subscribe((data) => {
       this.dataSource = data;
       this.length = data[0].count;
       this.loader = false;
@@ -120,7 +130,18 @@ export class FrontlineBookingComponent implements OnInit {
   }
 
   async getNextPage(lastDocId) {
-    (await this.afs.getNextDocument('frontline-booking', lastDocId, this.pageSize)).subscribe((data) => {
+    (await this.afs.getNextDocument(
+      'frontline-booking',
+      lastDocId,
+      this.pageSize,
+      this.searchForm?.value?.courier || undefined,
+      this.searchForm?.value?.shipmentMode || undefined,
+      this.searchForm?.value?.transportMode || undefined,
+      this.searchForm?.value?.doxType || undefined,
+      this.searchForm?.value?.shipmentStatus || undefined,
+      this.searchForm?.value?.searchText || undefined,
+      this.searchForm?.value?.searchField || undefined,
+      )).subscribe((data) => {
       this.dataSource = data;
       this.length = data[0].count;
       this.loader = false;
@@ -128,7 +149,18 @@ export class FrontlineBookingComponent implements OnInit {
   }
 
   async getPrevPage(firstDocId) {
-    (await this.afs.getPrevDocument('frontline-booking', firstDocId, this.pageSize)).subscribe((data) => {
+    (await this.afs.getPrevDocument(
+      'frontline-booking',
+      firstDocId,
+      this.pageSize,
+      this.searchForm?.value?.courier || undefined,
+      this.searchForm?.value?.shipmentMode || undefined,
+      this.searchForm?.value?.transportMode || undefined,
+      this.searchForm?.value?.doxType || undefined,
+      this.searchForm?.value?.shipmentStatus || undefined,
+      this.searchForm?.value?.searchText || undefined,
+      this.searchForm?.value?.searchField || undefined,
+      )).subscribe((data) => {
       this.dataSource = data;
       this.length = data[0].count;
       this.loader = false;
@@ -156,7 +188,7 @@ export class FrontlineBookingComponent implements OnInit {
     }
 
     this.loader = true;
-    (await this.afs.getSearchResultForBooking(
+    (await this.afs.getDocument(
       'frontline-booking',
       this.pageSize,
       this.searchForm.value.courier,
@@ -171,7 +203,6 @@ export class FrontlineBookingComponent implements OnInit {
           this.snackBar.open('No Search Result Found, Loading all data', 'OK', {
             duration: 5000,
           });
-          this.getInitialData();
         }
         else {
           this.dataSource = data;

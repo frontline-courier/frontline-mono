@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import { firestore } from 'firebase/app';
-import { shipmentStatus } from '../models/shipmentStatus';
-
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +13,6 @@ export class FirebaseFirestoreService {
   // TODO: add failure condition
 
   // get meta data
-
   async getMeta(doc: string) {
 
     return this.db.collection('meta').doc(doc).get()
@@ -23,7 +20,6 @@ export class FirebaseFirestoreService {
       .then((data) => {
         return data.data().count as number;
       });
-
   }
 
   // create
@@ -44,13 +40,45 @@ export class FirebaseFirestoreService {
   }
 
   // read
-  async getDocument(doc: string, limit: number) {
+  async getDocument(
+    doc: string,
+    limit: number,
+    courier: number,
+    shipmentMode: number,
+    transportMode: number,
+    doxType: number,
+    shipmentStatus: number,
+    searchText: string,
+    searchField: string,
+    ) {
 
     let count = 0;
 
     count = await this.getMeta(doc);
 
-    return this.db.collection(doc, ref => ref.orderBy('id', 'desc').limit(limit))
+    let query = this.db.collection(doc).ref.orderBy('id', 'desc');
+
+    if (courier) {
+      query = query.where('courier', '==', courier);
+    }
+    if (shipmentMode) {
+      query = query.where('shipmentMode', '==', shipmentMode);
+    }
+    if (transportMode) {
+      query = query.where('transportMode', '==', transportMode);
+    }
+    if (doxType) {
+      query = query.where('doxType', '==', doxType);
+    }
+    if (shipmentStatus) {
+      query = query.where('shipmentStatus', '==', shipmentStatus);
+    }
+    if (searchText && searchField) {
+      query = query.where(searchField, '==', searchText);
+    }
+
+    // doc, (ref) => query.limit(limit)
+    return this.db.collection(doc, () => query.limit(limit))
       .snapshotChanges()
         .pipe(
           map((actions) => actions.map(a => {
@@ -62,11 +90,43 @@ export class FirebaseFirestoreService {
   }
 
   // read next
-  async getNextDocument(doc: string, docId: string, limit) {
+  async getNextDocument(
+    doc: string,
+    docId: string,
+    limit: number,
+    courier: number,
+    shipmentMode: number,
+    transportMode: number,
+    doxType: number,
+    shipmentStatus: number,
+    searchText: string,
+    searchField: string,
+    ) {
 
     const count = await this.getMeta(doc);
 
-    return this.db.collection(doc, ref => ref.orderBy('id', 'desc').startAfter(docId).limit(limit))
+    let query = this.db.collection(doc).ref.orderBy('id', 'desc');
+
+    if (courier) {
+      query = query.where('courier', '==', courier);
+    }
+    if (shipmentMode) {
+      query = query.where('shipmentMode', '==', shipmentMode);
+    }
+    if (transportMode) {
+      query = query.where('transportMode', '==', transportMode);
+    }
+    if (doxType) {
+      query = query.where('doxType', '==', doxType);
+    }
+    if (shipmentStatus) {
+      query = query.where('shipmentStatus', '==', shipmentStatus);
+    }
+    if (searchText && searchField) {
+      query = query.where(searchField, '==', searchText);
+    }
+
+    return this.db.collection(doc, () => query.startAfter(docId).limit(limit))
       .snapshotChanges()
         .pipe(
           map((actions) => actions.map(a => {
@@ -78,11 +138,43 @@ export class FirebaseFirestoreService {
   }
 
   // read prev
-  async getPrevDocument(doc: string, docId: string, limit) {
+  async getPrevDocument(
+    doc: string,
+    docId: string,
+    limit: number,
+    courier: number,
+    shipmentMode: number,
+    transportMode: number,
+    doxType: number,
+    shipmentStatus: number,
+    searchText: string,
+    searchField: string,
+    ) {
 
     const count = await this.getMeta(doc);
 
-    return this.db.collection(doc, ref => ref.orderBy('id', 'desc').endBefore(docId).limitToLast(limit))
+    let query = this.db.collection(doc).ref.orderBy('id', 'desc');
+
+    if (courier) {
+      query = query.where('courier', '==', courier);
+    }
+    if (shipmentMode) {
+      query = query.where('shipmentMode', '==', shipmentMode);
+    }
+    if (transportMode) {
+      query = query.where('transportMode', '==', transportMode);
+    }
+    if (doxType) {
+      query = query.where('doxType', '==', doxType);
+    }
+    if (shipmentStatus) {
+      query = query.where('shipmentStatus', '==', shipmentStatus);
+    }
+    if (searchText && searchField) {
+      query = query.where(searchField, '==', searchText);
+    }
+
+    return this.db.collection(doc, () => query.endBefore(docId).limitToLast(limit))
       .snapshotChanges()
         .pipe(
           map((actions) => actions.map(a => {
