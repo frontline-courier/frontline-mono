@@ -23,7 +23,7 @@
         <mat-form-field class="example-full-width">
           <mat-label>Shipment Status</mat-label>
           <mat-select formControlName="statusId">
-            <mat-option  *ngFor="let status of data.shipmentStatus" [value]='status.StatusId' #status>
+            <mat-option  *ngFor="let status of data.shipmentStatus" [value]='status.ShipmentStatus' #status>
               {{ status.ShipmentStatus}}
             </mat-option>
           </mat-select>

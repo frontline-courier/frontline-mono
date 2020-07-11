@@ -183,6 +183,7 @@ export class FirebaseFirestoreService {
     else
     {
       updateData = {
+        shipmentStatus: data.statusId || null,
         delivery: firestore.FieldValue.arrayUnion(data)
       };
     }

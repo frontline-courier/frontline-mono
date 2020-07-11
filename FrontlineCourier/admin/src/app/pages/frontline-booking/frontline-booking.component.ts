@@ -183,7 +183,9 @@ export class FrontlineBookingComponent implements OnInit {
   }
 
   // get data from list
-  getShipmentStatus(status: number): string {
+  // to be removed after sometime
+  getShipmentStatus(status: number | string): string {
+    if (typeof status === 'string') { return status; }
     return statusList.find((s) => s.StatusId === status).ShipmentStatus || 'NA';
   }
 
@@ -339,7 +341,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       doxType: this.bookingForm.value.doxType,
       shipmentMode: this.bookingForm.value.shipmentMode,
       transportMode: this.bookingForm.value.transportMode,
-      shipmentStatus: 1,
+      shipmentStatus: 'Booked',
       remarks: this.bookingForm.value.remarks,
       deliveryOfficeAddress: this.bookingForm.value.deliveryOfficeLocation,
       additionalContacts: this.bookingForm.value.additionalPhoneNumber,
@@ -376,7 +378,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       doxType: this.bookingForm.value.doxType,
       shipmentMode: this.bookingForm.value.shipmentMode,
       transportMode: this.bookingForm.value.transportMode,
-      shipmentStatus: 1,
+      shipmentStatus: 'Booked',
       remarks: this.bookingForm.value.remarks,
       deliveryOfficeAddress: this.bookingForm.value.deliveryOfficeLocation,
       additionalContacts: this.bookingForm.value.additionalPhoneNumber,

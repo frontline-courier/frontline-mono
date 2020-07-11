@@ -11,7 +11,7 @@ export interface Booking {
     doxType: number;
     shipmentMode: number;
     transportMode: number;
-    shipmentStatus: number;
+    shipmentStatus: number | string;
     deliveredDate?: Date;
     receivedPersonName?: string;
     receivedPersonRelation?: string;

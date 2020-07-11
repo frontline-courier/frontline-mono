@@ -85,7 +85,7 @@
                   <mat-label>Status</mat-label>
                   <mat-select formControlName="shipmentStatus">
                     <mat-option> - status - </mat-option>
-                    <mat-option *ngFor="let status of statuses" [value]="status.StatusId"> {{ status.ShipmentStatus }}
+                    <mat-option *ngFor="let status of statuses" [value]="status.ShipmentStatus"> {{ status.ShipmentStatus }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -209,7 +209,7 @@
         <!-- Symbol Column -->
         <ng-container matColumnDef="shipmentStatus">
           <th mat-header-cell *matHeaderCellDef> Shipment Status </th>
-          <td mat-cell *matCellDef="let element"> {{getShipmentStatus(element.shipmentStatus)}} </td>
+          <td mat-cell *matCellDef="let element"> {{ getShipmentStatus(element.shipmentStatus) }} </td>
         </ng-container>
 
         <!-- Symbol Column -->

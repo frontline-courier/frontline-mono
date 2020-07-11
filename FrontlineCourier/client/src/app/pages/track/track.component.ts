@@ -103,6 +103,7 @@ export class TrackComponent implements OnInit {
   }
 
   getDeliveryStatusText(id: number): string {
+    if (typeof id === 'string') { return id; }
     return this.courierStatus.find((c) => c.StatusId === id).ShipmentStatus;
   }
 
