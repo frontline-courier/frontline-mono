@@ -24,7 +24,7 @@ export interface Booking {
     billAmount?: number;
     createdDateTime?: Date;
     createdBy?: string;
-    updatedTimestamp?: Date;
+    updatedDateTime?: Date;
     updatedBy?: string;
     internalRemark?: string,
 }

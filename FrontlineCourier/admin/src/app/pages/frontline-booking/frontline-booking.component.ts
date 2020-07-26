@@ -14,6 +14,7 @@ import {PageEvent} from '@angular/material/paginator';
 import * as moment from 'moment';
 import { shipmentStatus } from 'src/app/models/shipmentStatus';
 import {MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
+import { auth } from 'firebase/app';
 // import { FrontlineBookingService } from './frontline-booking.service';
 
 export interface DialogData {
@@ -383,7 +384,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       bookingAmount: this.bookingForm.value.bookingAmount,
       billAmount: this.bookingForm.value.billAmount,
       createdDateTime: new Date(),
-      createdBy: '',
+      createdBy: auth().currentUser.email,
       internalRemark: this.bookingForm.value.internalRemark || '',
     };
     this.afs.createDocument('frontline-booking', data)
@@ -433,8 +434,8 @@ export class FrontLineBookingDialogComponent implements OnInit {
       additionalLeaf: this.bookingForm.value.leafNumber,
       bookingAmount: this.bookingForm.value.bookingAmount,
       billAmount: this.bookingForm.value.billAmount,
-      createdDateTime: new Date(),
-      createdBy: '',
+      updatedDateTime: new Date(),
+      updatedBy: auth().currentUser.email,
       internalRemark: this.bookingForm.value.internalRemark || '',
     };
     this.afs.updateDocument('frontline-booking', this.data.row.id, data)
@@ -516,6 +517,8 @@ export class FrontLineBookingStatusDialogComponent implements OnInit {
         remark: this.statusForm.value.remark,
         statusDate: this.statusForm.value.statusDate,
         statusId: this.statusForm.value.statusId,
+        updatedDateTime: new Date(),
+        updatedBy: auth().currentUser.email,
       };
 
       this.afs.updateDocumentArray(

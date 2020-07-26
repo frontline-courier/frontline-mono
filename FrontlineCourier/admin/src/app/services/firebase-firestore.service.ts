@@ -313,13 +313,17 @@ export class FirebaseFirestoreService {
         receivedPerson: receivedPerson || null,
         receivedPersonRelation: receivedPersonRelation || null,
         shipmentStatus: data.statusId || null,
-        delivery: firestore.FieldValue.arrayUnion(data)
+        delivery: firestore.FieldValue.arrayUnion(data),
+        updatedDateTime: data.updatedDateTime,
+        updatedBy: data.updatedBy,
       };
     }
     else {
       updateData = {
         shipmentStatus: data.statusId || null,
-        delivery: firestore.FieldValue.arrayUnion(data)
+        delivery: firestore.FieldValue.arrayUnion(data),
+        updatedDateTime: data.updatedDateTime,
+        updatedBy: data.updatedBy,
       };
     }
 
