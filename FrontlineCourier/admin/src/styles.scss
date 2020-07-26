@@ -28,3 +28,29 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 .mat-cell, .mat-footer-cell {
   font-size: 12px;
 }
+
+.Booked {
+  color: yellowgreen;
+  font-weight: bolder;
+}
+
+.Delivered {
+  color: green;
+  font-weight: bolder;
+}
+
+.InTransit {
+  color: orange;
+  font-weight: bolder;
+}
+
+.Takenfordelivery {
+  color: green;
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
+.Shipmenthold, .Doorlocked1stday {
+  color: red;
+  font-weight: bolder;
+}
