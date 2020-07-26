@@ -426,7 +426,6 @@ export class FrontLineBookingDialogComponent implements OnInit {
       doxType: this.bookingForm.value.doxType,
       shipmentMode: this.bookingForm.value.shipmentMode,
       transportMode: this.bookingForm.value.transportMode,
-      shipmentStatus: 'Booked',
       remarks: this.bookingForm.value.remarks,
       deliveryOfficeAddress: this.bookingForm.value.deliveryOfficeLocation,
       additionalContacts: this.bookingForm.value.additionalPhoneNumber,
