@@ -509,5 +509,26 @@ export const courierLists = [
         Description: 'NULL',
         Track: 'https://www.delhivery.com',
         Status: 'NULL'
+    },
+    {
+        CourierId: 79,
+        Courier: 'Xpressbees - Normal',
+        Description: 'NULL',
+        Track: 'https://www.xpressbees.com/',
+        Status: 'NULL'
+    },
+    {
+        CourierId: 80,
+        Courier: 'Xpressbees - Cargo',
+        Description: 'NULL',
+        Track: 'https://www.xpressbees.com/',
+        Status: 'NULL'
+    },
+    {
+        CourierId: 81,
+        Courier: 'Xpressbees - Priority',
+        Description: 'NULL',
+        Track: 'https://www.xpressbees.com/',
+        Status: 'NULL'
     }
 ];
