@@ -384,13 +384,27 @@ export class FrontLineBookingDialogComponent implements OnInit {
       billAmount: this.bookingForm.value.billAmount,
       createdDateTime: new Date(),
       createdBy: '',
-      internalRemark: this.bookingForm.value.internalRemark,
+      internalRemark: this.bookingForm.value.internalRemark || '',
     };
     this.afs.createDocument('frontline-booking', data)
-      .then((data) => {
-        this.snackBar.open('Booking Added', 'OK', {
-          duration: 5000,
-        });
+      .then((res) => {
+        if (res === 0) {
+          this.snackBar.open('Booking Added', 'OK', {
+            duration: 5000,
+          });
+        } else if (res === -1) {
+          this.snackBar.open('AWB Number Already Exists.', 'OK', {
+            duration: 5000,
+          });
+        } else if (res === -2) {
+          this.snackBar.open('Reference Number Already Exists.', 'OK', {
+            duration: 5000,
+          });
+        } else if (res === -3) {
+          this.snackBar.open('Unknown Error occurred while saving the Booking Information', 'OK', {
+            duration: 5000,
+          });
+        }
       })
       .catch((err) => {
         this.snackBar.open(err, 'OK', {
@@ -422,25 +436,11 @@ export class FrontLineBookingDialogComponent implements OnInit {
       billAmount: this.bookingForm.value.billAmount,
       createdDateTime: new Date(),
       createdBy: '',
-      internalRemark: this.bookingForm.value.internalRemark,
+      internalRemark: this.bookingForm.value.internalRemark || '',
     };
     this.afs.updateDocument('frontline-booking', this.data.row.id, data)
       .then(() => {
         this.snackBar.open('Booking Updated', 'OK', {
-          duration: 5000,
-        });
-      })
-      .catch((err) => {
-        this.snackBar.open(err, 'OK', {
-          duration: 5000,
-        });
-      });
-  }
-
-  deleteBooking() {
-    this.afs.deleteDocument('frontline-booking', this.data.row.id)
-      .then(() => {
-        this.snackBar.open('Booking Deleted', 'OK', {
           duration: 5000,
         });
       })
@@ -471,9 +471,16 @@ export class FrontLineBookingDeleteDialogComponent {
     ) {}
 
   confirmDelete(docId: string) {
-    this.afs.deleteDocument('frontline-booking', docId);
-    this.snackBar.open('Booking Deleted', 'OK', {
-      duration: 5000,
+    this.afs.deleteDocument('frontline-booking', docId)
+    .then((data) => {
+      this.snackBar.open('Booking Deleted ', 'OK', {
+        duration: 5000,
+      });
+    })
+    .catch((err) => {
+      this.snackBar.open(err, 'OK', {
+        duration: 5000,
+      });
     });
   }
 
