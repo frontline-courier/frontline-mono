@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
+import { map, retry } from 'rxjs/operators';
 import { firestore } from 'firebase/app';
 
 @Injectable({
@@ -26,7 +26,7 @@ export class FirebaseFirestoreService {
   // -1 awb, -2 ref, -3 unknown, 0 success
   async checkIfExists(doc: string, field1: string, value1: string, field2?: string, value2?: string): Promise<number> {
 
-    const query = this.db.collection(doc).ref.orderBy('id', 'desc');
+    const query = this.db.collection(doc).ref.orderBy('bookedDate', 'desc');
     let isExists = 0;
 
     if (field2 && value2 && value2 !== '') {
@@ -62,26 +62,27 @@ export class FirebaseFirestoreService {
   }
 
   // create
-  async createDocument(doc: string, data: any): Promise<number> {
+  async createDocument(doc: string, data: any): Promise<string> {
 
-    const isExists = await this.checkIfExists(doc, 'awbNumber', data.awbNumber, 'referenceNumber', data.referenceNumber);
-
-    if (isExists === 0) {
-      // get existing count
-      this.db.collection('meta').doc(doc).get()
-        .subscribe((db: any) => {
-          // increment the count
-          data.id = db.data().count + 1;
-
-          // save the data
-          this.db.collection(doc).doc((data.id).toString()).set(data);
-          // update the count in meta
-          this.db.collection('meta').doc(doc).set({ count: data.id });
-
-        });
+    if ((await this.db.collection(doc, (query) => query.where('awbNumber', '==', data.awbNumber)).get().toPromise()).size > 0)
+    {
+      return 'AWB Number Already Exits';
     }
 
-    return isExists;
+    if (data.referenceNumber !== undefined
+      && data.referenceNumber !== ''
+      && (await this.db.collection(doc, (query) => query.where('referenceNumber', '==', data.referenceNumber)).get().toPromise()).size > 0)
+    {
+      return 'Reference Number Already Exits';
+    }
+
+    return this.db.collection(doc).add(data)
+      .then(() => {
+        return 'Booking Saved Successfully!';
+      })
+      .catch((err) => {
+        return  err;
+      });
   }
 
   // read
@@ -101,7 +102,7 @@ export class FirebaseFirestoreService {
 
     count = await this.getMeta(doc);
 
-    let query = this.db.collection(doc).ref.orderBy('id', 'desc');
+    let query = this.db.collection(doc).ref.orderBy('bookedDate', 'desc');
 
     if (courier) {
       query = query.where('courier', '==', courier);
@@ -150,7 +151,7 @@ export class FirebaseFirestoreService {
 
     const count = await this.getMeta(doc);
 
-    let query = this.db.collection(doc).ref.orderBy('id', 'desc');
+    let query = this.db.collection(doc).ref.orderBy('bookedDate', 'desc');
 
     if (courier) {
       query = query.where('courier', '==', courier);
@@ -198,7 +199,7 @@ export class FirebaseFirestoreService {
 
     const count = await this.getMeta(doc);
 
-    let query = this.db.collection(doc).ref.orderBy('id', 'desc');
+    let query = this.db.collection(doc).ref.orderBy('bookedDate', 'desc');
 
     if (courier) {
       query = query.where('courier', '==', courier);
@@ -248,7 +249,7 @@ export class FirebaseFirestoreService {
     this.db.collection('meta').doc(doc).get()
       .subscribe((data: any) => count = data.count);
 
-    let query = this.db.collection(doc).ref.orderBy('id', 'desc');
+    let query = this.db.collection(doc).ref.orderBy('bookedDate', 'desc');
 
     if (courier) {
       query = query.where('courier', '==', courier);
@@ -278,22 +279,12 @@ export class FirebaseFirestoreService {
           return { id, ...data, count };
         }))
       );
-
   }
 
   // update
   async deleteDocument(doc: string, docId: string) {
     // get existing count
-    return this.db.collection('meta').doc(doc).get()
-      .subscribe((db: any) => {
-        // decrement the count
-        const count = db.data().count - 1;
-
-        // delete the data
-        this.db.collection(doc).doc(docId.toString()).delete();
-        // update the count in meta
-        this.db.collection('meta').doc(doc).set({ count });
-      });
+    return this.db.collection(doc).doc(docId.toString()).delete();
   }
 
   // update
@@ -313,13 +304,17 @@ export class FirebaseFirestoreService {
         receivedPerson: receivedPerson || null,
         receivedPersonRelation: receivedPersonRelation || null,
         shipmentStatus: data.statusId || null,
-        delivery: firestore.FieldValue.arrayUnion(data)
+        delivery: firestore.FieldValue.arrayUnion(data),
+        updatedDateTime: data.updatedDateTime,
+        updatedBy: data.updatedBy,
       };
     }
     else {
       updateData = {
         shipmentStatus: data.statusId || null,
-        delivery: firestore.FieldValue.arrayUnion(data)
+        delivery: firestore.FieldValue.arrayUnion(data),
+        updatedDateTime: data.updatedDateTime,
+        updatedBy: data.updatedBy,
       };
     }
 
