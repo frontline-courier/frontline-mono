@@ -527,6 +527,8 @@ export class FrontLineBookingStatusDialogComponent implements OnInit {
 })
 export class DeliveryBottomSheetOverviewComponent {
   constructor(
+    private afs: FirebaseFirestoreService,
+    private snackBar: MatSnackBar,
     private bottomSheetRef: MatBottomSheetRef<DeliveryBottomSheetOverviewComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
     ) {}
@@ -541,4 +543,20 @@ export class DeliveryBottomSheetOverviewComponent {
   getDateTime(dateTime: string, format: string) {
     return moment(dateTime, format).format();
   }
+
+  // show delete button if lesser than 30 sec
+  enableDeliveryButton(dateTime: string): boolean {
+    return moment(dateTime).diff(moment(), 'minutes') > -100;
+  }
+
+  deleteDeliveryStatus(data: any) {
+    this.afs.removeDocumentArray('frontline-booking', data.id, data.delivery[data.delivery.length - 1]);
+
+    this.bottomSheetRef.dismiss();
+    this.snackBar.open('Delivery Stats Deleted Successfully!', 'OK', {
+      duration: 5000,
+    });
+
+  }
+  // todo: to show the confirmation before deleting / deleted status should be updated in list view
 }

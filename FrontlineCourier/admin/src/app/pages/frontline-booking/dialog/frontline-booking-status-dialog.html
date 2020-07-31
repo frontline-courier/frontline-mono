@@ -1,4 +1,5 @@
-<h2 mat-dialog-title>Status Update - {{ data.docId }}</h2>
+<h2 mat-dialog-title>Status Update</h2>
+<h4 mat-dialog-subtitle>{{ data.docId }}</h4>
 <form cdkTrapFocus [formGroup]="statusForm">
 
   <mat-dialog-content class="mat-typography">
@@ -87,8 +88,6 @@
   </mat-dialog-actions>
 
 </form>
-
-
 
 <!-- Copyright 2019 Google LLC. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that

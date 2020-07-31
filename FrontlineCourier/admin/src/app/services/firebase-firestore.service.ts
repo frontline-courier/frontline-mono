@@ -295,6 +295,7 @@ export class FirebaseFirestoreService {
   // update array
   async updateDocumentArray(
     doc: string, docId: string, data: any, receivedPerson: string, receivedPersonRelation: string) {
+
     const ref = this.db.collection(doc).doc(docId.toString());
 
     let updateData: any;
@@ -318,7 +319,15 @@ export class FirebaseFirestoreService {
       };
     }
 
-    const arrUnion = ref.update(updateData);
+    ref.update(updateData);
+  }
+
+  // delete array
+  async removeDocumentArray(doc: string, docId: string, data: any) {
+    const ref = this.db.collection(doc).doc(docId.toString());
+
+    ref.update({ delivery: firestore.FieldValue.arrayRemove(data) });
+
   }
 
 }
