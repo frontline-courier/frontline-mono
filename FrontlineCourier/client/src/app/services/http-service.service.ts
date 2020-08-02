@@ -18,21 +18,13 @@ export class HttpServiceService {
 
     const currentTime = moment().utc().format();
     const host = environment.apiHost;
-    const secretKey = host + '.' + MD5(currentTime).toString(enc.Hex);
-    console.log(secretKey)
-    
-
-    try {
-      const apiKey = jwt.sign({ secret: environment.apiKey }, secretKey).toString();
-    } catch (err)
-    {
-      console.log(err)
-    }
+    const secretKey = MD5(host).toString(enc.Hex) + '.' + MD5(currentTime).toString(enc.Hex);
+    const apiKey = MD5(secretKey).toString(enc.Hex);
 
     const headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'x-api-request-time': currentTime,
-      // 'x-api-key': apiKey,
+      'x-api-token': apiKey,
     });
 
     const options = {
