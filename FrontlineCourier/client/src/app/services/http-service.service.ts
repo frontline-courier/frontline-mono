@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { MD5, enc } from 'crypto-js';
 import * as moment from 'moment';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,25 @@ export class HttpServiceService {
     private http: HttpClient,
   ) { }
 
-  async sendEmail(emailBody: string): Promise<boolean> {
+  async sendEmail(emailBody: any): Promise<boolean> {
 
     const currentTime = moment().utc().format();
+    const host = environment.apiHost;
+    const secretKey = host + '.' + MD5(currentTime).toString(enc.Hex);
+    console.log(secretKey)
+    
 
-    const headers: HttpHeaders =  new HttpHeaders({
+    try {
+      const apiKey = jwt.sign({ secret: environment.apiKey }, secretKey).toString();
+    } catch (err)
+    {
+      console.log(err)
+    }
+
+    const headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
       'x-api-request-time': currentTime,
-      'x-api-key': `${MD5('epix.io').toString(enc.Hex)}.${MD5(currentTime).toString(enc.Hex)}`.toLowerCase(),
+      // 'x-api-key': apiKey,
     });
 
     const options = {
@@ -28,10 +41,10 @@ export class HttpServiceService {
 
     let status = false;
 
-   this.http.post(environment.apiUrl + environment.apiPaths.email, emailBody, options)
+    this.http.post(environment.apiUrl + environment.apiPaths.email, emailBody, options)
       .subscribe(
-        (data) => { status = true},
-        (err) => { status = false});
+        (data) => { status = true },
+        (err) => { console.log(err); status = false;  });
 
 
     return status;

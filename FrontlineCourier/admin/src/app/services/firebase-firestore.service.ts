@@ -13,14 +13,14 @@ export class FirebaseFirestoreService {
   // TODO: add failure condition
 
   // get meta data
-  async getMeta(doc: string): Promise<number> {
+  // async getMeta(doc: string): Promise<number> {
 
-    return this.db.collection('meta').doc(doc).get()
-      .toPromise()
-      .then((data) => {
-        return data.data().count as number;
-      });
-  }
+  //   return this.db.collection('meta').doc(doc).get()
+  //     .toPromise()
+  //     .then((data) => {
+  //       return data.data().count as number;
+  //     });
+  // }
 
   // get meta data
   // -1 awb, -2 ref, -3 unknown, 0 success
@@ -98,9 +98,7 @@ export class FirebaseFirestoreService {
     searchField: string,
   ) {
 
-    let count = 0;
-
-    count = await this.getMeta(doc);
+    const count = 1000;
 
     let query = this.db.collection(doc).ref.orderBy('bookedDate', 'desc');
 
@@ -138,7 +136,7 @@ export class FirebaseFirestoreService {
   // read next
   async getNextDocument(
     doc: string,
-    docId: string,
+    nextDoc: any,
     limit: number,
     courier: number,
     shipmentMode: number,
@@ -149,7 +147,7 @@ export class FirebaseFirestoreService {
     searchField: string,
   ) {
 
-    const count = await this.getMeta(doc);
+    const count = 1000;
 
     let query = this.db.collection(doc).ref.orderBy('bookedDate', 'desc');
 
@@ -172,7 +170,7 @@ export class FirebaseFirestoreService {
       query = query.where(searchField, '==', searchText);
     }
 
-    return this.db.collection(doc, () => query.startAfter(docId).limit(limit))
+    return this.db.collection(doc, () => query.startAfter(nextDoc).limit(limit))
       .snapshotChanges()
       .pipe(
         map((actions) => actions.map(a => {
@@ -186,7 +184,7 @@ export class FirebaseFirestoreService {
   // read prev
   async getPrevDocument(
     doc: string,
-    docId: string,
+    prevDoc: any,
     limit: number,
     courier: number,
     shipmentMode: number,
@@ -197,7 +195,7 @@ export class FirebaseFirestoreService {
     searchField: string,
   ) {
 
-    const count = await this.getMeta(doc);
+    const count = 1000;
 
     let query = this.db.collection(doc).ref.orderBy('bookedDate', 'desc');
 
@@ -220,7 +218,7 @@ export class FirebaseFirestoreService {
       query = query.where(searchField, '==', searchText);
     }
 
-    return this.db.collection(doc, () => query.endBefore(docId).limitToLast(limit))
+    return this.db.collection(doc, () => query.endBefore(prevDoc).limitToLast(limit))
       .snapshotChanges()
       .pipe(
         map((actions) => actions.map(a => {
@@ -244,10 +242,7 @@ export class FirebaseFirestoreService {
     searchField: string,
   ) {
 
-    let count = 0;
-
-    this.db.collection('meta').doc(doc).get()
-      .subscribe((data: any) => count = data.count);
+    const count = 1000;
 
     let query = this.db.collection(doc).ref.orderBy('bookedDate', 'desc');
 

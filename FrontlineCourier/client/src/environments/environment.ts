@@ -18,7 +18,9 @@ export const environment = {
     appId: '1:627419010873:web:054515e9f51513b160bae8',
     measurementId: 'G-QPTMSCRH73',
   },
-  apiUrl: 'https://api-v1-epix.web.app',
+  apiKey: 'API_SECRET_KEY = fe91bb2473be5cbaf76578ae0011bc3d',
+  apiHost: 'localhost',
+  apiUrl: 'http://localhost:3000',
   apiPaths: {
     email: '/v1/email'
   },

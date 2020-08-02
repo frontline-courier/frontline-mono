@@ -10,10 +10,10 @@ import { Booking } from '../../models/booking';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { courierLists } from '../../constants/courier-list';
 import { courierStatus } from '../../constants/courier-status';
-import {PageEvent} from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
 import * as moment from 'moment';
 import { shipmentStatus } from 'src/app/models/shipmentStatus';
-import {MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
+import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { auth } from 'firebase/app';
 // import { FrontlineBookingService } from './frontline-booking.service';
 
@@ -79,7 +79,7 @@ export class FrontlineBookingComponent implements OnInit {
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     // private service: FrontlineBookingService,
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.getInitialData();
@@ -106,7 +106,7 @@ export class FrontlineBookingComponent implements OnInit {
       this.searchForm?.value?.shipmentStatus || undefined,
       this.searchForm?.value?.searchText || undefined,
       this.searchForm?.value?.searchField || undefined,
-      )).subscribe((data) => {
+    )).subscribe((data) => {
       this.dataSource = data;
       this.length = data[0].count;
       this.loader = false;
@@ -118,22 +118,22 @@ export class FrontlineBookingComponent implements OnInit {
 
     if (event.previousPageIndex < event.pageIndex) {
       this.loader = true;
-      const lastDocId = this.dataSource[this.dataSource.length - 1].id;
-      this.getNextPage(lastDocId);
+      const lastDocBookedDate = this.dataSource[this.dataSource.length - 1].bookedDate;
+      this.getNextPage(lastDocBookedDate);
     }
     else {
       this.loader = true;
-      const firstDocId = this.dataSource[0].id;
-      this.getPrevPage(firstDocId);
+      const firstDocBookedDate = this.dataSource[0].bookedDate;
+      this.getPrevPage(firstDocBookedDate);
     }
 
     return this.pageEvent;
   }
 
-  async getNextPage(lastDocId) {
+  async getNextPage(lastDocBookedDate) {
     (await this.afs.getNextDocument(
       'frontline-booking',
-      lastDocId,
+      lastDocBookedDate,
       this.pageSize,
       this.searchForm?.value?.courier || undefined,
       this.searchForm?.value?.shipmentMode || undefined,
@@ -142,17 +142,17 @@ export class FrontlineBookingComponent implements OnInit {
       this.searchForm?.value?.shipmentStatus || undefined,
       this.searchForm?.value?.searchText || undefined,
       this.searchForm?.value?.searchField || undefined,
-      )).subscribe((data) => {
+    )).subscribe((data) => {
       this.dataSource = data;
       this.length = data[0].count;
       this.loader = false;
     });
   }
 
-  async getPrevPage(firstDocId) {
+  async getPrevPage(firstDocBookedDate) {
     (await this.afs.getPrevDocument(
       'frontline-booking',
-      firstDocId,
+      firstDocBookedDate,
       this.pageSize,
       this.searchForm?.value?.courier || undefined,
       this.searchForm?.value?.shipmentMode || undefined,
@@ -161,7 +161,7 @@ export class FrontlineBookingComponent implements OnInit {
       this.searchForm?.value?.shipmentStatus || undefined,
       this.searchForm?.value?.searchText || undefined,
       this.searchForm?.value?.searchField || undefined,
-      )).subscribe((data) => {
+    )).subscribe((data) => {
       this.dataSource = data;
       this.length = data[0].count;
       this.loader = false;
@@ -180,11 +180,10 @@ export class FrontlineBookingComponent implements OnInit {
       && (this.searchForm.value.shipmentStatus === undefined
         || this.searchForm.value.shipmentStatus === '')
       && (this.searchForm.value.searchText === undefined
-      || this.searchForm.value.searchText === '')
+        || this.searchForm.value.searchText === '')
       && (this.searchForm.value.searchField === undefined
         || this.searchForm.value.searchField === '')
-      )
-    {
+    ) {
       return;
     }
 
@@ -199,18 +198,17 @@ export class FrontlineBookingComponent implements OnInit {
       this.searchForm.value.shipmentStatus,
       this.searchForm.value.searchText,
       this.searchForm.value.searchField,
-      )).subscribe((data) => {
-        if (data.length === 0) {
-          this.snackBar.open('No Search Result Found, Loading all data', 'OK', {
-            duration: 5000,
-          });
-        }
-        else {
-          this.dataSource = data;
-          this.length = data[0].count;
-        }
-        this.loader = false;
-
+    )).subscribe((data) => {
+      if (data.length === 0) {
+        this.snackBar.open('No Search Result Found, Loading all data', 'OK', {
+          duration: 5000,
+        });
+      }
+      else {
+        this.dataSource = data;
+        this.length = data[0].count;
+      }
+      this.loader = false;
     });
   }
 
@@ -454,22 +452,21 @@ export class FrontLineBookingDeleteDialogComponent {
     public dialogRef: MatDialogRef<FrontLineBookingDeleteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackBar,
-    ) {}
+  ) { }
 
   confirmDelete(docId: string) {
     this.afs.deleteDocument('frontline-booking', docId)
-    .then((data) => {
-      this.snackBar.open('Booking Deleted ', 'OK', {
-        duration: 5000,
+      .then((data) => {
+        this.snackBar.open('Booking Deleted ', 'OK', {
+          duration: 5000,
+        });
+      })
+      .catch((err) => {
+        this.snackBar.open(err, 'OK', {
+          duration: 5000,
+        });
       });
-    })
-    .catch((err) => {
-      this.snackBar.open(err, 'OK', {
-        duration: 5000,
-      });
-    });
   }
-
 }
 
 @Component({
@@ -483,41 +480,41 @@ export class FrontLineBookingStatusDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<FrontLineBookingStatusDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
-    ) {}
+  ) { }
 
-    statusForm: FormGroup;
+  statusForm: FormGroup;
 
 
-    ngOnInit(): void {
-      this.statusForm = this.formBuilder.group({
-        remark: [''],
-        statusDate: [moment().format(moment.HTML5_FMT.DATETIME_LOCAL), [Validators.required]],
-        statusId: ['', [Validators.required]],
-        receivedPerson: [''],
-        receivedPersonRelation: [],
-      });
-    }
+  ngOnInit(): void {
+    this.statusForm = this.formBuilder.group({
+      remark: [''],
+      statusDate: [moment().format(moment.HTML5_FMT.DATETIME_LOCAL), [Validators.required]],
+      statusId: ['', [Validators.required]],
+      receivedPerson: [''],
+      receivedPersonRelation: [],
+    });
+  }
 
-    saveDeliveryStatus() {
-      const status = {
-        remark: this.statusForm.value.remark,
-        statusDate: this.statusForm.value.statusDate,
-        statusId: this.statusForm.value.statusId,
-        updatedDateTime: new Date(),
-        updatedBy: auth().currentUser.email,
-      };
+  saveDeliveryStatus() {
+    const status = {
+      remark: this.statusForm.value.remark,
+      statusDate: this.statusForm.value.statusDate,
+      statusId: this.statusForm.value.statusId,
+      updatedDateTime: new Date(),
+      updatedBy: auth().currentUser.email,
+    };
 
-      this.afs.updateDocumentArray(
-        'frontline-booking',
-        this.data.docId,
-        status,
-        this.statusForm.value.receivedPerson,
-        this.statusForm.value.receivedPersonRelation);
-    }
+    this.afs.updateDocumentArray(
+      'frontline-booking',
+      this.data.docId,
+      status,
+      this.statusForm.value.receivedPerson,
+      this.statusForm.value.receivedPersonRelation);
+  }
 
-    onNoClick(): void {
-      this.dialogRef.close();
-    }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
 }
 
@@ -531,7 +528,7 @@ export class DeliveryBottomSheetOverviewComponent {
     private snackBar: MatSnackBar,
     private bottomSheetRef: MatBottomSheetRef<DeliveryBottomSheetOverviewComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
-    ) {}
+  ) { }
 
   getStatus = getShipmentStatus;
 
@@ -556,7 +553,6 @@ export class DeliveryBottomSheetOverviewComponent {
     this.snackBar.open('Delivery Stats Deleted Successfully!', 'OK', {
       duration: 5000,
     });
-
   }
   // todo: to show the confirmation before deleting / deleted status should be updated in list view
 }
