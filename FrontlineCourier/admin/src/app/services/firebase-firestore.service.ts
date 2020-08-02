@@ -295,7 +295,8 @@ export class FirebaseFirestoreService {
 
     let updateData: any;
 
-    if (data.statusId === 7) {
+    if (data.statusId === 7
+        || data.statusId === 'Delivered') {
       updateData = {
         receivedPerson: receivedPerson || null,
         receivedPersonRelation: receivedPersonRelation || null,
