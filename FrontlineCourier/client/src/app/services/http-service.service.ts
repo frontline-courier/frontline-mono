@@ -17,8 +17,8 @@ export class HttpServiceService {
   async sendEmail(emailBody: any): Promise<boolean> {
 
     const currentTime = moment().utc().format();
-    const host = environment.apiHost;
-    const secretKey = MD5(host).toString(enc.Hex) + '.' + MD5(currentTime).toString(enc.Hex);
+    const apiSecret = 'epix.io';
+    const secretKey = MD5(apiSecret).toString(enc.Hex) + '.' + MD5(currentTime).toString(enc.Hex);
     const apiKey = MD5(secretKey).toString(enc.Hex);
 
     const headers: HttpHeaders = new HttpHeaders({
