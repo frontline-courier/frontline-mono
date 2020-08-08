@@ -54,7 +54,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     FormsModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
     AngularFireAnalyticsModule,
   ],
   providers: [
