@@ -382,7 +382,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       bookingAmount: this.bookingForm.value.bookingAmount,
       billAmount: this.bookingForm.value.billAmount,
       createdDateTime: new Date(),
-      createdBy: auth().currentUser.email,
+      createdBy: auth().currentUser?.email || '',
       internalRemark: this.bookingForm.value.internalRemark || '',
     };
     this.afs.createDocument('frontline-booking', data)
@@ -419,7 +419,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       bookingAmount: this.bookingForm.value.bookingAmount,
       billAmount: this.bookingForm.value.billAmount,
       updatedDateTime: new Date(),
-      updatedBy: auth().currentUser.email,
+      updatedBy: auth().currentUser?.email || '',
       internalRemark: this.bookingForm.value.internalRemark || '',
     };
     this.afs.updateDocument('frontline-booking', this.data.row.id, data)
@@ -501,7 +501,7 @@ export class FrontLineBookingStatusDialogComponent implements OnInit {
       statusDate: this.statusForm.value.statusDate,
       statusId: this.statusForm.value.statusId,
       updatedDateTime: new Date(),
-      updatedBy: auth().currentUser.email,
+      updatedBy: auth().currentUser?.email || '',
     };
 
     this.afs.updateDocumentArray(
