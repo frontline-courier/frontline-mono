@@ -28,13 +28,6 @@ export const courierLists = [
         Status: 1
     },
     {
-        CourierId: 6,
-        Courier: 'SKYKING Normal',
-        Description: 'Normal courier',
-        Track: 'www.skyking.co',
-        Status: 1
-    },
-    {
         CourierId: 7,
         Courier: 'UPS Priority',
         Description: 'Priority International',
@@ -56,13 +49,6 @@ export const courierLists = [
         Status: 1
     },
     {
-        CourierId: 10,
-        Courier: 'NETWORK Normal',
-        Description: 'www.networkcourier.com.sg',
-        Track: 'www.networkcourier.com.sg',
-        Status: 1
-    },
-    {
         CourierId: 11,
         Courier: 'DPEX Normal',
         Description: 'Normal International',
@@ -71,14 +57,14 @@ export const courierLists = [
     },
     {
         CourierId: 12,
-        Courier: 'FRANCH  Normal',
+        Courier: 'FRANCH Normal',
         Description: 'Normal courier',
         Track: 'www.franchexpress.com',
         Status: 1
     },
     {
         CourierId: 13,
-        Courier: 'BlueDart DP  Express',
+        Courier: 'BlueDart DP Express',
         Description: 'Express Domestic',
         Track: 'www.bluedart.com',
         Status: 1
@@ -98,13 +84,6 @@ export const courierLists = [
         Status: 1
     },
     {
-        CourierId: 16,
-        Courier: 'FIRST FLIGHT  Normal',
-        Description: 'Normal courier',
-        Track: 'www.firstflight.net',
-        Status: 1
-    },
-    {
         CourierId: 17,
         Courier: 'ST Normal',
         Description: 'Normal courier',
@@ -121,7 +100,7 @@ export const courierLists = [
     {
         CourierId: 19,
         Courier: 'PROFESSIONAL Normal',
-        Description: 'Normal / Express domestic      Normal International',
+        Description: 'Normal / Express domestic Normal International',
         Track: 'http://www.tpcindia.com',
         Status: 1
     },
@@ -175,24 +154,10 @@ export const courierLists = [
         Status: 1
     },
     {
-        CourierId: 29,
-        Courier: 'MADHUR COURIER',
-        Description: 'Normal courier',
-        Track: 'http://www.madhurcouriers.in',
-        Status: 'NULL'
-    },
-    {
         CourierId: 30,
         Courier: 'ARAMEX Normal',
         Description: 'Normal International',
         Track: 'www.aramex.com',
-        Status: 'NULL'
-    },
-    {
-        CourierId: 31,
-        Courier: 'Under processing',
-        Description: 'Under processing',
-        Track: 'Under processing',
         Status: 'NULL'
     },
     {
@@ -210,13 +175,6 @@ export const courierLists = [
         Status: 'NULL'
     },
     {
-        CourierId: 34,
-        Courier: 'ONDOT Normal',
-        Description: 'NULL',
-        Track: 'www.ondot.co',
-        Status: 'NULL'
-    },
-    {
         CourierId: 35,
         Courier: 'FRONTLINE Priority',
         Description: 'NULL',
@@ -224,38 +182,10 @@ export const courierLists = [
         Status: 'NULL'
     },
     {
-        CourierId: 36,
-        Courier: 'SHREE NANDHAN Normal',
-        Description: 'NULL',
-        Track: 'http://www.shreenandancourier.com',
-        Status: 'NULL'
-    },
-    {
-        CourierId: 37,
-        Courier: 'ANIJANI Normal',
-        Description: 'NULL',
-        Track: 'http://www.shreeanjanicourier.com',
-        Status: 'NULL'
-    },
-    {
         CourierId: 38,
         Courier: 'OVERNITE Priority',
         Description: 'NULL',
         Track: 'http://www.overnitenet.com/',
-        Status: 'NULL'
-    },
-    {
-        CourierId: 39,
-        Courier: 'MORNING 9.00 to 11.00',
-        Description: 'NULL',
-        Track: 'http://www.frontlinecourier.com',
-        Status: 'NULL'
-    },
-    {
-        CourierId: 40,
-        Courier: 'MORNING 9.00 to 12.30',
-        Description: 'NULL',
-        Track: 'http://www.frontlinecourier.com',
         Status: 'NULL'
     },
     {
@@ -298,13 +228,6 @@ export const courierLists = [
         Courier: 'TOTAL Normal',
         Description: 'NULL',
         Track: 'NULL',
-        Status: 'NULL'
-    },
-    {
-        CourierId: 49,
-        Courier: 'PROFESSINAL Priority',
-        Description: 'NULL',
-        Track: 'http://www.tpcindia.com',
         Status: 'NULL'
     },
     {
@@ -529,6 +452,34 @@ export const courierLists = [
         Courier: 'Xpressbees - Priority',
         Description: 'NULL',
         Track: 'https://www.xpressbees.com/',
+        Status: 'NULL'
+    },
+    {
+        CourierId: 82,
+        Courier: 'Rivigo Cargo',
+        Description: 'NULL',
+        Track: 'https://www.rivigo.com/',
+        Status: 'NULL'
+    },
+    {
+        CourierId: 83,
+        Courier: 'Rivigo Priority',
+        Description: 'NULL',
+        Track: 'https://www.rivigo.com/',
+        Status: 'NULL'
+    },
+    {
+        CourierId: 84,
+        Courier: 'Frontline Express',
+        Description: 'NULL',
+        Track: '',
+        Status: 'NULL'
+    },
+    {
+        CourierId: 85,
+        Courier: 'Frontline Economy',
+        Description: 'NULL',
+        Track: '',
         Status: 'NULL'
     }
 ];
