@@ -49,6 +49,13 @@ export const courierLists = [
         Status: 1
     },
     {
+        CourierId: 10,
+        Courier: 'NETWORK Normal',
+        Description: 'www.networkcourier.com.sg',
+        Track: 'www.networkcourier.com.sg',
+        Status: 1
+    },
+    {
         CourierId: 11,
         Courier: 'DPEX Normal',
         Description: 'Normal International',
