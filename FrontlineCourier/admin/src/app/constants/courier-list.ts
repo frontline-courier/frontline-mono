@@ -51,8 +51,8 @@ export const courierLists = [
     {
         CourierId: 10,
         Courier: 'NETWORK Normal',
-        Description: 'www.networkcourier.com.sg',
-        Track: 'www.networkcourier.com.sg',
+        Description: 'Network Express',
+        Track: 'https://www.networkcourier.com.sg/3DWEBSITE/index.aspx',
         Status: 1
     },
     {
@@ -488,5 +488,26 @@ export const courierLists = [
         Description: 'NULL',
         Track: '',
         Status: 'NULL'
-    }
+    },
+    {
+        CourierId: 86,
+        Courier: 'Network Express',
+        Description: 'Network Express',
+        Track: 'https://www.networkcourier.com.sg/3DWEBSITE/index.aspx',
+        Status: 1
+    },
+    {
+        CourierId: 87,
+        Courier: 'BlueDart Intl Economy',
+        Description: 'Network Express',
+        Track: 'https://bluedart.com/home',
+        Status: 1
+    },
+    {
+        CourierId: 88,
+        Courier: 'BlueDart Intl Economy',
+        Description: 'Network Express',
+        Track: 'https://bluedart.com/home',
+        Status: 1
+    },
 ];
