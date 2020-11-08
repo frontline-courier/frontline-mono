@@ -499,14 +499,14 @@ export const courierLists = [
     {
         CourierId: 87,
         Courier: 'BlueDart Intl Economy',
-        Description: 'Network Express',
+        Description: 'BlueDart',
         Track: 'https://bluedart.com/home',
         Status: 1
     },
     {
         CourierId: 88,
-        Courier: 'BlueDart Intl Economy',
-        Description: 'Network Express',
+        Courier: 'BlueDart Intl Express',
+        Description: 'BlueDart',
         Track: 'https://bluedart.com/home',
         Status: 1
     },

@@ -48,6 +48,7 @@ export class FrontlineBookingComponent implements OnInit {
       'additionalLeaf',
       'shipmentStatus',
       'amount',
+      'bookingAmount',
       'id'
     ];
 
@@ -72,6 +73,9 @@ export class FrontlineBookingComponent implements OnInit {
 
   searchForm: FormGroup;
 
+  // current user
+  currUser: string;
+
   constructor(
     private afs: FirebaseFirestoreService,
     public dialog: MatDialog,
@@ -79,9 +83,23 @@ export class FrontlineBookingComponent implements OnInit {
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     // private service: FrontlineBookingService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
+
+    // good job aravin //
+    // maintain session //
+    this.currUser = auth().currentUser?.email;
+
+    const currThis = this;
+    auth().onAuthStateChanged((user) => {
+      if (user != null) {
+        currThis.currUser = user.email;
+      }
+    });
+    // end //
+
     this.getInitialData();
 
     this.searchForm = this.formBuilder.group({

@@ -210,15 +210,27 @@
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="shipmentStatus">
-          <th mat-header-cell *matHeaderCellDef> Shipment Status </th>
+          <th mat-header-cell *matHeaderCellDef> Status </th>
           <td mat-cell *matCellDef="let element" [ngClass]="[(getShipmentStatus(element.shipmentStatus).split(' ').join(''))]"> {{ getShipmentStatus(element.shipmentStatus) }} </td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef> Amount </th>
-          <td mat-cell *matCellDef="let element"> {{ element.billAmount }} | {{ element.bookingAmount}} </td>
+          <th mat-header-cell *matHeaderCellDef> BillAmt </th>
+          <td mat-cell *matCellDef="let element"> {{ element.billAmount }} </td>
         </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="bookingAmount">
+          <th mat-header-cell *matHeaderCellDef> BookingAmt </th>
+          <td mat-cell *matCellDef="let element">
+            <span *ngIf="currUser === 'varun@frontlinecourier.com'; else elseBlock">
+              {{ element.bookingAmount }}
+            </span>
+            <ng-template  #elseBlock><span> *** </span></ng-template>            
+          </td>
+        </ng-container>
+        
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="id">
