@@ -47,8 +47,8 @@ export class FrontlineBookingComponent implements OnInit {
       'transportMode',
       'additionalLeaf',
       'shipmentStatus',
-      'amount',
-      'bookingAmount',
+      // 'amount',
+      // 'bookingAmount',
       'id'
     ];
 
@@ -96,6 +96,14 @@ export class FrontlineBookingComponent implements OnInit {
     auth().onAuthStateChanged((user) => {
       if (user != null) {
         currThis.currUser = user.email;
+
+        if (user.email === 'varun@frontlinecourier.com') {
+          this.displayedColumns.pop();
+          this.displayedColumns.push('amount');
+          this.displayedColumns.push('bookingAmount');
+          this.displayedColumns.push('id');
+        }
+
       }
     });
     // end //

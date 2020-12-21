@@ -37,9 +37,9 @@ export class ContactComponent implements OnInit {
       to: ['Aravind from FrontlineCourier <aravin.it@gmail.com>', 'Varun from FrontlineCourier <varunn.cliquee@gmail.com>'],
       cc: undefined,
       bcc: undefined,
-      from: "Varun from FrontlineCourier <varun@frontlinecourier.com", // Use the email address or domain you verified above
+      from: "Varun from FrontlineCourier <varun@frontlinecourier.com>", // Use the email address or domain you verified above
       replyTo: this.contactForm.value.email || undefined,
-      subject: `Contact Request - Frontlinecourier.com - ${this.contactForm.value.name} - ${moment().format('DD MMM YYYY - h:mm A (ddd)')}`,
+      subject: `Contact Request - Frontlinecourier.com - ${this.contactForm.value.name} - ${moment().format('DD MMM YYYY h:mm A (ddd)')}`,
       text: this.contactForm.value.body,
       html:
         `<p>Hi Team,</p>
@@ -70,8 +70,8 @@ export class ContactComponent implements OnInit {
       to: this.contactForm.value.email,
       cc: undefined,
       bcc: undefined,
-      from: "Varun from FrontlineCourier <varun@frontlinecourier.com", // Use the email address or domain you verified above
-      replyTo: "Varun from FrontlineCourier <varun@frontlinecourier.com",
+      from: "Varun from FrontlineCourier <varun@frontlinecourier.com>", // Use the email address or domain you verified above
+      replyTo: "Varun from FrontlineCourier <varunn.cliquee@gmail.com>",
       subject: `Thanks for reaching FrontlineCourier.com`,
       text: this.contactForm.value.body,
       html:

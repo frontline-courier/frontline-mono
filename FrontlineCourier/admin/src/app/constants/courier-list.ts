@@ -510,4 +510,18 @@ export const courierLists = [
         Track: 'https://bluedart.com/home',
         Status: 1
     },
+    {
+        CourierId: 90,
+        Courier: 'ACX Economy',
+        Description: 'ACX Economy',
+        Track: '',
+        Status: 1
+    },
+    {
+        CourierId: 91,
+        Courier: 'ACX Express',
+        Description: 'ACX Express',
+        Track: '',
+        Status: 1
+    },
 ];
