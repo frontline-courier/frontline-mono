@@ -524,4 +524,46 @@ export const courierLists = [
         Track: '',
         Status: 1
     },
+    {
+        CourierId: 92,
+        Courier: 'Nandan Courier Normal',
+        Description: 'Nandan Courier Normaly',
+        Track: '',
+        Status: 1
+    },
+    {
+        CourierId: 93,
+        Courier: 'Nandan Courier Priority',
+        Description: 'Nandan Courier Priority',
+        Track: '',
+        Status: 1
+    },
+    {
+        CourierId: 94,
+        Courier: 'Bombino Express',
+        Description: 'Bombino Express',
+        Track: '',
+        Status: 1
+    },
+    {
+        CourierId: 95,
+        Courier: 'Bombino Economy',
+        Description: 'Bombino Economy',
+        Track: '',
+        Status: 1
+    },
+    {
+        CourierId: 96,
+        Courier: 'DPD Express',
+        Description: 'DPD Express',
+        Track: '',
+        Status: 1
+    },
+    {
+        CourierId: 97,
+        Courier: 'DPD Economy',
+        Description: 'DPD Economy',
+        Track: '',
+        Status: 1
+    },
 ];

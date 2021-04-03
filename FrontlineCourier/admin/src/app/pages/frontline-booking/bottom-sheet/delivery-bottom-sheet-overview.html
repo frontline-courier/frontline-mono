@@ -5,7 +5,7 @@
   </a>
   <a mat-list-item *ngFor="let delivery of data.row.delivery; let last = last;">
     <span mat-line> <strong> {{getStatus(delivery.statusId)}} </strong> as on 
-      {{ getDateTime(delivery.statusDate, 'DD-MM-YYYY HH:mm') | date:'medium'}} </span>
+      {{ getDateTime(delivery.statusDate, 'YYYY-MM-DDTHH:mm') | date:'medium'}} </span>
       <button mat-fab color="primary" aria-label="Delete Delivery Status" *ngIf="last && enableDeliveryButton(delivery.statusDate)">
         <mat-icon (click)="deleteDeliveryStatus(data.row)">delete</mat-icon>
       </button>

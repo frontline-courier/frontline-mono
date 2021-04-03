@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Status Update</h2>
-<h4 mat-dialog-subtitle>{{ data.docId }}</h4>
+<!-- <h4 mat-dialog-subtitle>{{ data.docId }}</h4> -->
 <form cdkTrapFocus [formGroup]="statusForm">
 
   <mat-dialog-content class="mat-typography">
@@ -8,7 +8,7 @@
       <div fxFlex>
         <div class="example-full-width">
           <mat-form-field>
-            <input formControlName="statusDate" matInput type="datetime-local" placeholder="Stats Date">
+            <input formControlName="statusDate" matInput type="datetime-local" placeholder="Status Date">
           </mat-form-field>
           <br>
         </div>
