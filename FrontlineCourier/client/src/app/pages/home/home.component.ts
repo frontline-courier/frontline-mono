@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -11,7 +10,6 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   constructor(
-    private recaptchaV3Service: ReCaptchaV3Service,
     private formBuilder: FormBuilder,
     private router: Router,
   ) { }
@@ -29,8 +27,4 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['track'], { queryParams: this.trackForm.value } );
   }
 
-  public executeImportantAction(): void {
-    this.recaptchaV3Service.execute('importantAction')
-      .subscribe((token) => console.log(token));
-  }
 }

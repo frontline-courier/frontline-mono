@@ -14,7 +14,7 @@ import { PageEvent } from '@angular/material/paginator';
 import * as moment from 'moment';
 import { shipmentStatus } from 'src/app/models/shipmentStatus';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { auth } from 'firebase/app';
+import auth from 'firebase/app';
 // import { FrontlineBookingService } from './frontline-booking.service';
 
 export interface DialogData {
@@ -90,10 +90,10 @@ export class FrontlineBookingComponent implements OnInit {
 
     // good job aravin //
     // maintain session //
-    this.currUser = auth().currentUser?.email;
+    this.currUser = auth.auth().currentUser?.email;
 
     const currThis = this;
-    auth().onAuthStateChanged((user) => {
+    auth.auth().onAuthStateChanged((user) => {
       if (user != null) {
         currThis.currUser = user.email;
 
@@ -408,7 +408,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       bookingAmount: this.bookingForm.value.bookingAmount,
       billAmount: this.bookingForm.value.billAmount,
       createdDateTime: new Date(),
-      createdBy: auth().currentUser?.email || '',
+      createdBy: auth.auth().currentUser?.email || '',
       internalRemark: this.bookingForm.value.internalRemark || '',
     };
     this.afs.createDocument('frontline-booking', data)
@@ -445,7 +445,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
       bookingAmount: this.bookingForm.value.bookingAmount,
       billAmount: this.bookingForm.value.billAmount,
       updatedDateTime: new Date(),
-      updatedBy: auth().currentUser?.email || '',
+      updatedBy: auth.auth().currentUser?.email || '',
       internalRemark: this.bookingForm.value.internalRemark || '',
     };
     this.afs.updateDocument('frontline-booking', this.data.row.id, data)
@@ -527,7 +527,7 @@ export class FrontLineBookingStatusDialogComponent implements OnInit {
       statusDate: this.statusForm.value.statusDate,
       statusId: this.statusForm.value.statusId,
       updatedDateTime: new Date(),
-      updatedBy: auth().currentUser?.email || '',
+      updatedBy: auth.auth().currentUser?.email || '',
     };
 
     this.afs.updateDocumentArray(

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, retry } from 'rxjs/operators';
-import { firestore } from 'firebase/app';
+import firestore from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
@@ -301,7 +301,7 @@ export class FirebaseFirestoreService {
         receivedPerson: receivedPerson || null,
         receivedPersonRelation: receivedPersonRelation || null,
         shipmentStatus: data.statusId || null,
-        delivery: firestore.FieldValue.arrayUnion(data),
+        delivery: firestore.firestore.FieldValue.arrayUnion(data),
         updatedDateTime: data.updatedDateTime,
         updatedBy: data.updatedBy,
       };
@@ -309,7 +309,7 @@ export class FirebaseFirestoreService {
     else {
       updateData = {
         shipmentStatus: data.statusId || null,
-        delivery: firestore.FieldValue.arrayUnion(data),
+        delivery: firestore.firestore.FieldValue.arrayUnion(data),
         updatedDateTime: data.updatedDateTime,
         updatedBy: data.updatedBy,
       };
@@ -322,7 +322,7 @@ export class FirebaseFirestoreService {
   async removeDocumentArray(doc: string, docId: string, data: any) {
     const ref = this.db.collection(doc).doc(docId.toString());
 
-    ref.update({ delivery: firestore.FieldValue.arrayRemove(data) });
+    ref.update({ delivery: firestore.firestore.FieldValue.arrayRemove(data) });
 
   }
 
