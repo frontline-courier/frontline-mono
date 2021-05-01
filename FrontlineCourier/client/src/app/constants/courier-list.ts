@@ -566,4 +566,18 @@ export const courierLists = [
         Track: '',
         Status: 1
     },
+    {
+        CourierId: 98,
+        Courier: 'Shree Maruthi Normal',
+        Description: 'Shree Maruthi Normal',
+        Track: '',
+        Status: 1
+    },
+    {
+        CourierId: 99,
+        Courier: 'Shree Maruthi Priority',
+        Description: 'Shree Maruthi Priority',
+        Track: '',
+        Status: 1
+    },
 ];
