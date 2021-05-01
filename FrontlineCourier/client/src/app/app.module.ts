@@ -19,7 +19,6 @@ import { QuoteComponent } from './pages/request/quote/quote.component';
 import { ContactComponent } from './pages/company/contact/contact.component';
 import { AboutComponent } from './pages/company/about/about.component';
 import { ReachComponent } from './pages/company/reach/reach.component';
-import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { environment } from 'src/environments/environment';
 import { TrackComponent } from './pages/track/track.component';
 
@@ -50,15 +49,11 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    RecaptchaV3Module,
     FormsModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAnalyticsModule,
-  ],
-  providers: [
-    { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment.reCaptcha.siteKey }
   ],
   bootstrap: [AppComponent]
 })

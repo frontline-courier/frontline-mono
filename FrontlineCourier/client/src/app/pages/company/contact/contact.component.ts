@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { FormBuilder, FormGroup, Validators, EmailValidator } from '@angular/forms';
 import { HttpServiceService } from 'src/app/services/http-service.service';
 import * as moment from 'moment';
@@ -16,7 +15,6 @@ export class ContactComponent implements OnInit {
   mailCompleted: boolean;
 
   constructor(
-    private recaptchaV3Service: ReCaptchaV3Service,
     private formBuilder: FormBuilder,
     private httpService: HttpServiceService,
   ) { }
