@@ -49,12 +49,24 @@ export class FrontlineBookingComponent implements OnInit {
       'shipmentStatus',
       // 'amount',
       // 'bookingAmount',
-      'id'
+      'coCourier',
+      'actualWeight',
+      'id',
     ];
 
   getDoxTypes = getDoxType;
   getShipmentModes = getShipmentMode;
   getTransportModes = getTransportMode;
+  coCourierType(coCourier: number): string {
+    switch(coCourier) {
+      case 1:
+        return 'yes';
+      case 0:
+        return 'no';
+      default:
+        return 'na';
+    }
+  }
 
   // local consts
   couriers = courierList;
@@ -348,6 +360,8 @@ export class FrontLineBookingDialogComponent implements OnInit {
       remarks: [''],
       deliveryOfficeLocation: [''],
       internalRemark: [''],
+      coCourier: [''],
+      actualWeight: [''],
     });
 
     if (this.data.viewType
@@ -372,6 +386,8 @@ export class FrontLineBookingDialogComponent implements OnInit {
         remarks: this.data.row.remarks,
         deliveryOfficeLocation: this.data.row.deliveryOfficeAddress,
         internalRemark: this.data.row.internalRemark,
+        coCourier: this.data.row.coCourier,
+        actualWeight: this.data.row.actualWeight,
       });
     }
 
@@ -410,6 +426,8 @@ export class FrontLineBookingDialogComponent implements OnInit {
       createdDateTime: new Date(),
       createdBy: auth.auth().currentUser?.email || '',
       internalRemark: this.bookingForm.value.internalRemark || '',
+      coCourier: this.bookingForm.value.coCourier || '',
+      actualWeight: this.bookingForm.value.actualWeight || '',
     };
     this.afs.createDocument('frontline-booking', data)
       .then((res) => {
@@ -447,6 +465,8 @@ export class FrontLineBookingDialogComponent implements OnInit {
       updatedDateTime: new Date(),
       updatedBy: auth.auth().currentUser?.email || '',
       internalRemark: this.bookingForm.value.internalRemark || '',
+      coCourier: this.bookingForm.value.coCourier || '',
+      actualWeight: this.bookingForm.value.actualWeight || '',
     };
     this.afs.updateDocument('frontline-booking', this.data.row.id, data)
       .then(() => {

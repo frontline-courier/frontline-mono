@@ -27,4 +27,6 @@ export interface Booking {
     updatedDateTime?: Date;
     updatedBy?: string;
     internalRemark?: string,
+    coCourier?: string,
+    actualWeight?: string,
 }

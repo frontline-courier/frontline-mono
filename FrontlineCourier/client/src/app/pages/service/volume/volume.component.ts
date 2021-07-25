@@ -23,7 +23,7 @@ export class VolumeComponent implements OnInit {
           var shipping = Number($('#shipping').val());
           var transport = Number($('#transport').val());
   
-          var lengh = Number($('#length').val());
+          var length = Number($('#length').val());
           var width = Number($('#width').val());
           var height = Number($('#height').val());
   
@@ -46,7 +46,7 @@ export class VolumeComponent implements OnInit {
   
           var volCase = 0;
   
-          // If shippig = Air then same formula for all courier
+          // If shipping = Air then same formula for all courier
           if (shipping == 1) {
               volCase = 1;    
           }
@@ -91,24 +91,24 @@ export class VolumeComponent implements OnInit {
   
           switch (volCase) {
               case 1:
-                  output.text(((lengh * width * height) / 5000).toFixed(2));
-                  dimFactor.text("Dimension Weight fact = (L x W x H) in cm/5000 = Kilograms");
+                  output.text(((length * width * height) / 5000).toFixed(2));
+                  dimFactor.text("Dimension Weight factor = (L x W x H) in cm/5000 = Kilograms");
                   break;
               case 2:
-                  output.text(((lengh * width * height) / 6000).toFixed(2));
-                  dimFactor.text("Dimension WEIGHT FACTOR = (L x W x H) in cm/6000 = Kilograms");
+                  output.text(((length * width * height) / 6000).toFixed(2));
+                  dimFactor.text("Dimension Weight factor = (L x W x H) in cm/6000 = Kilograms");
                   break;
               case 3:
-                  output.text(((lengh * width * height * 9) / 27000).toFixed(2));
-                  dimFactor.text("Dimension WEIGHT FACTOR = (L x W x H x 9) in cm/27000 = Kilograms");
+                  output.text(((length * width * height * 9) / 27000).toFixed(2));
+                  dimFactor.text("Dimension Weight factor = (L x W x H x 9) in cm/27000 = Kilograms");
                   break;
               case 4:
-                  output.text(((lengh * width * height) / 4750).toFixed(2));
-                  dimFactor.text("Dimension WEIGHT FACTOR = (L x W x H) in cm/4750 = Kilograms");
+                  output.text(((length * width * height) / 4750).toFixed(2));
+                  dimFactor.text("Dimension Weight factor = (L x W x H) in cm/4750 = Kilograms");
                   break;
               case 5:
-                  output.text(((lengh * width * height) / 4000).toFixed(2));
-                  dimFactor.text("Dimension WEIGHT FACTOR = (L x W x H) in cm/4000 = Kilograms");
+                  output.text(((length * width * height) / 4000).toFixed(2));
+                  dimFactor.text("Dimension Weight factor = (L x W x H) in cm/4000 = Kilograms");
                   break;
   
               case 100:

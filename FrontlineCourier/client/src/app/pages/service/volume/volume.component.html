@@ -3,9 +3,6 @@
         <h2>Volumetric Weight Calculation</h2>
         <hr />
 
-
-
-
         <form name="volumetric" id="volumetric" role="form" method="post">
 
             <div class="row">
@@ -20,9 +17,9 @@
                             <option value="3">DHL</option>
                             <option value="4">DTDC</option>
                             <option value="5">Fedex</option>
-                            <option value="6">First Flight</option>
+                            <!-- <option value="6">First Flight</option> -->
                             <option value="7">French Express</option>
-                            <option value="8">Ondot</option>
+                            <!-- <option value="8">Ondot</option> -->
                             <option value="9">Overnite</option>
                             <option value="10">Trackon</option>
                             <option value="11">TNT</option>
@@ -32,8 +29,8 @@
                             <option value="15">Shree Maruthi</option>
                             <option value="16">Shree Anjani</option>
                             <option value="17">Maruthi</option>
-                            <option value="18">Madhur Courier</option>
-                            <option value="19">Poonam Courier</option>
+                            <!-- <option value="18">Madhur Courier</option> -->
+                            <!-- <option value="19">Poonam Courier</option> -->
                         </select>
                     </div>
 
@@ -51,10 +48,21 @@
                     <div class="form-group">
                         <label for="transport">Transport</label>
                         <select name="transport" id="transport" class="form-control" required="required" tabindex="2">
-                            <option disabled hidden selected value="10"> -- </option>
+                            <option disabled hidden selected value=""> -- </option>
                             <option value="1">Air</option>
                             <option value="2">Surface</option>
                             <option value="3">Cargo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="delivery">Delivery Modes</label>
+                        <select name="delivery" id="delivery" class="form-control" required="required" tabindex="3">
+                            <option disabled hidden selected value="0"> -- </option>
+                            <option value="0">N/A</option>
+                            <option value="1">Fr</option>
+                            <option value="2">Economy</option>
+                            <option value="3">Express</option>
                         </select>
                     </div>
                 </div>
@@ -62,19 +70,21 @@
                 <div class="col-md-4">
                     <h4>Provide the values</h4><br />
                     <div class="form-group">
-                        <label title="Length">Length (CM):</label><input type="number" min="1" max="99999"
+                        <label title="Length">Length (CM):</label>
+                        <input type="number" min="1" max="99999"
                             name="length" id="length" autocomplete="off" required class="form-control"
-                            tabindex="3" /><br />
+                            tabindex="3" />
                     </div>
                     <div class="form-group">
-                        <label title="Width">Width (CM):</label><input type="number" min="1" max="99999"
+                        <label title="Width">Width (CM):</label>
+                        <input type="number" min="1" max="99999"
                             name="width" id="width" autocomplete="off" required class="form-control" tabindex="4" />
-                        <br />
+                        
                     </div>
                     <div class="form-group">
-                        <label title="Height">Height (CM):</label><input type="number" min="1" max="99999"
+                        <label title="Height">Height (CM):</label>
+                        <input type="number" min="1" max="99999"
                             name="height" id="height" autocomplete="off" required class="form-control" tabindex="5" />
-                        <br />
                     </div>
                 </div>
 
@@ -126,7 +136,7 @@
                 <table class="table table-striped table-hover table-bordered ">
                     <thead>
                         <tr>
-                            <td></td>
+                            <td colspan="2"></td>
                             <td>Air - Domestic</td>
                             <td>Air - International</td>
                             <td>Surface</td>
@@ -135,132 +145,396 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Aramex</td>
+                            <td rowspan="3">Aramex</td>
+                            <td>Economy</td>
+                            <td>n/a</td>
                             <td>(LxBxH)/5000</td>
-                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>Bluedart</td>
+                            <td>Express</td>
+                            <td>n/a</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>n/a</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Bluedart</td>
+                            <td>Economy</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxHx9)/27000</td>
                             <td>(LxBxHx9)/27000</td>
                         </tr>
                         <tr>
-                            <td>DHL</td>
+                            <td>Express</td>
                             <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxHx9)/27000</td>
+                            <td>(LxBxHx9)/27000</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxHx9)/27000</td>
+                            <td>(LxBxHx9)/27000</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">DHL</td>
+                            <td>Economy</td>
+                            <td>n/a</td>
                             <td>(LxBxH)/5000</td>
                             <td>n/a</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>DTDC</td>
+                            <td>Express</td>
+                            <td>n/a</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>n/a</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">DTDC</td>
+                            <td>Economy</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/4750</td>
                             <td>(LxBxHx9)/27000</td>
                         </tr>
                         <tr>
-                            <td>Fedex</td>
+                            <td>Express</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/4750</td>
+                            <td>(LxBxHx9)/27000</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/4750</td>
+                            <td>(LxBxHx9)/27000</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Fedex</td>
+                            <td>Economy</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxHx9)/27000</td>
                         </tr>
                         <tr>
-                            <td>FirstFlight</td>
+                            <td>Express</td>
                             <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxHx9)/27000</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxHx9)/27000</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">French</td>
+                            <td>Economy</td>
                             <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>French</td>
+                            <td>Express</td>
                             <td>(LxBxH)/6000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>Ondot</td>
+                            <td>FR</td>
                             <td>(LxBxH)/6000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>Overnite Exp</td>
+                            <td rowspan="3">Overnite Exp</td>
+                            <td>Economy</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/4000</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>Trackon</td>
+                            <td>Express</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/4000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/4000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Trackon</td>
+                            <td>Economy</td>
                             <td>(LxBxH)/6000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>TNT</td>
-                            <td>(LxBxH)/5000</td>
-                            <td>(LxBxH)/5000</td>
-                            <td>n/a</td>
-                            <td>n/a</td>
-                        </tr>
-                        <tr>
-                            <td>UPS</td>
-                            <td>(LxBxH)/5000</td>
-                            <td>(LxBxH)/5000</td>
-                            <td>n/a</td>
-                            <td>n/a</td>
-                        </tr>
-                        <tr>
-                            <td>SkyLink</td>
+                            <td>Express</td>
                             <td>(LxBxH)/6000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>Shree Tirupathi</td>
+                            <td>FR</td>
                             <td>(LxBxH)/6000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>Shree Maruthi</td>
+                            <td rowspan="3">TNT</td>
+                            <td>Economy</td>
+                            <td>n/a</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>Express</td>
+                            <td>n/a</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>n/a</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">UPS</td>
+                            <td>Economy</td>
+                            <td>n/a</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>Express</td>
+                            <td>n/a</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>n/a</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">SkyLink</td>
+                            <td>Economy</td>
                             <td>(LxBxH)/6000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>Shree Anjani</td>
+                            <td>Express</td>
                             <td>(LxBxH)/6000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>Maruthi Courier</td>
+                            <td>FR</td>
                             <td>(LxBxH)/6000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>Madhur Courier</td>
+                            <td rowspan="3">Shree Tirupathi</td>
+                            <td>Economy</td>
                             <td>(LxBxH)/6000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>
                             <td>n/a</td>
                         </tr>
                         <tr>
-                            <td>Poonam Courier</td>
+                            <td>Express</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Shree Maruthi</td>
+                            <td>Economy</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>Express</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Shree Anjani</td>
+                            <td>Economy</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>Express</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Maruthi Courier</td>
+                            <td>Economy</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>Express</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">XpressBee Cargo</td>
+                            <td>Economy</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>Express</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Delhivery Courier</td>
+                            <td>Economy</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>Express</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Delhivery Cargo</td>
+                            <td>Economy</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>Express</td>
+                            <td>(LxBxH)/6000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>(LxBxH)/5000</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>FR</td>
                             <td>(LxBxH)/6000</td>
                             <td>(LxBxH)/5000</td>
                             <td>(LxBxH)/5000</td>

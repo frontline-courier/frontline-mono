@@ -37,13 +37,13 @@
             <div fxFlex>
                 <mat-form-field class="example-full-width">
                     <mat-label>Shipper's Name</mat-label>
-                    <input formControlName="shipperName" matInput placeholder="From Name">
+                    <input formControlName="shipperName" [value]="bookingForm.get('shipperName').value | titlecase" matInput placeholder="From Name">
                 </mat-form-field>
             </div>
             <div fxFlex>
                 <mat-form-field class="example-full-width">
                     <mat-label>Origin</mat-label>
-                    <input formControlName="origin" matInput placeholder="From City/Zip">
+                    <input formControlName="origin" [value]="bookingForm.get('origin').value | titlecase" matInput placeholder="From City/Zip">
                 </mat-form-field>
             </div>
         </div>
@@ -63,13 +63,13 @@
             <div fxFlex>
                 <mat-form-field class="example-full-width">
                     <mat-label>Receiver's Name</mat-label>
-                    <input formControlName="receiverName" matInput placeholder="To Name">
+                    <input formControlName="receiverName" [value]="bookingForm.get('receiverName').value | titlecase" matInput placeholder="To Name">
                 </mat-form-field>
             </div>
             <div fxFlex>
                 <mat-form-field class="example-full-width">
                     <mat-label>Destination</mat-label>
-                    <input formControlName="destination" matInput placeholder="To City/Pincode">
+                    <input formControlName="destination" [value]="bookingForm.get('destination').value | titlecase" matInput placeholder="To City/Pincode">
                 </mat-form-field>
             </div>
         </div>
@@ -103,7 +103,15 @@
                 </mat-form-field>
             </div>
             <div fxFlex>
-            </div>
+                <mat-form-field>
+                  <mat-label>Co Courier</mat-label>
+                  <mat-select formControlName="coCourier">
+                    <mat-option> - yes/no - </mat-option>
+                    <mat-option [value]='1'> Yes </mat-option>
+                    <mat-option [value]='0'> No </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
             <!-- <div fxFlex>
                 <mat-form-field class="example-full-width">
                     <mat-label>Shipment Status</mat-label>
@@ -129,6 +137,10 @@
                 </mat-form-field>
             </div>
             <div fxFlex>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Actual Weight (kg)</mat-label>
+                    <input formControlName="actualWeight" type="number" min="0" matInput placeholder="Actual Weight (kg)">
+                </mat-form-field>
             </div>
         </div>
 

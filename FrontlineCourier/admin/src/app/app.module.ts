@@ -25,7 +25,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     SharedModule,
     UserModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule.enablePersistence(), // firestore
+    // AngularFirestoreModule.enablePersistence(), // firestore
     AngularFireAuthModule, // auth
     AppRoutingModule,
   ],

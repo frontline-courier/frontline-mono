@@ -117,13 +117,6 @@ class _TrackScreenState extends State<TrackScreen> {
                   onPressed: () async {
                     // Validate returns true if the form is valid, or false otherwise.
                     if (_formKey.currentState.validate()) {
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('Getting the shipment status...')),
-                      );
-
                       String column = _trackingType == TrackingType.POD
                           ? 'awbNumber'
                           : 'referenceNumber';
@@ -132,11 +125,19 @@ class _TrackScreenState extends State<TrackScreen> {
                           .get();
 
                       setState(() {
-                        data = snapshot.docs.toList();
+                        data = snapshot.docs?.toList();
 
-                        if (data != null) {
-                          print(data[0]);
+                        if (data == null || data.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(
+                                    'POD or Reference Number is not available, Please contact us for more information...')),
+                          );
                         }
+
+                        // if (data != null) {
+                        //   print(data[0]);
+                        // }
                       });
                     }
                   },
@@ -149,58 +150,61 @@ class _TrackScreenState extends State<TrackScreen> {
                   _formKey.currentState != null &&
                   _formKey.currentState.validate())
               ? SizedBox(
-                  height: 100, // Some height
+                  height: 110, // Some height
                   child: Card(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TimelineTile(
-                            indicatorStyle: IndicatorStyle(
-                              color: Colors.orange,
-                            ),
-                            isFirst: true,
-                            axis: TimelineAxis.horizontal,
-                            alignment: TimelineAlign.center,
-                            endChild: Text(
-                              DateFormat.yMMMd().format(
-                                data[0]['bookedDate'].toDate(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TimelineTile(
+                              indicatorStyle: IndicatorStyle(
+                                color: Colors.orange,
                               ),
-                            ),
-                            startChild: Text('Booked'),
-                          ),
-                        ),
-                        Expanded(
-                          child: TimelineTile(
-                            indicatorStyle: IndicatorStyle(
-                              color: Colors.blue,
-                            ),
-                            isLast: !isDelivered(data[0]['delivery']),
-                            axis: TimelineAxis.horizontal,
-                            alignment: TimelineAlign.center,
-                            endChild: Text(
-                              DateFormat.yMMMd().format(
-                                DateTime.now(),
-                              ),
-                            ),
-                            startChild: Text('In-Transit'),
-                          ),
-                        ),
-                        isDelivered(data[0]['delivery'])
-                            ? Expanded(
-                                child: TimelineTile(
-                                  isLast: true,
-                                  indicatorStyle: IndicatorStyle(
-                                    color: Colors.green,
-                                  ),
-                                  axis: TimelineAxis.horizontal,
-                                  alignment: TimelineAlign.center,
-                                  endChild: Text(
-                                      getDeliveryDate(data[0]['delivery'])),
-                                  startChild: Text('Delivered'),
+                              isFirst: true,
+                              axis: TimelineAxis.horizontal,
+                              alignment: TimelineAlign.center,
+                              endChild: Text(
+                                DateFormat.yMMMd().format(
+                                  data[0]['bookedDate'].toDate(),
                                 ),
-                              )
-                            : SizedBox(),
-                      ],
+                              ),
+                              startChild: Text('Booked'),
+                            ),
+                          ),
+                          Expanded(
+                            child: TimelineTile(
+                              indicatorStyle: IndicatorStyle(
+                                color: Colors.blue,
+                              ),
+                              isLast: !isDelivered(data[0]['delivery']),
+                              axis: TimelineAxis.horizontal,
+                              alignment: TimelineAlign.center,
+                              endChild: Text(
+                                DateFormat.yMMMd().format(
+                                  DateTime.now(),
+                                ),
+                              ),
+                              startChild: Text('In-Transit'),
+                            ),
+                          ),
+                          isDelivered(data[0]['delivery'])
+                              ? Expanded(
+                                  child: TimelineTile(
+                                    isLast: true,
+                                    indicatorStyle: IndicatorStyle(
+                                      color: Colors.green,
+                                    ),
+                                    axis: TimelineAxis.horizontal,
+                                    alignment: TimelineAlign.center,
+                                    endChild: Text(
+                                        getDeliveryDate(data[0]['delivery'])),
+                                    startChild: Text('Delivered'),
+                                  ),
+                                )
+                              : SizedBox(),
+                        ],
+                      ),
                     ),
                   ),
                 )
