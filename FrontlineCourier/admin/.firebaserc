@@ -1,0 +1,18 @@
+{
+  "targets": {
+    "al-tanen-al-thahabi": {
+      "hosting": {
+        "admin": [
+          "al-tanen-al-thahabi"
+        ]
+      }
+    },
+    "varun-enterprises": {
+      "hosting": {
+        "admin": [
+          "varun-enterprises"
+        ]
+      }
+    }
+  }
+}

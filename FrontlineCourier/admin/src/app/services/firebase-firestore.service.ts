@@ -30,7 +30,7 @@ export class FirebaseFirestoreService {
     let isExists = 0;
 
     if (field2 && value2 && value2 !== '') {
-      isExists = await this.db.collection(doc, () => query.where(field2, '==', value2)).get().toPromise()
+      isExists = await this.db.collection(doc, () => query.where(field2, '==', value2)).get({source: 'server'}).toPromise()
           .then((value) => {
             if (value.size > 0) {
               return -2;
@@ -44,7 +44,7 @@ export class FirebaseFirestoreService {
           });
     } else {
       if (isExists !== -1) {
-        isExists = await this.db.collection(doc, () => query.where(field1, '==', value1)).get().toPromise()
+        isExists = await this.db.collection(doc, () => query.where(field1, '==', value1)).get({source: 'server'}).toPromise()
         .then((value) => {
           if (value.size > 0) {
             return -1;
@@ -64,14 +64,14 @@ export class FirebaseFirestoreService {
   // create
   async createDocument(doc: string, data: any): Promise<string> {
 
-    if ((await this.db.collection(doc, (query) => query.where('awbNumber', '==', data.awbNumber)).get().toPromise()).size > 0)
+    if ((await this.db.collection(doc, (query) => query.where('awbNumber', '==', data.awbNumber)).get({source: 'server'}).toPromise()).size > 0)
     {
       return 'AWB Number Already Exits';
     }
 
     if (data.referenceNumber !== undefined
       && data.referenceNumber !== ''
-      && (await this.db.collection(doc, (query) => query.where('referenceNumber', '==', data.referenceNumber)).get().toPromise()).size > 0)
+      && (await this.db.collection(doc, (query) => query.where('referenceNumber', '==', data.referenceNumber)).get({source: 'server'}).toPromise()).size > 0)
     {
       return 'Reference Number Already Exits';
     }

@@ -58,7 +58,8 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "src/assets/js/zoho_sales_iq.js"
+              "src/assets/js/zoho_sales_iq.js",
+              "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2191548178499350",
             ]
           },
           "configurations": {

@@ -15,7 +15,10 @@ import * as moment from 'moment';
 import { shipmentStatus } from 'src/app/models/shipmentStatus';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import auth from 'firebase/app';
+import { rowsAnimation } from 'src/app/shared/animation/rowAimations';
+import { AngularFireAuth } from '@angular/fire/auth';
 // import { FrontlineBookingService } from './frontline-booking.service';
+
 
 export interface DialogData {
   couriers: any;
@@ -29,6 +32,7 @@ const statusList = courierStatus;
 @Component({
   selector: 'app-frontline-booking',
   templateUrl: './frontline-booking.component.html',
+  animations: [rowsAnimation],
 })
 
 export class FrontlineBookingComponent implements OnInit {
@@ -90,6 +94,7 @@ export class FrontlineBookingComponent implements OnInit {
 
   constructor(
     private afs: FirebaseFirestoreService,
+    public afAuth: AngularFireAuth,
     public dialog: MatDialog,
     private bottomSheet: MatBottomSheet,
     private formBuilder: FormBuilder,
@@ -115,7 +120,8 @@ export class FrontlineBookingComponent implements OnInit {
           this.displayedColumns.push('bookingAmount');
           this.displayedColumns.push('id');
         }
-
+      } else {
+        this.afAuth.signOut();
       }
     });
     // end //
@@ -145,6 +151,9 @@ export class FrontlineBookingComponent implements OnInit {
       this.searchForm?.value?.searchText || undefined,
       this.searchForm?.value?.searchField || undefined,
     )).subscribe((data) => {
+      this.snackBar.open('Page Refreshed', 'OK', {
+        duration: 5000,
+      });
       this.dataSource = data;
       this.length = data[0].count;
       this.loader = false;
@@ -339,6 +348,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
   enableUpdateButton = false;
 
   ngOnInit() {
+
     this.bookingForm = this.formBuilder.group({
       awb: ['', [Validators.required]],
       referenceNumber: [''],
@@ -443,6 +453,7 @@ export class FrontLineBookingDialogComponent implements OnInit {
   }
 
   async updateBooking() {
+    console.log('updated booking called...')
     const data: Booking = {
       awbNumber: this.bookingForm.value.awb,
       referenceNumber: this.bookingForm.value.referenceNumber,
@@ -465,7 +476,8 @@ export class FrontLineBookingDialogComponent implements OnInit {
       updatedDateTime: new Date(),
       updatedBy: auth.auth().currentUser?.email || '',
       internalRemark: this.bookingForm.value.internalRemark || '',
-      coCourier: this.bookingForm.value.coCourier || '',
+      coCourier: (this.bookingForm.value.coCourier === null || this.bookingForm.value.coCourier == undefined)
+        ? '' : this.bookingForm.value.coCourier,
       actualWeight: this.bookingForm.value.actualWeight || '',
     };
     this.afs.updateDocument('frontline-booking', this.data.row.id, data)
