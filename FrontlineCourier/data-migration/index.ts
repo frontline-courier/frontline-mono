@@ -1,5 +1,7 @@
 import firebase from 'firebase';
 // import admin from 'firebase-admin';
+import { createClient } from '@supabase/supabase-js'
+const supabase = createClient("https://drdvwswjjmmsgjqbihqg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzMDE1NjY5MCwiZXhwIjoxOTQ1NzMyNjkwfQ.M6CkDfBqIwz7nS2pwcgOozbY56Zow721GlBR36-wGQk")
 
 
 var app = firebase.initializeApp({
@@ -21,8 +23,16 @@ async function getData() {
 
     const snapshot = await bookingRef.get();
     
-    snapshot.forEach((doc: any) => {
+    snapshot.forEach(async (doc: any) => {
       console.log(doc.id, '=>', doc.data());
+
+      let prodData = doc.data();
+
+      const { data, error } = await supabase
+        .from('cities')
+        .insert([
+          { name: 'The Shire', country_id: 554 }
+        ])
     });
 }
 
