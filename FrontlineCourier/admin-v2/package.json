@@ -12,7 +12,6 @@
     "@tailwindcss/forms": "^0.3.4",
     "@tailwindcss/typography": "^0.4.1",
     "axios": "^0.24.0",
-    "cors": "^2.8.5",
     "daisyui": "^1.16.2",
     "dateformat": "^5.0.2",
     "moment": "^2.29.1",
@@ -27,7 +26,6 @@
     "styled-components": "^5.3.3"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.12",
     "@types/dateformat": "^5.0.0",
     "@types/node": "16.11.7",
     "@types/react": "17.0.34",
