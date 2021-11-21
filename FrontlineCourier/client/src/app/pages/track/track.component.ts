@@ -54,8 +54,9 @@ export class TrackComponent implements OnInit {
   async getTrackingInfo(id: string, track: string) {
 
     try {
-      const res = await fetch(`https://next.frontlinecourier.com/api/bookings/find?track=${track}&id=${id}`);
-      const data = res.json();
+      const res = await fetch(`https://next.frontlinecourier.com/api/bookings/find?track=${track}&id=${id}`, { mode: 'cors'});
+      const data = await res.json();
+      console.log(data);
 
       if (data) {
         this.status = true;
