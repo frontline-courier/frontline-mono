@@ -161,10 +161,10 @@ export default function BookingPage() {
 
     const columnDelimiter = ',';
     const lineDelimiter = '\n';
-    const keys = Object?.keys(data[0]);
+    const keys = Object?.keys(data[0]) || '';
 
     result = '';
-    result += keys.join(columnDelimiter);
+    result += keys?.join(columnDelimiter);
     result += lineDelimiter;
 
     array.forEach((item: any) => {
