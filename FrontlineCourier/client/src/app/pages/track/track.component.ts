@@ -44,41 +44,56 @@ export class TrackComponent implements OnInit {
   ngOnInit(): void {
     let id = this.route.snapshot.queryParamMap.get('id');
     let track = this.route.snapshot.queryParamMap.get('track');
-    
-    if (id === ''|| track === '' || ['1', '2'].includes(track) === false) {
-      this.router.navigate(['home'] );
+
+    if (id === '' || track === '' || ['1', '2'].includes(track) === false) {
+      this.router.navigate(['home']);
     }
     this.getTrackingInfo(id, track);
   }
 
   async getTrackingInfo(id: string, track: string) {
 
-    const searchType = (track === '1') ? 'awbNumber' : 'referenceNumber';
-  
-    return this.firestore.collection('frontline-booking', (query) => query.where(searchType, '==', id))
-      .valueChanges()
-      .subscribe((data) => {
-        if (data.length === 1) {
-          this.status = true;
-          this.trackResult = data[0];
-          this.constructStatus();
-        } else {
-          this.status = false;
-        }
-        this.loader = false;
-      }, ((err) => {
-        this.loader = false;
+    try {
+      const res = await fetch(`https://next.frontlinecourier.com/api/bookings/find?track=${track}&id=${id}`);
+      const data = res.json();
+
+      if (data) {
+        this.status = true;
+        this.trackResult = data;
+        this.constructStatus();
+      } else {
         this.status = false;
-      }));
+      }
+      this.loader = false;
+    } catch (err) {
+      this.loader = false;
+      this.status = false;
+    }
+
+    // return this.firestore.collection('frontline-booking', (query) => query.where(searchType, '==', id))
+    //   .valueChanges()
+    //   .subscribe((data) => {
+    //     if (data.length === 1) {
+    //       this.status = true;
+    //       this.trackResult = data[0];
+    //       this.constructStatus();
+    //     } else {
+    //       this.status = false;
+    //     }
+    //     this.loader = false;
+    //   }, ((err) => {
+    //     this.loader = false;
+    //     this.status = false;
+    //   }));
   }
 
   async constructStatus() {
 
     if (this.trackResult) {
       const status: DeliveryResult = {
-        statusDate: moment((this.trackResult.bookedDate).toDate()).format('MMM DD, YYYY'),
-        statusTime: moment((this.trackResult.bookedDate).toDate()).format('ddd, h:mm:ss a'),
-        fullDateTime: moment((this.trackResult.bookedDate).toDate()).unix(),
+        statusDate: moment((this.trackResult.bookedDate)).format('MMM DD, YYYY'),
+        statusTime: moment((this.trackResult.bookedDate)).format('ddd, h:mm:ss a'),
+        fullDateTime: moment((this.trackResult.bookedDate)).unix(),
         status: 'Booked',
         remark: '',
       }
