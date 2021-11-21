@@ -123,10 +123,10 @@ export default function BookingPage() {
       selector: (row: any) => getTransportMode(row.transportMode),
       sortable: true,
     },
-    {
-      name: 'Leaf',
-      selector: (row: any) => row.additionalLeaf,
-    },
+    // {
+    //   name: 'Leaf',
+    //   selector: (row: any) => row.additionalLeaf,
+    // },
     {
       name: 'Status',
       selector: (row: any) => getShipmentStatus(row.shipmentStatus),
