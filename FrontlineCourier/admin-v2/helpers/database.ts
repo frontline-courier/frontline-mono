@@ -1,7 +1,10 @@
 import { MongoClient } from 'mongodb';
 import nextConnect from 'next-connect';
 
-const uri = "mongodb+srv://frontlineapp:SNveY2tiKp3NqfJ@frontline.tsxyg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const host = process.env.MONGO_DB_HOST;
+const user = process.env.MONGO_DB_USER;
+const pwd = process.env.MONGO_DB_PWD;
+const uri = `mongodb+srv://${user}:${pwd}@${host}/frontline?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
