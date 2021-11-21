@@ -321,6 +321,6 @@ export const shipmentStatus = [
 
 export function getShipmentStatus(statusId: number | string): string {
   if (typeof statusId === 'string') { return statusId; }
-  return shipmentStatus.find((k) => k.StatusId === statusId).ShipmentStatus;
+  return shipmentStatus.find((k) => k.StatusId === statusId)?.ShipmentStatus || 'NA';
 }
 

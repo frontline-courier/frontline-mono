@@ -30,6 +30,7 @@ export function getTransportMode(shipment: number): string {
             return TransportMode.RoadSurface.toString();
         case 9:
             return TransportMode.NA.toString();
-
+        default:
+            return TransportMode.NA.toString();
     }
 }

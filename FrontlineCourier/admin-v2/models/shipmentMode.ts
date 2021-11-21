@@ -15,4 +15,5 @@ export function getShipmentMode(shipment: number): string {
     } else if (shipment === 0) {
         return ShipmentMode.NA.toString();
     }
+    return 'NA';
 }

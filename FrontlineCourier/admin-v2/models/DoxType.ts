@@ -14,4 +14,5 @@ export function getDoxType(dox: number): string {
     if (dox === 0) {
         return DoxType.NA.toString();
     }
+    return 'NA';
 }
