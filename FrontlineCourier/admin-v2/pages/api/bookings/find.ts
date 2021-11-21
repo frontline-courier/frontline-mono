@@ -1,9 +1,11 @@
 import nextConnect from 'next-connect';
 import middleware from '../../../helpers/database';
+import cors from 'cors';
 
 const handler = nextConnect();
 
 handler.use(middleware);
+handler.use(cors())
 
 handler.get(async (req: any, res: any) => {
     const { id, track } = req.query;
