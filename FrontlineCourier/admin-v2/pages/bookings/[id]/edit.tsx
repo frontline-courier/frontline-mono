@@ -63,7 +63,6 @@ export default function EditBookingPage(props: any) {
       resetField("transportMode");
       Router.push('/bookings');
     } catch (e: any) {
-      console.log(e);
       setError(e?.message);
     } finally {
       setLoader(false);

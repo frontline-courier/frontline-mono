@@ -72,7 +72,6 @@ export default function BookingPage() {
 
   const handleDeleteModel = async (e: any) => {
     e.preventDefault();
-    console.log('called', deleteModel)
     setDelete(true);
   }
 

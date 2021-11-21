@@ -25,9 +25,7 @@ handler.post(async (req: any, res: any) => {
 
 handler.put(async (req: any, res: any) => {
     const { id } = req.query;
-    console.log(req.body);
     const { action, remark, statusDate, statusId, receiverName, receivedPersonRelation } = req.body;
-    console.log({ action, remark, statusDate, statusId });
 
     if (action === 'delete') {
         const doc =

@@ -26,7 +26,6 @@ export default function ShipmentStatusPage(props: any) {
       props.data.delivery = [...props.data.delivery, { remark, statusDate, statusId }];
       location.reload();
     } catch (e: any) {
-      console.log(e);
       setError(e?.message);
     } finally {
     }
@@ -46,21 +45,13 @@ export default function ShipmentStatusPage(props: any) {
       const response =
         await axios.put(`/api/bookings/${props.data._id}/status`, { ...arr, action: 'delete' });
 
-      // const { remark, statusDate, statusId } = arr;
-      console.log(props.data.delivery)
       props.data.delivery = props.data.delivery?.splice(index, 1);
-      console.log(props.data.delivery);
       location.reload();
     } catch (e: any) {
-      console.log(e);
       setError(e?.message);
     } finally {
     }
   }
-
-  useEffect(() => {
-    console.log(props);
-  }, []);
 
   return (
     <>
