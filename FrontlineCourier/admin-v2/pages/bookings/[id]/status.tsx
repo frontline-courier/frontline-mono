@@ -10,24 +10,36 @@ const relations = statusRelation;
 
 export default function ShipmentStatusPage(props: any) {
 
+  const [isStatusUpdating, setStatusUpdate] = useState(false);
+  const [updateError, setError] = useState('');
+
   const { register, handleSubmit, formState, reset } = useForm(
     {
-      mode: 'onChange'
+      mode: 'onChange',
+      defaultValues: {
+        statusDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
+        statusId: '',
+        remark: '',
+        receiverName: '',
+        receivedPersonRelation: '',
+      }
     });
-
-  const [updateError, setError] = useState('');
 
   const onSubmit = async (data: any) => {
     try {
+      setStatusUpdate(true);
       const response =
         await axios.post(`/api/bookings/${props.data._id}/status`, data);
 
       const { remark, statusDate, statusId } = data;
+      // console.log(remark, statusDate, statusId );
       props.data.delivery = [...props.data.delivery, { remark, statusDate, statusId }];
-      location.reload();
+      // location.reload();
     } catch (e: any) {
       setError(e?.message);
     } finally {
+      setStatusUpdate(false);
+      reset({statusDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL)});
     }
   }
 
@@ -100,7 +112,7 @@ export default function ShipmentStatusPage(props: any) {
             </table>
 
             {
-              !(props.data.delivery?.some((s: any) => s.statusId === 'Delivered'))
+              !(props.data.delivery?.some((s: any) => s.statusId === 'Delivered') && !isStatusUpdating)
               &&
               <form className="shadow bordered rounded m-4 p-4" onSubmit={handleSubmit(onSubmit)}>
                 <h3 className="text-lg font-semibold mb-2">Update Status</h3>
@@ -108,7 +120,7 @@ export default function ShipmentStatusPage(props: any) {
                   <label className="label">
                     <span className="label-text">Status Date</span>
                   </label>
-                  <input type="datetime-local" defaultValue={moment().format(moment.HTML5_FMT.DATETIME_LOCAL)} placeholder="Status Date" className="input input-bordered" {...register("statusDate", { required: true })} />
+                  <input type="datetime-local" placeholder="Status Date" className="input input-bordered" {...register("statusDate", { required: true })} />
                 </div>
                 <div className="form-control">
                   <label className="label">
@@ -142,7 +154,7 @@ export default function ShipmentStatusPage(props: any) {
                     <span className="label-text">Relation with Receiver</span>
                   </label>
                   <select className="select select-bordered" {...register("receivedPersonRelation")}>
-                    <option disabled={true} selected={true} defaultValue="">-- courier --</option>
+                    <option disabled={true} selected={true}>-- courier --</option>
                     {
                       relations.map((d, i) => {
                         return <option key={d.RelationId + i} value={d.Name}>{d.Name}</option>
