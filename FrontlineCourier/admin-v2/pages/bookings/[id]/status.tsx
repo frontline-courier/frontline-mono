@@ -39,7 +39,13 @@ export default function ShipmentStatusPage(props: any) {
       setError(e?.message);
     } finally {
       setStatusUpdate(false);
-      reset({statusDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL)});
+      reset({
+        statusDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
+        statusId: '',
+        remark: '',
+        receiverName: '',
+        receivedPersonRelation: '',
+      });
     }
   }
 
