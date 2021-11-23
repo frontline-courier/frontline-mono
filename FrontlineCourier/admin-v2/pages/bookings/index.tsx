@@ -13,6 +13,7 @@ import { AiFillEdit, AiFillDelete, } from 'react-icons/ai';
 import { MdUpdate } from 'react-icons/md';
 import DeletePage from "./delete";
 import moment from "moment";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 const courierList = courierLists;
 const statusList = courierStatus;
@@ -42,6 +43,10 @@ export default function BookingPage() {
     }
   }
 
+  const { register, handleSubmit, watch, formState, reset, resetField } = useForm<any>({
+    mode: "onChange",
+    defaultValues: {}
+  });
   const { user, error, isLoading } = useUser();
   const [data, setData] = useState([]);
   const [deleteModel, setDelete] = useState(false);
@@ -68,6 +73,21 @@ export default function BookingPage() {
     setData(response.data.booking);
     setPerPage(newPerPage);
     setLoading(false);
+  };
+
+  const onSubmit: SubmitHandler<any> = async (data) => {
+    setLoading(true);
+
+    try {
+      const response =
+        await axios.get(`/api/bookings?awb=${data.awbNumber}&ref=${data.referenceNumber}`);
+
+      setData(response.data.booking);
+      setTotalRows(response.data.count);
+    } catch (e: any) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDeleteModel = async (e: any) => {
@@ -131,11 +151,11 @@ export default function BookingPage() {
       selector: (row: any) => getShipmentStatus(row.shipmentStatus),
       sortable: true,
     },
-    {
-      name: 'CoCourier',
-      selector: (row: any) => coCourierType(row.coCourier),
-      sortable: true,
-    },
+    // {
+    //   name: 'CoCourier',
+    //   selector: (row: any) => coCourierType(row.coCourier),
+    //   sortable: true,
+    // },
     {
       name: 'Weight',
       selector: (row: any) => row.actualWeight,
@@ -201,7 +221,7 @@ export default function BookingPage() {
   const Export = ({ onExport }: any) => <button className="btn btn-sm btn-success" onClick={e => onExport((e.target as any).value)}>Export</button>;
 
   const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(data)} />, []);
-  
+
   useEffect(() => {
     fetchUsers(1); // fetch page 1 of users
   }, []);
@@ -215,13 +235,15 @@ export default function BookingPage() {
         <div className="">
           <h2 className="text-2xl font-semibold">Booking</h2>
         </div>
+        <div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+
+            <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register("awbNumber", { minLength: 5 })} />
+            <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered" {...register("referenceNumber", { minLength: 5 })} />
+            <input type="submit" className="btn btn-primary mx-2" />
+          </form>
+        </div>
         <div className="">
-          {/* <button className="btn btn-secondary mx-2" onClick={() => { window.location.reload() }}>Refresh</button> */}
-          {/* <label htmlFor="my-modal-2" className="btn btn-primary modal-button">open modal</label>
-          <input type="checkbox" id="my-modal-2" className="modal-toggle" />
-          <div className="modal">
-            <AddModel></AddModel>
-          </div> */}
           <span className="btn btn-primary mx-2"><Link href="/bookings/create">New Booking</Link></span>
         </div>
       </div>
