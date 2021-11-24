@@ -4,6 +4,7 @@ import Router from "next/router";
 import { useForm, SubmitHandler, useFormState } from "react-hook-form";
 import { courierLists } from "../../constants/courierList";
 import moment from "moment";
+import axios from "axios";
 
 type Inputs = {
   awbNumber: string,
@@ -46,15 +47,11 @@ export default function AddBookingPage() {
     setLoader(true);
 
     try {
-      const addResponse =
-        await fetch('/api/bookings/add',
-          {
-            method: 'POST',
-            body: JSON.stringify({ ...data, shipmentStatus: 'Booked' }),
-          },
-        )
+      const addResponse = await axios.post('/api/bookings/add',
+        { ...data, shipmentStatus: 'Booked' },
+        );
 
-      await addResponse.json();
+      await addResponse.data;
       resetField("courier");
       resetField("doxType");
       resetField("shipmentMode");
@@ -62,20 +59,11 @@ export default function AddBookingPage() {
       reset({});
       Router.push('/bookings');
     } catch (e: any) {
-      setError(e?.message);
+      setError(e.response?.data?.error || e.message);
     } finally {
       setLoader(false);
     }
   };
-
-  useEffect(() => {
-    // resetField("bookedDate");
-    // resetField("courier");
-    // resetField("doxType");
-    // resetField("shipmentMode");
-    // resetField("transportMode");
-    // reset({});
-  })
 
   return (
     <>

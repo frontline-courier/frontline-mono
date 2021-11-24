@@ -9,7 +9,7 @@ import { getDoxType } from "../../models/DoxType";
 import { getShipmentMode } from "../../models/shipmentMode";
 import { getTransportMode } from "../../models/transportMode";
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { AiFillEdit, AiFillDelete, } from 'react-icons/ai';
+import { AiFillEdit, AiFillDelete } from 'react-icons/ai';
 import { MdUpdate } from 'react-icons/md';
 import DeletePage from "./delete";
 import moment from "moment";
@@ -237,10 +237,32 @@ export default function BookingPage() {
         </div>
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
-
             <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register("awbNumber", { minLength: 5 })} />
             <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered" {...register("referenceNumber", { minLength: 5 })} />
-            <input type="submit" className="btn btn-primary mx-2" />
+            {/* <select className={`select select-bordered`}  {...register("courier", { valueAsNumber: true },)}>
+              <option disabled={true} selected={true} value="">-- courier --</option>
+              {
+                courierList.map((d) => {
+                  return <option key={d.CourierId} value={d.CourierId}>{d.Courier}</option>
+                })
+              }
+            </select>
+            <select className={`select select-bordered`} {...register("shipmentMode", { valueAsNumber: true })}>
+              <option disabled={true} selected={true} value="">-- shipment mode --</option>
+              <option value={1}>Domestic</option>
+              <option value={2}>International</option>
+              <option value={3}>Local</option>
+              <option value={0}>NA</option>
+            </select>
+            <select className="select select-bordered" {...register("statusId", {valueAsNumber: true  })}>
+              <option disabled={true} selected={true}>-- status --</option>
+              {
+                statusList.map((s, i) => {
+                  return <option key={s.StatusId + i} value={s.ShipmentStatus}>{s.ShipmentStatus}</option>
+                })
+              }
+            </select> */}
+            <input type="submit" className="btn btn-primary mx-2" value="Search" />
           </form>
         </div>
         <div className="">

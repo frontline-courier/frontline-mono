@@ -126,7 +126,7 @@ export default function ShipmentStatusPage(props: any) {
                   <label className="label">
                     <span className="label-text">Status Date</span>
                   </label>
-                  <input type="datetime-local" placeholder="Status Date" className="input input-bordered" {...register("statusDate", { required: true })} />
+                  <input type="datetime-local" placeholder="Status Date" className="input input-bordered" {...register("statusDate", { required: true, valueAsNumber: true })} />
                 </div>
                 <div className="form-control">
                   <label className="label">
