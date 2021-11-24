@@ -5,6 +5,7 @@ import { useForm, SubmitHandler, useFormState } from "react-hook-form";
 import { courierLists } from "../../constants/courierList";
 import moment from "moment";
 import axios from "axios";
+import { useUser } from "@auth0/nextjs-auth0";
 
 type Inputs = {
   awbNumber: string,
@@ -42,13 +43,14 @@ export default function AddBookingPage() {
   const couriers = courierLists;
   const [loader, setLoader] = useState(false);
   const [saveError, setError] = useState('');
+  const { user } = useUser();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoader(true);
 
     try {
       const addResponse = await axios.post('/api/bookings/add',
-        { ...data, shipmentStatus: 'Booked' },
+        { ...data, shipmentStatus: 'Booked', createdBy: user?.email },
         );
 
       await addResponse.data;

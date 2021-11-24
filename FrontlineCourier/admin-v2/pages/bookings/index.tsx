@@ -96,7 +96,17 @@ export default function BookingPage() {
   }
 
   // A super simple expandable component.
-  const ExpandedComponent = ({ data }: any) => <pre>{JSON.stringify(data, null, 2)}</pre>;
+  const ExpandedComponent = ({ data }: any) =>
+  // {
+  //   <table>
+  //     <tbody>
+  //       (
+  //         <tr key={1}>{2}<td></td><td>{3}</td></tr>
+  //       )
+  //     </tbody>
+  //   </table>
+  // }
+  <pre>{JSON.stringify(data, null, 2)}</pre>;
 
   const columns = [
     {
@@ -164,10 +174,10 @@ export default function BookingPage() {
       name: '',
       cell: (row: any) => {
         return <div className="dropdown dropdown-end">
-          <div tabIndex={0} className="m-1 btn btn-sm btn-secondary"><BsThreeDotsVertical /></div>
+          <div tabIndex={0} className="m-1 btn btn-xs btn-secondary"><BsThreeDotsVertical /></div>
           <ul tabIndex={0} className="p-1 shadow menu dropdown-content bg-base-100 rounded-box w-40 right-0 top-0">
             <li><a href={`/bookings/${row._id}/edit`}> <AiFillEdit className="mr-2" /> Edit</a></li>
-            <li><a> <AiFillDelete className="mr-2" onClick={handleDeleteModel} /> Delete</a></li>
+            {/* <li><a> <AiFillDelete className="mr-2" onClick={handleDeleteModel} /> Delete</a></li> */}
             <li><a href={`/bookings/${row._id}/status`}> <MdUpdate className="mr-2" /> Edit/Update Status</a></li>
             {/* <li><a> <FaMapMarkedAlt className="mr-2" /> Check Status</a></li> */}
           </ul>
@@ -262,7 +272,7 @@ export default function BookingPage() {
                 })
               }
             </select> */}
-            <input type="submit" className="btn btn-primary mx-2" value="Search" />
+            <input type="submit" className="btn btn-secondary mx-2" value="Search" />
           </form>
         </div>
         <div className="">
