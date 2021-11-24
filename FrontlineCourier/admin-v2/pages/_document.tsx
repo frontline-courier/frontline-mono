@@ -5,7 +5,10 @@ class AppDocument extends Document {
   render() {
     return (
       <Html data-theme="fantasy">
-        <Head />
+        <Head>
+          <title>Frontline - Admin</title>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        </Head>
         <body>
           <Main />
           <NextScript />
