@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { shipmentStatus } from "../../../models/shipmentStatus";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -20,7 +20,7 @@ export default function ShipmentStatusPage(props: any) {
         statusDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
         statusId: '',
         remark: '',
-        receiverName: '',
+        receivedPerson: '',
         receivedPersonRelation: '',
       }
     });
@@ -43,7 +43,7 @@ export default function ShipmentStatusPage(props: any) {
         statusDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
         statusId: '',
         remark: '',
-        receiverName: '',
+        receivedPerson: '',
         receivedPersonRelation: '',
       });
     }
@@ -152,7 +152,7 @@ export default function ShipmentStatusPage(props: any) {
                   <label className="label">
                     <span className="label-text">Receiver Name</span>
                   </label>
-                  <input type="text" placeholder="Receiver Name" className="input input-bordered" {...register("receiverName")} />
+                  <input type="text" placeholder="Receiver Name" className="input input-bordered" {...register("receivedPerson")} />
                 </div>
 
                 <div className="form-control">
