@@ -5,7 +5,7 @@ import { useForm, SubmitHandler, useFormState } from "react-hook-form";
 import { courierLists } from "../../constants/courierList";
 import moment from "moment";
 import axios from "axios";
-import { useUser } from "@auth0/nextjs-auth0";
+import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 type Inputs = {
   awbNumber: string,
@@ -31,7 +31,7 @@ type Inputs = {
   additionalLeaf: string,
 };
 
-export default function AddBookingPage() {
+function AddBookingPage() {
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm<Inputs>({
     mode: "onChange",
@@ -271,3 +271,5 @@ export default function AddBookingPage() {
     </>
   );
 }
+
+export default withPageAuthRequired(AddBookingPage);

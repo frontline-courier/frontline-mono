@@ -4,11 +4,12 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { statusRelation } from "../../../constants/deliveryRelation";
 import moment from "moment";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 const status = shipmentStatus;
 const relations = statusRelation;
 
-export default function ShipmentStatusPage(props: any) {
+function ShipmentStatusPage(props: any) {
 
   const [isStatusUpdating, setStatusUpdate] = useState(false);
   const [updateError, setError] = useState('');
@@ -206,3 +207,5 @@ export async function getServerSideProps(context: any) {
     props: { data, success: true },
   }
 }
+
+export default withPageAuthRequired(ShipmentStatusPage);

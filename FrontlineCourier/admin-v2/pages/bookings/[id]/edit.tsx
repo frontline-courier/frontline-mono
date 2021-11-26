@@ -6,7 +6,7 @@ import { useForm, SubmitHandler, useFormState } from "react-hook-form";
 import { courierLists } from "../../../constants/courierList";
 import moment from "moment";
 import axios from "axios";
-import { useUser } from "@auth0/nextjs-auth0";
+import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 type Inputs = {
   awbNumber: string,
@@ -32,7 +32,7 @@ type Inputs = {
   additionalLeaf: string,
 };
 
-export default function EditBookingPage(props: any) {
+function EditBookingPage(props: any) {
 
   const couriers = courierLists;
   const [loader, setLoader] = useState(false);
@@ -292,3 +292,5 @@ export async function getServerSideProps(context: any) {
     props: { data, success: true },
   }
 }
+
+export default withPageAuthRequired(EditBookingPage);

@@ -14,11 +14,12 @@ import { MdUpdate } from 'react-icons/md';
 import DeletePage from "./delete";
 import moment from "moment";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 const courierList = courierLists;
 const statusList = courierStatus;
 
-export default function BookingPage() {
+function BookingPage() {
 
   // get data from list
   // to be removed after sometime
@@ -320,10 +321,12 @@ export default function BookingPage() {
         />
       </div>
 
-      {
+      {/* {
         deleteModel &&
         <DeletePage />
-      }
+      } */}
     </>
   );
 }
+
+export default withPageAuthRequired(BookingPage);

@@ -1,4 +1,6 @@
-export default function DeletePage() {
+import { withPageAuthRequired } from "@auth0/nextjs-auth0"
+
+function DeletePage() {
   return (
     <>
       <input type="checkbox" id="delete-modal" className="modal-toggle" />
@@ -14,3 +16,5 @@ export default function DeletePage() {
     </>
   )
 }
+
+export default withPageAuthRequired(DeletePage);

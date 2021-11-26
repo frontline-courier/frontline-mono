@@ -1,4 +1,6 @@
-export default function ReportDashboard(props: any) {
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+
+function ReportDashboard(props: any) {
   const iframeStyle = {
     background: '#FFFFFF;',
     border: 'none',
@@ -10,7 +12,7 @@ export default function ReportDashboard(props: any) {
     <>
       <div className="flex justify-between m-4">
         <div className="">
-          <h2 className="text-2xl font-semibold">Reports</h2>
+          <h2 className="text-2xl font-semibold">Dashboard</h2>
         </div>
       </div>
 
@@ -18,8 +20,12 @@ export default function ReportDashboard(props: any) {
         <div>
           <iframe style={iframeStyle} width="640" height="480" src="https://charts.mongodb.com/charts-varun-enterprises-kjutz/embed/charts?id=f41f0174-4843-44f1-be25-7a1684f925fa&maxDataAge=3600&theme=light&autoRefresh=false"></iframe>
         </div>
+        <div>
+          <iframe style={iframeStyle} width="640" height="480" src="https://charts.mongodb.com/charts-varun-enterprises-kjutz/embed/charts?id=69b1c5ca-3bf9-4ffe-a9a3-3ede14cfb14e&maxDataAge=3600&theme=light&autoRefresh=true"></iframe>
+        </div>
       </div>
     </>
   )
 }
 
+export default withPageAuthRequired(ReportDashboard);
