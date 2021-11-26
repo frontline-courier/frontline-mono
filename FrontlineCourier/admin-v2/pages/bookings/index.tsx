@@ -163,16 +163,16 @@ export default function BookingPage() {
       selector: (row: any) => getDoxType(row.doxType),
       sortable: true,
     },
-    // {
-    //   name: 'ShipmentMode',
-    //   selector: (row: any) => getShipmentMode(row.shipmentMode),
-    //   sortable: true,
-    // },
     {
-      name: 'TransportMode',
-      selector: (row: any) => getTransportMode(row.transportMode),
+      name: 'ShipmentMode',
+      selector: (row: any) => getShipmentMode(row.shipmentMode),
       sortable: true,
     },
+    // {
+    //   name: 'TransportMode',
+    //   selector: (row: any) => getTransportMode(row.transportMode),
+    //   sortable: true,
+    // },
     // {
     //   name: 'Leaf',
     //   selector: (row: any) => row.additionalLeaf,
