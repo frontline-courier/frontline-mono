@@ -312,7 +312,7 @@ export default function BookingPage() {
           pagination
           paginationServer
           paginationTotalRows={totalRows}
-          paginationRowsPerPageOptions={[25, 50, 100, 250, 500]}
+          paginationRowsPerPageOptions={[50, 100, 250]}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
           fixedHeader
