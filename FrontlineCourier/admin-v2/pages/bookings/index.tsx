@@ -120,6 +120,11 @@ export default function BookingPage() {
       sortable: true,
     },
     {
+      name: 'Leaf',
+      selector: (row: any) => row.additionalLeaf,
+      sortable: true,
+    },
+    {
       name: 'courier',
       selector: (row: any) => getCourierName(row.courier),
       sortable: true,
@@ -142,11 +147,11 @@ export default function BookingPage() {
       selector: (row: any) => getDoxType(row.doxType),
       sortable: true,
     },
-    {
-      name: 'ShipmentMode',
-      selector: (row: any) => getShipmentMode(row.shipmentMode),
-      sortable: true,
-    },
+    // {
+    //   name: 'ShipmentMode',
+    //   selector: (row: any) => getShipmentMode(row.shipmentMode),
+    //   sortable: true,
+    // },
     {
       name: 'TransportMode',
       selector: (row: any) => getTransportMode(row.transportMode),
