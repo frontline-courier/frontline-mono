@@ -95,6 +95,22 @@ export default function BookingPage() {
     setDelete(true);
   }
 
+  const getShipmentStatusColor = (s: string) => {
+    switch (s.toLowerCase())
+    {
+      case 'booked':
+        return 'bg-red-400';
+      case 'in transit':
+        return 'bg-yellow-400';
+      case 'delivered': 
+        return 'bg-green-400';
+      case 'taken for delivery':
+        return 'bg-indigo-400';
+      default:
+        return '';
+    }
+  }
+
   // A super simple expandable component.
   const ExpandedComponent = ({ data }: any) =>
   // {
@@ -163,7 +179,7 @@ export default function BookingPage() {
     // },
     {
       name: 'Status',
-      selector: (row: any) => getShipmentStatus(row.shipmentStatus),
+      selector: (row: any) => <div className={`badge ${getShipmentStatusColor(row.shipmentStatus)}`}>{getShipmentStatus(row.shipmentStatus)}</div>,
       sortable: true,
     },
     // {
