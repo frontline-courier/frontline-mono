@@ -52,7 +52,7 @@ export default function BookingPage() {
   const [deleteModel, setDelete] = useState(false);
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
-  const [perPage, setPerPage] = useState(10);
+  const [perPage, setPerPage] = useState(25);
 
   const fetchUsers = async (page: number) => {
 
@@ -312,7 +312,7 @@ export default function BookingPage() {
           pagination
           paginationServer
           paginationTotalRows={totalRows}
-          paginationRowsPerPageOptions={[50, 100, 250]}
+          paginationRowsPerPageOptions={[25, 50, 100, 250]}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
           fixedHeader

@@ -7,7 +7,7 @@ const handler = nextConnect();
 handler.use(middleware);
 
 handler.post(async (req: any, res: any) => {
-    let data = JSON.parse(req.body);
+    let data = req.body;
     let id = data._id;
     delete data._id;
 
