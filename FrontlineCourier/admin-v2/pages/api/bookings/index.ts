@@ -6,7 +6,7 @@ const handler = nextConnect();
 handler.use(middleware);
 
 handler.get(async (req: any, res: any) => {
-    const limit = parseInt(req.query.limit, 10) || 50;
+    const limit = parseInt(req.query.limit, 10) || 25;
     const page = parseInt(req.query.page, 10)  || 1;
     const awb = req.query.awb;
     const ref = req.query.ref;

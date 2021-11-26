@@ -313,6 +313,7 @@ function BookingPage() {
           pagination
           paginationServer
           paginationTotalRows={totalRows}
+          paginationPerPage={25}
           paginationRowsPerPageOptions={[25, 50, 100, 250]}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
