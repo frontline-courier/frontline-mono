@@ -8,7 +8,7 @@ handler.use(middleware);
 
 handler.post(async (req: any, res: any) => {
     const { id } = req.query;
-    const { receiverName, receivedPersonRelation, remark, statusDate, statusId } = req.body;
+    const { receivedPerson, receivedPersonRelation, remark, statusDate, statusId } = req.body;
 
     const doc =
         await req.db.collection('bookings')
@@ -17,7 +17,7 @@ handler.post(async (req: any, res: any) => {
                     _id: new ObjectId(id)
                 },
                 {
-                    $set: { receiverName, receivedPersonRelation, shipmentStatus: statusId},
+                    $set: { receivedPerson, receivedPersonRelation, shipmentStatus: statusId},
                     $push: { delivery: {remark, statusDate, statusId, updatedDateTime: new Date() }},
                 });
     res.json(doc);
