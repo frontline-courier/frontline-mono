@@ -54,41 +54,34 @@ function BookingPage() {
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(25);
+  const [searchData, setSearchData] = useState({awbNumber: '', referenceNumber: '', courier: 0, shipmentMode: 0, status: ''});
 
-  const fetchUsers = async (page: number) => {
+  const fetchShipment = async (page: number) => {
 
     setLoading(true);
-    const response = await axios.get(`/api/bookings?page=${page}&limit=${perPage}`);
+    const response = 
+      await axios.get(
+        `/api/bookings?page=${page}&limit=${perPage}&courier=${searchData.courier || 0}&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''}&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}`);
     setData(response.data.booking);
     setTotalRows(response.data.count);
     setLoading(false);
   };
 
   const handlePageChange = (page: number) => {
-    fetchUsers(page);
+    fetchShipment(page);
   };
 
   const handlePerRowsChange = async (newPerPage: number, page: number) => {
     setLoading(true);
-    const response = await axios.get(`/api/bookings?page=${page}&limit=${newPerPage}`);
+    const response =
+      await axios.get(`/api/bookings?page=${page}&limit=${newPerPage}&courier=${searchData.courier || 0}&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''}&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}`);
     setData(response.data.booking);
     setPerPage(newPerPage);
     setLoading(false);
   };
 
   const onSubmit: SubmitHandler<any> = async (data) => {
-    setLoading(true);
-
-    try {
-      const response =
-        await axios.get(`/api/bookings?awb=${data.awbNumber}&ref=${data.referenceNumber}`);
-
-      setData(response.data.booking);
-      setTotalRows(response.data.count);
-    } catch (e: any) {
-    } finally {
-      setLoading(false);
-    }
+    setSearchData(data);
   };
 
   const handleDeleteModel = async (e: any) => {
@@ -208,55 +201,9 @@ function BookingPage() {
     }
   ];
 
-  function convertArrayOfObjectsToCSV(array: any) {
-    let result: any;
-
-    const columnDelimiter = ',';
-    const lineDelimiter = '\n';
-    const keys = Object.keys(data[0]) || {};
-
-    result = '';
-    result += keys?.join(columnDelimiter);
-    result += lineDelimiter;
-
-    array.forEach((item: any) => {
-      let ctr = 0;
-      keys.forEach(key => {
-        if (ctr > 0) result += columnDelimiter;
-
-        result += item[key];
-
-        ctr++;
-      });
-      result += lineDelimiter;
-    });
-
-    return result;
-  }
-
-  // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
-  function downloadCSV(array: any) {
-    const link = document.createElement('a');
-    let csv = convertArrayOfObjectsToCSV(array);
-    if (csv == null) return;
-
-    const filename = 'export.csv';
-
-    if (!csv.match(/^data:text\/csv/i)) {
-      csv = `data:text/csv;charset=utf-8,${csv}`;
-    }
-
-    link.setAttribute('href', encodeURI(csv));
-    link.setAttribute('download', filename);
-    link.click();
-  }
-  const Export = ({ onExport }: any) => <button className="btn btn-sm btn-success" onClick={e => onExport((e.target as any).value)}>Export</button>;
-
-  const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(data)} />, []);
-
   useEffect(() => {
-    fetchUsers(1); // fetch page 1 of users
-  }, []);
+    fetchShipment(1); // fetch page 1 of users
+  }, [searchData]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
@@ -268,11 +215,11 @@ function BookingPage() {
           <h2 className="text-2xl font-semibold">Booking</h2>
         </div>
         <div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register("awbNumber", { minLength: 5 })} />
-            <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered" {...register("referenceNumber", { minLength: 5 })} />
-            {/* <select className={`select select-bordered`}  {...register("courier", { valueAsNumber: true },)}>
-              <option disabled={true} selected={true} value="">-- courier --</option>
+          <form onSubmit={handleSubmit(onSubmit)} role="search">
+            <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register("awbNumber", { minLength: 3 })} />
+            <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered" {...register("referenceNumber", { minLength: 3 })} />
+            <select className={`select select-bordered`}  {...register("courier", { valueAsNumber: true },)}>
+              <option selected={true} value={0}>-- courier --</option>
               {
                 courierList.map((d) => {
                   return <option key={d.CourierId} value={d.CourierId}>{d.Courier}</option>
@@ -280,20 +227,20 @@ function BookingPage() {
               }
             </select>
             <select className={`select select-bordered`} {...register("shipmentMode", { valueAsNumber: true })}>
-              <option disabled={true} selected={true} value="">-- shipment mode --</option>
+              <option selected={true} value={0}>-- shipment mode --</option>
               <option value={1}>Domestic</option>
               <option value={2}>International</option>
               <option value={3}>Local</option>
               <option value={0}>NA</option>
             </select>
-            <select className="select select-bordered" {...register("statusId", {valueAsNumber: true  })}>
-              <option disabled={true} selected={true}>-- status --</option>
+            <select className="select select-bordered" {...register("status")}>
+              <option selected={true} value="">-- status --</option>
               {
                 statusList.map((s, i) => {
                   return <option key={s.StatusId + i} value={s.ShipmentStatus}>{s.ShipmentStatus}</option>
                 })
               }
-            </select> */}
+            </select>
             <input type="submit" className="btn btn-secondary mx-2" value="Search" />
           </form>
         </div>
@@ -306,7 +253,6 @@ function BookingPage() {
         <DataTable
           columns={columns}
           data={data}
-          actions={actionsMemo}
           progressPending={loading}
           expandableRows
           expandableRowsComponent={ExpandedComponent}
