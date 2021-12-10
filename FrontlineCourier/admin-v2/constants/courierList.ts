@@ -248,7 +248,7 @@ export const courierLists = [
       CourierId: 51,
       Courier: 'BDHL EXPRESS',
       Description: 'NULL',
-      Track: 'http://www.dhl.com/en.html',
+      Track: 'https://www.bluedart.com/',
       Status: 'NULL'
     },
     {
@@ -311,7 +311,7 @@ export const courierLists = [
       CourierId: 60,
       Courier: 'BlueDart - Apex - Fr',
       Description: 'NULL',
-      Track: 'www.bluedart.com',
+      Track: 'https://www.bluedart.com/',
       Status: 'NULL'
     },
     {
@@ -332,7 +332,7 @@ export const courierLists = [
       CourierId: 63,
       Courier: 'BlueDart Apex Economy',
       Description: 'NULL',
-      Track: 'www.bluedart.com',
+      Track: 'https://www.bluedart.com/',
       Status: 'NULL'
     },
     {
@@ -388,7 +388,7 @@ export const courierLists = [
       CourierId: 71,
       Courier: 'BDHL Priority',
       Description: 'NULL',
-      Track: 'https://www.dhl.co.in/en',
+      Track: 'https://www.bluedart.com/',
       Status: 'NULL'
     },
     {
@@ -409,7 +409,7 @@ export const courierLists = [
       CourierId: 74,
       Courier: 'BlueDart DP Economy',
       Description: 'NULL',
-      Track: 'www.bluedart.com',
+      Track: 'https://www.bluedart.com/',
       Status: 1
     },
     {
@@ -423,7 +423,7 @@ export const courierLists = [
       CourierId: 76,
       Courier: 'BLUEDART INTL ECONOMY',
       Description: 'NULL',
-      Track: 'www.bluedart.com',
+      Track: 'https://www.bluedart.com/',
       Status: 'NULL'
     },
     {
@@ -500,14 +500,14 @@ export const courierLists = [
       CourierId: 87,
       Courier: 'BlueDart Intl Economy',
       Description: 'BlueDart',
-      Track: 'https://bluedart.com/home',
+      Track: 'https://www.bluedart.com/',
       Status: 1
     },
     {
       CourierId: 88,
       Courier: 'BlueDart Intl Express',
       Description: 'BlueDart',
-      Track: 'https://bluedart.com/home',
+      Track: 'https://www.bluedart.com/',
       Status: 1
     },
     {
