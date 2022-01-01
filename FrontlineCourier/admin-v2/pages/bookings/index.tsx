@@ -90,7 +90,7 @@ function BookingPage() {
   }
 
   const getShipmentStatusColor = (s: string) => {
-    switch (s?.toLowerCase())
+    switch ((s + '').toLowerCase())
     {
       case 'booked':
         return 'bg-red-400';
