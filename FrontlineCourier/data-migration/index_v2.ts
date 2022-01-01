@@ -2,7 +2,7 @@ import { Collection, MongoClient } from 'mongodb';
 import { json2csv } from 'json-2-csv';
 import fs from 'fs';
 
-const uri = "mongodb+srv://frontlineapp:AiOolcPeHzCN5dLx@frontline.tsxyg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = "mongodb+srv://frontlineapp:xxx@frontline.tsxyg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 const client = new MongoClient(uri, {
   useNewUrlParser: true,

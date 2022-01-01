@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDoxType = exports.DoxType = exports.getTransportMode = exports.TransportMode = exports.getShipmentMode = exports.ShipmentMode = void 0;
 const mongodb_1 = require("mongodb");
-const uri = "mongodb+srv://frontlineapp:AiOolcPeHzCN5dLx@frontline.tsxyg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = "mongodb+srv://frontlineapp:xxx@frontline.tsxyg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new mongodb_1.MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
