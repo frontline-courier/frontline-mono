@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 import { useUser } from "@auth0/nextjs-auth0";
 import { useEffect } from "react"
+import { BiUserCircle } from 'react-icons/bi';
+import { RiLogoutBoxRLine, RiSettings5Line } from 'react-icons/ri'
 
 // reference: https://codepen.io/hulyak/pen/yLbwXvB
 export default function AppNavbar() {
@@ -62,27 +64,38 @@ export default function AppNavbar() {
               md:pt-0">
           {user &&
             <>
-            <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/dashboard">Dashboard</a> </li>
-            <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings">Booking</a> </li>
-            {/* <li>
+              {/* <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/dashboard">Dashboard</a> </li> */}
+              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings/quick">Quick Booking</a> </li>
+              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings">Booking</a> </li>
+              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/stocks">Stock Entry</a> </li>
+              {/* <li>
               <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings"
               >Reporting</a
               >
             </li> */}
-            <li className="hidden md:block">
+              {/* <li className="hidden md:block">
               <a
                 className="md:p-4 py-2 block text-white"
                 href="#"
               > Welcome, {user.nickname || user.name || user.email} </a
               >
-            </li>
-            <li>
-              <a
-                className="md:p-4 py-2 block hover:bg-error text-white font-bold"
-                href="/api/auth/logout"
-              >  Logout </a
-              >
-            </li>
+            </li> */}
+              <li>
+                <div className="dropdown dropdown-end">
+                  <div tabIndex={0} className="m-1 btn btn-warning"><BiUserCircle className="inline h-6 w-6 animate-pulse" /></div>
+                  <ul tabIndex={0} className="p-2 shadow menu dropdown-content text-primary rounded-box w-52">
+                    <li>
+                      <a>Logged as {user.nickname || user.name || user.email}</a>
+                    </li>
+                    <li>
+                      <a> <RiSettings5Line/> &nbsp; Settings</a>
+                    </li>
+                    <li>
+                      <a href="/api/auth/logout"> <RiLogoutBoxRLine/> &nbsp; Logout</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
             </>
           }
           {
@@ -90,9 +103,7 @@ export default function AppNavbar() {
             <li>
               <a
                 className="md:p-4 py-2 block hover:bg-secondary text-white font-bold"
-                href="/api/auth/login"
-              > Login</a
-              >
+                href="/api/auth/login"> Login</a>
             </li>
           }
         </ul>
