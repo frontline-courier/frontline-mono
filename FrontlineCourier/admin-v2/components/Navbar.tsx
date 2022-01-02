@@ -82,8 +82,8 @@ export default function AppNavbar() {
             </li> */}
               <li>
                 <div className="dropdown dropdown-end">
-                  <div tabIndex={0} className="m-1 btn btn-warning"><BiUserCircle className="inline h-6 w-6 animate-pulse" /></div>
-                  <ul tabIndex={0} className="p-2 shadow menu dropdown-content text-primary rounded-box w-52">
+                  <div tabIndex={0} className="m-1 btn btn-secondary"><BiUserCircle className="inline h-6 w-6 animate-pulse" /></div>
+                  <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-52">
                     <li>
                       <a>Logged as {user.nickname || user.name || user.email}</a>
                     </li>
