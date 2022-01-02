@@ -11,14 +11,23 @@ handler.post(async (req: any, res: any) => {
     let id = data._id;
     delete data._id;
 
-    let doc = await req.db.collection('bookings').updateOne({
-        _id: new ObjectId(id)
-        },
-        {
-            $set: data,
-        });
+    try {
 
-    res.json(doc);
+        let doc = await req.db.collection('bookings').updateOne({
+            _id: new ObjectId(id)
+        },
+            {
+                $set: data,
+            });
+
+        res.json(doc);
+    }
+    catch (err: any) {
+        res.status(500).send({ error: err?.message })
+    }
+    finally {
+        req.dbClient.close();
+    }
 });
 
 export default handler;

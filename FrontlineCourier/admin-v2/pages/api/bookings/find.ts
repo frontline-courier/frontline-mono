@@ -9,14 +9,22 @@ handler.get(async (req: any, res: any) => {
     const { id, track } = req.query;
     let doc;
 
-    if (track === '1') {
-        doc = await req.db.collection('bookings').findOne({awbNumber: id});
-    } else if (track === '2') {
-        doc = await req.db.collection('bookings').findOne({referenceNumber: id});
+    try {
+        if (track === '1') {
+            doc = await req.db.collection('bookings').findOne({ awbNumber: id });
+        } else if (track === '2') {
+            doc = await req.db.collection('bookings').findOne({ referenceNumber: id });
+        }
+
+        res.json(doc);
+    }
+    catch (err: any) {
+        res.status(500).send({ error: err?.message })
+    }
+    finally {
+        req.dbClient.close();
     }
 
-    res.json(doc);
-    
 });
 
 export default handler;

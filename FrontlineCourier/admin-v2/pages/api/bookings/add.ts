@@ -16,6 +16,9 @@ handler.post(async (req: any, res: any) => {
     catch (err: any) {
         res.status(500).send({ error: err?.message })
     }
+    finally {
+        req.dbClient.close();
+      }
 });
 
 export default handler;

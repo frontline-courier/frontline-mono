@@ -9,8 +9,16 @@ handler.use(middleware);
 handler.get(async (req: any, res: any) => {
     const { id } = req.query;
 
-    const doc = await req.db.collection('bookings').findOne({_id: new ObjectId(id)});
-    res.json(doc);
+    try {
+        const doc = await req.db.collection('bookings').findOne({ _id: new ObjectId(id) });
+        res.json(doc);
+    }
+    catch (err: any) {
+        res.status(500).send({ error: err?.message })
+    }
+    finally {
+        req.dbClient.close();
+    }
 });
 
 export default handler;

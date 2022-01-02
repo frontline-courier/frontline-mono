@@ -49,6 +49,9 @@ handler.get(async (req: any, res: any) => {
     catch (err) {
         res.send({booking: [], count: 0});
     }
+    finally {
+        req.dbClient.close();
+      }
 });
 
 export default handler;
