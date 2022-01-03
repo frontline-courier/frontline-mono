@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import { getAWBRange } from "../../helpers/awb/getRange";
 
 function StockEntry(props: any) {
 
@@ -20,21 +23,48 @@ function StockEntry(props: any) {
   }
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
-    setLoader(true);
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        let awbNos = '';
+        let error = '';
 
-    try {
-      const addResponse = await axios.post('/api/stocks/courier/add',
-        { courier: data.courier },
-      );
+        try {
+          awbNos = getAWBRange(data.awb).join(',');
+        } catch (err: any) {
+          error = err.message;
+        }
 
-      await addResponse.data;
-      router.reload();
-    } catch (e: any) {
-      setError(e.response?.data?.error || e.message);
-    } finally {
-      setLoader(false);
-    }
-  }
+        return (
+          <div className="modal modal-open">
+            <div className="modal-box">
+              {
+                error &&
+                <div>
+                  <p>{error}</p>
+                </div>
+
+              }
+              {
+                !error &&
+                <div>
+                  <p>Courier Name: {data.courier}</p>
+                  <p>Co Loader: {data.coLoader}</p>
+                  <p>Total Bills: {awbNos.length || 0}</p>
+                  <p>Per Bill Cost: {data.cost || 0}</p>
+                  <p>Total Bill Cost: {(awbNos.length || 0) * (data.cost || 0)}</p>
+                  <p className="break-all">Bill Nos: {awbNos}</p>
+                </div>
+              }
+              <div className="modal-action">
+                <label htmlFor="stock-modal" className="btn" onClick={onClose}>Close</label>
+                {!error && <label htmlFor="stock-modal" className="btn btn-primary">Accept</label>}
+              </div>
+            </div>
+          </div>
+        );
+      }
+    });
+  };
 
   const handleAddCoLoader = (e: any) => {
     router.push('/stocks/co-loader');
@@ -77,7 +107,7 @@ function StockEntry(props: any) {
           <label className="label p-1">
             <span className="label-text text-2xs">Co Loader</span>
           </label>
-          <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register("coLoader", { required: true })}>
+          <select className={`select select-bordered ${errors.coLoader && 'select-error'}`}  {...register("coLoader", { required: false })}>
             <option disabled={true} selected={true} value="">-- co-loader --</option>
             {
               props.data.loader.coloaders.map((d: any, value: number) => {
@@ -103,9 +133,16 @@ function StockEntry(props: any) {
 
         <div className="form-control">
           <label className="label p-1">
-            <span className="label-text text-2xs">Stock</span>
+            <span className="label-text text-2xs">AWB Numbers</span>
           </label>
-          <input type="text" placeholder="Stock Data - ex: 121212121-25" className={`input input-bordered ${errors.stock && 'input-error'}`} {...register("stock", { required: true, minLength: 3 })} />
+          <input type="text" placeholder="Stock Data - ex: 121212121-25" className={`input input-bordered ${errors.awb && 'input-error'}`} {...register("awb", { required: true, minLength: 3 })} />
+        </div>
+
+        <div className="form-control">
+          <label className="label p-1">
+            <span className="label-text text-2xs">Bill Cost</span>
+          </label>
+          <input type="text" placeholder="0" className={`input input-bordered ${errors.cost && 'input-error'}`} {...register("cost", { required: false, valueAsNumber: true })} />
         </div>
 
         <div className="modal-action">
@@ -119,6 +156,7 @@ function StockEntry(props: any) {
             <tr>
               <th>#</th>
               <th>Courier Name</th>
+              <th>Co Loader</th>
               <th>Stock Count</th>
             </tr>
           </thead>
@@ -127,10 +165,10 @@ function StockEntry(props: any) {
               props.data && props.data.stocks?.map((data: any, value: number) => {
                 return <tr className="" key={value}>
                   <td>{value + 1}</td>
+                  <td>{data.coloader}</td>
                   <td>{data.courier}</td>
                 </tr>
               })
-
             }
           </tbody>
         </table>
