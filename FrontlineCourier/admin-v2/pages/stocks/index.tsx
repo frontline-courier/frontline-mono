@@ -25,11 +25,12 @@ function StockEntry(props: any) {
   const onSubmit: SubmitHandler<any> = async (data: any) => {
     confirmAlert({
       customUI: ({ onClose }) => {
-        let awbNos = '';
+        let awbNos: string[] = [];
         let error = '';
 
         try {
-          awbNos = getAWBRange(data.awb).join(',');
+          const seriesType = props.data.courier.couriers.find((d: any) => d.name === data.courier)['type']
+          awbNos = getAWBRange(data.awb, seriesType);
         } catch (err: any) {
           error = err.message;
         }
@@ -47,12 +48,34 @@ function StockEntry(props: any) {
               {
                 !error &&
                 <div>
-                  <p>Courier Name: {data.courier}</p>
-                  <p>Co Loader: {data.coLoader}</p>
-                  <p>Total Bills: {awbNos.length || 0}</p>
-                  <p>Per Bill Cost: {data.cost || 0}</p>
-                  <p>Total Bill Cost: {(awbNos.length || 0) * (data.cost || 0)}</p>
-                  <p className="break-all">Bill Nos: {awbNos}</p>
+                  <p>
+                    <span>Courier Name:</span>
+                    <span className="font-bold text-lg"> {data.courier}</span>
+                  </p>
+                    <span>Co Loader:</span>
+                    <span className="font-bold text-lg"> {data.coLoader}</span>
+                  <p>
+                    <span>Total Bills:</span>
+                    <span className="font-bold text-lg"> {awbNos.length || 0}</span>
+                  </p>
+                    <span>Per Bill Cost:</span>
+                    <span className="font-bold text-lg"> {data.cost || 0}</span>
+                  <p>
+                    <span>Total Bill Cost:</span>
+                    <span className="font-bold text-lg"> {(awbNos.length || 0) * (data.cost || 0)}</span>
+                  </p>
+                  <span>AWB Nos:</span>
+                  <div className="h-60 overflow-x-auto">
+                    <table className="table table-zebra w-full">
+                      <tbody>
+                        {awbNos?.map((data, index) => {
+                          return <tr key={index} className="hover">
+                            <td>{index + 1}</td><td>{data}</td>
+                          </tr>
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               }
               <div className="modal-action">
