@@ -11,7 +11,7 @@ handler.post(async (req: any, res: any) => {
   try {
     const collection = (req.db as Db).collection('stocks_courier');
 
-    await collection.insertOne({name: req.body.courier});
+    await collection.insertOne({name: req.body.courier, type: req.body.type});
 
     res.json({status: 'success'});
   }

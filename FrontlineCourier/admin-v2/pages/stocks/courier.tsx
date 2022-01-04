@@ -19,9 +19,7 @@ function AddCourierForStockEntry(props: any) {
     setLoader(true);
 
     try {
-      const addResponse = await axios.post('/api/stocks/courier/add',
-        { courier: data.courier },
-      );
+      const addResponse = await axios.post('/api/stocks/courier/add', data);
 
       await addResponse.data;
       router.reload();
@@ -47,6 +45,16 @@ function AddCourierForStockEntry(props: any) {
           </label>
           <input type="text" placeholder="Courier Name" className={`input input-bordered ${errors.courier && 'input-error'}`} {...register("courier", { required: true, minLength: 3 })} />
         </div>
+        <div className="form-control">
+          <label className="label p-1">
+            <span className="label-text text-2xs">AWB Type</span>
+          </label>
+          <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register("type", { required: true, })}>
+            <option disabled={true} selected={true} value="">-- awb type --</option>
+            <option value="series">Series</option>
+            <option value="series_0-6">Series 0-6</option>
+          </select>
+        </div>
 
         <div className="modal-action">
           <div className="btn btn-wide"><Link href="/stocks">Back to Stocks</Link></div>
@@ -60,6 +68,7 @@ function AddCourierForStockEntry(props: any) {
             <tr>
               <th>#</th>
               <th>Courier Name</th>
+              <th>AWB Type</th>
             </tr>
           </thead>
           <tbody>
@@ -68,6 +77,7 @@ function AddCourierForStockEntry(props: any) {
                 return <tr className="" key={value}>
                 <td>{value + 1}</td>
                 <td>{data.name}</td>
+                <td>{data.type}</td>
               </tr>
               })
 
