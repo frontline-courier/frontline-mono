@@ -29,7 +29,7 @@ function StockEntry(props: any) {
         let error = '';
 
         try {
-          const seriesType = props.data.courier.couriers.find((d: any) => d.name === data.courier)['type']
+          const seriesType = props.data.courier.find((d: any) => d.name === data.courier)['type']
           awbNos = getAWBRange(data.awb, seriesType);
         } catch (err: any) {
           error = err.message;
@@ -119,7 +119,7 @@ function StockEntry(props: any) {
           <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register("courier", { required: true, })}>
             <option disabled={true} selected={true} value="">-- courier --</option>
             {
-              props.data.courier.couriers.map((d: any, value: number) => {
+              props.data.courier.map((d: any, value: number) => {
                 return <option key={value} value={d.name}>{d.name}</option>
               })
             }
@@ -133,7 +133,7 @@ function StockEntry(props: any) {
           <select className={`select select-bordered ${errors.coLoader && 'select-error'}`}  {...register("coLoader", { required: false })}>
             <option disabled={true} selected={true} value="">-- co-loader --</option>
             {
-              props.data.loader.coloaders.map((d: any, value: number) => {
+              props.data.loader.map((d: any, value: number) => {
                 return <option key={value} value={d.name}>{d.name}</option>
               })
             }
@@ -185,7 +185,7 @@ function StockEntry(props: any) {
           </thead>
           <tbody>
             {
-              props.data && props.data.stocks?.map((data: any, value: number) => {
+              props.data && props.data.stock?.map((data: any, value: number) => {
                 return <tr className="" key={value}>
                   <td>{value + 1}</td>
                   <td>{data.coloader}</td>
@@ -204,23 +204,17 @@ function StockEntry(props: any) {
 export default withPageAuthRequired(StockEntry);
 
 export async function getServerSideProps(context: any) {
-  const stocks = await fetch(`${process.env.API_HOST}/api/stocks`);
-  const couriers = await fetch(`${process.env.API_HOST}/api/stocks/courier`);
-  const loaders = await fetch(`${process.env.API_HOST}/api/stocks/coloader`);
-  const bookers = await fetch(`${process.env.API_HOST}/api/stocks/booker`);
+  const stockIn = await fetch(`${process.env.API_HOST}/api/stocks/stock-in`);
 
-  const stockData = await stocks.json();
-  const courierData = await couriers.json();
-  const loaderData = await loaders.json();
-  const bookerData = await bookers.json();
+  const stockInData = await stockIn.json();
 
-  if (!stockData || !courierData) {
+  if (!stockInData) {
     return {
       success: false,
     }
   }
 
   return {
-    props: { data: { stock: stockData, courier: courierData, loader: loaderData, booker: bookerData }, success: true },
+    props: { data: { stock: stockInData.stocks, courier: stockInData.couriers, loader: stockInData.coloaders }, success: true },
   }
 }
