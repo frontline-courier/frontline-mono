@@ -580,5 +580,19 @@ export const courierLists = [
       Track: '',
       Status: 1
     },
+    {
+      CourierId: 100,
+      Courier: 'Dotzot Normal',
+      Description: 'Dotzot Normal',
+      Track: 'https://dotzot.in/',
+      Status: 1
+    },
+    {
+      CourierId: 101,
+      Courier: 'Amazon Normal',
+      Description: 'Amazon Normal',
+      Track: 'https://track.amazon.in/',
+      Status: 1
+    },
   ];
   
