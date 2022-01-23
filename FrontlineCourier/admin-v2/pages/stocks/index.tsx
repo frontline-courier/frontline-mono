@@ -35,6 +35,29 @@ function StockEntry(props: any) {
           error = err.message;
         }
 
+        // save to db
+        const saveStocksToDB = (e: any) => {
+          try {
+            const stocksToSave = awbNos.map((value, index) => {
+              return {
+                awb: value,
+                courier: data.courier,
+                coloader: data.coLoader || '',
+                billCost: data.cost || 0,
+              }
+            });
+
+            axios.post('/api/stocks', stocksToSave)
+          }
+          catch (err) {
+            console.log(err);
+          }
+          finally {
+            onClose();
+            setTimeout(() => { router.reload() }, 1000)
+          }
+        }
+
         return (
           <div className="modal modal-open">
             <div className="modal-box">
@@ -80,7 +103,7 @@ function StockEntry(props: any) {
               }
               <div className="modal-action">
                 <label htmlFor="stock-modal" className="btn" onClick={onClose}>Close</label>
-                {!error && <label htmlFor="stock-modal" className="btn btn-primary">Accept</label>}
+                {!error && <label htmlFor="stock-modal" onClick={saveStocksToDB} className="btn btn-primary">Save</label>}
               </div>
             </div>
           </div>
@@ -169,7 +192,7 @@ function StockEntry(props: any) {
         </div>
 
         <div className="modal-action">
-          <input type="submit" className="btn btn-primary btn-wide" disabled={!formState.isValid} value={'Save Stock'}></input>
+          <input type="submit" className="btn btn-primary btn-wide" disabled={!formState.isValid} value={'Preview Stock'}></input>
         </div>
       </form>
 
@@ -181,6 +204,7 @@ function StockEntry(props: any) {
               <th>Courier Name</th>
               <th>Co Loader</th>
               <th>Stock Count</th>
+              <th>Cost/Bill</th>
             </tr>
           </thead>
           <tbody>
@@ -190,6 +214,8 @@ function StockEntry(props: any) {
                   <td>{value + 1}</td>
                   <td>{data.coloader}</td>
                   <td>{data.courier}</td>
+                  <td>{data.awbs.length}</td>
+                  <td>{data.billCost}</td>
                 </tr>
               })
             }

@@ -13,7 +13,7 @@ handler.get(async (req: any, res: any) => {
     const stockCollection = (req.db as Db).collection('stocks');
     const stockDocs = await stockCollection.find();
     const stockCount = await stockDocs.count();
-    const stocks = await stockDocs.toArray();
+    const stocks = Array.from(groupCourier(await stockDocs.toArray()));
     // courier
     const courierCollection = (req.db as Db).collection('stocks_courier');
     const courierDocs = await courierCollection.find();
@@ -39,5 +39,23 @@ handler.get(async (req: any, res: any) => {
     req.dbClient.close();
   }
 });
+
+function groupCourier(arr: any) {
+  const map = new Map();
+
+  for (let a of arr) {
+    
+    const key = a.courier + a.coloader;
+    const exists = map.get(key);
+
+    if (exists) {
+      map.set(key, { courier: a.courier, coloader: a.coloader, billCost: a.billCost, awbs: [...exists.awbs, a.awb] });
+    } else {
+      map.set(key, { courier: a.courier, coloader: a.coloader, billCost: a.billCost, awbs: [a.awb] });
+    }
+  }
+
+  return map.values();
+}
 
 export default handler;
