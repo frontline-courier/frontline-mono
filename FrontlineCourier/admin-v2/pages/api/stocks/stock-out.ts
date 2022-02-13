@@ -9,9 +9,9 @@ handler.use(middleware);
 handler.get(async (req: any, res: any) => {
 
   try {
-    // stock
+    // stocks
     const stockCollection = (req.db as Db).collection('stocks');
-    const stockDocs = await stockCollection.find({ out: {$ne: true} });
+    const stockDocs = await stockCollection.find({out: true});
     const stockCount = await stockDocs.count();
     const stocks = Array.from(groupCourier(await stockDocs.toArray()));
     // courier
@@ -19,18 +19,18 @@ handler.get(async (req: any, res: any) => {
     const courierDocs = await courierCollection.find();
     const couriers = await courierDocs.toArray();
     // co-courier
-    const coLoaderCollection = (req.db as Db).collection('stocks_coloader');
-    const coLoaderDocs = await coLoaderCollection.find();
-    const coloaders = await coLoaderDocs.toArray();
+    const bookerCollection = (req.db as Db).collection('stocks_booker');
+    const bookerDoc = await bookerCollection.find();
+    const bookers = await bookerDoc.toArray();
 
     res.json(
       {
         stocks: stocks, stockCount: stockCount,
         couriers: couriers,
-        coloaders: coloaders,
-     }
-     );
-  
+        bookers: bookers,
+      }
+    );
+
   }
   catch (err) {
     res.send({ stocks: [], count: 0 });
@@ -44,7 +44,7 @@ function groupCourier(arr: any) {
   const map = new Map();
 
   for (let a of arr) {
-    
+
     const key = a.courier + a.coloader;
     const exists = map.get(key);
 
