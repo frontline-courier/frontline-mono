@@ -594,5 +594,12 @@ export const courierLists = [
       Track: 'https://track.amazon.in/',
       Status: 1
     },
+    {
+      CourierId: 102,
+      Courier: 'PXC Pacific Global',
+      Description: 'PXC Pacific Global',
+      Track: 'http://www.pacificexp.net/',
+      Status: 1
+    },
   ];
   
