@@ -10,6 +10,7 @@ handler.post(async (req: any, res: any) => {
     let data = req.body;
     let id = data._id;
     delete data._id;
+    data.bookedDate = data.bookedDate ? new Date(data.bookedDate) : undefined;
 
     try {
 
