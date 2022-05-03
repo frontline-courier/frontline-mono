@@ -601,5 +601,54 @@ export const courierLists = [
       Track: 'http://www.pacificexp.net/',
       Status: 1
     },
+    {
+      CourierId: 103,
+      Courier: 'Smartr Priority',
+      Description: 'Smartr Priority',
+      Track: 'https://smartr.in/track.html?awb=',
+      Status: 1
+    },
+    {
+      CourierId: 104,
+      Courier: 'Smartr Normal',
+      Description: 'Smartr Normal',
+      Track: 'https://smartr.in/track.html?awb=',
+      Status: 1
+    },
+    {
+      CourierId: 105,
+      Courier: 'Skyex Normal',
+      Description: 'Skyex Normal',
+      Track: 'https://www.skyexpressinternational.com/Home/Tracking',
+      Status: 1
+    },
+    {
+      CourierId: 106,
+      Courier: 'Skyex Priority',
+      Description: 'Skyex Priority',
+      Track: 'https://www.skyexpressinternational.com/Home/Tracking',
+      Status: 1
+    },
+    {
+      CourierId: 107,
+      Courier: 'TCS Normal',
+      Description: 'TCS Normal',
+      Track: 'https://www.tscexpressbd.com/',
+      Status: 1
+    },
+    {
+      CourierId: 108,
+      Courier: 'TCS Economy',
+      Description: 'TCS Economy',
+      Track: 'https://www.tscexpressbd.com/',
+      Status: 1
+    },
+    {
+      CourierId: 109,
+      Courier: 'TNT Economy',
+      Description: 'TNT Economy',
+      Track: 'https://www.tnt.com/express/en_in/site/shipping-tools/tracking.html',
+      Status: 1
+    },
   ];
   
