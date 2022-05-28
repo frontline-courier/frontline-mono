@@ -10,7 +10,7 @@
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.6.1",
     "axios": "^0.24.0",
-    "daisyui": "^1.16.2",
+    "daisyui": "^2.15.1",
     "dateformat": "^5.0.2",
     "moment": "^2.29.1",
     "mongodb": "^4.2.0",
