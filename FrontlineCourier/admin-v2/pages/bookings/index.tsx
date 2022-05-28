@@ -46,7 +46,11 @@ function BookingPage() {
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm<any>({
     mode: "onChange",
-    defaultValues: {}
+    defaultValues: {
+      courier: 0,
+      status: 0,
+      shipmentMode: 0,
+    }
   });
   const { user, error, isLoading } = useUser();
   const [data, setData] = useState([]);
@@ -219,7 +223,7 @@ function BookingPage() {
             <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register("awbNumber", { minLength: 3 })} />
             <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered" {...register("referenceNumber", { minLength: 3 })} />
             <select className={`select select-bordered`}  {...register("courier", { valueAsNumber: true },)}>
-              <option selected={true} value={0}>-- courier --</option>
+              <option value={0}>-- courier --</option>
               {
                 courierList.map((d) => {
                   return <option key={d.CourierId} value={d.CourierId}>{d.Courier}</option>
@@ -227,14 +231,14 @@ function BookingPage() {
               }
             </select>
             <select className={`select select-bordered`} {...register("shipmentMode", { valueAsNumber: true })}>
-              <option selected={true} value={0}>-- shipment mode --</option>
+              <option value={0}>-- shipment mode --</option>
               <option value={1}>Domestic</option>
               <option value={2}>International</option>
               <option value={3}>Local</option>
               <option value={0}>NA</option>
             </select>
             <select className="select select-bordered" {...register("status")}>
-              <option selected={true} value="">-- status --</option>
+              <option value="">-- status --</option>
               {
                 statusList.map((s, i) => {
                   return <option key={s.StatusId + i} value={s.ShipmentStatus}>{s.ShipmentStatus}</option>

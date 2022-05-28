@@ -36,6 +36,11 @@ function AddBookingPage() {
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm<Inputs>({
     mode: "onChange",
     defaultValues: {
+      courier: 0,
+      doxType: 0,
+      shipmentMode: 0,
+      transportMode: 0,
+      coCourier: 0,
       bookedDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
     }
   });
@@ -104,7 +109,7 @@ function AddBookingPage() {
                 <span className="label-text text-2xs">Courier</span>
               </label>
               <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register("courier", { required: true, valueAsNumber: true },)}>
-                <option disabled={true} selected={true} value="">-- courier --</option>
+                <option disabled={true} value={0}>-- courier --</option>
                 {
                   couriers.map((d) => {
                     return <option key={d.CourierId} value={d.CourierId}>{d.Courier}</option>
@@ -130,7 +135,7 @@ function AddBookingPage() {
                 <span className="label-text text-2xs">DoxType</span>
               </label>
               <select className={`select select-bordered ${errors.doxType && 'select-error'}`} {...register("doxType", { required: true, valueAsNumber: true })}>
-                <option disabled={true} selected={true} value="">-- dox type --</option>
+                <option disabled={true} value={0}>-- dox type --</option>
                 <option value={1}>Dox</option>
                 <option value={2}>Non Dox</option>
                 <option value={0}>NA</option>
@@ -154,7 +159,7 @@ function AddBookingPage() {
                 <span className="label-text text-2xs">Shipment Mode</span>
               </label>
               <select className={`select select-bordered ${errors.shipmentMode && 'select-error'}`} {...register("shipmentMode", { required: true, valueAsNumber: true })}>
-                <option disabled={true} selected={true} value="">-- shipment mode --</option>
+                <option disabled={true} value={0}>-- shipment mode --</option>
                 <option value={1}>Domestic</option>
                 <option value={2}>International</option>
                 <option value={3}>Local</option>
@@ -166,7 +171,7 @@ function AddBookingPage() {
                 <span className="label-text text-2xs">Transport Mode</span>
               </label>
               <select className={`select select-bordered ${errors.transportMode && 'select-error'}`} {...register("transportMode", { required: true, valueAsNumber: true })}>
-                <option disabled={true} selected={true} value="">-- transport mode --</option>
+                <option disabled={true} value={0}>-- transport mode --</option>
                 <option value={1}>Air</option>
                 <option value={2}>Cargo</option>
                 <option value={3}>Air Cargo</option>
@@ -183,7 +188,7 @@ function AddBookingPage() {
                 <span className="label-text text-2xs">Co Courier</span>
               </label>
               <select className={`select select-bordered ${errors.awbNumber && 'select-error'}`} {...register("coCourier", { valueAsNumber: true })}>
-                <option disabled={true} selected={true} value="">-- co courier --</option>
+                <option disabled={true} value={0}>-- co courier --</option>
                 <option value={1}>Yes</option>
                 <option value={0}>No</option>
               </select>
