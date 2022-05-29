@@ -24,9 +24,10 @@ function BookingPage() {
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm<any>({
     mode: "onChange",
     defaultValues: {
-      courier: 0,
-      status: 0,
-      shipmentMode: 0,
+      client: '',
+      courier: '',
+      mode: '',
+      service: '',
     }
   });
   const { user, error, isLoading } = useUser();
@@ -35,14 +36,14 @@ function BookingPage() {
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(25);
-  const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', courier: 0, shipmentMode: 0, status: '' });
+  const [searchData, setSearchData] = useState({ pod: '', client: '', courier: '', mode: '', service: '' });
 
   const fetchShipment = async (page: number) => {
 
     setLoading(true);
     const response =
       await axios.get(
-        `${apiPath.creditBooking}?page=${page}&limit=${perPage}&courier=${searchData.courier || 0}&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''}&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}`);
+        `${apiPath.creditBooking}?page=${page}&limit=${perPage}&courier=${searchData.courier || ''}&mode=${searchData.mode || ''}&client=${searchData.client || ''}&pod=${searchData.pod}&service=${searchData.service}`);
     setData(response.data.booking);
     setTotalRows(response.data.count);
     setLoading(false);
@@ -55,7 +56,7 @@ function BookingPage() {
   const handlePerRowsChange = async (newPerPage: number, page: number) => {
     setLoading(true);
     const response =
-      await axios.get(`${apiPath.creditBooking}?page=${page}&limit=${newPerPage}&courier=${searchData.courier || 0}&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''}&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}`);
+      await axios.get(`${apiPath.creditBooking}?page=${page}&limit=${newPerPage}&courier=${searchData.courier || ''}&mode=${searchData.mode || ''}&client=${searchData.client || ''}&pod=${searchData.pod}&service=${searchData.service}`);
     setData(response.data.booking);
     setPerPage(newPerPage);
     setLoading(false);
@@ -164,10 +165,10 @@ function BookingPage() {
         </div>
         <div>
           <form onSubmit={handleSubmit(onSubmit)} role="search">
-            <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register("awbNumber", { minLength: 3 })} />
+            <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register("pod", { minLength: 3 })} />
 
-            <select className={`select select-bordered `}  {...register("client", { required: true },)}>
-              <option disabled={true} value="">-- client --</option>
+            <select className={`select select-bordered `}  {...register("client")}>
+              <option value={''}>-- client --</option>
               {
                 creditClients.map((d) => {
                   return <option key={d.code} value={d.name}>{d.name}</option>
@@ -175,8 +176,8 @@ function BookingPage() {
               }
             </select>
 
-            <select className={`select select-bordered`}  {...register("courier", { required: true },)}>
-              <option disabled={true} value="">-- courier --</option>
+            <select className={`select select-bordered`}  {...register("courier")}>
+              <option value={''}>-- courier --</option>
               {
                 creditCourier.map((d) => {
                   return <option key={d} value={d}>{d}</option>
@@ -184,8 +185,8 @@ function BookingPage() {
               }
             </select>
 
-            <select className={`select select-bordered`} {...register("mode", { required: true })}>
-              <option disabled={true} value="">-- shipment mode --</option>
+            <select className={`select select-bordered`} {...register("mode")}>
+              <option value={''}>-- shipment mode --</option>
               {
                 creditModes.map((d) => {
                   return <option key={d} value={d}>{d}</option>
@@ -193,8 +194,8 @@ function BookingPage() {
               }
             </select>
 
-            <select className={`select select-bordered `} {...register("service", { required: true })}>
-              <option disabled={true} value="">-- service --</option>
+            <select className={`select select-bordered `} {...register("service")}>
+              <option value={''}>-- service --</option>
               {
                 creditServices.map((d) => {
                   return <option key={d} value={d}>{d}</option>

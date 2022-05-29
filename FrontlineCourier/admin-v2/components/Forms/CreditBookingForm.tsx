@@ -69,7 +69,7 @@ export default function CreateCreditForm() {
           await axios.patch(`/api/credit/bookings/${id}`, { ...data, createdBy: user?.email });
         }
       } else {
-        await axios.post(`/api/credit/bookings/${id}`, { ...data, createdBy: user?.email });
+        await axios.post(`/api/credit/bookings`, { ...data, createdBy: user?.email });
       }
       router.push('/credit');
 

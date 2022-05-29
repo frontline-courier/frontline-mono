@@ -27,27 +27,27 @@ handler.post(async (req: any, res: any) => {
 handler.get(async (req: any, res: any) => {
     const limit = parseInt(req.query.limit, 10) || 25;
     const page = parseInt(req.query.page, 10)  || 1;
-    const awb = req.query.awb || '';
-    const courier = parseInt(req.query.courier, 10) || 0;
-    const mode = parseInt(req.query.mode, 10) || 0;
-    const status = req.query.status || '';
+    const { pod, client, courier, mode, service } = req.query
 
 
     let docs = [];
     let count = 0;
     let query: any = {};
 
-    if (awb) {
-        query.awbNumber = awb;
+    if (pod) {
+        query.pod = pod;
+    }
+    if (client) {
+        query.client = client;
     }
     if (courier) {
         query.courier = courier;
     }
     if (mode) {
-        query.shipmentMode = mode;
+        query.mode = mode;
     }
-    if (status) {
-        query.shipmentStatus = status;
+    if (service) {
+        query.service = service;
     }
 
     try {
