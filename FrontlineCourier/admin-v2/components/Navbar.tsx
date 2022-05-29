@@ -67,6 +67,7 @@ export default function AppNavbar() {
               {/* <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/dashboard">Dashboard</a> </li> */}
               <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings/quick">Quick Booking</a> </li>
               <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings">Booking</a> </li>
+              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/credit">Credit</a> </li>
               <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/stocks">Stock Entry</a> </li>
               <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/stocks/out">Stock Out</a> </li>
               {/* <li>
