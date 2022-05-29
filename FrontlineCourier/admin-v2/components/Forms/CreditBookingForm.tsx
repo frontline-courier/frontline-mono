@@ -176,35 +176,35 @@ export default function CreateCreditForm() {
               <label className="label p-1">
                 <span className="label-text text-2xs">Actual Weight</span>
               </label>
-              <input type="text" placeholder="Actual Weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register("actualWeight", { required: true, valueAsNumber: true })} />
+              <input type="text" placeholder="Actual Weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register("actualWeight", { valueAsNumber: true })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Vol Weight</span>
               </label>
-              <input type="text" placeholder="Volume weight" className={`input input-bordered ${errors.volWeight && 'input-error'}`} {...register("volWeight", { required: true, valueAsNumber: true })} />
+              <input type="text" placeholder="Volume weight" className={`input input-bordered ${errors.volWeight && 'input-error'}`} {...register("volWeight", { valueAsNumber: true })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">ODA / EDL</span>
               </label>
-              <input type="text" placeholder="ODA / EDL" className={`input input-bordered ${errors.odaEdl && 'input-error'}`} {...register("odaEdl", { required: true, valueAsNumber: true })} />
+              <input type="text" placeholder="ODA / EDL" className={`input input-bordered ${errors.odaEdl && 'input-error'}`} {...register("odaEdl", { valueAsNumber: true })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Carrier Insurance (2.5%)</span>
               </label>
-              <input type="text" placeholder="Carrier Insurance" className={`input input-bordered ${errors.carrierInsurance && 'input-error'}`} {...register("carrierInsurance", { required: true, valueAsNumber: true })} />
+              <input type="text" placeholder="Carrier Insurance" className={`input input-bordered ${errors.carrierInsurance && 'input-error'}`} {...register("carrierInsurance", { valueAsNumber: true })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">FOV Risk (0.25%)</span>
               </label>
-              <input type="text" placeholder="FOV Risk" className={`input input-bordered ${errors.fovRisk && 'input-error'}`} {...register("fovRisk", { required: true, valueAsNumber: true })} />
+              <input type="text" placeholder="FOV Risk" className={`input input-bordered ${errors.fovRisk && 'input-error'}`} {...register("fovRisk", {valueAsNumber: true })} />
             </div>
 
             <div className="form-control">

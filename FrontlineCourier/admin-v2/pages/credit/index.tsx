@@ -206,7 +206,7 @@ function BookingPage() {
           </form>
         </div>
         <div className="">
-          <span className="btn btn-primary mx-2"><Link href={pagePath.createCreditBooking}>New Booking</Link></span>
+          <span className="btn btn-primary mx-2"><Link href={pagePath.createCreditBooking}>New Credit Entry</Link></span>
         </div>
       </div>
 
