@@ -67,9 +67,29 @@ export default function AppNavbar() {
               {/* <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/dashboard">Dashboard</a> </li> */}
               <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings/quick">Quick Booking</a> </li>
               <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings">Booking</a> </li>
-              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/credit">Credit</a> </li>
-              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/stocks">Stock Entry</a> </li>
-              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/stocks/out">Stock Out</a> </li>
+
+              <li>
+                <div className="dropdown cursor-pointer">
+                  <div tabIndex={0} className="md:p-4 py-2 block hover:bg-secondary">
+                    Credit
+                  </div>
+                  <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-52">
+                    <li> <a className="md:p-4 py-2 block" href="/credit">Entry</a> </li>
+                    <li> <a className="md:p-4 py-2 block" href="/credit/reports">Reports</a> </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <div className="dropdown cursor-pointer">
+                  <div tabIndex={0} className="md:p-4 py-2 block hover:bg-secondary">
+                    Stock
+                  </div>
+                  <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-52">
+                    <li> <a className="md:p-4 py-2 block" href="/stocks">Stock In</a> </li>
+                    <li> <a className="md:p-4 py-2 block" href="/stocks/out">Stock Out</a> </li>
+                  </ul>
+                </div>
+              </li>
               {/* <li>
               <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings"
               >Reporting</a
@@ -90,10 +110,10 @@ export default function AppNavbar() {
                       <a>Logged as {user.nickname || user.name || user.email}</a>
                     </li>
                     <li>
-                      <a> <RiSettings5Line/> &nbsp; Settings</a>
+                      <a> <RiSettings5Line /> &nbsp; Settings</a>
                     </li>
                     <li>
-                      <a href="/api/auth/logout"> <RiLogoutBoxRLine/> &nbsp; Logout</a>
+                      <a href="/api/auth/logout"> <RiLogoutBoxRLine /> &nbsp; Logout</a>
                     </li>
                   </ul>
                 </div>
@@ -110,6 +130,6 @@ export default function AppNavbar() {
           }
         </ul>
       </div>
-    </nav>
+    </nav >
   )
 }
