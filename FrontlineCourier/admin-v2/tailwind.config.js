@@ -6,8 +6,8 @@ module.exports = {
     './hooks/**/*.{js,jsx,ts,tsx}',
     './styles/**/*.css',
   ],
-  darkMode: false, // or 'media' or 'class'
   theme: {
+    themes: ["fantasy"],
     extend: {},
   },
   plugins: [
