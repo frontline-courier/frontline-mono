@@ -1,9 +1,9 @@
 export const creditModes = [
   'AIR',
-  'AC',
+  'ACC',
   'SFC',
-  'EXP',
-  'PRI',
+  'SEA',
   'ECO',
-  'CAR',
+  'BDD',
+  'BDE',
 ];

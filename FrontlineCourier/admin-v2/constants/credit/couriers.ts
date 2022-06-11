@@ -1,6 +1,6 @@
 export const creditCourier = [
   'FRANCH',
-  'TPC',
+  'PROFESSIONAL',
   'DTDC',
   'BLUEDART',
   'TIRUPATHI',
@@ -22,4 +22,6 @@ export const creditCourier = [
   'ACX',
   'SKYEX',
   'SKYNET',
-];
+  'OTHER',
+  'LOGISTICS',
+] as const;
