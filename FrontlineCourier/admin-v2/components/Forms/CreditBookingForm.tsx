@@ -7,9 +7,12 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { creditClients } from '../../constants/credit/clients';
 import { creditCourier } from '../../constants/credit/couriers';
+import { creditCourierVolumeMapping } from '../../constants/credit/courierVolumeMapping';
 import { creditModes } from '../../constants/credit/mode';
 import { creditServices } from '../../constants/credit/service';
 import { pagePath } from '../../constants/path/pagePath';
+import { volumeWeightCalculation } from '../../helpers/calculations/volumeWeightCalculation';
+import { volumeFieldValidation } from '../../helpers/validations/volumeFieldValidation';
 
 export default function CreateCreditForm() {
 
@@ -79,6 +82,37 @@ export default function CreateCreditForm() {
       setLoader(false);
     }
   };
+
+  const onVolumeChange = async (e: any) => {
+    const lbh = e.target.value;
+
+    if (lbh.toLowerCase().split('x').length !== 3) {
+      setValue('actualWeight', 0);
+      return;
+    };
+
+    const [ l, b, h ] = lbh.toLowerCase().split('x');
+
+    if (isNaN(parseInt(l, 10)) || isNaN(parseInt(b, 10)) || isNaN(parseInt(h, 10))) {
+      setValue('actualWeight', 0);
+      return;
+    }
+
+    const volFormula = creditCourierVolumeMapping
+        .find((c) => c.courier === watch('courier') && c.mode ===  watch('mode'))?.volume || 'LBH/5000';
+  
+    setValue('actualWeight', volumeWeightCalculation(volFormula, l, b, h));
+  }
+
+  const onAmountChange = async (e: any) => {
+    const amount = parseFloat(e.target.value);
+    const carrierInsurance = Math.round((amount * (2.5 / 100)) * 100) / 100;
+    const fovRisk = Math.round((amount * (0.25 / 100)) * 100) / 100;
+
+    setValue('carrierInsurance', carrierInsurance);
+    setValue('fovRisk', fovRisk);
+    setValue('total',  Math.round((amount + carrierInsurance+ fovRisk) * 100) / 100);
+  }
 
   return (
     <>
@@ -174,6 +208,13 @@ export default function CreateCreditForm() {
 
             <div className="form-control">
               <label className="label p-1">
+                <span className="label-text text-2xs">Vol Weight (LxBxH)</span>
+              </label>
+              <input type="text" placeholder="100x100x100" className={`input input-bordered ${errors.volWeight && 'input-error'}`} {...register('volWeight', { validate: volumeFieldValidation })} onChange={onVolumeChange} />
+            </div>
+
+            <div className="form-control">
+              <label className="label p-1">
                 <span className="label-text text-2xs">Actual Weight</span>
               </label>
               <input type="text" placeholder="Actual Weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register('actualWeight', { valueAsNumber: true })} />
@@ -181,16 +222,9 @@ export default function CreateCreditForm() {
 
             <div className="form-control">
               <label className="label p-1">
-                <span className="label-text text-2xs">Vol Weight</span>
-              </label>
-              <input type="text" placeholder="Volume weight" className={`input input-bordered ${errors.volWeight && 'input-error'}`} {...register('volWeight', { valueAsNumber: true })} />
-            </div>
-
-            <div className="form-control">
-              <label className="label p-1">
                 <span className="label-text text-2xs">Amount</span>
               </label>
-              <input type="text" placeholder="Amount" className={`input input-bordered ${errors.amount && 'input-error'}`} {...register('amount', { required: true, valueAsNumber: true })} />
+              <input type="text" placeholder="Amount" className={`input input-bordered ${errors.amount && 'input-error'}`} {...register('amount', { required: true, valueAsNumber: true })} onChange={onAmountChange} />
             </div>
 
             <div className="form-control">
@@ -211,7 +245,14 @@ export default function CreateCreditForm() {
               <label className="label p-1">
                 <span className="label-text text-2xs">FOV Risk (0.25%)</span>
               </label>
-              <input type="text" placeholder="FOV Risk" className={`input input-bordered ${errors.fovRisk && 'input-error'}`} {...register('fovRisk', {valueAsNumber: true })} />
+              <input type="text" placeholder="FOV Risk" className={`input input-bordered ${errors.fovRisk && 'input-error'}`} {...register('fovRisk', { valueAsNumber: true })} />
+            </div>
+
+            <div className="form-control">
+              <label className="label p-1">
+                <span className="label-text text-2xs">Total</span>
+              </label>
+              <input type="text" placeholder="Total" className={`input input-bordered ${errors.amount && 'input-error'}`} {...register('total', { valueAsNumber: true })} />
             </div>
 
           </div>

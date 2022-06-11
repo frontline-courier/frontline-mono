@@ -1,4 +1,4 @@
-import { stringRange } from "../strings/getRange";
+import { stringRange } from '../strings/getRange';
 
 export function getAWBRange(awbs: string, series: string) {
 
