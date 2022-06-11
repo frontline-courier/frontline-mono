@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { shipmentStatus } from "../../../models/shipmentStatus";
-import { useForm } from "react-hook-form";
-import axios from "axios";
-import { statusRelation } from "../../../constants/deliveryRelation";
-import moment from "moment";
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useState } from 'react';
+import { shipmentStatus } from '../../../models/shipmentStatus';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { statusRelation } from '../../../constants/deliveryRelation';
+import moment from 'moment';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 const status = shipmentStatus;
 const relations = statusRelation;
@@ -127,13 +127,13 @@ function ShipmentStatusPage(props: any) {
                   <label className="label">
                     <span className="label-text">Status Date</span>
                   </label>
-                  <input type="datetime-local" placeholder="Status Date" className="input input-bordered" {...register("statusDate", { required: true })} />
+                  <input type="datetime-local" placeholder="Status Date" className="input input-bordered" {...register('statusDate', { required: true })} />
                 </div>
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text">Status</span>
                   </label>
-                  <select className="select select-bordered" {...register("statusId", { required: true })}>
+                  <select className="select select-bordered" {...register('statusId', { required: true })}>
                     <option disabled={true} selected={true}>-- status --</option>
                     {
                       status.map((s, i) => {
@@ -146,21 +146,21 @@ function ShipmentStatusPage(props: any) {
                   <label className="label">
                     <span className="label-text">Remarks</span>
                   </label>
-                  <textarea placeholder="remark" className="textarea h-20 textarea-bordered" {...register("remark")} />
+                  <textarea placeholder="remark" className="textarea h-20 textarea-bordered" {...register('remark')} />
                 </div>
 
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text">Receiver Name</span>
                   </label>
-                  <input type="text" placeholder="Receiver Name" className="input input-bordered" {...register("receivedPerson")} />
+                  <input type="text" placeholder="Receiver Name" className="input input-bordered" {...register('receivedPerson')} />
                 </div>
 
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text">Relation with Receiver</span>
                   </label>
-                  <select className="select select-bordered" {...register("receivedPersonRelation")}>
+                  <select className="select select-bordered" {...register('receivedPersonRelation')}>
                     <option disabled={true} selected={true}>-- courier --</option>
                     {
                       relations.map((d, i) => {

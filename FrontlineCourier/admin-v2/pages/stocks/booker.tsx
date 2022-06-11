@@ -1,14 +1,14 @@
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import axios from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 function AddCourierForStockEntry(props: any) {
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
   });
   const errors = formState.errors;
   const router = useRouter();
@@ -46,7 +46,7 @@ function AddCourierForStockEntry(props: any) {
           <label className="label p-1">
             <span className="label-text text-2xs">Booker Type</span>
           </label>
-          <select className={`select select-bordered ${errors.bookerType && 'select-error'}`}  {...register("bookerType", { required: true })}>
+          <select className={`select select-bordered ${errors.bookerType && 'select-error'}`}  {...register('bookerType', { required: true })}>
             <option disabled={true} selected={true}>-- type --</option>
             <option value="CB">Counter Booking</option>
             <option value="CO">Co-Courier</option>
@@ -59,7 +59,7 @@ function AddCourierForStockEntry(props: any) {
           <label className="label p-1">
             <span className="label-text text-2xs">Booker Name</span>
           </label>
-          <input type="text" placeholder="Booker Name" className={`input input-bordered ${errors.booker && 'input-error'}`} {...register("booker", { required: true, minLength: 3 })} />
+          <input type="text" placeholder="Booker Name" className={`input input-bordered ${errors.booker && 'input-error'}`} {...register('booker', { required: true, minLength: 3 })} />
         </div>
 
 

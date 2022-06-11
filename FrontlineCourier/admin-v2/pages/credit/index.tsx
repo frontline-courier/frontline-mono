@@ -1,28 +1,28 @@
-import { useUser } from "@auth0/nextjs-auth0";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useUser } from '@auth0/nextjs-auth0';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import DataTable from "react-data-table-component";
+import DataTable from 'react-data-table-component';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 
-import moment from "moment";
-import { SubmitHandler, useForm } from "react-hook-form";
+import moment from 'moment';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
-import { MdUpdate } from "react-icons/md";
-import { apiPath } from "../../constants/path/apiPath";
-import { creditModes } from "../../constants/credit/mode";
-import { creditClients } from "../../constants/credit/clients";
-import { creditCourier } from "../../constants/credit/couriers";
-import { creditServices } from "../../constants/credit/service";
-import { pagePath } from "../../constants/path/pagePath";
+import { MdUpdate } from 'react-icons/md';
+import { apiPath } from '../../constants/path/apiPath';
+import { creditModes } from '../../constants/credit/mode';
+import { creditClients } from '../../constants/credit/clients';
+import { creditCourier } from '../../constants/credit/couriers';
+import { creditServices } from '../../constants/credit/service';
+import { pagePath } from '../../constants/path/pagePath';
 
 const DeletePage = () => { }
 
 function BookingPage() {
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm<any>({
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       client: '',
       courier: '',
@@ -165,9 +165,9 @@ function BookingPage() {
         </div>
         <div>
           <form onSubmit={handleSubmit(onSubmit)} role="search">
-            <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register("pod", { minLength: 3 })} />
+            <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register('pod', { minLength: 3 })} />
 
-            <select className={`select select-bordered `}  {...register("client")}>
+            <select className={'select select-bordered '}  {...register('client')}>
               <option value={''}>-- client --</option>
               {
                 creditClients.map((d) => {
@@ -176,7 +176,7 @@ function BookingPage() {
               }
             </select>
 
-            <select className={`select select-bordered`}  {...register("courier")}>
+            <select className={'select select-bordered'}  {...register('courier')}>
               <option value={''}>-- courier --</option>
               {
                 creditCourier.map((d) => {
@@ -185,7 +185,7 @@ function BookingPage() {
               }
             </select>
 
-            <select className={`select select-bordered`} {...register("mode")}>
+            <select className={'select select-bordered'} {...register('mode')}>
               <option value={''}>-- shipment mode --</option>
               {
                 creditModes.map((d) => {
@@ -194,7 +194,7 @@ function BookingPage() {
               }
             </select>
 
-            <select className={`select select-bordered `} {...register("service")}>
+            <select className={'select select-bordered '} {...register('service')}>
               <option value={''}>-- service --</option>
               {
                 creditServices.map((d) => {

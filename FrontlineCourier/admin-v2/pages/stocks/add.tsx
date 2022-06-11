@@ -1,10 +1,10 @@
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 function AddStockEntry() {
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
   });
   const errors = formState.errors;
 

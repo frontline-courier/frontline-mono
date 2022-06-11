@@ -1,14 +1,14 @@
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import axios from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 function AddCourierForStockEntry(props: any) {
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
   });
   const errors = formState.errors;
   const router = useRouter();
@@ -43,13 +43,13 @@ function AddCourierForStockEntry(props: any) {
           <label className="label p-1">
             <span className="label-text text-2xs">Courier Name</span>
           </label>
-          <input type="text" placeholder="Courier Name" className={`input input-bordered ${errors.courier && 'input-error'}`} {...register("courier", { required: true, minLength: 3 })} />
+          <input type="text" placeholder="Courier Name" className={`input input-bordered ${errors.courier && 'input-error'}`} {...register('courier', { required: true, minLength: 3 })} />
         </div>
         <div className="form-control">
           <label className="label p-1">
             <span className="label-text text-2xs">AWB Type</span>
           </label>
-          <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register("type", { required: true, })}>
+          <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register('type', { required: true, })}>
             <option disabled={true} selected={true} value="">-- awb type --</option>
             <option value="series">Series</option>
             <option value="series_0-6">Series 0-6</option>

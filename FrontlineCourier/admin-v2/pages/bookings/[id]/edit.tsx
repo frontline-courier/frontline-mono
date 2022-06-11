@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Router from "next/router";
-import { useRouter } from "next/router";
-import { useForm, SubmitHandler, useFormState } from "react-hook-form";
-import { courierLists } from "../../../constants/courierList";
-import moment from "moment";
-import axios from "axios";
-import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0";
+import Router from 'next/router';
+import { useRouter } from 'next/router';
+import { useForm, SubmitHandler, useFormState } from 'react-hook-form';
+import { courierLists } from '../../../constants/courierList';
+import moment from 'moment';
+import axios from 'axios';
+import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 type Inputs = {
   awbNumber: string,
@@ -42,7 +42,7 @@ function EditBookingPage(props: any) {
   const { user } = useUser();
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm<Inputs>({
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: props.data,
   });
   const errors = formState.errors;
@@ -55,10 +55,10 @@ function EditBookingPage(props: any) {
         await axios.post('/api/bookings/update', { ...data, updatedBy: user?.email })
 
       reset({});
-      resetField("courier");
-      resetField("doxType");
-      resetField("shipmentMode");
-      resetField("transportMode");
+      resetField('courier');
+      resetField('doxType');
+      resetField('shipmentMode');
+      resetField('transportMode');
       Router.push('/bookings');
     } catch (e: any) {
       setError(e?.message);
@@ -69,7 +69,7 @@ function EditBookingPage(props: any) {
 
   useEffect(() => {
     props.data.bookedDate = moment(props.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL);
-    resetField("bookedDate");
+    resetField('bookedDate');
   }, [id]);
 
   return (
@@ -89,26 +89,26 @@ function EditBookingPage(props: any) {
               <label className="label p-1">
                 <span className="label-text text-2xs">AWB</span>
               </label>
-              <input type="text" placeholder="AWB" className={`input input-bordered ${errors.awbNumber && 'input-error'}`} {...register("awbNumber", { required: true, minLength: 5 })} />
+              <input type="text" placeholder="AWB" className={`input input-bordered ${errors.awbNumber && 'input-error'}`} {...register('awbNumber', { required: true, minLength: 5 })} />
             </div>
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Reference</span>
               </label>
-              <input type="text" placeholder="Reference" className={`input input-bordered ${errors.referenceNumber && 'input-error'}`} {...register("referenceNumber", { minLength: 5 })} />
+              <input type="text" placeholder="Reference" className={`input input-bordered ${errors.referenceNumber && 'input-error'}`} {...register('referenceNumber', { minLength: 5 })} />
             </div>
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Booking Date</span>
               </label>
-              <input type="datetime-local" placeholder="Booking Date" className={`input input-bordered ${errors.bookedDate && 'input-error'}`} {...register("bookedDate", { required: true, valueAsDate: true })} />
+              <input type="datetime-local" placeholder="Booking Date" className={`input input-bordered ${errors.bookedDate && 'input-error'}`} {...register('bookedDate', { required: true, valueAsDate: true })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Courier</span>
               </label>
-              <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register("courier", { required: true, valueAsNumber: true },)}>
+              <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register('courier', { required: true, valueAsNumber: true },)}>
                 <option disabled={true} selected={true} value="">-- courier --</option>
                 {
                   couriers.map((d) => {
@@ -121,20 +121,20 @@ function EditBookingPage(props: any) {
               <label className="label p-1">
                 <span className="label-text text-2xs">Shipper Name</span>
               </label>
-              <input type="text" placeholder="Shipper Name" className={`input input-bordered ${errors.shipperName && 'input-error'}`} {...register("shipperName", { required: true, minLength: 3 })} />
+              <input type="text" placeholder="Shipper Name" className={`input input-bordered ${errors.shipperName && 'input-error'}`} {...register('shipperName', { required: true, minLength: 3 })} />
             </div>
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Origin</span>
               </label>
-              <input type="text" placeholder="Origin" className={`input input-bordered ${errors.origin && 'input-error'}`} {...register("origin", { required: true, minLength: 3 })} />
+              <input type="text" placeholder="Origin" className={`input input-bordered ${errors.origin && 'input-error'}`} {...register('origin', { required: true, minLength: 3 })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">DoxType</span>
               </label>
-              <select className={`select select-bordered ${errors.doxType && 'select-error'}`} {...register("doxType", { required: true, valueAsNumber: true })}>
+              <select className={`select select-bordered ${errors.doxType && 'select-error'}`} {...register('doxType', { required: true, valueAsNumber: true })}>
                 <option disabled={true} selected={true} value="">-- dox type --</option>
                 <option value={1}>Dox</option>
                 <option value={2}>Non Dox</option>
@@ -145,20 +145,20 @@ function EditBookingPage(props: any) {
               <label className="label p-1">
                 <span className="label-text text-2xs">Receiver Name</span>
               </label>
-              <input type="text" placeholder="Receiver Name" className={`input input-bordered ${errors.receiverName && 'input-error'}`} {...register("receiverName", { required: true, minLength: 3 })} />
+              <input type="text" placeholder="Receiver Name" className={`input input-bordered ${errors.receiverName && 'input-error'}`} {...register('receiverName', { required: true, minLength: 3 })} />
             </div>
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Destination</span>
               </label>
-              <input type="text" placeholder="Destination" className={`input input-bordered ${errors.destination && 'input-error'}`} {...register("destination", { required: true, minLength: 3 })} />
+              <input type="text" placeholder="Destination" className={`input input-bordered ${errors.destination && 'input-error'}`} {...register('destination', { required: true, minLength: 3 })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Shipment Mode</span>
               </label>
-              <select className={`select select-bordered ${errors.shipmentMode && 'select-error'}`} {...register("shipmentMode", { required: true, valueAsNumber: true })}>
+              <select className={`select select-bordered ${errors.shipmentMode && 'select-error'}`} {...register('shipmentMode', { required: true, valueAsNumber: true })}>
                 <option disabled={true} selected={true} value="">-- shipment mode --</option>
                 <option value={1}>Domestic</option>
                 <option value={2}>International</option>
@@ -170,7 +170,7 @@ function EditBookingPage(props: any) {
               <label className="label p-1">
                 <span className="label-text text-2xs">Transport Mode</span>
               </label>
-              <select className={`select select-bordered ${errors.transportMode && 'select-error'}`} {...register("transportMode", { required: true, valueAsNumber: true })}>
+              <select className={`select select-bordered ${errors.transportMode && 'select-error'}`} {...register('transportMode', { required: true, valueAsNumber: true })}>
                 <option disabled={true} selected={true} value="">-- transport mode --</option>
                 <option value={1}>Air</option>
                 <option value={2}>Cargo</option>
@@ -187,7 +187,7 @@ function EditBookingPage(props: any) {
               <label className="label p-1">
                 <span className="label-text text-2xs">Co Courier</span>
               </label>
-              <select className={`select select-bordered ${errors.awbNumber && 'select-error'}`} {...register("coCourier", { valueAsNumber: true })}>
+              <select className={`select select-bordered ${errors.awbNumber && 'select-error'}`} {...register('coCourier', { valueAsNumber: true })}>
                 <option disabled={true} selected={true} value="">-- co courier --</option>
                 <option value={1}>Yes</option>
                 <option value={0}>No</option>
@@ -198,57 +198,57 @@ function EditBookingPage(props: any) {
               <label className="label p-1">
                 <span className="label-text text-2xs">Booking Amount</span>
               </label>
-              <input type="text" placeholder="Booking Amount" className={`input input-bordered ${errors.bookingAmount && 'input-error'}`} {...register("bookingAmount", { required: true, valueAsNumber: true })} />
+              <input type="text" placeholder="Booking Amount" className={`input input-bordered ${errors.bookingAmount && 'input-error'}`} {...register('bookingAmount', { required: true, valueAsNumber: true })} />
             </div>
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Bill Amount</span>
               </label>
-              <input type="text" placeholder="Bill Amount" className={`input input-bordered ${errors.billAmount && 'input-error'}`} {...register("billAmount", { required: true, valueAsNumber: true })} />
+              <input type="text" placeholder="Bill Amount" className={`input input-bordered ${errors.billAmount && 'input-error'}`} {...register('billAmount', { required: true, valueAsNumber: true })} />
             </div>
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Actual weight (Kg)</span>
               </label>
-              <input type="text" placeholder="Actual weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register("actualWeight", { required: true, valueAsNumber: true })} />
+              <input type="text" placeholder="Actual weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register('actualWeight', { required: true, valueAsNumber: true })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Add. Phone Number</span>
               </label>
-              <input type="text" placeholder="Add. Phone Number" className="input input-bordered" {...register("additionalContacts")} />
+              <input type="text" placeholder="Add. Phone Number" className="input input-bordered" {...register('additionalContacts')} />
             </div>
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Add. Volume/Size</span>
               </label>
-              <input type="text" placeholder="Add. Volume/Size" className="input input-bordered" {...register("additionalWeights")} />
+              <input type="text" placeholder="Add. Volume/Size" className="input input-bordered" {...register('additionalWeights')} />
             </div>
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Add. Lead/Pouch</span>
               </label>
-              <input type="text" placeholder="Add. Lead/Pouch" className="input input-bordered" {...register("additionalLeaf")} />
+              <input type="text" placeholder="Add. Lead/Pouch" className="input input-bordered" {...register('additionalLeaf')} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Remarks</span>
               </label>
-              <textarea className="textarea h-24 textarea-bordered" placeholder="Remarks" {...register("remarks")}></textarea>
+              <textarea className="textarea h-24 textarea-bordered" placeholder="Remarks" {...register('remarks')}></textarea>
             </div>
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Delivery Office Location</span>
               </label>
-              <textarea className="textarea h-24 textarea-bordered" placeholder="Delivery Office Location" {...register("deliveryOfficeLocation")}></textarea>
+              <textarea className="textarea h-24 textarea-bordered" placeholder="Delivery Office Location" {...register('deliveryOfficeLocation')}></textarea>
             </div>
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Internal Remarks</span>
               </label>
-              <textarea className="textarea h-24 textarea-bordered" placeholder="Internal Remarks" {...register("internalRemarks")}></textarea>
+              <textarea className="textarea h-24 textarea-bordered" placeholder="Internal Remarks" {...register('internalRemarks')}></textarea>
             </div>
 
           </div>

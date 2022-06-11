@@ -1,14 +1,14 @@
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import axios from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 function AddCourierForStockEntry(props: any) {
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
   });
   const errors = formState.errors;
   const router = useRouter();
@@ -45,7 +45,7 @@ function AddCourierForStockEntry(props: any) {
           <label className="label p-1">
             <span className="label-text text-2xs">Co-Loader Name</span>
           </label>
-          <input type="text" placeholder="Co-Loader Name" className={`input input-bordered ${errors.coloader && 'input-error'}`} {...register("coloader", { required: true, minLength: 3 })} />
+          <input type="text" placeholder="Co-Loader Name" className={`input input-bordered ${errors.coloader && 'input-error'}`} {...register('coloader', { required: true, minLength: 3 })} />
         </div>
 
         <div className="modal-action">

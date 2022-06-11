@@ -1,17 +1,17 @@
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { confirmAlert } from "react-confirm-alert";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { getAWBRange } from "../../helpers/awb/getRange";
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import axios from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { confirmAlert } from 'react-confirm-alert';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { getAWBRange } from '../../helpers/awb/getRange';
 
 function StockOutPage(props: any) {
 
   const router = useRouter();
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
   });
   const errors = formState.errors;
   const [saveError, setError] = useState('');
@@ -141,7 +141,7 @@ function StockOutPage(props: any) {
           <label className="label p-1">
             <span className="label-text text-2xs">Courier</span>
           </label>
-          <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register("courier", { required: true, })}>
+          <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register('courier', { required: true, })}>
             <option disabled={true} selected={true} value="">-- courier --</option>
             {
               props.data.courier.map((d: any, value: number) => {
@@ -155,7 +155,7 @@ function StockOutPage(props: any) {
           <label className="label p-1">
             <span className="label-text text-2xs">Booker</span>
           </label>
-          <select className={`select select-bordered ${errors.booker && 'select-error'}`}  {...register("booker", { required: false })}>
+          <select className={`select select-bordered ${errors.booker && 'select-error'}`}  {...register('booker', { required: false })}>
             <option disabled={true} selected={true} value="">-- booker --</option>
             {
               props.data.bookers.map((d: any, value: number) => {
@@ -169,7 +169,7 @@ function StockOutPage(props: any) {
           <label className="label p-1">
             <span className="label-text text-2xs">AWB Numbers</span>
           </label>
-          <input type="text" placeholder="Stock Data - ex: 121212121-25" className={`input input-bordered ${errors.awb && 'input-error'}`} {...register("awb", { required: true, minLength: 3 })} />
+          <input type="text" placeholder="Stock Data - ex: 121212121-25" className={`input input-bordered ${errors.awb && 'input-error'}`} {...register('awb', { required: true, minLength: 3 })} />
         </div>
 
         <div className="modal-action">

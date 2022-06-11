@@ -1,19 +1,19 @@
-import { useUser } from "@auth0/nextjs-auth0";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useUser } from '@auth0/nextjs-auth0';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import DataTable from "react-data-table-component";
-import { courierLists } from "../../constants/courierList";
-import { courierStatus } from "../../constants/shipmentStatus";
-import { getDoxType } from "../../models/DoxType";
-import { getShipmentMode } from "../../models/shipmentMode";
-import { getTransportMode } from "../../models/transportMode";
+import DataTable from 'react-data-table-component';
+import { courierLists } from '../../constants/courierList';
+import { courierStatus } from '../../constants/shipmentStatus';
+import { getDoxType } from '../../models/DoxType';
+import { getShipmentMode } from '../../models/shipmentMode';
+import { getTransportMode } from '../../models/transportMode';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai';
 import { MdUpdate } from 'react-icons/md';
-import DeletePage from "./delete";
-import moment from "moment";
-import { SubmitHandler, useForm } from "react-hook-form";
+import DeletePage from './delete';
+import moment from 'moment';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 const courierList = courierLists;
@@ -45,7 +45,7 @@ function BookingPage() {
   }
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm<any>({
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       courier: 0,
       status: 0,
@@ -220,9 +220,9 @@ function BookingPage() {
         </div>
         <div>
           <form onSubmit={handleSubmit(onSubmit)} role="search">
-            <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register("awbNumber", { minLength: 3 })} />
-            <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered" {...register("referenceNumber", { minLength: 3 })} />
-            <select className={`select select-bordered`}  {...register("courier", { valueAsNumber: true },)}>
+            <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register('awbNumber', { minLength: 3 })} />
+            <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered" {...register('referenceNumber', { minLength: 3 })} />
+            <select className={'select select-bordered'}  {...register('courier', { valueAsNumber: true },)}>
               <option value={0}>-- courier --</option>
               {
                 courierList.map((d) => {
@@ -230,14 +230,14 @@ function BookingPage() {
                 })
               }
             </select>
-            <select className={`select select-bordered`} {...register("shipmentMode", { valueAsNumber: true })}>
+            <select className={'select select-bordered'} {...register('shipmentMode', { valueAsNumber: true })}>
               <option value={0}>-- shipment mode --</option>
               <option value={1}>Domestic</option>
               <option value={2}>International</option>
               <option value={3}>Local</option>
               <option value={0}>NA</option>
             </select>
-            <select className="select select-bordered" {...register("status")}>
+            <select className="select select-bordered" {...register('status')}>
               <option value="">-- status --</option>
               {
                 statusList.map((s, i) => {

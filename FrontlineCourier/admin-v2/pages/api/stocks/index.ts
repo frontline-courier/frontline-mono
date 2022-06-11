@@ -16,15 +16,15 @@ handler.post(async (req: any, res: any) => {
     const docLength = (await docs.toArray()).length;
 
     if (docLength > 0) {
-      return res.send({ 'success': false, error: 'AWB already available in stock!' });
+      return res.send({ success: false, error: 'AWB already available in stock!' });
     }
 
     await collection.insertMany(req.body);
 
-    res.send({ 'success': true });
+    res.send({ success: true });
   }
   catch (err: any) {
-    res.send({ 'success': false, error: err.message });
+    res.send({ success: false, error: err.message });
   }
   finally {
     req.dbClient.close();
@@ -57,15 +57,15 @@ handler.put(async (req: any, res: any) => {
     const docs = await collection.find({ awb: { $in: req.body.awb }, courier: req.body.courier, out: { $ne: true } });
 
     if ((await docs.toArray()).length !== req.body.awb.length) {
-      return res.send({ 'success': false, error: 'AWB not available in stock.' });
+      return res.send({ success: false, error: 'AWB not available in stock.' });
     }
 
-    await collection.updateMany({ awb: { $in: req.body.awb }, courier: req.body.courier, out: { $ne: true } }, { $set: { "out": true } });
+    await collection.updateMany({ awb: { $in: req.body.awb }, courier: req.body.courier, out: { $ne: true } }, { $set: { out: true } });
 
-    res.send({ 'success': true });
+    res.send({ success: true });
   }
   catch (err: any) {
-    res.send({ 'success': false, error: err.message });
+    res.send({ success: false, error: err.message });
   }
   finally {
     req.dbClient.close();

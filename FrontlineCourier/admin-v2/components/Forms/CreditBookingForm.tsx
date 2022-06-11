@@ -1,20 +1,20 @@
-import { useUser } from "@auth0/nextjs-auth0";
-import axios from "axios";
-import moment from "moment";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { creditClients } from "../../constants/credit/clients";
-import { creditCourier } from "../../constants/credit/couriers";
-import { creditModes } from "../../constants/credit/mode";
-import { creditServices } from "../../constants/credit/service";
-import { pagePath } from "../../constants/path/pagePath";
+import { useUser } from '@auth0/nextjs-auth0';
+import axios from 'axios';
+import moment from 'moment';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { creditClients } from '../../constants/credit/clients';
+import { creditCourier } from '../../constants/credit/couriers';
+import { creditModes } from '../../constants/credit/mode';
+import { creditServices } from '../../constants/credit/service';
+import { pagePath } from '../../constants/path/pagePath';
 
 export default function CreateCreditForm() {
 
   const { register, handleSubmit, watch, formState, reset, resetField, setValue } = useForm<any>({
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       client: '',
       courier: '',
@@ -69,7 +69,7 @@ export default function CreateCreditForm() {
           await axios.patch(`/api/credit/bookings/${id}`, { ...data, createdBy: user?.email });
         }
       } else {
-        await axios.post(`/api/credit/bookings`, { ...data, createdBy: user?.email });
+        await axios.post('/api/credit/bookings', { ...data, createdBy: user?.email });
       }
       router.push('/credit');
 
@@ -92,7 +92,7 @@ export default function CreateCreditForm() {
               <label className="label p-1">
                 <span className="label-text text-2xs">Client Name</span>
               </label>
-              <select className={`select select-bordered ${errors.client && 'select-error'}`}  {...register("client", { required: true },)}>
+              <select className={`select select-bordered ${errors.client && 'select-error'}`}  {...register('client', { required: true },)}>
                 <option disabled={true} value="">-- client --</option>
                 {
                   creditClients.map((d) => {
@@ -106,35 +106,35 @@ export default function CreateCreditForm() {
               <label className="label p-1">
                 <span className="label-text text-2xs">Booking Date</span>
               </label>
-              <input type="date" placeholder="Booking Date" className={`input input-bordered ${errors.bookedDate && 'input-error'}`} {...register("bookedDate", { required: true, valueAsDate: true })} />
+              <input type="date" placeholder="Booking Date" className={`input input-bordered ${errors.bookedDate && 'input-error'}`} {...register('bookedDate', { required: true, valueAsDate: true })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">POD</span>
               </label>
-              <input type="text" placeholder="POD" className={`input input-bordered ${errors.pod && 'input-error'}`} {...register("pod", { required: true, minLength: 3 })} />
+              <input type="text" placeholder="POD" className={`input input-bordered ${errors.pod && 'input-error'}`} {...register('pod', { required: true, minLength: 3 })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Destination</span>
               </label>
-              <input type="text" placeholder="Destination" className={`input input-bordered ${errors.destination && 'input-error'}`} {...register("destination", { required: true, minLength: 3 })} />
+              <input type="text" placeholder="Destination" className={`input input-bordered ${errors.destination && 'input-error'}`} {...register('destination', { required: true, minLength: 3 })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Pin code</span>
               </label>
-              <input type="text" placeholder="Pin Code" className={`input input-bordered ${errors.pinCode && 'input-error'}`} {...register("pinCode", { required: true, minLength: 5 })} />
+              <input type="text" placeholder="Pin Code" className={`input input-bordered ${errors.pinCode && 'input-error'}`} {...register('pinCode', { required: true, minLength: 5 })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Courier</span>
               </label>
-              <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register("courier", { required: true },)}>
+              <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register('courier', { required: true },)}>
                 <option disabled={true} value="">-- courier --</option>
                 {
                   creditCourier.map((d) => {
@@ -148,7 +148,7 @@ export default function CreateCreditForm() {
               <label className="label p-1">
                 <span className="label-text text-2xs">Mode</span>
               </label>
-              <select className={`select select-bordered ${errors.mode && 'select-error'}`} {...register("mode", { required: true })}>
+              <select className={`select select-bordered ${errors.mode && 'select-error'}`} {...register('mode', { required: true })}>
                 <option disabled={true} value="">-- shipment mode --</option>
                 {
                   creditModes.map((d) => {
@@ -162,7 +162,7 @@ export default function CreateCreditForm() {
               <label className="label p-1">
                 <span className="label-text text-2xs">Service</span>
               </label>
-              <select className={`select select-bordered ${errors.service && 'select-error'}`} {...register("service", { required: true })}>
+              <select className={`select select-bordered ${errors.service && 'select-error'}`} {...register('service', { required: true })}>
                 <option disabled={true} value="">-- service --</option>
                 {
                   creditServices.map((d) => {
@@ -176,42 +176,42 @@ export default function CreateCreditForm() {
               <label className="label p-1">
                 <span className="label-text text-2xs">Actual Weight</span>
               </label>
-              <input type="text" placeholder="Actual Weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register("actualWeight", { valueAsNumber: true })} />
+              <input type="text" placeholder="Actual Weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register('actualWeight', { valueAsNumber: true })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Vol Weight</span>
               </label>
-              <input type="text" placeholder="Volume weight" className={`input input-bordered ${errors.volWeight && 'input-error'}`} {...register("volWeight", { valueAsNumber: true })} />
-            </div>
-
-            <div className="form-control">
-              <label className="label p-1">
-                <span className="label-text text-2xs">ODA / EDL</span>
-              </label>
-              <input type="text" placeholder="ODA / EDL" className={`input input-bordered ${errors.odaEdl && 'input-error'}`} {...register("odaEdl", { valueAsNumber: true })} />
-            </div>
-
-            <div className="form-control">
-              <label className="label p-1">
-                <span className="label-text text-2xs">Carrier Insurance (2.5%)</span>
-              </label>
-              <input type="text" placeholder="Carrier Insurance" className={`input input-bordered ${errors.carrierInsurance && 'input-error'}`} {...register("carrierInsurance", { valueAsNumber: true })} />
-            </div>
-
-            <div className="form-control">
-              <label className="label p-1">
-                <span className="label-text text-2xs">FOV Risk (0.25%)</span>
-              </label>
-              <input type="text" placeholder="FOV Risk" className={`input input-bordered ${errors.fovRisk && 'input-error'}`} {...register("fovRisk", {valueAsNumber: true })} />
+              <input type="text" placeholder="Volume weight" className={`input input-bordered ${errors.volWeight && 'input-error'}`} {...register('volWeight', { valueAsNumber: true })} />
             </div>
 
             <div className="form-control">
               <label className="label p-1">
                 <span className="label-text text-2xs">Amount</span>
               </label>
-              <input type="text" placeholder="Amount" className={`input input-bordered ${errors.amount && 'input-error'}`} {...register("amount", { required: true, valueAsNumber: true })} />
+              <input type="text" placeholder="Amount" className={`input input-bordered ${errors.amount && 'input-error'}`} {...register('amount', { required: true, valueAsNumber: true })} />
+            </div>
+
+            <div className="form-control">
+              <label className="label p-1">
+                <span className="label-text text-2xs">ODA / EDL</span>
+              </label>
+              <input type="text" placeholder="ODA / EDL" className={`input input-bordered ${errors.odaEdl && 'input-error'}`} {...register('odaEdl', { valueAsNumber: true })} />
+            </div>
+
+            <div className="form-control">
+              <label className="label p-1">
+                <span className="label-text text-2xs">Carrier Insurance (2.5%)</span>
+              </label>
+              <input type="text" placeholder="Carrier Insurance" className={`input input-bordered ${errors.carrierInsurance && 'input-error'}`} {...register('carrierInsurance', { valueAsNumber: true })} />
+            </div>
+
+            <div className="form-control">
+              <label className="label p-1">
+                <span className="label-text text-2xs">FOV Risk (0.25%)</span>
+              </label>
+              <input type="text" placeholder="FOV Risk" className={`input input-bordered ${errors.fovRisk && 'input-error'}`} {...register('fovRisk', {valueAsNumber: true })} />
             </div>
 
           </div>

@@ -1,17 +1,17 @@
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import axios from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { getAWBRange } from "../../helpers/awb/getRange";
+import { getAWBRange } from '../../helpers/awb/getRange';
 
 function StockEntry(props: any) {
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
   });
   const errors = formState.errors;
   const router = useRouter();
@@ -162,7 +162,7 @@ function StockEntry(props: any) {
           <label className="label p-1">
             <span className="label-text text-2xs">Courier</span>
           </label>
-          <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register("courier", { required: true, })}>
+          <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register('courier', { required: true, })}>
             <option disabled={true} selected={true} value="">-- courier --</option>
             {
               props.data.courier.map((d: any, value: number) => {
@@ -176,7 +176,7 @@ function StockEntry(props: any) {
           <label className="label p-1">
             <span className="label-text text-2xs">Co Loader</span>
           </label>
-          <select className={`select select-bordered ${errors.coLoader && 'select-error'}`}  {...register("coLoader", { required: false })}>
+          <select className={`select select-bordered ${errors.coLoader && 'select-error'}`}  {...register('coLoader', { required: false })}>
             <option disabled={true} selected={true} value="">-- co-loader --</option>
             {
               props.data.loader.map((d: any, value: number) => {
@@ -204,14 +204,14 @@ function StockEntry(props: any) {
           <label className="label p-1">
             <span className="label-text text-2xs">AWB Numbers</span>
           </label>
-          <input type="text" placeholder="Stock Data - ex: 121212121-25" className={`input input-bordered ${errors.awb && 'input-error'}`} {...register("awb", { required: true, minLength: 3 })} />
+          <input type="text" placeholder="Stock Data - ex: 121212121-25" className={`input input-bordered ${errors.awb && 'input-error'}`} {...register('awb', { required: true, minLength: 3 })} />
         </div>
 
         <div className="form-control">
           <label className="label p-1">
             <span className="label-text text-2xs">Bill Cost</span>
           </label>
-          <input type="text" placeholder="0" className={`input input-bordered ${errors.cost && 'input-error'}`} {...register("cost", { required: false, valueAsNumber: true })} />
+          <input type="text" placeholder="0" className={`input input-bordered ${errors.cost && 'input-error'}`} {...register('cost', { required: false, valueAsNumber: true })} />
         </div>
 
         <div className="modal-action">

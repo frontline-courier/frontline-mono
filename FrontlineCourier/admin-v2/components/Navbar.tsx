@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
-import { useUser } from "@auth0/nextjs-auth0";
-import { useEffect } from "react"
+import { useUser } from '@auth0/nextjs-auth0';
+import { useEffect } from 'react'
 import { BiUserCircle } from 'react-icons/bi';
 import { RiLogoutBoxRLine, RiSettings5Line } from 'react-icons/ri'
 
