@@ -650,5 +650,12 @@ export const courierLists = [
       Track: 'https://www.tnt.com/express/en_in/site/shipping-tools/tracking.html',
       Status: 1
     },
+    {
+      CourierId: 110,
+      Courier: 'ECOM Normal',
+      Description: 'ECOM Normal',
+      Track: 'https://ecomexpress.in/',
+      Status: 1
+    },
   ];
   
