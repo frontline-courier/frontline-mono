@@ -2,7 +2,7 @@ import React from 'react';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import BookingForm from '../../../components/Forms/BookingForm';
 
-function EditBookingPage(props: any) {
+function ViewBookingPage(props: any) {
 
   return (
     <>
@@ -17,4 +17,4 @@ function EditBookingPage(props: any) {
   );
 }
 
-export default withPageAuthRequired(EditBookingPage);
+export default withPageAuthRequired(ViewBookingPage);

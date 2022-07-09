@@ -9,7 +9,7 @@ import { getDoxType } from '../../models/DoxType';
 import { getShipmentMode } from '../../models/shipmentMode';
 import { getTransportMode } from '../../models/transportMode';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { AiFillEdit, AiFillDelete } from 'react-icons/ai';
+import { AiFillEdit, AiFillDelete, AiFillRead } from 'react-icons/ai';
 import { MdUpdate } from 'react-icons/md';
 import DeletePage from './delete';
 import moment from 'moment';
@@ -196,6 +196,7 @@ function BookingPage() {
           <div tabIndex={0} className="m-1 btn btn-xs btn-secondary"><BsThreeDotsVertical /></div>
           <ul tabIndex={0} className="p-1 shadow menu dropdown-content bg-base-100 rounded-box w-40 right-0 top-0">
             <li><a href={`/bookings/${row._id}/edit`}> <AiFillEdit className="mr-2" /> Edit</a></li>
+            <li><a href={`/bookings/${row._id}/view`}> <AiFillRead className="mr-2" /> View</a></li>
             {/* <li><a> <AiFillDelete className="mr-2" onClick={handleDeleteModel} /> Delete</a></li> */}
             <li><a href={`/bookings/${row._id}/status`}> <MdUpdate className="mr-2" /> Edit/Update Status</a></li>
             {/* <li><a> <FaMapMarkedAlt className="mr-2" /> Check Status</a></li> */}

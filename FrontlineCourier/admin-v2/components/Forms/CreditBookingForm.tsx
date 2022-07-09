@@ -34,15 +34,12 @@ export default function CreateCreditForm() {
   const router = useRouter();
   const { id } = router.query;
 
-  console.log(router.pathname);
-
   useEffect(() => {
     (async () => {
       if (id) {
         try {
           setLoader(true);
           const result = await axios.get(`/api/credit/bookings/${id}`);
-          console.log(result);
 
           if (result.data) {
             result.data.bookedDate = moment(result.data.bookedDate).format('yyyy-MM-DD');
@@ -69,7 +66,7 @@ export default function CreateCreditForm() {
         if (isDelete) {
           await axios.delete(`/api/credit/bookings/${id}`);
         } else {
-          await axios.patch(`/api/credit/bookings/${id}`, { ...data, createdBy: user?.email });
+          await axios.patch(`/api/credit/bookings/${id}`, { ...data, updatedBy: user?.email });
         }
       } else {
         await axios.post('/api/credit/bookings', { ...data, createdBy: user?.email });
