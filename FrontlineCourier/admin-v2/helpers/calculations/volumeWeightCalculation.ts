@@ -5,7 +5,7 @@ export const volumeWeightCalculation = (formulae: typeof creditVolumes[number], 
 
   switch (formulae) {
     case 'LBH/27000*8':
-      weight = ((l * b * h) / 2700) * 8;
+      weight = ((l * b * h) / 27000) * 8;
       break;
     case 'LBH/4750':
       weight = (l * b * h) / 4750;
