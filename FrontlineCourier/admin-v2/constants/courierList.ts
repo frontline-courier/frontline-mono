@@ -657,5 +657,19 @@ export const courierLists = [
       Track: 'https://ecomexpress.in/',
       Status: 1
     },
+    {
+      CourierId: 111,
+      Courier: 'Skynet Normal',
+      Description: 'Skynet Normal',
+      Track: 'http://skynetindia.com/',
+      Status: 1
+    },
+    {
+      CourierId: 112,
+      Courier: 'Skynet Priority',
+      Description: 'Skynet Priority',
+      Track: 'http://skynetindia.com/',
+      Status: 1
+    },
   ];
   
