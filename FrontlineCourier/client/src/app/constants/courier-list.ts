@@ -671,5 +671,12 @@ export const courierLists = [
       Track: 'http://skynetindia.com/',
       Status: 1
     },
+    {
+      CourierId: 120,
+      Courier: 'Aics courier',
+      Description: 'Aics courier',
+      Track: 'https://www.arihantcourier.com/',
+      Status: 1
+    },
   ];
   
