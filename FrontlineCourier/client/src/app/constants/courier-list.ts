@@ -673,8 +673,15 @@ export const courierLists = [
     },
     {
       CourierId: 120,
-      Courier: 'Aics courier',
-      Description: 'Aics courier',
+      Courier: 'AICS - Normal',
+      Description: 'Arihant International Courier',
+      Track: 'https://www.arihantcourier.com/',
+      Status: 1
+    },
+    {
+      CourierId: 121,
+      Courier: 'AICS - Priority',
+      Description: 'Arihant International Courier',
       Track: 'https://www.arihantcourier.com/',
       Status: 1
     },
