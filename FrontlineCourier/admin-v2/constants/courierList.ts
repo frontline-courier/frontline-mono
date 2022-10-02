@@ -414,7 +414,7 @@ export const courierLists = [
     },
     {
       CourierId: 75,
-      Courier: 'SkyNet',
+      Courier: 'SkyNet - Economy',
       Description: 'NULL',
       Track: 'https://www.skynetworldwide.com/',
       Status: 'NULL'
@@ -659,14 +659,14 @@ export const courierLists = [
     },
     {
       CourierId: 111,
-      Courier: 'Skynet Normal',
+      Courier: 'SkyNet Normal',
       Description: 'Skynet Normal',
       Track: 'http://skynetindia.com/',
       Status: 1
     },
     {
       CourierId: 112,
-      Courier: 'Skynet Priority',
+      Courier: 'SkyNet Priority',
       Description: 'Skynet Priority',
       Track: 'http://skynetindia.com/',
       Status: 1
