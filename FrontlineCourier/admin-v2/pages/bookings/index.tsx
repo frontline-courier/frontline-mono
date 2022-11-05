@@ -53,17 +53,17 @@ function BookingPage() {
     }
   });
   const { user, error, isLoading } = useUser();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([] as any);
   const [deleteModel, setDelete] = useState(false);
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(25);
-  const [searchData, setSearchData] = useState({awbNumber: '', referenceNumber: '', courier: 0, shipmentMode: 0, status: ''});
+  const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', courier: 0, shipmentMode: 0, status: '' });
 
   const fetchShipment = async (page: number) => {
 
     setLoading(true);
-    const response = 
+    const response =
       await axios.get(
         `/api/bookings?page=${page}&limit=${perPage}&courier=${searchData.courier || 0}&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''}&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}`);
     setData(response.data.booking);
@@ -94,13 +94,12 @@ function BookingPage() {
   }
 
   const getShipmentStatusColor = (s: string) => {
-    switch ((s + '').toLowerCase())
-    {
+    switch ((s + '').toLowerCase()) {
       case 'booked':
         return 'bg-red-400';
       case 'in transit':
         return 'bg-yellow-400';
-      case 'delivered': 
+      case 'delivered':
         return 'bg-green-400';
       case 'taken for delivery':
         return 'bg-indigo-400';
@@ -111,16 +110,25 @@ function BookingPage() {
 
   // A super simple expandable component.
   const ExpandedComponent = ({ data }: any) =>
-  // {
-  //   <table>
-  //     <tbody>
-  //       (
-  //         <tr key={1}>{2}<td></td><td>{3}</td></tr>
-  //       )
-  //     </tbody>
-  //   </table>
-  // }
-  <pre>{JSON.stringify(data, null, 2)}</pre>;
+    // {
+    //   <table>
+    //     <tbody>
+    //       (
+    //         <tr key={1}>{2}<td></td><td>{3}</td></tr>
+    //       )
+    //     </tbody>
+    //   </table>
+    // }
+    <pre>{JSON.stringify(data, null, 2)}</pre>;
+
+    data.forEach((v: any, i: number) => {
+      data[i].courier = getCourierName(v.courier);
+      data[i].bookedDate = moment(v.bookedDate).format('DD-MM-YYYY HH:mm');
+      data[i].doxType = getDoxType(v.doxType);
+      data[i].shipmentMode = getShipmentMode(v.shipmentMode);
+      data[i].shipmentStatus = getShipmentStatus(v.shipmentStatus);
+    })
+
 
   const columns = [
     {
@@ -140,12 +148,12 @@ function BookingPage() {
     },
     {
       name: 'courier',
-      selector: (row: any) => getCourierName(row.courier),
+      selector: (row: any) => row.courier,
       sortable: true,
     },
     {
       name: 'BookedDate',
-      selector: (row: any) => moment(row.bookedDate).format('DD-MM-YYYY HH:mm'),
+      selector: (row: any) => row.bookedDate,
       sortable: true,
     },
     // {
@@ -158,12 +166,12 @@ function BookingPage() {
     },
     {
       name: 'DoxType',
-      selector: (row: any) => getDoxType(row.doxType),
+      selector: (row: any) => row.doxType,
       sortable: true,
     },
     {
       name: 'ShipmentMode',
-      selector: (row: any) => getShipmentMode(row.shipmentMode),
+      selector: (row: any) => row.shipmentMode,
       sortable: true,
     },
     // {
@@ -177,7 +185,7 @@ function BookingPage() {
     // },
     {
       name: 'Status',
-      selector: (row: any) => <div className={`badge ${getShipmentStatusColor(row.shipmentStatus)}`}>{getShipmentStatus(row.shipmentStatus)}</div>,
+      selector: (row: any) => <div className={`badge ${getShipmentStatusColor(row.shipmentStatus)}`}>{row.shipmentStatus}</div>,
       sortable: true,
     },
     // {
@@ -209,6 +217,53 @@ function BookingPage() {
   useEffect(() => {
     fetchShipment(1); // fetch page 1 of users
   }, [searchData]);
+
+  // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
+  function convertArrayOfObjectsToCSV(array: any) {
+    let result: string;
+
+    const columnDelimiter = ',';
+    const lineDelimiter = '\n';
+    const keys = Object.keys(data[0]);
+
+    result = '';
+    result += keys.join(columnDelimiter);
+    result += lineDelimiter;
+
+    array.forEach((item: any) => {
+      let ctr = 0;
+      keys.forEach(key => {
+        if (ctr > 0) result += columnDelimiter;
+
+        result += item[key];
+
+        ctr++;
+      });
+      result += lineDelimiter;
+    });
+
+    return result;
+  }
+
+  // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
+  function downloadCSV(array: any) {
+    const link = document.createElement('a');
+    let csv = convertArrayOfObjectsToCSV(array);
+    if (csv == null) return;
+
+    const filename = `export${Date.now()}.csv`;
+
+    if (!csv.match(/^data:text\/csv/i)) {
+      csv = `data:text/csv;charset=utf-8,${csv}`;
+    }
+
+    link.setAttribute('href', encodeURI(csv));
+    link.setAttribute('download', filename);
+    link.click();
+  }
+
+  const Export = (event: any) => <button type="button" className="btn btn-primary btn-wide" onClick={(e: any) => event.onExport(e.target.value)}>Export</button>;
+
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
@@ -270,7 +325,9 @@ function BookingPage() {
           onChangePage={handlePageChange}
           fixedHeader
           highlightOnHover
+          actions={<Export onExport={() => downloadCSV(data)} />}
         />
+
       </div>
 
       {/* {

@@ -2434,10 +2434,10 @@ react-confirm-alert@^2.7.0:
   resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.7.0.tgz#7cdbf2e052e03554ac6a7d8956c9c227010c8a53"
   integrity sha512-21NWtGK/e85+ZX3TLRpMc3IsU5Kj6Z9ElCOrkTIlwMzV9EancyXNlkqHGbtKP63a2iS6g5hOxROokmJOqKQiXA==
 
-react-data-table-component@^7.4.5:
-  version "7.4.5"
-  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.4.5.tgz#c7f90b967efad976ccabcf56dc7dc56a0fbca949"
-  integrity sha512-CnEbnnBuOj1twqbzZfdztIwgUMzt4k3MkikVWiTe1O6uf93sOoYAkKABJYYg1sWwcA3fI2Tuo6aq3XYE9Hscog==
+react-data-table-component@^7.5.3:
+  version "7.5.3"
+  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.5.3.tgz#a008b4c281574cc1a81315e2c1b34107b5d18fe0"
+  integrity sha512-JhatRTgThAAa1HobPaPmkNPsjLT6+fnMIdtcXRCy+0bSYN7XJnTgob9Qyi4bjHh/8tMPTHtxZCV/TKiPwRvFMA==
   dependencies:
     deepmerge "^4.2.2"
 

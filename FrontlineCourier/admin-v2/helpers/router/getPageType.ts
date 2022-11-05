@@ -1,7 +1,6 @@
 import { PageTypes } from '../../enums/pageTypes'
 
 export function getPageType(pathName: string) {
-    console.log({pathName});
     if (pathName.toLowerCase().includes('delete')) {
         return PageTypes.DELETE
     } else if (pathName.toLowerCase().includes('edit')) {
