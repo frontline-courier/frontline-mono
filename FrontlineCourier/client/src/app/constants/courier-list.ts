@@ -685,4 +685,18 @@ export const courierLists = [
     Track: 'https://www.arihantcourier.com/',
     Status: 1
   },
+  {
+    CourierId: 122,
+    Courier: 'Elite Normal',
+    Description: 'Elite Express Cargo LLC',
+    Track: 'https://track.elite-co.com/',
+    Status: 1
+  },
+  {
+    CourierId: 123,
+    Courier: 'Elite Economy',
+    Description: 'Elite Express Cargo LLC',
+    Track: 'https://track.elite-co.com/',
+    Status: 1
+  },
 ];
