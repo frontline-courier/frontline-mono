@@ -85,7 +85,7 @@ export const courierLists = [
     },
     {
       CourierId: 15,
-      Courier: 'GATI',
+      Courier: 'GATI Normal',
       Description: 'Normal / Express cargo ( air / surface)',
       Track: 'www.gati.com',
       Status: 1
@@ -212,6 +212,13 @@ export const courierLists = [
     {
       CourierId: 43,
       Courier: 'DTDC PTP 14.00',
+      Description: 'NULL',
+      Track: 'www.dtdc.in',
+      Status: 'NULL'
+    },
+    {
+      CourierId: 44,
+      Courier: 'DTDC PTP 16.00',
       Description: 'NULL',
       Track: 'www.dtdc.in',
       Status: 'NULL'
@@ -697,6 +704,41 @@ export const courierLists = [
       Courier: 'Elite Economy',
       Description: 'Elite Express Cargo LLC',
       Track: 'https://track.elite-co.com/',
+      Status: 1
+    },
+    {
+      CourierId: 130,
+      Courier: 'FEDEX Intl Priority',
+      Description: 'NULL',
+      Track: 'www.fedex.com/in',
+      Status: 'NULL'
+    },
+    {
+      CourierId: 131,
+      Courier: 'DHL Priority',
+      Description: 'NULL',
+      Track: 'http://www.dhl.com/en.html',
+      Status: 'NULL'
+    },
+    {
+      CourierId: 132,
+      Courier: 'Network Express',
+      Description: 'Network Express',
+      Track: 'https://www.networkcourier.com.sg/3DWEBSITE/index.aspx',
+      Status: 1
+    },
+    {
+      CourierId: 133,
+      Courier: 'GATI Air',
+      Description: 'Normal / Express cargo ( air / surface)',
+      Track: 'www.gati.com',
+      Status: 1
+    },
+    {
+      CourierId: 134,
+      Courier: 'GATI Surface',
+      Description: 'Normal / Express cargo ( air / surface)',
+      Track: 'www.gati.com',
       Status: 1
     },
   ];
