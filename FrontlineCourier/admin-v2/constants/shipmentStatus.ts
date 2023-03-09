@@ -31,7 +31,7 @@ export const courierStatus = [
     },
     {
         StatusId: 6,
-        ShipmentStatus: 'Reached destinatation',
+        ShipmentStatus: 'Reached Destination',
         Sequence: 'NULL',
         Description: 'NULL'
     },
@@ -49,31 +49,31 @@ export const courierStatus = [
     },
     {
         StatusId: 9,
-        ShipmentStatus: 'Returned  to Orgin',
+        ShipmentStatus: 'Returned to Origin',
         Sequence: 'NULL',
         Description: 1
     },
     {
         StatusId: 10,
-        ShipmentStatus: 'Incorrect address',
+        ShipmentStatus: 'Incorrect Address',
         Sequence: 'NULL',
         Description: 1
     },
     {
         StatusId: 11,
-        ShipmentStatus: 'Wrong phone  / Not reach',
+        ShipmentStatus: 'Wrong Phone Number or Not Reachable',
         Sequence: 'NULL',
         Description: 1
     },
     {
         StatusId: 12,
-        ShipmentStatus: 'Wrong pincode in pack',
+        ShipmentStatus: 'Wrong Pincode in Shipment',
         Sequence: 'NULL',
         Description: 1
     },
     {
         StatusId: 13,
-        ShipmentStatus: 'No service area',
+        ShipmentStatus: 'No Service Area',
         Sequence: 'NULL',
         Description: 1
     },
@@ -85,7 +85,7 @@ export const courierStatus = [
     },
     {
         StatusId: 15,
-        ShipmentStatus: 'Taken for delivery',
+        ShipmentStatus: 'Taken for Delivery',
         Sequence: 'NULL',
         Description: 'NULL'
     },
@@ -115,13 +115,13 @@ export const courierStatus = [
     },
     {
         StatusId: 20,
-        ShipmentStatus: 'LOAD LATE CUTOFF',
+        ShipmentStatus: 'Load Late - Cutoff',
         Sequence: 'NULL',
         Description: 'NULL'
     },
     {
         StatusId: 21,
-        ShipmentStatus: 'REFUSED TO ACCEPT',
+        ShipmentStatus: 'Refused to Accept',
         Sequence: 'NULL',
         Description: 'NULL'
     },
@@ -133,7 +133,7 @@ export const courierStatus = [
     },
     {
         StatusId: 23,
-        ShipmentStatus: 'Canceled By Shipper',
+        ShipmentStatus: 'Canceled by Shipper',
         Sequence: 'NULL',
         Description: 'NULL'
     },
@@ -145,7 +145,7 @@ export const courierStatus = [
     },
     {
         StatusId: 25,
-        ShipmentStatus: 'Clearance process ok',
+        ShipmentStatus: 'Clearance process Ok',
         Sequence: 'NULL',
         Description: 'NULL'
     },
@@ -157,25 +157,25 @@ export const courierStatus = [
     },
     {
         StatusId: 27,
-        ShipmentStatus: 'FORWARDED IN CO COURIER',
+        ShipmentStatus: 'Forwarded in Co-courier',
         Sequence: 'NULL',
         Description: 'NULL'
     },
     {
         StatusId: 28,
-        ShipmentStatus: 'PARTY COME AND COLLECT',
+        ShipmentStatus: 'Party Come and Collect',
         Sequence: 'NULL',
         Description: 'NULL'
     },
     {
         StatusId: 29,
-        ShipmentStatus: 'LOAD ARRIVED  LATE',
+        ShipmentStatus: 'Load Arrived Late',
         Sequence: 'NULL',
         Description: 'NULL'
     },
     {
         StatusId: 30,
-        ShipmentStatus: 'UNDER PROCESSING',
+        ShipmentStatus: 'Under Processing',
         Sequence: 'NULL',
         Description: 'NULL'
     },
@@ -187,7 +187,7 @@ export const courierStatus = [
     },
     {
         StatusId: 32,
-        ShipmentStatus: 'IMPORT DUTY NOT PAID',
+        ShipmentStatus: 'Import Duty Not Paid',
         Sequence: 'NULL',
         Description: 'NULL'
     },
@@ -199,31 +199,31 @@ export const courierStatus = [
     },
     {
         StatusId: 34,
-        ShipmentStatus: 'LABEL CREATED IN CHENNAI',
+        ShipmentStatus: 'Label Created in Chennai',
         Sequence: 1,
         Description: 'LABEL CREATED IN CHENNAI'
     },
     {
         StatusId: 35,
-        ShipmentStatus: 'INFORMED TO CONSIGNEE',
+        ShipmentStatus: 'Informed to Consignee',
         Sequence: 'NULL',
         Description: 'NULL'
     },
     {
         StatusId: 36,
-        ShipmentStatus: 'SECURITY  GATE DELIVERY',
+        ShipmentStatus: 'Security Gate Delivery',
         Sequence: 'NULL',
         Description: 'NULL'
     },
     {
         StatusId: 37,
-        ShipmentStatus: 'INFORMED TO SHIPPER',
+        ShipmentStatus: 'Informed to Shipper',
         Sequence: 'NULL',
         Description: 'NULL'
     },
     {
         StatusId: 38,
-        ShipmentStatus: 'CHEMICAL  POWER',
+        ShipmentStatus: 'Chemical Power',
         Sequence: 'NULL',
         Description: 'NULL'
     },
@@ -259,7 +259,7 @@ export const courierStatus = [
     },
     {
         StatusId: 45,
-        ShipmentStatus: 'Shipment  hold',
+        ShipmentStatus: 'Shipment hold',
         Sequence: 'NULL',
         Description: 'NULL'
     },
@@ -271,7 +271,7 @@ export const courierStatus = [
     },
     {
         StatusId: 47,
-        ShipmentStatus: 'waiting for clearance',
+        ShipmentStatus: 'Waiting for Clearance',
         Sequence: 'NULL',
         Description: 'waiting for clearance'
     },
@@ -283,9 +283,9 @@ export const courierStatus = [
     },
     {
         StatusId: 50,
-        ShipmentStatus: 'RTO delivered  Shipper',
+        ShipmentStatus: 'RTO delivered - Shipper',
         Sequence: 'NULL',
-        Description: 'RTO delivered  Shipper'
+        Description: 'RTO delivered - Shipper'
     },
     {
         StatusId: 52,
