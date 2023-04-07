@@ -262,7 +262,7 @@ function BookingPage() {
     link.click();
   }
 
-  const Export = (event: any) => <button type="button" className="btn btn-primary btn-wide" onClick={(e: any) => event.onExport(e.target.value)}>Export</button>;
+  const Export = (event: any) => <button className="btn btn-primary btn-outline btn-xs" onClick={(e: any) => event.onExport(e.target.value)}>Download</button>;
 
 
   if (isLoading) return <div>Loading...</div>;
