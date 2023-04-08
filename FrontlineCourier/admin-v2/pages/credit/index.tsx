@@ -1,4 +1,4 @@
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -8,7 +8,6 @@ import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 
 import moment from 'moment';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { MdUpdate } from 'react-icons/md';
 import { apiPath } from '../../constants/path/apiPath';
 import { creditModes } from '../../constants/credit/mode';

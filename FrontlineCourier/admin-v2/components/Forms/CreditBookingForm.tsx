@@ -1,4 +1,4 @@
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
 import moment from 'moment';
 import Link from 'next/link';

@@ -1,4 +1,4 @@
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';

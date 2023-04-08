@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { statusRelation } from '../../../constants/deliveryRelation';
 import moment from 'moment';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
 const status = shipmentStatus;
 const relations = statusRelation;

@@ -1,4 +1,4 @@
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -14,7 +14,7 @@ import { MdUpdate } from 'react-icons/md';
 import DeletePage from './delete';
 import moment from 'moment';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
 const courierList = courierLists;
 const statusList = courierStatus;
@@ -96,13 +96,13 @@ function BookingPage() {
   const getShipmentStatusColor = (s: string) => {
     switch ((s + '').toLowerCase()) {
       case 'booked':
-        return 'bg-red-400';
+        return 'bg-red-200';
       case 'in transit':
-        return 'bg-yellow-400';
+        return 'bg-yellow-200';
       case 'delivered':
-        return 'bg-green-400';
+        return 'bg-green-200';
       case 'taken for delivery':
-        return 'bg-indigo-400';
+        return 'bg-indigo-200';
       default:
         return '';
     }
@@ -185,7 +185,7 @@ function BookingPage() {
     // },
     {
       name: 'Status',
-      selector: (row: any) => <div className={`badge ${getShipmentStatusColor(row.shipmentStatus)}`}>{row.shipmentStatus}</div>,
+      selector: (row: any) => <div className={`badge badge-outline ${getShipmentStatusColor(row.shipmentStatus)}`}>{row.shipmentStatus}</div>,
       sortable: true,
     },
     // {
