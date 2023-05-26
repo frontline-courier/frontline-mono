@@ -741,4 +741,18 @@ export const courierLists = [
     Track: 'www.gati.com',
     Status: 1
   },
+  {
+    CourierId: 151,
+    Courier: 'DPD Normal',
+    Description: 'DPD Normal',
+    Track: '',
+    Status: 1
+  },
+  {
+    CourierId: 152,
+    Courier: 'DPD Priority',
+    Description: 'DPD Priority',
+    Track: '',
+    Status: 1
+  },
 ];
