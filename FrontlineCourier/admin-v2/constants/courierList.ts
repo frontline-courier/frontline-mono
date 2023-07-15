@@ -755,4 +755,11 @@ export const courierLists = [
     Track: '',
     Status: 1
   },
+  {
+    CourierId: 155,
+    Courier: 'DTDC Express',
+    Description: 'DTDC Express',
+    Track: 'www.dtdc.in',
+    Status: 1
+  },
 ];
