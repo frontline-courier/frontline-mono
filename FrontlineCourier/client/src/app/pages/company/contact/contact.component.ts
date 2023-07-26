@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, EmailValidator } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, EmailValidator } from '@angular/forms';
 import { HttpServiceService } from 'src/app/services/http-service.service';
 import * as moment from 'moment';
 
@@ -10,12 +10,12 @@ import * as moment from 'moment';
 })
 export class ContactComponent implements OnInit {
 
-  contactForm: FormGroup;
+  contactForm: UntypedFormGroup;
   mailSent: boolean;
   mailCompleted: boolean;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private httpService: HttpServiceService,
   ) { }
 
