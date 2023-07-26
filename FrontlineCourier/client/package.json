@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "npm run build --configuration production && firebase deploy --only hosting:frontline-client"
+    "deploy": "npm run build --configuration=production && firebase deploy --only hosting:frontline-client"
   },
   "private": true,
   "dependencies": {
