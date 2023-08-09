@@ -762,4 +762,32 @@ export const courierLists = [
     Track: 'www.dtdc.in',
     Status: 1
   },
+  {
+    CourierId: 161,
+    Courier: 'Delhivery Cargo',
+    Description: 'Delhivery Cargo',
+    Track: 'https://www.delhivery.com',
+    Status: 1
+  },
+  {
+    CourierId: 162,
+    Courier: 'Delhivery Economy',
+    Description: 'Delhivery Economy',
+    Track: 'https://www.delhivery.com',
+    Status: 1
+  },
+  {
+    CourierId: 163,
+    Courier: 'Smartr Normal',
+    Description: 'Smartr Normal',
+    Track: 'www.dtdc.in',
+    Status: 1
+  },
+  {
+    CourierId: 164,
+    Courier: 'Smartr Express',
+    Description: 'Smartr Express',
+    Track: 'www.smartr.in',
+    Status: 1
+  },
 ];
