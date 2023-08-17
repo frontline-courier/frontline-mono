@@ -154,16 +154,16 @@ export const courierLists = [
     Status: 'NULL'
   },
   {
-    CourierId: 28,
-    Courier: 'SHREE MAHAVIR Normal',
-    Description: 'Normal courier',
-    Track: 'http://www.shreemahavircourier.com/',
-    Status: 1
-  },
-  {
     CourierId: 30,
     Courier: 'ARAMEX Normal',
     Description: 'Normal International',
+    Track: 'www.aramex.com',
+    Status: 'NULL'
+  },
+  {
+    CourierId: 31,
+    Courier: 'ARAMEX Express',
+    Description: 'Normal Express',
     Track: 'www.aramex.com',
     Status: 'NULL'
   },
@@ -277,13 +277,6 @@ export const courierLists = [
     Courier: 'PRIME TRACK Priority',
     Description: 'NULL',
     Track: 'http://www.primetrack.in/',
-    Status: 'NULL'
-  },
-  {
-    CourierId: 55,
-    Courier: 'SHREE MAHAVIR Priority',
-    Description: 'NULL',
-    Track: 'http://www.shreemahavircourier.com/',
     Status: 'NULL'
   },
   {
