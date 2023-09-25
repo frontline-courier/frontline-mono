@@ -783,4 +783,18 @@ export const courierLists = [
     Track: 'www.smartr.in',
     Status: 1
   },
+  {
+    CourierId: 170,
+    Courier: 'eShipper Normal',
+    Description: 'eShipper Normal',
+    Track: 'https://eshipperuae.com/',
+    Status: 1
+  },
+  {
+    CourierId: 171,
+    Courier: 'eShipper Economy',
+    Description: 'eShipper Economy',
+    Track: 'https://eshipperuae.com/',
+    Status: 1
+  },
 ];
