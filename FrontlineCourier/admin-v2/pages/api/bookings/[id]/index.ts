@@ -11,6 +11,9 @@ handler.get(async (req: any, res: any) => {
 
     try {
         const doc = await req.db.collection('bookings').findOne({ _id: new ObjectId(id) });
+        delete doc.awbNumber;
+        delete doc.shipperName;
+        delete doc.receiverName;
         res.json(doc);
     }
     catch (err: any) {
