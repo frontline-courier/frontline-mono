@@ -29,6 +29,8 @@ export class ContactComponent implements OnInit {
     });
   }
 
+  // deprecated
+  // can be removed in upcoming releases.
   sendEmail() {
 
     const emailBody = {
