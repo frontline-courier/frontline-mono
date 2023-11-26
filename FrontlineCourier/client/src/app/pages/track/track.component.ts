@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Firestore } from '@angular/fire/firestore';
 import { courierStatus } from '../../constants/courier-status';
 import { courierLists } from '../../constants/courier-list';
 import { statusRelation } from '../../constants/status-relation';
@@ -26,7 +25,6 @@ export class TrackComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private firestore: Firestore,
     private router: Router,
   ) { }
 

@@ -22,9 +22,9 @@ import { ReachComponent } from './pages/company/reach/reach.component';
 import { environment } from 'src/environments/environment';
 import { TrackComponent } from './pages/track/track.component';
 
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { getAnalytics, provideAnalytics } from '@angular/fire/analytics';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+// import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+// import { getAnalytics, provideAnalytics } from '@angular/fire/analytics';
+// import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -51,9 +51,9 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore()),
-    provideAnalytics(() => getAnalytics()),
+    // provideFirebaseApp(() => initializeApp(environment.firebase)),
+    // provideFirestore(() => getFirestore()),
+    // provideAnalytics(() => getAnalytics()),
   ],
   bootstrap: [AppComponent]
 })
