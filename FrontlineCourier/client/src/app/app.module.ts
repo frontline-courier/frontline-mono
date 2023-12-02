@@ -21,6 +21,7 @@ import { AboutComponent } from './pages/company/about/about.component';
 import { ReachComponent } from './pages/company/reach/reach.component';
 import { environment } from 'src/environments/environment';
 import { TrackComponent } from './pages/track/track.component';
+import { CommonComponent } from './pages/common/common.component';
 
 // import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 // import { getAnalytics, provideAnalytics } from '@angular/fire/analytics';
@@ -43,7 +44,8 @@ import { TrackComponent } from './pages/track/track.component';
     ContactComponent,
     AboutComponent,
     ReachComponent,
-    TrackComponent
+    TrackComponent,
+    // CommonComponent
   ],
   imports: [
     BrowserModule,
@@ -51,9 +53,13 @@ import { TrackComponent } from './pages/track/track.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonComponent,
     // provideFirebaseApp(() => initializeApp(environment.firebase)),
     // provideFirestore(() => getFirestore()),
     // provideAnalytics(() => getAnalytics()),
+  ],
+  exports: [
+    CommonComponent
   ],
   bootstrap: [AppComponent]
 })

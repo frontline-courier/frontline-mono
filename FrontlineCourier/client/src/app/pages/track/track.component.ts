@@ -56,7 +56,7 @@ export class TrackComponent implements OnInit {
       const data = await res.json();
       console.log(data);
 
-      if (data) {
+      if (data && data._id) {
         this.status = true;
         this.trackResult = data;
         this.constructStatus();
@@ -65,6 +65,7 @@ export class TrackComponent implements OnInit {
       }
       this.loader = false;
     } catch (err) {
+      console.log({err});
       this.loader = false;
       this.status = false;
     }

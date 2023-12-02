@@ -15,6 +15,7 @@ import { AboutComponent } from './pages/company/about/about.component';
 import { ContactComponent } from './pages/company/contact/contact.component';
 import { ReachComponent } from './pages/company/reach/reach.component';
 import { TrackComponent } from './pages/track/track.component';
+import { TermsComponent } from './pages/company/terms/terms.component';
 
 
 const routes: Routes = [
@@ -49,6 +50,9 @@ const routes: Routes = [
     path: 'service/volumetric-weight', component: VolumeComponent,
   },
   {
+    path: 'service/volumetric-weight-calculation', component: VolumeComponent,
+  },
+  {
     path: 'service/pickup-request', component: PickupComponent,
   },
   {
@@ -65,6 +69,9 @@ const routes: Routes = [
   },
   {
     path: 'track', component: TrackComponent,
+  },
+  {
+    path: 'terms-and-privacy', component: TermsComponent,
   },
   {
     path: '**', component: HomeComponent,
