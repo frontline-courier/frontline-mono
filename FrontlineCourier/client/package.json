@@ -36,6 +36,7 @@
     "@angular/compiler-cli": "^17.0.4",
     "@angular/language-service": "^17.0.4",
     "@types/crypto-js": "^3.1.47",
+    "@types/gtag.js": "^0.0.18",
     "@types/node": "^12.12.53",
     "firebase-tools": "^12.4.6",
     "fuzzy": "^0.1.3",

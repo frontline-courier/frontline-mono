@@ -24,54 +24,71 @@ const routes: Routes = [
   },
   {
     path: 'home', component: HomeComponent,
+    data: { title: 'Home' }
   },
   {
     path: 'service/domestic', component: DomesticComponent,
+    data: { title: 'Domestic Service' }
   },
   {
     path: 'service/international', component: InternationalComponent,
+    data: { title: 'International Service' }
   },
   {
     path: 'service/air', component: AirComponent,
+    data: { title: 'Air Service' }
   },
   {
     path: 'service/cargo', component: CargoComponent,
+    data: { title: 'Cargo Service' }
   },
   {
     path: 'service/surface', component: SurfaceComponent,
+    data: { title: 'Surface Service' }
   },
   {
     path: 'service/priority', component: PriorityComponent,
+    data: { title: 'Priority Service' }
   },
   {
     path: 'service/price', component: PriceComponent,
+    data: { title: 'Domestic Pricing' }
   },
   {
     path: 'service/volumetric-weight', component: VolumeComponent,
+    data: { title: 'Volumetric Weight Calculation' }
   },
   {
     path: 'service/volumetric-weight-calculation', component: VolumeComponent,
+    data: { title: 'Volumetric Weight Calculation' }
   },
   {
     path: 'service/pickup-request', component: PickupComponent,
+    data: { title: 'Pickup Request' }
   },
   {
     path: 'service/get-quote', component: QuoteComponent,
+    data: { title: 'Get Quote' }
   },
   {
     path: 'contact', component: ContactComponent,
+    data: { title: 'Contact' }
   },
   {
     path: 'about', component: AboutComponent,
+    data: { title: 'About' }
   },
   {
     path: 'reach', component: ReachComponent,
+    data: { title: 'Reach Us' }
   },
   {
     path: 'track', component: TrackComponent,
+    data: { title: 'Track' }
   },
   {
     path: 'terms-and-privacy', component: TermsComponent,
+    data: { title: 'Policies' }
   },
   {
     path: '**', component: HomeComponent,
