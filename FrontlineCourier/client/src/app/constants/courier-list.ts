@@ -797,4 +797,32 @@ export const courierLists = [
     Track: 'https://eshipperuae.com/',
     Status: 1
   },
+  {
+    CourierId: 176,
+    Courier: 'DPD Duty Free',
+    Description: '',
+    Track: 'https://www.dpd.co.uk/',
+    Status: 1
+  },
+  {
+    CourierId: 177,
+    Courier: 'DPD Duty Free - Express',
+    Description: '',
+    Track: 'https://www.dpd.co.uk/',
+    Status: 1
+  },
+  {
+    CourierId: 178,
+    Courier: 'DPD Duty Free - Priority',
+    Description: '',
+    Track: 'https://www.dpd.co.uk/',
+    Status: 1
+  },
+  {
+    CourierId: 179,
+    Courier: 'DPD Duty Free - Economy',
+    Description: '',
+    Track: 'https://www.dpd.co.uk/',
+    Status: 1
+  },
 ];
