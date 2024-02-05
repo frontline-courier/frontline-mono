@@ -49,7 +49,7 @@
             <tr>
               <th scope="row">Transport Mode</th>
               <td>
-                <span *ngIf="getTransportMode(trackResult.transportMode).toLowerCase().includes('surface'); else elseBlock" class="fw-bold fs-6 text-warning bg-dark">{{ getTransportMode(trackResult.transportMode) }}</span>
+                <span *ngIf="getTransportMode(trackResult.transportMode).toLowerCase().includes('surface'); else elseBlock" class="fw-bold fs-6">{{ getTransportMode(trackResult.transportMode) }}</span>
                 <ng-template #elseBlock>{{ getTransportMode(trackResult.transportMode) }}</ng-template>
               </td>
             </tr>
