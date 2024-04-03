@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.trackForm = this.formBuilder.group({
       id: ['', [Validators.required]],
-      track: ['2', [Validators.required]],
+      track: ['1', [Validators.required]],
     });
   }
 
