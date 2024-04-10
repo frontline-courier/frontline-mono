@@ -825,4 +825,18 @@ export const courierLists = [
     Track: 'https://www.dpd.co.uk/',
     Status: 1
   },
+  {
+    CourierId: 190,
+    Courier: 'DPEX Economy',
+    Description: 'Normal International',
+    Track: 'www.dpex.com',
+    Status: 1
+  },
+  {
+    CourierId: 191,
+    Courier: 'DPEX Priority',
+    Description: 'Normal International',
+    Track: 'www.dpex.com',
+    Status: 1
+  },
 ];
