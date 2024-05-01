@@ -1,23 +1,27 @@
+// tracking mode 1 - frontline, 2 - direct courier website, 3 - api call
 export const courierLists = [
   {
     CourierId: 1,
     Courier: 'DTDC Normal',
     Description: 'Normal / Express domestic / Normal International',
-    Track: 'www.dtdc.com',
+    Track: 'https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cnNo=<AWB>&cType=Consignment',
+    Mode: 2,
     Status: 1
   },
   {
     CourierId: 2,
     Courier: 'FEDEX Express',
     Description: 'Priority International',
-    Track: 'www.fedex.com',
+    Track: 'https://www.fedex.com/wtrk/track/?trknbr=<AWB>',
+    Mode: 2,
     Status: 1
   },
   {
     CourierId: 3,
     Courier: 'DHL Express',
     Description: 'Express International',
-    Track: 'http://www.dhl.com/en.html',
+    Track: 'https://www.dhl.com/in-en/home/tracking/tracking-express.html?submit=1&tracking-id=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
@@ -31,7 +35,8 @@ export const courierLists = [
     CourierId: 7,
     Courier: 'UPS Priority',
     Description: 'Priority International',
-    Track: 'www.ups.com/in',
+    Track: 'https://www.ups.com/track?track=yes&trackNums=<AWB>',
+    Mode: 2,
     Status: 1
   },
   {
@@ -45,7 +50,8 @@ export const courierLists = [
     CourierId: 9,
     Courier: 'ARAMEX Priority',
     Description: 'Normal courier',
-    Track: 'www.aramex.com',
+    Track: 'https://www.aramex.com/in/en/track/track-results-new?type=EXP&ShipmentNumber=<AWB>',
+    Mode: 2,
     Status: 1
   },
   {
@@ -108,7 +114,8 @@ export const courierLists = [
     CourierId: 19,
     Courier: 'PROFESSIONAL Normal',
     Description: 'Normal / Express domestic Normal International',
-    Track: 'http://www.tpcindia.com',
+    Track: 'https://www.tpcindia.com/track-info.aspx?id=<AWB>&type=0&service=0',
+    Mode: 2,
     Status: 1
   },
   {
@@ -150,21 +157,24 @@ export const courierLists = [
     CourierId: 27,
     Courier: 'FEDEX Priority Domestic',
     Description: 'Priority / Economy mode domestic',
-    Track: 'www.fedex.com',
+    Track: 'https://www.fedex.com/wtrk/track/?trknbr=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
     CourierId: 30,
     Courier: 'ARAMEX Normal',
     Description: 'Normal International',
-    Track: 'www.aramex.com',
+    Track: 'https://www.aramex.com/in/en/track/track-results-new?ShipmentNumber=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
     CourierId: 31,
     Courier: 'ARAMEX Express',
     Description: 'Normal Express',
-    Track: 'www.aramex.com',
+    Track: 'https://www.aramex.com/in/en/track/track-results-new?type=EXP&ShipmentNumber=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
@@ -199,35 +209,35 @@ export const courierLists = [
     CourierId: 41,
     Courier: 'DTDC Priority',
     Description: 'NULL',
-    Track: 'www.dtdc.in',
+    Track: 'https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cnNo=<AWB>&cType=Consignment',
     Status: 'NULL'
   },
   {
     CourierId: 42,
     Courier: 'DTDC PTP 12.00',
     Description: 'NULL',
-    Track: 'www.dtdc.in',
+    Track: 'https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cnNo=<AWB>&cType=Consignment',
     Status: 'NULL'
   },
   {
     CourierId: 43,
     Courier: 'DTDC PTP 14.00',
     Description: 'NULL',
-    Track: 'www.dtdc.in',
+    Track: 'https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cnNo=<AWB>&cType=Consignment',
     Status: 'NULL'
   },
   {
     CourierId: 44,
     Courier: 'DTDC PTP 16.00',
     Description: 'NULL',
-    Track: 'www.dtdc.in',
+    Track: 'https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cnNo=<AWB>&cType=Consignment',
     Status: 'NULL'
   },
   {
     CourierId: 45,
     Courier: 'DTDC Sunday',
     Description: 'NULL',
-    Track: 'www.dtdc.in',
+    Track: 'https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cnNo=<AWB>&cType=Consignment',
     Status: 'NULL'
   },
   {
@@ -304,7 +314,8 @@ export const courierLists = [
     CourierId: 59,
     Courier: 'DHL Economy',
     Description: 'NULL',
-    Track: 'http://www.dhl.com/en.html',
+    Track: 'https://www.dhl.com/in-en/home/tracking/tracking-express.html?submit=1&tracking-id=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
@@ -325,7 +336,8 @@ export const courierLists = [
     CourierId: 62,
     Courier: 'SHREE TIRUPATHI Normal',
     Description: 'NULL',
-    Track: 'http://shreetirupaticourier.net/',
+    Track: 'http://www.shreetirupaticourier.net/Frm_DocTrack.aspx?docno=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
@@ -346,14 +358,16 @@ export const courierLists = [
     CourierId: 65,
     Courier: 'FEDEX Normal Road',
     Description: 'NULL',
-    Track: 'www.fedex.co.in',
+    Track: 'https://www.fedex.com/wtrk/track/?trknbr=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
     CourierId: 66,
     Courier: 'FEDEX Economy Domestic',
     Description: 'NULL',
-    Track: 'www.fedex.co.in',
+    Track: 'https://www.fedex.com/wtrk/track/?trknbr=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
@@ -381,7 +395,8 @@ export const courierLists = [
     CourierId: 70,
     Courier: 'FEDEX Intl Economy',
     Description: 'NULL',
-    Track: 'www.fedex.com/in',
+    Track: 'https://www.fedex.com/wtrk/track/?trknbr=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
@@ -395,14 +410,16 @@ export const courierLists = [
     CourierId: 72,
     Courier: 'Delhivery',
     Description: 'www.delhivery.com',
-    Track: 'https://www.delhivery.com',
+    Track: 'https://www.delhivery.com/track/package/<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
     CourierId: 73,
     Courier: 'UPS Express',
     Description: 'NULL',
-    Track: 'www.ups.com/in',
+    Track: 'https://www.ups.com/track?track=yes&trackNums=<AWB>',
+    Mode: 2,
     Status: 1
   },
   {
@@ -430,14 +447,16 @@ export const courierLists = [
     CourierId: 77,
     Courier: 'UPS Economy',
     Description: 'NULL',
-    Track: 'www.ups.com/in',
+    Track: 'https://www.ups.com/track?track=yes&trackNums=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
     CourierId: 78,
     Courier: 'Delhivery - Priority',
     Description: 'NULL',
-    Track: 'https://www.delhivery.com',
+    Track: 'https://www.delhivery.com/track/package/<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
@@ -675,14 +694,16 @@ export const courierLists = [
     CourierId: 120,
     Courier: 'AICS - Normal',
     Description: 'Arihant International Courier',
-    Track: 'https://www.arihantcourier.com/',
+    Track: 'https://www.arihantcourier.com/tracking/?tracking_number=<AWB>',
+    Mode: 2,
     Status: 1
   },
   {
     CourierId: 121,
     Courier: 'AICS - Priority',
     Description: 'Arihant International Courier',
-    Track: 'https://www.arihantcourier.com/',
+    Track: 'https://www.arihantcourier.com/tracking/?tracking_number=<AWB>',
+    Mode: 2,
     Status: 1
   },
   {
@@ -703,14 +724,16 @@ export const courierLists = [
     CourierId: 130,
     Courier: 'FEDEX Intl Priority',
     Description: 'NULL',
-    Track: 'www.fedex.com/in',
+    Track: 'https://www.fedex.com/wtrk/track/?trknbr=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
     CourierId: 131,
     Courier: 'DHL Priority',
     Description: 'NULL',
-    Track: 'http://www.dhl.com/en.html',
+    Track: 'https://www.dhl.com/in-en/home/tracking/tracking-express.html?submit=1&tracking-id=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
@@ -752,21 +775,23 @@ export const courierLists = [
     CourierId: 155,
     Courier: 'DTDC Express',
     Description: 'DTDC Express',
-    Track: 'www.dtdc.in',
+    Track: 'https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cnNo=<AWB>&cType=Consignment',
     Status: 1
   },
   {
     CourierId: 161,
     Courier: 'Delhivery Cargo',
     Description: 'Delhivery Cargo',
-    Track: 'https://www.delhivery.com',
+    Track: 'https://www.delhivery.com/track/package/<AWB>',
+    Mode: 2,
     Status: 1
   },
   {
     CourierId: 162,
     Courier: 'Delhivery Economy',
     Description: 'Delhivery Economy',
-    Track: 'https://www.delhivery.com',
+    Track: 'https://www.delhivery.com/track/package/<AWB>',
+    Mode: 2,
     Status: 1
   },
   {

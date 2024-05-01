@@ -5,13 +5,13 @@
 
     <div class="row" *ngIf="!loader && status">
       <div class="col-md-6" id="track-column-1">
-        <div *ngIf="getCourierName(trackResult.courier).toLowerCase().includes('dtdc'); else elseBlock">
+        <div *ngIf="getCourierMode(trackResult.courier) === 2; else elseBlock">
           <strong>Your Tracking: </strong><span>{{ trackResult.awbNumber }}</span>
           <br>
           <strong>Courier: </strong> <span>{{getCourierName(trackResult.courier)}}</span>
           <br>
           <strong>Tracking/Status: </strong><span><a
-              href="https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cnNo={{trackResult.referenceNumber}}&cType=Consignment"
+              href="{{getCourierUrl(trackResult.courier).replace('<AWB>', trackResult.referenceNumber)}}"
               target="_blank">click here for details</a></span>
         </div>
 
@@ -87,7 +87,7 @@
         </ng-template>
       </div>
 
-      <div class="col-md-6" *ngIf="!getCourierName(trackResult.courier).toLowerCase().includes('dtdc');">
+      <div class="col-md-6" *ngIf="getCourierMode(trackResult.courier) === 1">
         <div id="tracking-pre"></div>
         <div id="tracking">
           <div class="text-center tracking-status-intransit">

@@ -136,4 +136,8 @@ export class TrackComponent implements OnInit {
     return courierLists.find((x) => x.CourierId === id).Track;
   };
 
+  getCourierMode(id: number): number {
+    return courierLists.find((x) => x.CourierId === id)?.Mode || 1;
+  };
+
 }
