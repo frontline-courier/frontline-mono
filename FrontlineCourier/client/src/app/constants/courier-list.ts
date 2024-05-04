@@ -265,7 +265,8 @@ export const courierLists = [
     CourierId: 51,
     Courier: 'BDHL EXPRESS',
     Description: 'NULL',
-    Track: 'https://www.bluedart.com/',
+    Track: 'https://www.dhl.com/in-en/home/tracking/tracking-express.html?submit=1&tracking-id=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {
@@ -403,7 +404,8 @@ export const courierLists = [
     CourierId: 71,
     Courier: 'BDHL Priority',
     Description: 'NULL',
-    Track: 'https://www.bluedart.com/',
+    Track: 'https://www.dhl.com/in-en/home/tracking/tracking-express.html?submit=1&tracking-id=<AWB>',
+    Mode: 2,
     Status: 'NULL'
   },
   {

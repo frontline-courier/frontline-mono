@@ -6,13 +6,37 @@
     <div class="row" *ngIf="!loader && status">
       <div class="col-md-6" id="track-column-1">
         <div *ngIf="getCourierMode(trackResult.courier) === 2; else elseBlock">
-          <strong>Your Tracking: </strong><span>{{ trackResult.awbNumber }}</span>
-          <br>
-          <strong>Courier: </strong> <span>{{getCourierName(trackResult.courier)}}</span>
-          <br>
-          <strong>Tracking/Status: </strong><span><a
-              href="{{getCourierUrl(trackResult.courier).replace('<AWB>', trackResult.referenceNumber)}}"
-              target="_blank">click here for details</a></span>
+          <table class="table table-hover">
+            <tr>
+              <th scope="row">AWB Number</th>
+              <td>{{ trackResult.awbNumber }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Reference Number</th>
+              <td>{{ trackResult.referenceNumber }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Booked Date</th>
+              <td>{{ trackResult.bookedDate | date:'medium' }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Remarks</th>
+              <td class="fw-bold fs-8">{{ trackResult.remarks }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Tracking Details</th>
+              <td class="fw-bold fs-8">
+
+                <a *ngIf="trackResult.referenceNumber; else refNotFoundBlock"
+                  href="{{getCourierUrl(trackResult.courier).replace('<AWB>', trackResult.referenceNumber)}}"
+                  target="_blank">Click here for details
+                </a>
+                <ng-template #refNotFoundBlock>Please contact us for reference number!</ng-template>
+              </td>
+            </tr>
+
+          </table>
+
         </div>
 
         <ng-template #elseBlock>
