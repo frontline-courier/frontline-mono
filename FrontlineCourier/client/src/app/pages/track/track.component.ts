@@ -16,6 +16,15 @@ interface DeliveryResult {
   remark: string;
 }
 
+interface CourierType {
+  CourierId: number;
+  Courier: string;
+  Description: string;
+  Track: string;
+  Mode?: number;
+  Status: number;
+}
+
 @Component({
   selector: 'app-track',
   templateUrl: './track.component.html',
@@ -38,6 +47,8 @@ export class TrackComponent implements OnInit {
   trackResult: any;
   loader = true;
   status = false;
+  courier: CourierType;
+  courierAPIResult: any;
 
   ngOnInit(): void {
     let id = this.route.snapshot.queryParamMap.get('id');
@@ -52,9 +63,8 @@ export class TrackComponent implements OnInit {
   async getTrackingInfo(id: string, track: string) {
 
     try {
-      const res = await fetch(`https://next.frontlinecourier.com/api/bookings/find?track=${track}&id=${id}`, { mode: 'cors'});
+      const res = await fetch(`https://next.frontlinecourier.com/api/bookings/find?track=${track}&id=${id}`, { mode: 'cors' });
       const data = await res.json();
-      console.log(data);
 
       if (data && data._id) {
         this.status = true;
@@ -65,7 +75,7 @@ export class TrackComponent implements OnInit {
       }
       this.loader = false;
     } catch (err) {
-      console.log({err});
+      console.log({ err });
       this.loader = false;
       this.status = false;
     }
@@ -90,6 +100,31 @@ export class TrackComponent implements OnInit {
   async constructStatus() {
 
     if (this.trackResult) {
+
+      // set courier name, url, status, mode etc for html
+      this.getCourier(this.trackResult.courier);
+      // api call
+      if (this.courier?.Mode === 3) {
+
+        // bluedart 
+        if (this.courier.Courier.toLowerCase().includes('bluedart')) {
+          try {
+            const res = await fetch(`https://kkdyyvadmd2r2lmlymjlkecaby0bosil.lambda-url.ap-south-1.on.aws/bluedart?awb=${this.trackResult.referenceNumber}`, {
+              mode: 'cors',
+              cache: 'force-cache'
+            });
+            this.courierAPIResult = await res.json();
+
+          } catch (err) {
+            console.log({ err });
+          }
+
+        }
+
+      }
+
+    console.log(this.courier);
+
       const status: DeliveryResult = {
         statusDate: moment((this.trackResult.bookedDate)).format('MMM DD, YYYY'),
         statusTime: moment((this.trackResult.bookedDate)).format('ddd, h:mm:ss a'),
@@ -127,6 +162,10 @@ export class TrackComponent implements OnInit {
     }
     return statusRelation.find((x) => x.RelationId === id).Name;
   };
+
+  getCourier(id: number): void {
+    this.courier = courierLists.find((x) => x.CourierId === id)
+  }
 
   getCourierName(id: number): string {
     return courierLists.find((x) => x.CourierId === id).Courier;
