@@ -16,8 +16,8 @@ import moment from 'moment';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
-const courierList = courierLists;
-const statusList = courierStatus;
+const courierList = courierLists.sort((a, b) => a.Courier.localeCompare(b.Courier));
+const statusList = courierStatus.sort((a, b) => a.ShipmentStatus.localeCompare(b.ShipmentStatus));
 
 function BookingPage() {
 
