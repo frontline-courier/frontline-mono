@@ -112,7 +112,6 @@
 
         <div *ngIf="courier.Mode === 3 && courierAPIResult">
           <h2>Shipment Details</h2>
-
           <table class="table table-hover">
             <tbody>
               <tr>
@@ -172,8 +171,8 @@
 
         </div>
 
-        <div *ngIf="courier.Mode === 3 && !courierAPIResult">
-          Unable to load the shipment details
+        <div *ngIf="courier.Mode === 3 && !courierAPIStatus">
+          Unable to get the shipment details from {{courier?.Courier}}. Please check bill number or reference number.
         </div>
 
       </div>

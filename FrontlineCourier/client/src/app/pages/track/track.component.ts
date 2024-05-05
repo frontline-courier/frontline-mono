@@ -49,6 +49,7 @@ export class TrackComponent implements OnInit {
   status = false;
   courier: CourierType;
   courierAPIResult: any;
+  courierAPIStatus: boolean;
 
   ngOnInit(): void {
     let id = this.route.snapshot.queryParamMap.get('id');
@@ -109,6 +110,7 @@ export class TrackComponent implements OnInit {
         // bluedart 
         if (this.courier.Courier.toLowerCase().includes('bluedart')) {
           try {
+            this.loader = true;
             const res = await fetch(`https://kkdyyvadmd2r2lmlymjlkecaby0bosil.lambda-url.ap-south-1.on.aws/bluedart?awb=${this.trackResult.referenceNumber}`, {
               mode: 'cors',
               cache: 'force-cache'
@@ -117,6 +119,8 @@ export class TrackComponent implements OnInit {
 
           } catch (err) {
             console.log({ err });
+            this.loader = false;
+            this.courierAPIStatus = false;
           }
 
         }
