@@ -839,4 +839,11 @@ export const courierLists = [
     Track: 'www.dpex.com',
     Status: 1
   },
+  {
+    CourierId: 120,
+    Courier: 'PROFESSIONAL Priofity',
+    Description: 'Normal / Express domestic Normal International',
+    Track: 'http://www.tpcindia.com',
+    Status: 1
+  },
 ];
