@@ -840,56 +840,56 @@ export const courierLists = [
     Status: 1
   },
   {
-    CourierId: 120,
+    CourierId: 200,
     Courier: 'PROFESSIONAL Priofity',
     Description: 'Normal / Express domestic Normal International',
     Track: 'http://www.tpcindia.com',
     Status: 1
   },
   {
-    CourierId: 130,
+    CourierId: 201,
     Courier: 'DP World',
     Description: 'DP World',
     Track: 'https://www.logistics.dpworld.com/tracking/in/express',
     Status: 1
   },
   {
-    CourierId: 140,
+    CourierId: 202,
     Courier: 'Canada Duty Free - Normal',
     Description: 'Canada Duty Free - Normal',
     Track: 'https://www.frontlinecourier.com',
     Status: 1
   },
   {
-    CourierId: 141,
+    CourierId: 203,
     Courier: 'Canada Duty Free - Economy',
     Description: 'Canada Duty Free - Economy',
     Track: 'https://www.frontlinecourier.com',
     Status: 1
   },
   {
-    CourierId: 146,
+    CourierId: 204,
     Courier: 'USA Duty Free - Normal',
     Description: 'USA Duty Free - Normal',
     Track: 'https://www.frontlinecourier.com',
     Status: 1
   },
   {
-    CourierId: 147,
+    CourierId: 204,
     Courier: 'USA Duty Free - Economy',
     Description: 'USA Duty Free - Economy',
     Track: 'https://www.frontlinecourier.com',
     Status: 1
   },
   {
-    CourierId: 150,
+    CourierId: 206,
     Courier: 'Deskmate Express',
     Description: 'UDeskmate Express',
     Track: 'https://deskmateglobal.com/track-shipment/',
     Status: 1
   },
   {
-    CourierId: 151,
+    CourierId: 207,
     Courier: 'Deskmate Priority',
     Description: 'UDeskmate Priority',
     Track: 'https://deskmateglobal.com/track-shipment/',
