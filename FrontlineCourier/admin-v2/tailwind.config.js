@@ -7,7 +7,7 @@ module.exports = {
     './styles/**/*.css',
   ],
   theme: {
-    themes: ["fantasy"],
+    themes: ['light'],
     extend: {},
   },
   plugins: [

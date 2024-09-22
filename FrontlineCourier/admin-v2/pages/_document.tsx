@@ -4,7 +4,7 @@ class AppDocument extends Document {
 
   render() {
     return (
-      <Html data-theme="fantasy">
+      <Html data-theme="light">
         <Head>
           <title>Frontline - Admin</title>
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
