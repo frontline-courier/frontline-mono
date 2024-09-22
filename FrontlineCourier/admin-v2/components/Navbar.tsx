@@ -35,7 +35,7 @@ export default function AppNavbar() {
           bg-primary"
     >
       <div>
-        <a href="#"> Frontline Admin v3.0</a>
+        <a href="/"> Frontline Admin v3.0</a>
       </div>
 
       <svg

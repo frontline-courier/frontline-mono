@@ -9,7 +9,7 @@ import { getDoxType } from '../../models/DoxType';
 import { getShipmentMode } from '../../models/shipmentMode';
 import { getTransportMode } from '../../models/transportMode';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { AiFillEdit, AiFillDelete, AiFillRead } from 'react-icons/ai';
+import { AiFillEdit, AiFillDelete, AiFillRead, AiFillPlusSquare } from 'react-icons/ai';
 import { MdUpdate } from 'react-icons/md';
 import DeletePage from './delete';
 import moment from 'moment';
@@ -108,26 +108,36 @@ function BookingPage() {
     }
   }
 
-  // A super simple expandable component.
-  const ExpandedComponent = ({ data }: any) =>
-    // {
-    //   <table>
-    //     <tbody>
-    //       (
-    //         <tr key={1}>{2}<td></td><td>{3}</td></tr>
-    //       )
-    //     </tbody>
-    //   </table>
-    // }
-    <pre>{JSON.stringify(data, null, 2)}</pre>;
+  const ExpandedComponent = ({ data }: any) => {
+    return (
+      <table className="table table-xs table-zebra">
+        <tbody>
+          {Object.entries(data).map(([key, value]) => {
+            if (typeof value !== 'string') {
+              return null; // Skip if value is not a string
+            }
+  
+            return (
+              <tr key={key}>
+                <td>{key}</td>
+                <td>{value}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
+  };
+  
+  
 
-    data.forEach((v: any, i: number) => {
-      data[i].courier = getCourierName(v.courier);
-      data[i].bookedDate = moment(v.bookedDate).format('DD-MM-YYYY HH:mm');
-      data[i].doxType = getDoxType(v.doxType);
-      data[i].shipmentMode = getShipmentMode(v.shipmentMode);
-      data[i].shipmentStatus = getShipmentStatus(v.shipmentStatus);
-    })
+  data.forEach((v: any, i: number) => {
+    data[i].courier = getCourierName(v.courier);
+    data[i].bookedDate = moment(v.bookedDate).format('DD-MM-YYYY HH:mm');
+    data[i].doxType = getDoxType(v.doxType);
+    data[i].shipmentMode = getShipmentMode(v.shipmentMode);
+    data[i].shipmentStatus = getShipmentStatus(v.shipmentStatus);
+  })
 
 
   const columns = [
@@ -262,7 +272,7 @@ function BookingPage() {
     link.click();
   }
 
-  const Export = (event: any) => <button className="btn btn-primary btn-outline btn-xs" onClick={(e: any) => event.onExport(e.target.value)}>Download</button>;
+  const Export = (event: any) => <button className="btn btn-accent btn-outline btn-xs" onClick={(e: any) => event.onExport(e.target.value)}>Download</button>;
 
 
   if (isLoading) return <div>Loading...</div>;
@@ -304,9 +314,7 @@ function BookingPage() {
             <input type="submit" className="btn btn-secondary mx-2" value="Search" />
           </form>
         </div>
-        <div className="">
-          <span className="btn btn-primary mx-2"><Link href="/bookings/create">New Booking</Link></span>
-        </div>
+
       </div>
 
       <div>
@@ -330,6 +338,21 @@ function BookingPage() {
 
       </div>
 
+
+      <div className="fixed bottom-4 right-4 z-50">
+        <Link href="/bookings/create">
+          <a className="bg-primary hover:bg-accent 
+                 text-white font-bold rounded-lg 
+                 px-4 py-2 shadow-lg 
+                 flex items-center space-x-2
+                 focus:outline-none focus:ring-2 focus:ring-blue-300">
+            <span className="text-xl"><AiFillPlusSquare />
+            </span>
+            <span>New Booking</span>
+
+          </a>
+        </Link>
+      </div>
       {/* {
         deleteModel &&
         <DeletePage />
