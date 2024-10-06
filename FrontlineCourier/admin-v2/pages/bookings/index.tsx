@@ -9,17 +9,22 @@ import { getDoxType } from '../../models/DoxType';
 import { getShipmentMode } from '../../models/shipmentMode';
 import { getTransportMode } from '../../models/transportMode';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { AiFillEdit, AiFillDelete, AiFillRead, AiFillPlusSquare } from 'react-icons/ai';
-import { MdUpdate } from 'react-icons/md';
+import { AiFillEdit, AiFillRead } from 'react-icons/ai';
+import { MdUpdate, MdAdd } from 'react-icons/md';
 import DeletePage from './delete';
 import moment from 'moment';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { useRouter } from 'next/router';
 
 const courierList = courierLists.sort((a, b) => a.Courier.localeCompare(b.Courier));
 const statusList = courierStatus.sort((a, b) => a.ShipmentStatus.localeCompare(b.ShipmentStatus));
 
 function BookingPage() {
+
+  const router = useRouter();
+  const { page = 1 } = router.query; // Get page from query, default to 1
+
 
   // get data from list
   // to be removed after sometime
@@ -71,18 +76,18 @@ function BookingPage() {
     setLoading(false);
   };
 
-  const handlePageChange = (page: number) => {
-    fetchShipment(page);
-  };
+  // const handlePageChange = (page: number) => {
+  //   fetchShipment(page);
+  // };
 
-  const handlePerRowsChange = async (newPerPage: number, page: number) => {
-    setLoading(true);
-    const response =
-      await axios.get(`/api/bookings?page=${page}&limit=${newPerPage}&courier=${searchData.courier || 0}&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''}&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}`);
-    setData(response.data.booking);
-    setPerPage(newPerPage);
-    setLoading(false);
-  };
+  // const handlePerRowsChange = async (newPerPage: number, page: number) => {
+  //   setLoading(true);
+  //   const response =
+  //     await axios.get(`/api/bookings?page=${page}&limit=${newPerPage}&courier=${searchData.courier || 0}&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''}&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}`);
+  //   setData(response.data.booking);
+  //   setPerPage(newPerPage);
+  //   setLoading(false);
+  // };
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     setSearchData(data);
@@ -116,7 +121,7 @@ function BookingPage() {
             if (typeof value !== 'string') {
               return null; // Skip if value is not a string
             }
-  
+
             return (
               <tr key={key}>
                 <td>{key}</td>
@@ -128,8 +133,6 @@ function BookingPage() {
       </table>
     );
   };
-  
-  
 
   data.forEach((v: any, i: number) => {
     data[i].courier = getCourierName(v.courier);
@@ -138,7 +141,6 @@ function BookingPage() {
     data[i].shipmentMode = getShipmentMode(v.shipmentMode);
     data[i].shipmentStatus = getShipmentStatus(v.shipmentStatus);
   })
-
 
   const columns = [
     {
@@ -224,9 +226,40 @@ function BookingPage() {
     }
   ];
 
+  const handlePageChange = (newPage: number) => {
+    router.push({
+      pathname: '/bookings',
+      query: { ...router.query, page: newPage },
+    });
+  };
+
+  const handlePerRowsChange = (newPerPage: number, newPage: number) => {
+    // Reset page to 1 when perPage changes
+    router.push({
+      pathname: '/bookings',
+      query: { ...router.query, page: 1, perPage: newPerPage },
+    });
+  };
+
+
+
+
   useEffect(() => {
-    fetchShipment(1); // fetch page 1 of users
-  }, [searchData]);
+    // Fetch data whenever page or perPage changes in the URL
+    const fetchData = async () => {
+      setLoading(true);
+      const response = await axios.get(
+        `/api/bookings?page=${page}&limit=${perPage}&courier=${searchData.courier || 0
+        }&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''
+        }&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}`
+      );
+      setData(response.data.booking);
+      setTotalRows(response.data.count);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [page, perPage, searchData]);
 
   // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
   function convertArrayOfObjectsToCSV(array: any) {
@@ -274,6 +307,23 @@ function BookingPage() {
 
   const Export = (event: any) => <button className="btn btn-accent btn-outline btn-xs" onClick={(e: any) => event.onExport(e.target.value)}>Download</button>;
 
+  const NewBookingButton = () => (
+    <Link href="/bookings/create">
+      <a className="btn btn-primary btn-outline btn-xs">
+        <span className="text-lg"><MdAdd /></span>
+        <span>New Booking</span>
+      </a>
+    </Link>
+  );
+
+
+  const DataTableButtons = () => {
+    return <>
+      <Export />
+      <NewBookingButton />
+    </>
+  }
+
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
@@ -317,42 +367,24 @@ function BookingPage() {
 
       </div>
 
-      <div>
-        <DataTable
-          columns={columns}
-          data={data}
-          progressPending={loading}
-          expandableRows
-          expandableRowsComponent={ExpandedComponent}
-          pagination
-          paginationServer
-          paginationTotalRows={totalRows}
-          paginationPerPage={25}
-          paginationRowsPerPageOptions={[25, 50, 100, 250]}
-          onChangeRowsPerPage={handlePerRowsChange}
-          onChangePage={handlePageChange}
-          fixedHeader
-          highlightOnHover
-          actions={<Export onExport={() => downloadCSV(data)} />}
-        />
+      <DataTable
+        columns={columns}
+        data={data}
+        progressPending={loading}
+        expandableRows
+        expandableRowsComponent={ExpandedComponent}
+        pagination
+        paginationServer
+        paginationTotalRows={totalRows}
+        paginationPerPage={25}
+        paginationRowsPerPageOptions={[25, 50, 100, 250]}
+        onChangeRowsPerPage={handlePerRowsChange}
+        onChangePage={handlePageChange}
+        // fixedHeader
+        highlightOnHover
+        actions={<DataTableButtons />}
+      />
 
-      </div>
-
-
-      <div className="fixed bottom-4 right-4 z-50">
-        <Link href="/bookings/create">
-          <a className="bg-primary hover:bg-accent 
-                 text-white font-bold rounded-lg 
-                 px-4 py-2 shadow-lg 
-                 flex items-center space-x-2
-                 focus:outline-none focus:ring-2 focus:ring-blue-300">
-            <span className="text-xl"><AiFillPlusSquare />
-            </span>
-            <span>New Booking</span>
-
-          </a>
-        </Link>
-      </div>
       {/* {
         deleteModel &&
         <DeletePage />

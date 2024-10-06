@@ -78,7 +78,8 @@ export default function BookingForm() {
       resetField('transportMode');
       reset({});
 
-      router.push('/bookings');
+      // router.push('/bookings');
+      router.back();
     } catch (e: any) {
       setError(e.response?.data?.error || e.message);
     } finally {
@@ -273,7 +274,7 @@ export default function BookingForm() {
         }
 
         <div className="modal-action">
-          <div className="btn btn-wide"><Link href="/bookings">Back to Bookings</Link></div>
+          <div className="btn btn-wide"><button onClick={router.back}>Back to Bookings</button></div>
           {/* <label htmlFor="my-modal-2" className="btn btn-primary btn-wide" onClick={insertBooking}>Save</label> */}
           {!loader && pageType !== PageTypes.VIEW && <input type="submit" className="btn btn-primary btn-wide" disabled={!formState.isValid}></input>}
         </div>
