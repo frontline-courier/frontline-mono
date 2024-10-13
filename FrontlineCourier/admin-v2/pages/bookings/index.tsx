@@ -183,6 +183,7 @@ function BookingPage() {
     {
       name: 'Weight',
       selector: (row: any) => row.actualWeight,
+      sortable: true,
     },
     {
       name: '',
