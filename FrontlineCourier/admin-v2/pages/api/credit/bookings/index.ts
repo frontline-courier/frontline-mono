@@ -29,7 +29,6 @@ handler.get(async (req: any, res: any) => {
     const page = parseInt(req.query.page, 10)  || 1;
     const { pod, client, courier, mode, service } = req.query
 
-
     let docs = [];
     let count = 0;
     let query: any = {};

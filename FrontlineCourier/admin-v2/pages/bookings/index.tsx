@@ -25,7 +25,6 @@ function BookingPage() {
   const router = useRouter();
   const { page = 1 } = router.query; // Get page from query, default to 1
 
-
   // get data from list
   // to be removed after sometime
   const getShipmentStatus = (status: string): string => {
@@ -64,30 +63,6 @@ function BookingPage() {
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(25);
   const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', courier: 0, shipmentMode: 0, status: '' });
-
-  const fetchShipment = async (page: number) => {
-
-    setLoading(true);
-    const response =
-      await axios.get(
-        `/api/bookings?page=${page}&limit=${perPage}&courier=${searchData.courier || 0}&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''}&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}`);
-    setData(response.data.booking);
-    setTotalRows(response.data.count);
-    setLoading(false);
-  };
-
-  // const handlePageChange = (page: number) => {
-  //   fetchShipment(page);
-  // };
-
-  // const handlePerRowsChange = async (newPerPage: number, page: number) => {
-  //   setLoading(true);
-  //   const response =
-  //     await axios.get(`/api/bookings?page=${page}&limit=${newPerPage}&courier=${searchData.courier || 0}&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''}&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}`);
-  //   setData(response.data.booking);
-  //   setPerPage(newPerPage);
-  //   setLoading(false);
-  // };
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     setSearchData(data);
@@ -239,10 +214,8 @@ function BookingPage() {
       pathname: '/bookings',
       query: { ...router.query, page: 1, perPage: newPerPage },
     });
+    setPerPage(newPerPage);
   };
-
-
-
 
   useEffect(() => {
     // Fetch data whenever page or perPage changes in the URL
@@ -342,7 +315,7 @@ function BookingPage() {
               <option value={0}>-- courier --</option>
               {
                 courierList.map((d) => {
-                  return <option key={d.CourierId} value={d.CourierId}>{d.Courier}</option>
+                  return <option key={d.CourierId + d.Courier} value={d.CourierId}>{d.Courier}</option>
                 })
               }
             </select>
@@ -357,7 +330,7 @@ function BookingPage() {
               <option value="">-- status --</option>
               {
                 statusList.map((s, i) => {
-                  return <option key={s.StatusId + i} value={s.ShipmentStatus}>{s.ShipmentStatus}</option>
+                  return <option key={s.StatusId} value={s.ShipmentStatus}>{s.ShipmentStatus}</option>
                 })
               }
             </select>

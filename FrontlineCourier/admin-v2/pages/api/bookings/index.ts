@@ -15,7 +15,6 @@ handler.get(async (req: any, res: any) => {
     const mode = parseInt(req.query.mode, 10) || 0;
     const status = req.query.status || '';
 
-
     let docs = [];
     let count = 0;
     let query: any = {};

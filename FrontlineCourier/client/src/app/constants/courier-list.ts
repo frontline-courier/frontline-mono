@@ -906,7 +906,7 @@ export const courierLists = [
     Status: 1
   },
   {
-    CourierId: 204,
+    CourierId: 205,
     Courier: 'USA Duty Free - Economy',
     Description: 'USA Duty Free - Economy',
     Track: 'https://www.frontlinecourier.com',
