@@ -16,6 +16,7 @@ import moment from 'moment';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
+import { shipmentStatus } from '../../models/shipmentStatus';
 
 const courierList = courierLists.sort((a, b) => a.Courier.localeCompare(b.Courier));
 const statusList = courierStatus.sort((a, b) => a.ShipmentStatus.localeCompare(b.ShipmentStatus));
@@ -54,6 +55,7 @@ function BookingPage() {
       courier: 0,
       status: 0,
       shipmentMode: 0,
+      shipmentStatus: ''
     }
   });
   const { user, error, isLoading } = useUser();
@@ -290,14 +292,12 @@ function BookingPage() {
     </Link>
   );
 
-
   const DataTableButtons = () => {
     return <>
-      <Export />
+      <Export onExport={() => downloadCSV(data)}/>
       <NewBookingButton />
     </>
   }
-
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;

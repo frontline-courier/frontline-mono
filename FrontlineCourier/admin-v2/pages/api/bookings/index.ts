@@ -32,7 +32,7 @@ handler.get(async (req: any, res: any) => {
         query.shipmentMode = mode;
     }
     if (status) {
-        query.shipmentStatus = status;
+        query.shipmentStatus = { $regex: status, $options: 'i' };
     }
 
     try {
