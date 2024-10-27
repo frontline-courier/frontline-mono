@@ -11,6 +11,7 @@ handler.get(async (req: any, res: any) => {
     const page = parseInt(req.query.page, 10)  || 1;
     const awb = req.query.awb || '';
     const ref = req.query.ref || '';
+    const tpn = req.query.tpn || '';
     const courier = parseInt(req.query.courier, 10) || 0;
     const mode = parseInt(req.query.mode, 10) || 0;
     const status = req.query.status || '';
@@ -24,6 +25,9 @@ handler.get(async (req: any, res: any) => {
     }
     if (ref) {
         query.referenceNumber = ref;
+    }
+    if (tpn) {
+        query.thirdPartyNumber = tpn;
     }
     if (courier) {
         query.courier = courier;

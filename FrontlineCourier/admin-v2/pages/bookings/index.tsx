@@ -64,7 +64,7 @@ function BookingPage() {
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(25);
-  const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', courier: 0, shipmentMode: 0, status: '' });
+  const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', thirdPartyNumber: '', courier: 0, shipmentMode: 0, status: '' });
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     setSearchData(data);
@@ -128,6 +128,11 @@ function BookingPage() {
     {
       name: 'Reference',
       selector: (row: any) => row.referenceNumber,
+      sortable: true,
+    },
+    {
+      name: 'tp #',
+      selector: (row: any) => row.thirdPartyNumber,
       sortable: true,
     },
     {
@@ -227,7 +232,7 @@ function BookingPage() {
       const response = await axios.get(
         `/api/bookings?page=${page}&limit=${perPage}&courier=${searchData.courier || 0
         }&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''
-        }&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}`
+        }&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}&tpn=${searchData.thirdPartyNumber}`
       );
       setData(response.data.booking);
       setTotalRows(response.data.count);
@@ -294,7 +299,7 @@ function BookingPage() {
 
   const DataTableButtons = () => {
     return <>
-      <Export onExport={() => downloadCSV(data)}/>
+      <Export onExport={() => downloadCSV(data)} />
       <NewBookingButton />
     </>
   }
@@ -304,41 +309,37 @@ function BookingPage() {
 
   return (
     <>
-      <div className="flex justify-between m-4">
-        <div className="">
-          <h2 className="text-2xl font-semibold">Booking</h2>
-        </div>
-        <div>
-          <form onSubmit={handleSubmit(onSubmit)} role="search">
-            <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register('awbNumber', { minLength: 3 })} />
-            <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered" {...register('referenceNumber', { minLength: 3 })} />
-            <select className={'select select-bordered'}  {...register('courier', { valueAsNumber: true },)}>
-              <option value={0}>-- courier --</option>
-              {
-                courierList.map((d) => {
-                  return <option key={d.CourierId + d.Courier} value={d.CourierId}>{d.Courier}</option>
-                })
-              }
-            </select>
-            <select className={'select select-bordered'} {...register('shipmentMode', { valueAsNumber: true })}>
-              <option value={0}>-- shipment mode --</option>
-              <option value={1}>Domestic</option>
-              <option value={2}>International</option>
-              <option value={3}>Local</option>
-              <option value={0}>NA</option>
-            </select>
-            <select className="select select-bordered" {...register('status')}>
-              <option value="">-- status --</option>
-              {
-                statusList.map((s, i) => {
-                  return <option key={s.StatusId} value={s.ShipmentStatus}>{s.ShipmentStatus}</option>
-                })
-              }
-            </select>
-            <input type="submit" className="btn btn-secondary mx-2" value="Search" />
-          </form>
-        </div>
-
+      <div className="m-2 gap-2">
+        <h2 className="text-2xl font-semibold">Booking</h2>
+        <form onSubmit={handleSubmit(onSubmit)} role="search" className='flex flex-row gap-2'>
+          <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered input-sm" {...register('awbNumber', { minLength: 3 })} />
+          <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered input-sm" {...register('referenceNumber', { minLength: 3 })} />
+          <input type="text" autoComplete="false" placeholder="Third Party #" className="input input-bordered input-sm" {...register('thirdPartyNumber', { minLength: 3 })} />
+          <select className={'select select-bordered select-sm'}  {...register('courier', { valueAsNumber: true },)}>
+            <option value={0}>-- courier --</option>
+            {
+              courierList.map((d) => {
+                return <option key={d.CourierId + d.Courier} value={d.CourierId}>{d.Courier}</option>
+              })
+            }
+          </select>
+          <select className={'select select-bordered select-sm'} {...register('shipmentMode', { valueAsNumber: true })}>
+            <option value={0}>-- shipment mode --</option>
+            <option value={1}>Domestic</option>
+            <option value={2}>International</option>
+            <option value={3}>Local</option>
+            <option value={0}>NA</option>
+          </select>
+          <select className="select select-bordered select-sm" {...register('status')}>
+            <option value="">-- status --</option>
+            {
+              statusList.map((s, i) => {
+                return <option key={s.StatusId} value={s.ShipmentStatus}>{s.ShipmentStatus}</option>
+              })
+            }
+          </select>
+          <input type="submit" className="btn btn-secondary mx-2 btn-sm" value="Search" />
+        </form>
       </div>
 
       <DataTable

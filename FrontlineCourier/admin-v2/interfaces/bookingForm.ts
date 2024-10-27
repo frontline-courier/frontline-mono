@@ -20,4 +20,5 @@ export type BookingFormInputs = {
     additionalContacts: string,
     additionalWeights: string,
     additionalLeaf: string,
+    thirdPartyNumber: string,
 };

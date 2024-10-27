@@ -107,6 +107,12 @@ export default function BookingForm() {
           </div>
           <div className="form-control">
             <label className="label p-1">
+              <span className="label-text text-2xs">Third Party Number</span>
+            </label>
+            <input type="text" placeholder="Third Party Number" className={`input input-bordered ${errors.thirdPartyNumber && 'input-error'}`} {...register('thirdPartyNumber', { minLength: 5 })} />
+          </div>
+          <div className="form-control">
+            <label className="label p-1">
               <span className="label-text text-2xs">Booking Date</span>
             </label>
             <input type="datetime-local" placeholder="Booking Date" className={`input input-bordered ${errors.bookedDate && 'input-error'}`} {...register('bookedDate', { required: true, valueAsDate: true, })} />
@@ -229,7 +235,7 @@ export default function BookingForm() {
           </div>
           <div className="form-control">
             <label className="label p-1">
-              <span className="label-text text-2xs">Add. Volume/Size</span>
+              <span className="label-text text-2xs">Add. Volume Wt/Size</span>
             </label>
             <input type="text" placeholder="Add. Volume/Size" className="input input-bordered" {...register('additionalWeights')} />
           </div>
@@ -239,6 +245,9 @@ export default function BookingForm() {
             </label>
             <input type="text" placeholder="Add. Lead/Pouch" className="input input-bordered" {...register('additionalLeaf')} />
           </div>
+
+          <div />
+          <div />
 
           <div className="form-control">
             <label className="label p-1">
