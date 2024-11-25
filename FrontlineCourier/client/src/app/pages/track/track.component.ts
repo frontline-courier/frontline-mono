@@ -107,23 +107,23 @@ export class TrackComponent implements OnInit {
       // api call
       if (this.courier?.Mode === 3) {
 
-        // bluedart 
-        if (this.courier.Courier.toLowerCase().includes('bluedart')) {
-          try {
-            this.loader = true;
-            const res = await fetch(`https://kkdyyvadmd2r2lmlymjlkecaby0bosil.lambda-url.ap-south-1.on.aws/bluedart?awb=${this.trackResult.referenceNumber}`, {
-              mode: 'cors',
-              cache: 'force-cache'
-            });
-            this.courierAPIResult = await res.json();
+        // // bluedart 
+        // if (this.courier.Courier.toLowerCase().includes('bluedart')) {
+        //   try {
+        //     this.loader = true;
+        //     const res = await fetch(`https://kkdyyvadmd2r2lmlymjlkecaby0bosil.lambda-url.ap-south-1.on.aws/bluedart?awb=${this.trackResult.referenceNumber}`, {
+        //       mode: 'cors',
+        //       cache: 'force-cache'
+        //     });
+        //     this.courierAPIResult = await res.json();
 
-          } catch (err) {
-            console.log({ err });
-            this.loader = false;
-            this.courierAPIStatus = false;
-          }
+        //   } catch (err) {
+        //     console.log({ err });
+        //     this.loader = false;
+        //     this.courierAPIStatus = false;
+        //   }
 
-        }
+        // }
 
       }
 

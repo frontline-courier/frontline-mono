@@ -79,8 +79,8 @@ export const courierLists = [
     CourierId: 13,
     Courier: 'BlueDart DP Express',
     Description: 'Express Domestic',
-    Track: 'www.bluedart.com',
-    Mode: 3,
+    Track: 'https://www.bluedart.com/trackdartresultthirdparty?trackFor=0&trackNo=<AWB>',
+    Mode: 2,
     Status: 1
   },
   {
@@ -130,32 +130,32 @@ export const courierLists = [
     CourierId: 21,
     Courier: 'BlueDart TDD 10.30 / 12.00',
     Description: 'Morning delivery 10.30 / 12.00',
-    Track: 'www.bluedart.com',
-    Mode: 3,
+    Track: 'https://www.bluedart.com/trackdartresultthirdparty?trackFor=0&trackNo=<AWB>',
+    Mode: 2,
     Status: 0
   },
   {
     CourierId: 22,
     Courier: 'BlueDart Critical',
     Description: 'Passport  / Critical shipments',
-    Track: 'www.bluedart.com',
-    Mode: 3,
+    Track: 'https://www.bluedart.com/trackdartresultthirdparty?trackFor=0&trackNo=<AWB>',
+    Mode: 2,
     Status: 1
   },
   {
     CourierId: 23,
     Courier: 'BlueDart Apex',
     Description: 'Air mode only',
-    Track: 'www.bluedart.com',
-    Mode: 3,
+    Track: 'https://www.bluedart.com/trackdartresultthirdparty?trackFor=0&trackNo=<AWB>',
+    Mode: 2,
     Status: 0
   },
   {
     CourierId: 24,
     Courier: 'BlueDart Surfaceline',
     Description: 'Surface mode only',
-    Track: 'www.bluedart.com',
-    Mode: 3,
+    Track: 'https://www.bluedart.com/trackdartresultthirdparty?trackFor=0&trackNo=<AWB>',
+    Mode: 2,
     Status: 0
   },
   {
@@ -328,8 +328,8 @@ export const courierLists = [
     CourierId: 60,
     Courier: 'BlueDart - Apex - Fr',
     Description: '',
-    Track: 'https://www.bluedart.com/',
-    Mode: 3,
+    Track: 'https://www.bluedart.com/trackdartresultthirdparty?trackFor=0&trackNo=<AWB>',
+    Mode: 2,
     Status: 0
   },
   {
@@ -351,8 +351,8 @@ export const courierLists = [
     CourierId: 63,
     Courier: 'BlueDart Apex Economy',
     Description: '',
-    Track: 'https://www.bluedart.com/',
-    Mode: 3,
+    Track: 'https://www.bluedart.com/trackdartresultthirdparty?trackFor=0&trackNo=<AWB>',
+    Mode: 2,
     Status: 0
   },
   {
@@ -435,8 +435,8 @@ export const courierLists = [
     CourierId: 74,
     Courier: 'BlueDart DP Economy',
     Description: '',
-    Track: 'https://www.bluedart.com/',
-    Mode: 3,
+    Track: 'https://www.bluedart.com/trackdartresultthirdparty?trackFor=0&trackNo=<AWB>',
+    Mode: 2,
     Status: 1
   },
   {
@@ -450,8 +450,8 @@ export const courierLists = [
     CourierId: 76,
     Courier: 'BLUEDART INTL ECONOMY',
     Description: '',
-    Track: 'https://www.bluedart.com/',
-    Mode: 3,
+    Track: 'https://www.bluedart.com/trackdartresultthirdparty?trackFor=0&trackNo=<AWB>',
+    Mode: 2,
     Status: 0
   },
   {
@@ -530,16 +530,16 @@ export const courierLists = [
     CourierId: 87,
     Courier: 'BlueDart Intl Economy',
     Description: 'BlueDart',
-    Track: 'https://www.bluedart.com/',
-    Mode: 3,
+    Track: 'https://www.bluedart.com/trackdartresultthirdparty?trackFor=0&trackNo=<AWB>',
+    Mode: 2,
     Status: 1
   },
   {
     CourierId: 88,
     Courier: 'BlueDart Intl Express',
     Description: 'BlueDart',
-    Track: 'https://www.bluedart.com/',
-    Mode: 3,
+    Track: 'https://www.bluedart.com/trackdartresultthirdparty?trackFor=0&trackNo=<AWB',
+    Mode: 2,
     Status: 1
   },
   {
@@ -866,6 +866,13 @@ export const courierLists = [
   {
     CourierId: 190,
     Courier: 'DPEX Economy',
+    Description: 'Normal International',
+    Track: 'www.dpex.com',
+    Status: 1
+  },
+  {
+    CourierId: 191,
+    Courier: 'DPEX Priority',
     Description: 'Normal International',
     Track: 'www.dpex.com',
     Status: 1
