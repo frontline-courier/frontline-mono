@@ -34,7 +34,7 @@ const CouriersPage = () => {
       const maxCourierId = Math.max(...fetchedCouriers.map((c: Courier) => c.CourierId), 0);
       setNextCourierId(maxCourierId + 1); // Set next Courier ID
     } catch (error) {
-      console.error("Error fetching couriers:", error);
+      console.error('Error fetching couriers:', error);
     } finally {
       setLoading(false);
     }
@@ -64,7 +64,7 @@ const CouriersPage = () => {
       setEditingCourier(null); // Reset editing state
       fetchCouriers();
     } catch (error) {
-      console.error("Error saving courier:", error);
+      console.error('Error saving courier:', error);
     }
   };
 
@@ -74,7 +74,7 @@ const CouriersPage = () => {
   };
 
   const handleDelete = async (id: string) => {
-    const confirmMessage = "Are you sure you want to delete this courier?";
+    const confirmMessage = 'Are you sure you want to delete this courier?';
     if (!window.confirm(confirmMessage)) {
       return; // Exit if the user cancels
     }
@@ -83,7 +83,7 @@ const CouriersPage = () => {
       await axios.delete(`/api/couriers/${id}`);
       fetchCouriers();
     } catch (error) {
-      console.error("Error deleting courier:", error);
+      console.error('Error deleting courier:', error);
     }
   };
 

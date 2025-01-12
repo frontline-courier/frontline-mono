@@ -23,7 +23,7 @@ handler.post(async (req: any, res: any) => {
 
     res.json({ status: 'success' });
   } catch (err) {
-    console.error("Error inserting courier:", err);
+    console.error('Error inserting courier:', err);
     res.status(500).json({ status: 'error', error: (err as Error).message });
   } finally {
     req.dbClient.close();
