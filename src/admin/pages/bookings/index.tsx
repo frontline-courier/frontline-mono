@@ -1,9 +1,8 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import DataTable from 'react-data-table-component';
-import { courierLists } from '../../constants/courierList';
 import { courierStatus } from '../../constants/shipmentStatus';
 import { getDoxType } from '../../models/DoxType';
 import { getShipmentMode } from '../../models/shipmentMode';
@@ -18,38 +17,23 @@ import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
 import { shipmentStatus } from '../../models/shipmentStatus';
 
-const courierList = courierLists.sort((a, b) => a.Courier.localeCompare(b.Courier));
 const statusList = courierStatus.sort((a, b) => a.ShipmentStatus.localeCompare(b.ShipmentStatus));
 
-function BookingPage() {
-
+const BookingPage = () => {
   const router = useRouter();
   const { page = 1 } = router.query; // Get page from query, default to 1
+  const [courierList, setCourierList] = useState<any[]>([]); // State for couriers
+  const [loadingCouriers, setLoadingCouriers] = useState(true); // Loading state for couriers
+  const [errorCouriers, setErrorCouriers] = useState<string | null>(null); // Error state for couriers\ const { user, error, isLoading } = useUser();
+  const [data, setData] = useState([] as any);
+  const [deleteModel, setDelete] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [totalRows, setTotalRows] = useState(0);
+  const [perPage, setPerPage] = useState(25);
+  const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', thirdPartyNumber: '', courier: 0, shipmentMode: 0, status: '' });
 
-  // get data from list
-  // to be removed after sometime
-  const getShipmentStatus = (status: string): string => {
-    if (typeof status === 'string') { return status; }
-    return statusList.find((s) => s.StatusId === parseInt(status, 10))?.ShipmentStatus || 'NA';
-  }
-
-  const getCourierName = (courierId: string): string => {
-    if (courierId === null || courierId === undefined) { return 'NA'; }
-    return courierList.find((c) => c.CourierId === parseInt(courierId, 10))?.Courier || 'NA';
-  }
-
-  const coCourierType = (coCourier: string): string => {
-    switch (parseInt(coCourier, 10)) {
-      case 1:
-        return 'yes';
-      case 0:
-        return 'no';
-      default:
-        return 'na';
-    }
-  }
-
-  const { register, handleSubmit, watch, formState, reset, resetField } = useForm<any>({
+  // useForm hook
+  const { register, handleSubmit, reset } = useForm<any>({
     mode: 'onChange',
     defaultValues: {
       courier: 0,
@@ -58,13 +42,40 @@ function BookingPage() {
       shipmentStatus: ''
     }
   });
-  const { user, error, isLoading } = useUser();
-  const [data, setData] = useState([] as any);
-  const [deleteModel, setDelete] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [totalRows, setTotalRows] = useState(0);
-  const [perPage, setPerPage] = useState(25);
-  const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', thirdPartyNumber: '', courier: 0, shipmentMode: 0, status: '' });
+
+  // Fetch couriers on component mount
+  const fetchCouriers = useCallback(async () => {
+    try {
+      const response = await axios.get('/api/couriers');
+      setCourierList(response.data.couriers); // Set the fetched couriers
+    } catch (error) {
+      setErrorCouriers('Failed to load couriers'); // Handle error
+    } finally {
+      setLoadingCouriers(false); // Set loading to false
+    }
+  }, []);
+
+  // Fetch data whenever page or perPage changes in the URL
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await axios.get(
+      `/api/bookings?page=${page}&limit=${perPage}&courier=${searchData.courier || 0
+      }&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''
+      }&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}&tpn=${searchData.thirdPartyNumber}`
+    );
+    setData(response.data.booking);
+    setTotalRows(response.data.count);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchCouriers();
+    fetchData();
+  }, [fetchCouriers, page, perPage, searchData]); // Dependency on fetchCouriers
+
+  // Handle loading and error states
+  if (loadingCouriers) return <div>Loading couriers...</div>;
+  if (errorCouriers) return <div>{errorCouriers}</div>;
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     setSearchData(data);
@@ -110,6 +121,18 @@ function BookingPage() {
       </table>
     );
   };
+
+  // get data from list
+  // to be removed after sometime
+  const getShipmentStatus = (status: string): string => {
+    if (typeof status === 'string') { return status; }
+    return statusList.find((s) => s.StatusId === parseInt(status, 10))?.ShipmentStatus || 'NA';
+  }
+
+  const getCourierName = (courierId: string): string => {
+    if (courierId === null || courierId === undefined) { return 'NA'; }
+    return courierList.find((c) => c.CourierId === parseInt(courierId, 10))?.Courier || 'NA';
+  }
 
   data.forEach((v: any, i: number) => {
     data[i].courier = getCourierName(v.courier);
@@ -225,23 +248,6 @@ function BookingPage() {
     setPerPage(newPerPage);
   };
 
-  useEffect(() => {
-    // Fetch data whenever page or perPage changes in the URL
-    const fetchData = async () => {
-      setLoading(true);
-      const response = await axios.get(
-        `/api/bookings?page=${page}&limit=${perPage}&courier=${searchData.courier || 0
-        }&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''
-        }&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}&tpn=${searchData.thirdPartyNumber}`
-      );
-      setData(response.data.booking);
-      setTotalRows(response.data.count);
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [page, perPage, searchData]);
-
   // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
   function convertArrayOfObjectsToCSV(array: any) {
     let result: string;
@@ -304,10 +310,8 @@ function BookingPage() {
     </>
   }
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
 
-  return (
+  return  (
     <>
       <div className="m-2 gap-2">
         <h2 className="text-2xl font-semibold">Booking</h2>
@@ -366,6 +370,6 @@ function BookingPage() {
       } */}
     </>
   );
-}
+};
 
 export default withPageAuthRequired(BookingPage);

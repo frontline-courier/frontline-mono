@@ -3,9 +3,8 @@ import axios from 'axios';
 import moment from 'moment';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { courierLists } from '../../constants/courierList';
 import { PageTypes } from '../../enums/pageTypes';
 import { getPageType } from '../../helpers/router/getPageType';
 import { BookingFormInputs } from '../../interfaces/bookingForm';
@@ -29,13 +28,28 @@ export default function BookingForm() {
   });
 
   const errors = formState.errors;
-  const couriers = courierLists;
   const [loader, setLoader] = useState(false);
   const [saveError, setError] = useState('');
   const [isDelete, setDelete] = useState(false);
   const { user } = useUser();
+  const [courierList, setCourierList] = useState<any[]>([]); // State for couriers
+  const [loadingCouriers, setLoadingCouriers] = useState(true); // Loading state for couriers
+  const [errorCouriers, setErrorCouriers] = useState<string | null>(null); // Error state for couriers\ const { user, error, isLoading } = useUser();
+
+  // Fetch couriers on component mount
+  const fetchCouriers = useCallback(async () => {
+    try {
+      const response = await axios.get('/api/couriers');
+      setCourierList(response.data.couriers); // Set the fetched couriers
+    } catch (error) {
+      setErrorCouriers('Failed to load couriers'); // Handle error
+    } finally {
+      setLoadingCouriers(false); // Set loading to false
+    }
+  }, []);
 
   useEffect(() => {
+    fetchCouriers();
     (async () => {
       if (id) {
         try {
@@ -125,7 +139,7 @@ export default function BookingForm() {
             <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register('courier', { required: true, valueAsNumber: true },)}>
               <option disabled={true} value={0}>-- courier --</option>
               {
-                couriers.map((d) => {
+                courierList.map((d) => {
                   return <option key={d.CourierId} value={d.CourierId}>{d.Courier}</option>
                 })
               }
