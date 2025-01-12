@@ -1,6 +1,7 @@
 import { Db, ObjectId } from 'mongodb';
 import nextConnect from 'next-connect';
 import middleware from '../../../helpers/database';
+import { resetCache } from '../../../lib/cache';
 
 const handler = nextConnect();
 
@@ -14,6 +15,9 @@ handler.put(async (req: any, res: any) => {
   try {
     const collection = (req.db as Db).collection('couriers');
     await collection.updateOne({ _id: new ObjectId(id) }, { $set: { CourierId, Courier, Description, Track, Mode, Status } });
+
+    resetCache(); // Reset cache
+
     res.json({ status: 'success' });
   } catch (err) {
     res.send({ status: 'error', error: (err as Error).message });
@@ -29,6 +33,9 @@ handler.delete(async (req: any, res: any) => {
   try {
     const collection = (req.db as Db).collection('couriers');
     await collection.deleteOne({ _id: new ObjectId(id) });
+
+    resetCache(); // Reset cache
+    
     res.json({ status: 'success' });
   } catch (err) {
     res.send({ status: 'error', error: (err as Error).message });

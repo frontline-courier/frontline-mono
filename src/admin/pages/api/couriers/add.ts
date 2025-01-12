@@ -1,6 +1,7 @@
 import { Db } from 'mongodb';
 import nextConnect from 'next-connect';
 import middleware from '../../../helpers/database';
+import { resetCache } from '../../../lib/cache'; // Import cache functions
 
 const handler = nextConnect();
 
@@ -17,9 +18,12 @@ handler.post(async (req: any, res: any) => {
   try {
     const collection = (req.db as Db).collection('couriers');
     await collection.insertOne({ CourierId, Courier, Description, Track, Mode, Status });
+
+    resetCache(); // Reset cache
+
     res.json({ status: 'success' });
   } catch (err) {
-    console.error("Error inserting courier:", err); // Log the error for debugging
+    console.error("Error inserting courier:", err);
     res.status(500).json({ status: 'error', error: (err as Error).message });
   } finally {
     req.dbClient.close();
