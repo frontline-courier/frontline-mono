@@ -68,6 +68,8 @@ export default function AppNavbar() {
               {/* <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings/quick">Quick Booking</a> </li> */}
               <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings">Booking</a> </li>
 
+              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/couriers">Courier</a> </li>
+
               <li>
                 <div className="dropdown cursor-pointer">
                   <div tabIndex={0} className="md:p-4 py-2 block hover:bg-secondary">
