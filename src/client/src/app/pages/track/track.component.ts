@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { courierStatus } from '../../constants/courier-status';
-import { courierLists } from '../../constants/courier-list';
 import { statusRelation } from '../../constants/status-relation';
 import { getDoxType } from '../../models/doxType';
 import { getShipmentMode } from '../../models/shipmentMode';
@@ -38,7 +37,7 @@ export class TrackComponent implements OnInit {
   ) { }
 
   courierStatus = courierStatus;
-  courierLists = courierLists;
+  courierLists: CourierType[];
   statusRelation = statusRelation;
   getDoxType = getDoxType;
   getShipmentMode = getShipmentMode;
@@ -59,6 +58,34 @@ export class TrackComponent implements OnInit {
       this.router.navigate(['home']);
     }
     this.getTrackingInfo(id, track);
+
+    this.getCourierLists();
+  }
+
+  async getCourierLists() {
+    const cachedData = localStorage.getItem('courierLists');
+    const cacheTime = localStorage.getItem('courierListsTime');
+
+    // Check if cached data exists and is less than 4 hours old
+    if (cachedData && cacheTime) {
+      const now = new Date().getTime();
+      if (now - Number(cacheTime) < 4 * 60 * 60 * 1000) { // 4 hours in milliseconds
+        this.courierLists = JSON.parse(cachedData); // Use cached data
+        return;
+      }
+    }
+
+    // Fetch new data if no valid cache
+    try {
+      const res = await fetch('https://next.frontlinecourier.com/api/couriers', { mode: 'cors' });
+      const courierReponse = await res.json();
+      this.courierLists = courierReponse.couriers;
+      // Cache the data and the current time
+      localStorage.setItem('courierLists', JSON.stringify(this.courierLists));
+      localStorage.setItem('courierListsTime', new Date().getTime().toString());
+    } catch (err) {
+      console.error('Error fetching courier lists:', err);
+    }
   }
 
   async getTrackingInfo(id: string, track: string) {
@@ -127,8 +154,6 @@ export class TrackComponent implements OnInit {
 
       }
 
-    console.log(this.courier);
-
       const status: DeliveryResult = {
         statusDate: moment((this.trackResult.bookedDate)).format('MMM DD, YYYY'),
         statusTime: moment((this.trackResult.bookedDate)).format('ddd, h:mm:ss a'),
@@ -168,19 +193,19 @@ export class TrackComponent implements OnInit {
   };
 
   getCourier(id: number): void {
-    this.courier = courierLists.find((x) => x.CourierId === id)
+    this.courier = this.courierLists.find((x) => x.CourierId === id);
   }
 
   getCourierName(id: number): string {
-    return courierLists.find((x) => x.CourierId === id).Courier;
+    return this.courierLists.find((x) => x.CourierId === id).Courier;
   };
 
   getCourierUrl(id: number): string {
-    return courierLists.find((x) => x.CourierId === id).Track;
+    return this.courierLists.find((x) => x.CourierId === id).Track;
   };
 
   getCourierMode(id: number): number {
-    return courierLists.find((x) => x.CourierId === id)?.Mode || 1;
+    return this.courierLists.find((x) => x.CourierId === id)?.Mode || 1;
   };
 
 }
