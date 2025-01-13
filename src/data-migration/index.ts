@@ -1,18 +1,17 @@
-import firebase from 'firebase';
-// import admin from 'firebase-admin';
-// import { MongoClient } from 'mongodb';
+import { Collection, MongoClient } from 'mongodb';
 import { json2csv } from 'json-2-csv';
 import fs from 'fs';
 
-// const uri = "mongodb+srv://frontlineapp:SNveY2tiKp3NqfJ@frontline.tsxyg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = "mongodb+srv://frontlineapp:AiOolcPeHzCN5dLx@frontline.tsxyg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
-// const client = new MongoClient(uri, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// } as any);
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+} as any);
 
-import { courierLists } from './../client/src/app/constants/courier-list';
-import { courierStatus } from './../client/src/app/constants/courier-status';
+// TODO: change to actual api all instead of contact in next backup
+import { courierLists } from '../client/src/app/constants/courier-list';
+import { courierStatus } from '../client/src/app/constants/courier-status';
 import moment from 'moment';
 // import { statusRelation } from './../client/src/app/constants/status-relation';
 
@@ -104,61 +103,49 @@ const getCourierName = (courierId: string): string => {
   return courierLists.find((c) => c.CourierId === parseInt(courierId, 10))?.Courier || 'NA';
 }
 
-var app = firebase.initializeApp({
-  apiKey: 'AIzaSyBM65EL-d5ppnBlGOZ5MYoMKVDtb0z-lKI',
-  authDomain: 'varun-enterprises.firebaseapp.com',
-  databaseURL: 'https://varun-enterprises.firebaseio.com',
-  projectId: 'varun-enterprises',
-  storageBucket: 'varun-enterprises.appspot.com',
-  messagingSenderId: '627419010873',
-  appId: '1:627419010873:web:054515e9f51513b160bae8',
-  measurementId: 'G-QPTMSCRH73',
-});
+const backupYear = 2023;
 
+async function backupData() {
 
-const db = app.firestore();
-
-async function getData() {
   try {
-    // const mongoDB = await client.connect();
-    // const collection = mongoDB.db('frontline-booking').collection('bookings');
-    const snapshot = await db.collection('frontline-booking').orderBy('bookedDate', 'desc').get();
+    const mongoDB = await client.connect();
 
-    snapshot.docs.map(async (doc, index) => {
-      // console.log(index);
-      // update timestamp to date
-      const data = doc.data();
-      data.updatedDateTime = data.updatedDateTime?.toDate().toISOString();
-      data.bookedDate = data.bookedDate?.toDate().toISOString();
-      data.createdDateTime = data.createdDateTime?.toDate().toISOString();
+    const mainCollection = mongoDB.db('frontline-booking').collection('bookings');
+    const tempCollection = mongoDB.db('frontline-booking').collection(`bookings-temp-bk-${backupYear}`);
+    const backupCollection = mongoDB.db('frontline-booking').collection(`booking-bk-${backupYear}`);
 
-      data.delivery?.forEach((element: any) => {
-        element.updatedDateTime = element?.updatedDateTime?.toDate();
-      });
+    // copy all collectino to backupCollection
+    await tempCollection.insertMany(await mainCollection.find({}).toArray());
 
-      // enum to data
-      data.courier = getCourierName(data.courier);
-      data.doxType = getDoxType(data.doxType);
-      data.shipmentMode = getTransportMode(data.shipmentMode);
-      data.transportMode = getShipmentMode(data.shipmentMode);
-      data.coCourier = data.coCourier ? 'Yes' : 'No';
+    // copy Data less than time
+    const documentsToBackup = await tempCollection.find({ bookedDate: { $lte: new Date(`${backupYear + 1}-01-01T00:00:01Z`) } }).toArray();
+    await backupCollection.insertMany(documentsToBackup);
 
-      // const inserted = await collection.insertOne(data);
-      // console.log(inserted);
+    // delete from main collection
+    // await mainCollection.deleteMany({ bookedDate: { $lte : new Date(`${backupYear + 1}-01-01T00:00:01Z`) } })
 
-      // construct data
-      const json = `\n${data.bookedDate},${data.awbNumber},${data.referenceNumber},${data.additionalLeaf},${data.courier},${data.shipperName},${data.origin},${data.receiverName},${data.destination},${data.doxType},${data.shipmentMode},${data.transportMode},${data.coCourier},${data.bookingAmount},${data.billAmount},${data.actualWeight},${data.shipmentStatus}`;
+    // drop temp
+    await tempCollection.drop();
+    console.log(`Backup completed for year ${backupYear}.`);
 
-      fs.appendFileSync('./backup.csv', json);
-
-    })
   } catch (err) {
-    console.log(err);
+    console.log(`Backup failure for ${backupYear} - ${err}.`);
   }
-
-
   return;
 }
 
-getData();
-
+async function dropData() {
+  try {
+    const mongoDB = await client.connect();
+    const mainCollection = mongoDB.db('frontline-booking').collection('bookings');
+    await mainCollection.deleteMany({ bookedDate: { $lte: new Date(`${backupYear + 1}-01-01T00:00:01Z`) } })
+    console.log(`Drop completed for year ${backupYear}.`);
+  } catch (err) {
+    console.log(`Drop completed for year ${backupYear}.`);
+  }
+}
+  
+(async () => {
+  await backupData();
+  await dropData();
+})();

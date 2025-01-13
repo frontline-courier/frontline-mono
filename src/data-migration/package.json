@@ -15,5 +15,9 @@
     "json-2-csv": "^3.14.4",
     "moment": "^2.29.1",
     "mongodb": "^4.2.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
   }
 }
