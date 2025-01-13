@@ -144,8 +144,39 @@ async function dropData() {
     console.log(`Drop completed for year ${backupYear}.`);
   }
 }
-  
+
+async function downloadData(...years: number[]) {
+  const mongoDB = await client.connect();
+  const collection = mongoDB.db('frontline-booking');
+
+  try {
+    for (let year of years) {
+      const backupCollection = collection.collection(`booking-bk-${year}`);
+      const documents = await backupCollection.find().toArray();
+
+      const csvData = documents.map(doc => {
+        // Create a new object excluding fields that are arrays
+        const filteredDoc = Object.fromEntries(
+          Object.entries(doc).filter(([key, value]) => !Array.isArray(value))
+        );
+
+        // Convert the filtered document to a CSV string
+        return Object.values(filteredDoc).join(',');
+      });
+
+      // Write to CSV file
+      fs.appendFileSync(`./backup_${year}.csv`, csvData.join('\n') + '\n');
+      console.log(`Data for year ${year} written to backup_${year}.csv`);
+    }
+  } catch (err) {
+    console.error(`Error downloading data: ${err}`);
+  } finally {
+    await client.close();
+  }
+}
+
 (async () => {
-  await backupData();
-  await dropData();
+  // await backupData();
+  // await dropData();
+  await downloadData(2020, 2021, 2022, 2023);
 })();
