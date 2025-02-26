@@ -14,6 +14,7 @@ interface Courier {
 }
 
 const CouriersPage = () => {
+  const [allCouriers, setAllCouriers] = useState<Courier[]>([]); // Store original data
   const [couriers, setCouriers] = useState<Courier[]>([]);
   const [editingCourier, setEditingCourier] = useState<Courier | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,7 +32,8 @@ const CouriersPage = () => {
     try {
       const response = await axios.get('/api/couriers');
       const fetchedCouriers = response.data.couriers;
-      setCouriers(fetchedCouriers);
+      setAllCouriers(fetchedCouriers); // Store all couriers
+      setCouriers(fetchedCouriers); // Set initial filtered state
 
       // Calculate the next Courier ID
       const maxCourierId = Math.max(...fetchedCouriers.map((c: Courier) => c.CourierId), 0);
@@ -123,6 +125,20 @@ const CouriersPage = () => {
     setIsDrawerOpen(false);
   };
 
+  const handleSearch = (searchText: string) => {
+    const lowercaseSearch = searchText.toLowerCase();
+    if (searchText === '') {
+      setCouriers(allCouriers);
+    } else {
+      const filtered = allCouriers.filter(courier =>
+        courier.Courier.toLowerCase().includes(lowercaseSearch) ||
+        (courier.Description?.toLowerCase().includes(lowercaseSearch)) ||
+        (courier.Track?.toLowerCase().includes(lowercaseSearch))
+      );
+      setCouriers(filtered);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       {/* Toast container at the top */}
@@ -137,17 +153,7 @@ const CouriersPage = () => {
                 type="text" 
                 className="input input-bordered" 
                 placeholder="Search couriers..." 
-                onChange={(e) => {
-                const searchText = e.target.value.toLowerCase();
-                if (searchText === '') {
-                  fetchCouriers(); // Fetch all couriers if search text is cleared
-                } else {
-                  const filteredCouriers = couriers.filter(courier =>
-                  courier.Courier.toLowerCase().includes(searchText)
-                  );
-                  setCouriers(filteredCouriers);
-                }
-                }}
+                onChange={(e) => handleSearch(e.target.value)}
               />
               </div>
               <div className="text-sm text-gray-500">
