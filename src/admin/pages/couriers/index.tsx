@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import CourierDrawer from '../../components/CourierDrawer';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
@@ -18,6 +19,8 @@ const CouriersPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { register, handleSubmit, reset, setValue } = useForm<Courier>();
   const [nextCourierId, setNextCourierId] = useState<number>(1); // State for the next Courier ID
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchCouriers();
@@ -40,37 +43,59 @@ const CouriersPage = () => {
     }
   };
 
+  const showToast = (message: string, type: 'success' | 'error') => {
+    const toast = document.getElementById('toast') as HTMLDivElement;
+    if (toast) {
+      toast.innerHTML = `
+        <div class="alert ${type === 'success' ? 'alert-success' : 'alert-error'}">
+          <span>${message}</span>
+        </div>
+      `;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+  };
+
   const onSubmit = async (data: Courier) => {
+    setError(null); // Reset error state
     const courierData = {
       ...data,
-      CourierId: nextCourierId, // Use the calculated next Courier ID
+      CourierId: editingCourier ? editingCourier.CourierId : nextCourierId,
       Mode: 0, // Default Mode
       Status: 1 // Default Status
     };
 
     const action = editingCourier ? 'update' : 'add';
     const confirmMessage = `Are you sure you want to ${action} this courier?`;
-    if (!window.confirm(confirmMessage)) {
-      return; // Exit if the user cancels
-    }
+    if (!window.confirm(confirmMessage)) return;
 
     try {
       if (editingCourier) {
         await axios.put(`/api/couriers/${editingCourier._id}`, courierData);
+        showToast('Courier updated successfully!', 'success');
       } else {
         await axios.post('/api/couriers/add', courierData);
+        showToast('Courier added successfully!', 'success');
       }
+      
+      setIsDrawerOpen(false); // Close drawer on success
       reset(); // Clear the form fields after submission
       setEditingCourier(null); // Reset editing state
       fetchCouriers();
-    } catch (error) {
-      console.error('Error saving courier:', error);
+      
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || `An error occurred while ${action}ing the courier`;
+      setError(errorMessage);
+      showToast(errorMessage, 'error');
     }
   };
 
   const handleEdit = (courier: Courier) => {
     setEditingCourier(courier);
     reset(courier); // Populate the form with the courier data for editing
+    setIsDrawerOpen(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -81,9 +106,11 @@ const CouriersPage = () => {
 
     try {
       await axios.delete(`/api/couriers/${id}`);
+      showToast('Courier deleted successfully!', 'success');
       fetchCouriers();
-    } catch (error) {
-      console.error('Error deleting courier:', error);
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'An error occurred while deleting the courier';
+      showToast(errorMessage, 'error');
     }
   };
 
@@ -93,20 +120,59 @@ const CouriersPage = () => {
     setValue('Description', '');
     setValue('Track', '');
     setEditingCourier(null); // Reset editing state to switch to Add view
+    setIsDrawerOpen(false);
   };
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Manage Couriers</h2>
-      <form className="mb-4" onSubmit={handleSubmit(onSubmit)}>
-        <input className="input input-bordered w-full mb-2" type="text" placeholder="Courier Name" {...register('Courier', { required: true })} />
-        <input className="input input-bordered w-full mb-2" type="text" placeholder="Description" {...register('Description')} /> {/* Optional */}
-        <input className="input input-bordered w-full mb-2" type="text" placeholder="Tracking URL" {...register('Track')} /> {/* Optional */}
-        <button className="btn btn-primary mr-2" type="submit">{editingCourier ? 'Update' : 'Add'} Courier</button>
-        {editingCourier && (
-          <button type="button" className="btn btn-secondary" onClick={handleClear}>Clear</button>
-        )}
-      </form>
+      {/* Toast container at the top */}
+      <div id="toast" className="fixed top-4 right-4 z-50" style={{ display: 'none' }}></div>
+      
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">Manage Couriers</h2>
+        <div className="flex space-x-2">
+            <div className="flex flex-col space-y-2">
+              <div className="flex items-center space-x-2">
+              <input 
+                type="text" 
+                className="input input-bordered" 
+                placeholder="Search couriers..." 
+                onChange={(e) => {
+                const searchText = e.target.value.toLowerCase();
+                if (searchText === '') {
+                  fetchCouriers(); // Fetch all couriers if search text is cleared
+                } else {
+                  const filteredCouriers = couriers.filter(courier =>
+                  courier.Courier.toLowerCase().includes(searchText)
+                  );
+                  setCouriers(filteredCouriers);
+                }
+                }}
+              />
+              </div>
+              <div className="text-sm text-gray-500">
+              Showing {couriers.length} couriers
+              </div>
+            </div>
+          <button 
+            className="btn btn-primary" 
+            onClick={() => {
+              setEditingCourier(null);
+              reset();
+              setIsDrawerOpen(true);
+            }}
+          >
+            Add New Courier
+          </button>
+        </div>
+      </div>
+
+      <CourierDrawer 
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        onSubmit={onSubmit}
+        editingCourier={editingCourier}
+      />
 
       {loading ? (
         <div className="loader">Loading...</div>
@@ -126,10 +192,10 @@ const CouriersPage = () => {
               <tr key={courier._id}>
                 <td>{courier.CourierId}</td>
                 <td>{courier.Courier}</td>
-                <td>{courier.Description || 'N/A'}</td> {/* Display 'N/A' if Description is not provided */}
-                <td>{courier.Track || 'N/A'}</td> {/* Display 'N/A' if Track is not provided */}
-                <td>
-                  <button className="btn btn-outline btn-sm btn-primary m-2" onClick={() => handleEdit(courier)}>Edit</button>
+                <td>{courier.Description || 'N/A'}</td>
+                <td>{courier.Track || 'N/A'}</td>
+                <td className="flex space-x-2">
+                  <button className="btn btn-outline btn-sm btn-primary" onClick={() => handleEdit(courier)}>Edit</button>
                   <button className="btn btn-outline btn-sm btn-error" onClick={() => handleDelete(courier._id + '')}>Delete</button>
                 </td>
               </tr>
