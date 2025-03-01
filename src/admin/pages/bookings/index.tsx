@@ -31,6 +31,7 @@ const BookingPage = () => {
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(25);
   const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', thirdPartyNumber: '', courier: 0, shipmentMode: 0, status: '' });
+  const [rawBookingData, setRawBookingData] = useState([]); // Add this state to store raw data
 
   // useForm hook
   const { register, handleSubmit, reset } = useForm<any>({
@@ -58,15 +59,36 @@ const BookingPage = () => {
   // Fetch data whenever page or perPage changes in the URL
   const fetchData = async () => {
     setLoading(true);
-    const response = await axios.get(
-      `/api/bookings?page=${page}&limit=${perPage}&courier=${searchData.courier || 0
-      }&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''
-      }&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}&tpn=${searchData.thirdPartyNumber}`
-    );
-    setData(response.data.booking);
-    setTotalRows(response.data.count);
-    setLoading(false);
+    try {
+      const response = await axios.get(
+        `/api/bookings?page=${page}&limit=${perPage}&courier=${searchData.courier || 0
+        }&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''
+        }&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}&tpn=${searchData.thirdPartyNumber}`
+      );
+      
+      setRawBookingData(response.data.booking); // Store raw data
+      setTotalRows(response.data.count);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  // Add new useEffect to transform data after courierList is loaded
+  useEffect(() => {
+    if (rawBookingData.length > 0 && courierList.length > 0) {
+      const transformedData = rawBookingData.map((booking: any) => ({
+        ...booking,
+        courier: getCourierName(booking.courier),
+        bookedDate: moment(booking.bookedDate).format('DD-MM-YYYY HH:mm'),
+        doxType: getDoxType(booking.doxType),
+        shipmentMode: getShipmentMode(booking.shipmentMode),
+        shipmentStatus: getShipmentStatus(booking.shipmentStatus)
+      }));
+      setData(transformedData);
+    }
+  }, [rawBookingData, courierList]); // Dependencies on both raw data and courier list
 
   useEffect(() => {
     fetchCouriers();
@@ -133,14 +155,6 @@ const BookingPage = () => {
     if (courierId === null || courierId === undefined) { return 'NA'; }
     return courierList.find((c) => c.CourierId === parseInt(courierId, 10))?.Courier || 'NA';
   }
-
-  data.forEach((v: any, i: number) => {
-    data[i].courier = getCourierName(v.courier);
-    data[i].bookedDate = moment(v.bookedDate).format('DD-MM-YYYY HH:mm');
-    data[i].doxType = getDoxType(v.doxType);
-    data[i].shipmentMode = getShipmentMode(v.shipmentMode);
-    data[i].shipmentStatus = getShipmentStatus(v.shipmentStatus);
-  })
 
   const columns = [
     {
