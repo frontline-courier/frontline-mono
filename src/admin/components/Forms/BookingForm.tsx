@@ -35,65 +35,35 @@ export default function BookingForm() {
   const [loadingCouriers, setLoadingCouriers] = useState(true); // Loading state for couriers
   const [errorCouriers, setErrorCouriers] = useState<string | null>(null); // Error state for couriers\ const { user, error, isLoading } = useUser();
 
-  // Fetch couriers on component mount
-  const fetchCouriers = useCallback(async () => {
-    try {
-      const response = await axios.get('/api/couriers');
-      setCourierList(response.data.couriers); // Set the fetched couriers
-    } catch (error) {
-      setErrorCouriers('Failed to load couriers'); // Handle error
-    } finally {
-      setLoadingCouriers(false); // Set loading to false
-    }
-  }, []);
-
   useEffect(() => {
-    if (id && courierList.length > 0) {
-      const fetchBooking = async () => {
-        try {
-          setLoader(true);
-          const result = await axios.get(`/api/bookings/${id}`);
-          if (result.data) {
-            result.data.bookedDate = moment(result.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL);
-            reset(result.data);
-          }
+    const fetchData = async () => {
+      try {
+        setLoader(true);
+        const [courierResponse, bookingResponse] = await Promise.all([
+          axios.get('/api/couriers'),
+          id ? axios.get(`/api/bookings/${id}`) : Promise.resolve(null)
+        ]);
+
+        setCourierList(courierResponse.data.couriers);
+
+        if (bookingResponse && bookingResponse.data) {
+          bookingResponse.data.bookedDate = moment(bookingResponse.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL);
+          reset(bookingResponse.data);
           if (pageType === PageTypes.DELETE) {
             setDelete(true);
           }
-        } catch (err) {
-          console.error(err);
-        } finally {
-          setLoader(false);
         }
-      };
-      fetchBooking();
-    }
-  }, [id, pageType, reset, courierList]);
-
-  useEffect(() => {
-    const initializeForm = async () => {
-      if (id) {
-        try {
-          setLoader(true);
-          const result = await axios.get(`/api/bookings/${id}`);
-          if (result.data) {
-            result.data.bookedDate = moment(result.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL);
-            reset(result.data);
-          }
-          if (pageType === PageTypes.DELETE) {
-            setDelete(true);
-          }
-        } catch (err) {
-          console.error(err);
-        } finally {
-          setLoader(false);
-        }
+      } catch (error) {
+        setErrorCouriers('Failed to load couriers');
+        console.error(error);
+      } finally {
+        setLoader(false);
+        setLoadingCouriers(false);
       }
     };
 
-    fetchCouriers();
-    initializeForm();
-  }, [id, pageType, reset, fetchCouriers]);
+    fetchData();
+  }, [id, pageType, reset]);
 
   const onSubmit: SubmitHandler<BookingFormInputs> = async (data) => {
     setLoader(true);
