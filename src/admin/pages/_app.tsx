@@ -7,6 +7,7 @@ import Layout from '../components/Layout';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css'; //styles of nprogress
 import Router from 'next/router'
+import Head from 'next/head';
 
 //Binding events. 
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -16,6 +17,10 @@ Router.events.on('routeChangeError', () => NProgress.remove());
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
+      <Head>
+        <title>Frontline Admin</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
       <Layout>
         <Component {...pageProps} />
       </Layout>

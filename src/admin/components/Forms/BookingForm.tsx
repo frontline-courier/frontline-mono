@@ -1,7 +1,6 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
 import moment from 'moment';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -14,6 +13,7 @@ export default function BookingForm() {
   const router = useRouter();
   const { id } = router.query;
   const pageType = getPageType(router.pathname);
+  const { user, error: userError, isLoading: isUserLoading } = useUser();
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm<BookingFormInputs>({
     mode: 'onChange',
@@ -31,7 +31,6 @@ export default function BookingForm() {
   const [loader, setLoader] = useState(false);
   const [saveError, setError] = useState('');
   const [isDelete, setDelete] = useState(false);
-  const { user } = useUser();
   const [courierList, setCourierList] = useState<any[]>([]); // State for couriers
   const [loadingCouriers, setLoadingCouriers] = useState(true); // Loading state for couriers
   const [errorCouriers, setErrorCouriers] = useState<string | null>(null); // Error state for couriers\ const { user, error, isLoading } = useUser();
@@ -49,29 +48,52 @@ export default function BookingForm() {
   }, []);
 
   useEffect(() => {
-    fetchCouriers();
-    (async () => {
-      if (id) {
+    if (id && courierList.length > 0) {
+      const fetchBooking = async () => {
         try {
           setLoader(true);
           const result = await axios.get(`/api/bookings/${id}`);
-
           if (result.data) {
             result.data.bookedDate = moment(result.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL);
+            reset(result.data);
           }
-          reset(result.data);
+          if (pageType === PageTypes.DELETE) {
+            setDelete(true);
+          }
         } catch (err) {
           console.error(err);
         } finally {
           setLoader(false);
         }
+      };
+      fetchBooking();
+    }
+  }, [id, pageType, reset, courierList]);
 
-        if (pageType === PageTypes.DELETE) {
-          setDelete(true);
+  useEffect(() => {
+    const initializeForm = async () => {
+      if (id) {
+        try {
+          setLoader(true);
+          const result = await axios.get(`/api/bookings/${id}`);
+          if (result.data) {
+            result.data.bookedDate = moment(result.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL);
+            reset(result.data);
+          }
+          if (pageType === PageTypes.DELETE) {
+            setDelete(true);
+          }
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoader(false);
         }
       }
-    })();
-  }, [])
+    };
+
+    fetchCouriers();
+    initializeForm();
+  }, [id, pageType, reset, fetchCouriers]);
 
   const onSubmit: SubmitHandler<BookingFormInputs> = async (data) => {
     setLoader(true);
@@ -101,10 +123,36 @@ export default function BookingForm() {
     }
   };
 
-  return <>
-    {loader && <div >Saving...</div>}
+  // Add error handling for when user is not loaded
+  if (isUserLoading) {
+    return <div className="flex justify-center items-center h-screen">Loading user data...</div>;
+  }
 
-    {!loader &&
+  if (userError) {
+    return <div className="alert alert-error m-4">Failed to load user data. Please try again.</div>;
+  }
+
+  if (!user) {
+    return <div className="alert alert-warning m-4">Please log in to access this page.</div>;
+  }
+
+  return <>
+    {loader && <div className="flex justify-center items-center h-screen">Loading...</div>}
+
+    {loadingCouriers && <div className="flex justify-center items-center h-screen">Loading couriers...</div>}
+
+    {errorCouriers && (
+      <div className="alert alert-error m-4">
+        <div className="flex-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="w-6 h-6 mx-2 stroke-current">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+          </svg>
+          <label>{errorCouriers}</label>
+        </div>
+      </div>
+    )}
+
+    {!loader && !loadingCouriers && !errorCouriers && (
       <form onSubmit={handleSubmit(onSubmit)} className="m-4 p-4 w-full lg:w-2/3">
         <div className="grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="form-control">
@@ -303,7 +351,7 @@ export default function BookingForm() {
         </div>
 
       </form>
-    }
+    )}
   </>
 
 }
