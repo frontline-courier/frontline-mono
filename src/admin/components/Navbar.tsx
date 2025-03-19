@@ -75,7 +75,6 @@ export default function AppNavbar() {
                   </div>
                   <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-52 z-[1]">
                     <li><a className="md:p-4 py-2 block" href="/couriers">List</a></li>
-                    <li><a className="md:p-4 py-2 block" href="/courier-formulas">Volume Formulas</a></li>
                     <li><a className="md:p-4 py-2 block" href="/courier-volumetric-mappings">Volumetric Mappings</a></li>
                   </ul>
                 </div>

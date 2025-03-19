@@ -1,7 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { VolumetricFormInputs, Courier } from '../../interfaces/volumetricForm';
 
@@ -82,6 +82,11 @@ export default function VolumetricForm() {
   const unit = watch('unit');
   const selectedCourier = watch('courier');
   const transportMode = watch('transportMode');
+  
+  // Trigger calculation whenever any relevant field changes
+  useEffect(() => {
+    calculateVolumetricWeight();
+  }, [length, width, height, weight, unit, selectedCourier, transportMode]);
 
   // Set formula based on courier-transport mode mapping or default rules
   useEffect(() => {
@@ -126,8 +131,13 @@ export default function VolumetricForm() {
   const specificMapping = getSpecificMapping();
   const hasMappingMatch = !!specificMapping;
   
-  // Calculate volumetric weight whenever dimensions change
-  const calculateVolumetricWeight = () => {
+  // Calculate volumetric weight whenever dimensions or weight change
+  const calculateVolumetricWeight = useCallback(() => {
+    // Always update actual weight regardless of dimensions
+    const actualWeightValue = Number(weight || 0);
+    setValue('actualWeight', actualWeightValue);
+    
+    // Only calculate volumetric weight if all dimensions are present
     if (length && width && height) {
       const volume = length * width * height;
       let volumetricWeight;
@@ -167,16 +177,19 @@ export default function VolumetricForm() {
       
       // Round to 2 decimal places
       const roundedVolumetricWeight = Number(volumetricWeight.toFixed(2));
-      const actualWeightValue = Number(weight);
+      
+      // Update volumetric weight
+      setValue('volumetricWeight', roundedVolumetricWeight);
       
       // Chargeable weight is the greater of volumetric weight and actual weight
       const chargeableWeightValue = Math.max(roundedVolumetricWeight, actualWeightValue);
-      
-      setValue('volumetricWeight', roundedVolumetricWeight);
-      setValue('actualWeight', actualWeightValue);
       setValue('chargeableWeight', Number(chargeableWeightValue.toFixed(2)));
+    } else {
+      // If dimensions are missing, set volumetric weight to 0 and use actual weight as chargeable
+      setValue('volumetricWeight', 0);
+      setValue('chargeableWeight', actualWeightValue);
     }
-  };
+  }, [length, width, height, weight, unit, specificMapping, transportMode, courierList, selectedCourier, setValue]);
 
   const onSubmit: SubmitHandler<VolumetricFormInputs> = async (data) => {
     calculateVolumetricWeight();
@@ -207,7 +220,7 @@ export default function VolumetricForm() {
     <>
       {loader && <div className="flex justify-center items-center h-screen">Loading...</div>}
 
-      <form onChange={calculateVolumetricWeight} onSubmit={handleSubmit(onSubmit)} className="m-4 p-4 w-full lg:w-2/3">
+      <form onSubmit={handleSubmit(onSubmit)} className="m-4 p-4 w-full lg:w-2/3">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="form-control">
             <label className="label p-1">
