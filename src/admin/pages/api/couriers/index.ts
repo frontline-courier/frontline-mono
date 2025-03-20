@@ -19,8 +19,14 @@ handler.get(async (req: any, res: any) => {
     const collection = (req.db as Db).collection('couriers');
     const docs = await collection.find();
     const count = await docs.count();
+    
+    // Convert to array and sort by Courier name alphabetically
+    const couriersArray = await docs.toArray();
+    const sortedCouriers = couriersArray.sort((a, b) => {
+      return a.Courier.localeCompare(b.Courier, undefined, { sensitivity: 'base' });
+    });
 
-    const responseData = { couriers: [...await docs.toArray()], count: count };
+    const responseData = { couriers: sortedCouriers, count: count };
     setCache(responseData); // Cache the response
 
     res.json(responseData);
