@@ -217,166 +217,203 @@ export default function VolumetricForm() {
   }
 
   return (
-    <>
-      {loader && <div className="flex justify-center items-center h-screen">Loading...</div>}
-
-      <form onSubmit={handleSubmit(onSubmit)} className="m-4 p-4 w-full lg:w-2/3">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="form-control">
-            <label className="label p-1">
-              <span className="label-text text-2xs">Courier</span>
-            </label>
-            <select
-              className={`select select-bordered ${errors.courier && 'select-error'}`}
-              {...register('courier', { required: true, valueAsNumber: true })}
-            >
-              <option disabled value={0}>-- select courier --</option>
-              {courierList.map((courier) => (
-                <option key={courier.CourierId} value={courier.CourierId}>
-                  {courier.Courier}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-control">
-            <label className="label p-1">
-              <span className="label-text text-2xs">Transport Mode</span>
-            </label>
-            <select 
-              className={`select select-bordered ${errors.transportMode && 'select-error'}`}
-              {...register('transportMode', { required: true, valueAsNumber: true })}
-            >
-              <option disabled value={0}>-- transport mode --</option>
-              <option value={1}>Air Courier</option>
-              <option value={3}>Air Cargo</option>
-              <option value={4}>Sea Cargo</option>
-              <option value={5}>Surface Cargo</option>
-              <option value={6}>Surface Courier</option>
-              <option value={7}>Train Cargo</option>
-              <option value={8}>Road Cargo</option>
-            </select>
-            {errors.transportMode && <span className="text-error text-sm mt-1">Transport Mode is required</span>}
-          </div>
-
-          <div className="form-control">
-            <label className="label p-1">
-              <span className="label-text text-2xs">Weight</span>
-            </label>
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Weight"
-              className={`input input-bordered ${errors.weight && 'input-error'}`}
-              {...register('weight', { required: true, min: 0 })}
-            />
-          </div>
-
-          
-          <div className="form-control">
-            <label className="label p-1">
-              <span className="label-text text-2xs">Length</span>
-            </label>
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Length"
-              className={`input input-bordered ${errors.length && 'input-error'}`}
-              {...register('length', { required: true, min: 0 })}
-            />
-          </div>
-
-          <div className="form-control">
-            <label className="label p-1">
-              <span className="label-text text-2xs">Width</span>
-            </label>
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Width"
-              className={`input input-bordered ${errors.width && 'input-error'}`}
-              {...register('width', { required: true, min: 0 })}
-            />
-          </div>
-
-          <div className="form-control">
-            <label className="label p-1">
-              <span className="label-text text-2xs">Height</span>
-            </label>
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Height"
-              className={`input input-bordered ${errors.height && 'input-error'}`}
-              {...register('height', { required: true, min: 0 })}
-            />
-          </div>
-
-          
-
-          <div className="form-control">
-            <label className="label p-1">
-              <span className="label-text text-2xs">Unit</span>
-            </label>
-            <select
-              className={`select select-bordered ${errors.unit && 'select-error'}`}
-              {...register('unit', { required: true })}
-            >
-              <option value="cm">Centimeters (cm)</option>
-              <option value="mm">Millimeters (mm)</option>
-              <option value="inch">Inches (in)</option>
-            </select>
-          </div>
+    <div className="container mx-auto px-4 py-6">
+      {loader && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <span className="loading loading-spinner loading-lg text-primary"></span>
         </div>
+      )}
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-         
-          
-          <div className="stats shadow">
-            <div className="stat">
-              <div className="stat-title">Volumetric Weight</div>
-              <div className="stat-value text-primary">{watch('volumetricWeight') || 0} kg</div>
-              <div className="stat-desc">{watch('formula') || 'Select a courier'}</div>
+      <div className="card bg-base-100 shadow-xl">
+        <div className="card-body">          
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+              {/* Courier Selection */}
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text font-medium">Courier</span>
+                </label>
+                <select
+                  className={`select select-bordered w-full ${errors.courier ? 'select-error' : 'select-primary'}`}
+                  {...register('courier', { required: true, valueAsNumber: true })}
+                >
+                  <option disabled value={0}>-- Select Courier --</option>
+                  {courierList.map((courier) => (
+                    <option key={courier.CourierId} value={courier.CourierId}>
+                      {courier.Courier}
+                    </option>
+                  ))}
+                </select>
+                {errors.courier && <span className="label-text-alt text-error mt-1">Courier is required</span>}
+              </div>
+
+              {/* Transport Mode */}
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text font-medium">Transport Mode</span>
+                </label>
+                <select 
+                  className={`select select-bordered w-full ${errors.transportMode ? 'select-error' : 'select-primary'}`}
+                  {...register('transportMode', { required: true, valueAsNumber: true })}
+                >
+                  <option disabled value={0}>-- Select Transport Mode --</option>
+                  <option value={1}>Air Courier</option>
+                  <option value={3}>Air Cargo</option>
+                  <option value={4}>Sea Cargo</option>
+                  <option value={5}>Surface Cargo</option>
+                  <option value={6}>Surface Courier</option>
+                  <option value={7}>Train Cargo</option>
+                  <option value={8}>Road Cargo</option>
+                </select>
+                {errors.transportMode && <span className="label-text-alt text-error mt-1">Transport Mode is required</span>}
+              </div>
+
+              {/* Unit Selection */}
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text font-medium">Unit</span>
+                </label>
+                <select
+                  className={`select select-bordered w-full ${errors.unit ? 'select-error' : 'select-primary'}`}
+                  {...register('unit', { required: true })}
+                >
+                  <option value="cm">Centimeters (cm)</option>
+                  <option value="mm">Millimeters (mm)</option>
+                  <option value="inch">Inches (in)</option>
+                </select>
+                {errors.unit && <span className="label-text-alt text-error mt-1">Unit is required</span>}
+              </div>
+
+              {/* Dimensions Group */}
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text font-medium">Length</span>
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  placeholder="Enter length"
+                  className={`input input-bordered w-full ${errors.length ? 'input-error' : 'input-primary'}`}
+                  {...register('length', { required: true, min: 0 })}
+                />
+                {errors.length && <span className="label-text-alt text-error mt-1">Valid length is required</span>}
+              </div>
+
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text font-medium">Width</span>
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  placeholder="Enter width"
+                  className={`input input-bordered w-full ${errors.width ? 'input-error' : 'input-primary'}`}
+                  {...register('width', { required: true, min: 0 })}
+                />
+                {errors.width && <span className="label-text-alt text-error mt-1">Valid width is required</span>}
+              </div>
+
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text font-medium">Height</span>
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  placeholder="Enter height"
+                  className={`input input-bordered w-full ${errors.height ? 'input-error' : 'input-primary'}`}
+                  {...register('height', { required: true, min: 0 })}
+                />
+                {errors.height && <span className="label-text-alt text-error mt-1">Valid height is required</span>}
+              </div>
+
+              {/* Weight */}
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text font-medium">Weight (kg)</span>
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  placeholder="Enter weight"
+                  className={`input input-bordered w-full ${errors.weight ? 'input-error' : 'input-primary'}`}
+                  {...register('weight', { required: true, min: 0 })}
+                />
+                {errors.weight && <span className="label-text-alt text-error mt-1">Valid weight is required</span>}
+              </div>
+
+              <div className="card-actions justify-end mt-6">
+              <button type="submit" className="btn btn-primary btn-block">
+                Calculate
+              </button>
             </div>
-          </div>
 
-          <div className="stats shadow">
-            <div className="stat">
-              <div className="stat-title">Actual Weight</div>
-              <div className="stat-value text-secondary">{watch('actualWeight') || 0} kg</div>
             </div>
-          </div>
 
-          <div className="stats shadow bg-accent">
-            <div className="stat">
-              <div className="stat-title text-accent-content">Chargeable Weight</div>
-              <div className="stat-value text-accent-content">{watch('chargeableWeight') || 0} kg</div>
-              <div className="stat-desc text-accent-content">Greater of volumetric or actual weight</div>
-            </div>
-          </div>
+            
 
-           {/* Mapping status indicator */}
-           {selectedCourier > 0 && transportMode > 0 && (
-            <div className="col-span-1 md:col-span-2 lg:col-span-3 mb-2">
-              <div className={`alert ${hasMappingMatch ? 'alert-success' : 'alert-warning'} py-2`}>                
-                <div>
-                  {hasMappingMatch ? (
-                    <>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                      <span>Using custom mapping for this courier and transport mode combination</span>
-                    </>
-                  ) : (
-                    <>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                      <span>Using default formula - no custom mapping found</span>
-                    </>
-                  )}
+            {/* Results Section */}
+            <div className="divider my-6">Results</div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="stats shadow">
+                <div className="stat">
+                  <div className="stat-title opacity-80">Volumetric Weight</div>
+                  <div className="stat-value ">{watch('volumetricWeight') || 0} kg</div>
+                  <div className="stat-desc opacity-80">{watch('formula') || 'Select a courier'}</div>
+                </div>
+              </div>
+
+              <div className="stats shadow">
+                <div className="stat">
+                  <div className="stat-title opacity-80">Actual Weight</div>
+                  <div className="stat-value">{watch('actualWeight') || 0} kg</div>
+                </div>
+              </div>
+
+              <div className="stats bg-accent text-accent-content shadow">
+                <div className="stat">
+                  <div className="stat-title opacity-80">Chargeable Weight</div>
+                  <div className="stat-value">{watch('chargeableWeight') || 0} kg</div>
+                  <div className="stat-desc opacity-80">Greater of volumetric or actual weight</div>
                 </div>
               </div>
             </div>
-          )}
+
+            
+          </form>
+
+          {/* Mapping status indicator */}
+          {selectedCourier > 0 && transportMode > 0 ? (
+              <div className="my-6">
+                <div className={`alert ${hasMappingMatch ? 'alert-success' : 'alert-warning'} shadow-lg`}>                
+                  <div className="flex items-center">
+                    {hasMappingMatch ? (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span className="inline-block">Using custom mapping for this courier and transport mode combination</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                        <span className="inline-block">Using default formula - no custom mapping found</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="my-6">
+                <div className="alert alert-info shadow-lg">                
+                  <div className="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span className="inline-block">Using default formula: length × width × height / 5000</span>
+                  </div>
+                </div>
+              </div>
+            )}
         </div>
-      </form>
-    </>
+      </div>
+    </div>
   );
 }
