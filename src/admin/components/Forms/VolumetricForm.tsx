@@ -291,7 +291,7 @@ export default function VolumetricForm() {
                 </label>
                 <input
                   type="number"
-                  step="0.01"
+                  step="0.50"
                   placeholder="Enter length"
                   className={`input input-bordered w-full ${errors.length ? 'input-error' : 'input-primary'}`}
                   {...register('length', { required: true, min: 0 })}
@@ -305,7 +305,7 @@ export default function VolumetricForm() {
                 </label>
                 <input
                   type="number"
-                  step="0.01"
+                  step="0.50"
                   placeholder="Enter width"
                   className={`input input-bordered w-full ${errors.width ? 'input-error' : 'input-primary'}`}
                   {...register('width', { required: true, min: 0 })}
@@ -319,7 +319,7 @@ export default function VolumetricForm() {
                 </label>
                 <input
                   type="number"
-                  step="0.01"
+                  step="0.50"
                   placeholder="Enter height"
                   className={`input input-bordered w-full ${errors.height ? 'input-error' : 'input-primary'}`}
                   {...register('height', { required: true, min: 0 })}
@@ -334,7 +334,7 @@ export default function VolumetricForm() {
                 </label>
                 <input
                   type="number"
-                  step="0.01"
+                  step="0.250"
                   placeholder="Enter weight"
                   className={`input input-bordered w-full ${errors.weight ? 'input-error' : 'input-primary'}`}
                   {...register('weight', { required: true, min: 0 })}
