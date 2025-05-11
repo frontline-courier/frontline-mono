@@ -380,7 +380,7 @@ export default function ShipmentForm() {
                   <span className="text-base-content/50">kg</span>
                 </div>
               </div>
-              <span className="text-sm text-base-content/70 mt-1">Sum of all boxes' volumetric weight</span>
+              <span className="text-sm text-base-content/70 mt-1">Sum of all boxes&apos; volumetric weight</span>
             </div>
 
             {/* Actual Weight */}
