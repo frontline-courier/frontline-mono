@@ -76,12 +76,13 @@ export default function AppNavbar() {
               {/* <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/dashboard">Dashboard</a> </li> */}
               {/* <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings/quick">Quick Booking</a> </li> */}
               <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings">Booking Entry</a> </li>
+              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/booking-rates">Booking Rates</a> </li>
 
               <li>
                 <div className="dropdown cursor-pointer">
                   <div tabIndex={0} className="md:p-4 py-2 block hover:bg-secondary flex items-center">
                     Courier
-                    <svg className="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+                    <svg className="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /> </svg>
                   </div>
                   <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-52 z-[1]">
                     <li><a className="md:p-4 py-2 block" href="/couriers">List</a></li>
@@ -96,7 +97,7 @@ export default function AppNavbar() {
                 <div className="dropdown cursor-pointer">
                   <div tabIndex={0} className="md:p-4 py-2 block hover:bg-secondary flex items-center">
                     Credit
-                    <svg className="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+                    <svg className="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /> </svg>
                   </div>
                   <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-52 z-[1]">
                     <li> <a className="md:p-4 py-2 block" href="/credit">Entry</a> </li>
@@ -108,7 +109,7 @@ export default function AppNavbar() {
                 <div className="dropdown cursor-pointer">
                   <div tabIndex={0} className="md:p-4 py-2 block hover:bg-secondary flex items-center">
                     Stock
-                    <svg className="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+                    <svg className="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /> </svg>
                   </div>
                   <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-52 z-[1]">
                     <li> <a className="md:p-4 py-2 block" href="/stocks">Stock In</a> </li>
@@ -133,7 +134,7 @@ export default function AppNavbar() {
                   <div tabIndex={0} className="m-1 btn btn-secondary flex items-center gap-2">
                     <BiUserCircle className="h-6 w-6" />
                     <span className="hidden md:inline text-xs">Account</span>
-                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /> </svg>
                   </div>
                   <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-64 z-[1]">
                     <li className="border-b border-gray-200 pb-2">
@@ -143,12 +144,12 @@ export default function AppNavbar() {
                       </a>
                     </li>
                     <li>
-                      <a className="flex items-center gap-2 mt-2"> 
+                      <a className="flex items-center gap-2 mt-2">
                         <RiSettings5Line className="text-gray-600" /> Settings
                       </a>
                     </li>
                     <li>
-                      <a href="/api/auth/logout" className="flex items-center gap-2 text-red-500"> 
+                      <a href="/api/auth/logout" className="flex items-center gap-2 text-red-500">
                         <RiLogoutBoxRLine /> Logout
                       </a>
                     </li>
