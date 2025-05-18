@@ -146,12 +146,13 @@ async function dropData() {
 }
 
 async function downloadData(...years: number[]) {
-  const mongoDB = await client.connect();
-  const collection = mongoDB.db('frontline-booking');
-
+  let mongoDB;
   try {
+    mongoDB = await client.connect();
+    const collection = mongoDB.db('frontline-booking');
+
     for (let year of years) {
-      const backupCollection = collection.collection(`booking-bk-${year}`);
+      const backupCollection = collection.collection(`bookings-bk-${year}`);
       const documents = await backupCollection.find().toArray();
 
       const csvData = documents.map(doc => {
@@ -160,18 +161,22 @@ async function downloadData(...years: number[]) {
           Object.entries(doc).filter(([key, value]) => !Array.isArray(value))
         );
 
-        // Convert the filtered document to a CSV string
-        return Object.values(filteredDoc).join(',');
+        // Convert the filtered document to a CSV string, wrapping values in quotes
+        return Object.values(filteredDoc)
+          .map(value => `"${String(value).replace(/"/g, '""')}"`) // Escape quotes
+          .join(',');
       });
 
-      // Write to CSV file
-      fs.appendFileSync(`./backup_${year}.csv`, csvData.join('\n') + '\n');
+      // Write to CSV file, overwriting if it exists
+      fs.writeFileSync(`./backup_${year}.csv`, csvData.join('\n') + '\n');
       console.log(`Data for year ${year} written to backup_${year}.csv`);
     }
   } catch (err) {
     console.error(`Error downloading data: ${err}`);
   } finally {
-    await client.close();
+    if (mongoDB) {
+      await mongoDB.close();
+    }
   }
 }
 
