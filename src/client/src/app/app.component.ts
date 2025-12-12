@@ -6,7 +6,8 @@ import { ActivatedRoute, NavigationEnd, Router, RouterState } from '@angular/rou
 @Component({
   selector: 'app-root',
   template: `<router-outlet></router-outlet>`,
-  styles: []
+  styles: [],
+  standalone: false
 })
 
 export class AppComponent {

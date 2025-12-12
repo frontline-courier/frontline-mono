@@ -4,7 +4,8 @@ import * as $ from 'jquery';
 @Component({
   selector: 'app-volume',
   templateUrl: './volume.component.html',
-  styleUrls: ['./volume.component.scss']
+  styleUrls: ['./volume.component.scss'],
+  standalone: false
 })
 export class VolumeComponent implements OnInit {
 

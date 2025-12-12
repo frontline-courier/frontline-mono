@@ -27,7 +27,8 @@ interface CourierType {
 @Component({
   selector: 'app-track',
   templateUrl: './track.component.html',
-  styleUrls: ['./track.component.scss']
+  styleUrls: ['./track.component.scss'],
+  standalone: false
 })
 export class TrackComponent implements OnInit {
 

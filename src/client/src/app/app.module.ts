@@ -44,8 +44,7 @@ import { CommonComponent } from './pages/common/common.component';
     ContactComponent,
     AboutComponent,
     ReachComponent,
-    TrackComponent,
-    // CommonComponent
+    TrackComponent
   ],
   imports: [
     BrowserModule,
