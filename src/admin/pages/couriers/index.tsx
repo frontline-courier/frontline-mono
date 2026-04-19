@@ -60,13 +60,19 @@ const CouriersPage = () => {
     }
   };
 
+  const getModeDisplay = (mode: number | null | undefined): string => {
+    if (mode === 2) return 'link';
+    if (mode === 3) return 'api';
+    return 'internal'; // Default for 0, null, undefined, not exists, 1
+  };
+
   const onSubmit = async (data: Courier) => {
     setError(null); // Reset error state
     const courierData = {
       ...data,
       CourierId: editingCourier ? editingCourier.CourierId : nextCourierId,
-      Mode: 0, // Default Mode
-      Status: 1 // Default Status
+      Mode: Number(data.Mode) || 1, // Ensure Mode is a number and default to 1 if not provided
+      Status: 1
     };
 
     const action = editingCourier ? 'update' : 'add';
@@ -190,6 +196,7 @@ const CouriersPage = () => {
               <th>Name</th>
               <th>Description</th>
               <th>Track</th>
+              <th>Mode</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -200,6 +207,7 @@ const CouriersPage = () => {
                 <td>{courier.Courier}</td>
                 <td>{courier.Description || 'N/A'}</td>
                 <td>{courier.Track || 'N/A'}</td>
+                <td>{getModeDisplay(courier.Mode)}</td>
                 <td className="flex space-x-2">
                   <button className="btn btn-outline btn-sm btn-primary" onClick={() => handleEdit(courier)}>Edit</button>
                   <button className="btn btn-outline btn-sm btn-error" onClick={() => handleDelete(courier._id + '')}>Delete</button>

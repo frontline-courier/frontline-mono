@@ -30,13 +30,19 @@ const CourierDrawer = ({ isOpen, onClose, onSubmit, editingCourier, error }: Cou
       reset({
         Courier: '',
         Description: '',
-        Track: ''
+        Track: '',
+        Mode: 1 // Set default Mode when adding new courier
       });
     }
   }, [editingCourier, reset]);
 
   const handleClear = () => {
-    reset();
+    reset({
+      Courier: '',
+      Description: '',
+      Track: '',
+      Mode: 1 // Set default Mode when clearing form
+    });
     onClose();
   };
 
@@ -107,6 +113,19 @@ const CourierDrawer = ({ isOpen, onClose, onSubmit, editingCourier, error }: Cou
                 placeholder="Tracking URL" 
                 {...register('Track')} 
               />
+            </div>
+            
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">Mode</label>
+              <select 
+                className="select select-bordered w-full" 
+                {...register('Mode')}
+                defaultValue={1}
+              >
+                <option value={1}>Internal</option>
+                <option value={2}>Link</option>
+                <option value={3}>API</option>
+              </select>
             </div>
             
             <div className="flex justify-end gap-2">

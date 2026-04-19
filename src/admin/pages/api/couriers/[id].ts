@@ -14,7 +14,17 @@ handler.put(async (req: any, res: any) => {
 
   try {
     const collection = (req.db as Db).collection('couriers');
-    await collection.updateOne({ _id: new ObjectId(id) }, { $set: { CourierId, Courier, Description, Track, Mode, Status } });
+    await collection.updateOne(
+      { _id: new ObjectId(id) }, 
+      { $set: { 
+        CourierId, 
+        Courier, 
+        Description, 
+        Track, 
+        Mode: Number(Mode) || 1, // Ensure Mode is a number and default to 1 if not provided
+        Status 
+      }} 
+    );
 
     resetCache(); // Reset cache
 
