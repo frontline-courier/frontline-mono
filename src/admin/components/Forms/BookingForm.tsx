@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { PageTypes } from '../../enums/pageTypes';
 import { getPageType } from '../../helpers/router/getPageType';
 import { BookingFormInputs } from '../../interfaces/bookingForm';
+import { paymentModes } from '../../constants/paymentModes';
 
 export default function BookingForm() {
 
@@ -23,6 +24,7 @@ export default function BookingForm() {
       shipmentMode: 0,
       transportMode: 0,
       coCourier: 0,
+      paymentMode: '',
       bookedDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
     },
   });
@@ -48,6 +50,7 @@ export default function BookingForm() {
 
         if (bookingResponse && bookingResponse.data) {
           bookingResponse.data.bookedDate = moment(bookingResponse.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL);
+          bookingResponse.data.paymentMode = bookingResponse.data.paymentMode || '';
           reset(bookingResponse.data);
           if (pageType === PageTypes.DELETE) {
             setDelete(true);
@@ -258,7 +261,6 @@ export default function BookingForm() {
             </label>
             <input type="text" placeholder="Actual weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register('actualWeight', { required: true, valueAsNumber: true })} />
           </div>
-
           <div className="form-control">
             <label className="label p-1">
               <span className="label-text text-2xs">Add. Phone Number</span>
@@ -277,8 +279,18 @@ export default function BookingForm() {
             </label>
             <input type="text" placeholder="Add. Lead/Pouch" className="input input-bordered" {...register('additionalLeaf')} />
           </div>
+          <div className="form-control">
+            <label className="label p-1">
+              <span className="label-text text-2xs">Payment Mode</span>
+            </label>
+            <select className={`select select-bordered ${errors.paymentMode && 'select-error'}`} {...register('paymentMode')}>
+              <option disabled={true} value="">-- payment mode --</option>
+              {paymentModes.map(mode => (
+                <option key={mode} value={mode}>{mode}</option>
+              ))}
+            </select>
+          </div>
 
-          <div />
           <div />
 
           <div className="form-control">

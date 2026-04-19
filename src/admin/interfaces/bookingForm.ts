@@ -14,6 +14,7 @@ export type BookingFormInputs = {
     bookingAmount: number,
     billAmount: number,
     actualWeight: number,
+    paymentMode: string,
     remarks: string,
     internalRemarks: string,
     deliveryOfficeLocation: string,
