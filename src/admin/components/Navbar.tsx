@@ -1,174 +1,219 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
-import { useUser } from '@auth0/nextjs-auth0/client';
-import { useEffect } from 'react'
-import { BiUserCircle } from 'react-icons/bi';
-import { RiLogoutBoxRLine, RiSettings5Line } from 'react-icons/ri'
+import Link from 'next/link'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import {
+  HiChartBar,
+  HiClipboardList,
+  HiCollection,
+  HiCreditCard,
+  HiCube,
+  HiOutlineX,
+  HiTruck,
+} from 'react-icons/hi'
 
-// reference: https://codepen.io/hulyak/pen/yLbwXvB
-export default function AppNavbar() {
+type NavItem = {
+  href: string
+  label: string
+  icon: JSX.Element
+}
+
+type NavGroup = {
+  label: string
+  icon: JSX.Element
+  items: NavItem[]
+}
+
+const navGroups: NavGroup[] = [
+  {
+    label: 'Overview',
+    icon: <HiChartBar className="h-4 w-4" />,
+    items: [{ href: '/', label: 'Dashboard', icon: <HiChartBar className="h-4 w-4" /> }],
+  },
+  {
+    label: 'Bookings',
+    icon: <HiClipboardList className="h-4 w-4" />,
+    items: [
+      { href: '/bookings', label: 'Booking Entry', icon: <HiClipboardList className="h-4 w-4" /> },
+      { href: '/booking-rates', label: 'Booking Rates', icon: <HiCollection className="h-4 w-4" /> },
+      { href: '/volumetric-calculator', label: 'Volumetric Calculator', icon: <HiCollection className="h-4 w-4" /> },
+    ],
+  },
+  {
+    label: 'Courier',
+    icon: <HiTruck className="h-4 w-4" />,
+    items: [
+      { href: '/couriers', label: 'Manage Couriers', icon: <HiTruck className="h-4 w-4" /> },
+      { href: '/courier-volumetric-mappings', label: 'Volumetric Mappings', icon: <HiCollection className="h-4 w-4" /> },
+      { href: '/courier-zone-rates', label: 'Zone Rates', icon: <HiCollection className="h-4 w-4" /> },
+    ],
+  },
+  {
+    label: 'Credit',
+    icon: <HiCreditCard className="h-4 w-4" />,
+    items: [
+      { href: '/credit', label: 'Credit Entry', icon: <HiCreditCard className="h-4 w-4" /> },
+      { href: '/credit/reports', label: 'Reports', icon: <HiChartBar className="h-4 w-4" /> },
+    ],
+  },
+  {
+    label: 'Stocks',
+    icon: <HiCube className="h-4 w-4" />,
+    items: [
+      { href: '/stocks', label: 'Stock In', icon: <HiCube className="h-4 w-4" /> },
+      { href: '/stocks/out', label: 'Stock Out', icon: <HiCollection className="h-4 w-4" /> },
+      { href: '/stocks/courier', label: 'Couriers', icon: <HiTruck className="h-4 w-4" /> },
+      { href: '/stocks/co-loader', label: 'Co-loaders', icon: <HiCollection className="h-4 w-4" /> },
+      { href: '/stocks/booker', label: 'Bookers', icon: <HiClipboardList className="h-4 w-4" /> },
+    ],
+  },
+]
+
+function isActiveRoute(pathname: string, href: string) {
+  if (href === '/') {
+    return pathname === '/'
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`)
+}
+
+type SidebarContentProps = {
+  pathname: string
+  isCollapsed: boolean
+}
+
+function SidebarContent({ pathname, isCollapsed }: SidebarContentProps) {
+  return (
+    <div className="flex h-full flex-col bg-slate-950 text-slate-100">
+      <div className="border-b border-slate-800 px-4 py-5">
+        <Link href="/">
+          <a className={isCollapsed ? 'flex items-center justify-center' : 'flex items-center gap-3'}>
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/20 text-primary">
+              <Image src="/favicon.ico" alt="Frontline logo" width={24} height={24} />
+            </div>
+            {!isCollapsed && (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+                  Frontline
+                </p>
+                <h2 className="text-lg font-semibold text-white">Admin Console</h2>
+              </div>
+            )}
+          </a>
+        </Link>
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-3 py-5">
+        {navGroups.map((group) => (
+          <div key={group.label} className="mb-6 last:mb-0">
+            {!isCollapsed ? (
+              <div className="mb-2 flex items-center gap-2 px-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+                {group.icon}
+                <span>{group.label}</span>
+              </div>
+            ) : (
+              <div className="mb-2 flex justify-center text-slate-500">{group.icon}</div>
+            )}
+            <div className="space-y-1">
+              {group.items.map((item) => {
+                const active = isActiveRoute(pathname, item.href)
+
+                return (
+                  <Link href={item.href} key={item.href}>
+                    <a
+                      title={isCollapsed ? item.label : undefined}
+                      className={[
+                        'flex items-center rounded-xl text-sm font-medium transition-colors',
+                        isCollapsed ? 'justify-center px-2 py-3' : 'justify-between px-3 py-2.5',
+                        active
+                          ? 'bg-primary text-primary-content shadow-lg shadow-primary/20'
+                          : 'text-slate-300 hover:bg-slate-900 hover:text-white',
+                      ].join(' ')}
+                    >
+                      <span className={isCollapsed ? '' : 'flex items-center gap-3'}>
+                        {item.icon}
+                        {!isCollapsed && <span>{item.label}</span>}
+                      </span>
+                    </a>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  )
+}
+
+type AppNavbarProps = {
+  isCollapsed: boolean
+  onToggleCollapsed: () => void
+}
+
+export default function AppNavbar({ isCollapsed, onToggleCollapsed }: AppNavbarProps) {
+  const router = useRouter()
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   useEffect(() => {
-    const button = document?.querySelector('#menu-button');
-    const menu = document?.querySelector('#menu');
+    const openSidebar = () => setIsSidebarOpen(true)
 
-    button?.addEventListener('click', () => {
-      menu?.classList.toggle('hidden');
-    });
-  })
+    window.addEventListener('frontline:sidebar-open', openSidebar)
 
-  const { user, error, isLoading } = useUser();
-  if (isLoading) return (
-    <div className="flex justify-center items-center h-16 bg-primary">
-      <span className="loading loading-spinner loading-lg text-white"></span>
-    </div>
-  );
-  if (error) return (
-    <div className="alert alert-error">
-      <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-      <span>{error.message}</span>
-    </div>
-  );
+    return () => {
+      window.removeEventListener('frontline:sidebar-open', openSidebar)
+    }
+  }, [])
 
+  useEffect(() => {
+    setIsSidebarOpen(false)
+  }, [router.pathname])
 
   return (
-    <nav
-      className="
-          flex flex-wrap
-          items-center
-          justify-between
-          w-full
-          py-4
-          md:py-0
-          px-4
-          text-2xl font-bold text-gray-200
-          bg-primary"
-    >
-      <div>
-        <a href="/"> Frontline Admin v3.0</a>
-      </div>
-
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        id="menu-button"
-        className="h-6 w-6 cursor-pointer md:hidden block"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
+    <>
+      <aside
+        className={[
+          'fixed inset-y-0 left-0 z-40 hidden border-r border-slate-800 transition-[width] duration-200 lg:block',
+          isCollapsed ? 'w-16' : 'w-64',
+        ].join(' ')}
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M4 6h16M4 12h16M4 18h16"
+        <SidebarContent
+          pathname={router.pathname}
+          isCollapsed={isCollapsed}
         />
-      </svg>
+      </aside>
 
-      <div className="hidden w-full md:flex md:items-center md:w-auto" id="menu">
-        <ul
-          className="
-              pt-4
-              text-base text-white
-              md:flex
-              md:justify-between 
-              md:pt-0">
-          {user &&
-            <>
-              {/* <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/dashboard">Dashboard</a> </li> */}
-              {/* <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings/quick">Quick Booking</a> </li> */}
-              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings">Booking Entry</a> </li>
-              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/booking-rates">Booking Rates</a> </li>
+      <div
+        className={[
+          'fixed inset-0 z-50 bg-slate-950/60 transition-opacity lg:hidden',
+          isSidebarOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
+        ].join(' ')}
+        onClick={() => setIsSidebarOpen(false)}
+        aria-hidden={!isSidebarOpen}
+      />
 
-              <li>
-                <div className="dropdown cursor-pointer">
-                  <div tabIndex={0} className="md:p-4 py-2 block hover:bg-secondary flex items-center">
-                    Courier
-                    <svg className="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /> </svg>
-                  </div>
-                  <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-52 z-[1]">
-                    <li><a className="md:p-4 py-2 block" href="/couriers">List</a></li>
-                    <li><a className="md:p-4 py-2 block" href="/courier-volumetric-mappings">Volumetric Mappings</a></li>
-                    <li><a className="md:p-4 py-2 block" href="/courier-zone-rates">Zone Rates</a></li>
-                  </ul>
-                </div>
-              </li>
+      <aside
+        className={[
+          'fixed inset-y-0 left-0 z-50 w-72 max-w-[88vw] transform border-r border-slate-800 transition-transform duration-200 lg:hidden',
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
+        ].join(' ')}
+      >
+        <button
+          type="button"
+          className="btn btn-circle btn-sm absolute right-3 top-3 z-10 border-slate-700 bg-slate-900 text-slate-100 hover:bg-slate-800"
+          onClick={() => setIsSidebarOpen(false)}
+          aria-label="Close navigation"
+        >
+          <HiOutlineX className="h-4 w-4" />
+        </button>
+        <SidebarContent
+          pathname={router.pathname}
+          isCollapsed={false}
+        />
+      </aside>
 
-              <li> <a className="md:p-4 py-2 block hover:bg-secondary" href="/volumetric-calculator">Volumetric Calculator</a> </li>
-
-              <li>
-                <div className="dropdown cursor-pointer">
-                  <div tabIndex={0} className="md:p-4 py-2 block hover:bg-secondary flex items-center">
-                    Credit
-                    <svg className="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /> </svg>
-                  </div>
-                  <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-52 z-[1]">
-                    <li> <a className="md:p-4 py-2 block" href="/credit">Entry</a> </li>
-                    <li> <a className="md:p-4 py-2 block" href="/credit/reports">Reports</a> </li>
-                  </ul>
-                </div>
-              </li>
-              <li>
-                <div className="dropdown cursor-pointer">
-                  <div tabIndex={0} className="md:p-4 py-2 block hover:bg-secondary flex items-center">
-                    Stock
-                    <svg className="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /> </svg>
-                  </div>
-                  <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-52 z-[1]">
-                    <li> <a className="md:p-4 py-2 block" href="/stocks">Stock In</a> </li>
-                    <li> <a className="md:p-4 py-2 block" href="/stocks/out">Stock Out</a> </li>
-                  </ul>
-                </div>
-              </li>
-              {/* <li>
-              <a className="md:p-4 py-2 block hover:bg-secondary" href="/bookings"
-              >Reporting</a
-              >
-            </li> */}
-              {/* <li className="hidden md:block">
-              <a
-                className="md:p-4 py-2 block text-white"
-                href="#"
-              > Welcome, {user.nickname || user.name || user.email} </a
-              >
-            </li> */}
-              <li>
-                <div className="dropdown dropdown-end">
-                  <div tabIndex={0} className="m-1 btn btn-secondary flex items-center gap-2">
-                    <BiUserCircle className="h-6 w-6" />
-                    <span className="hidden md:inline text-xs">Account</span>
-                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /> </svg>
-                  </div>
-                  <ul tabIndex={0} className="p-2 shadow menu dropdown-content bg-white text-primary rounded-box w-64 z-[1]">
-                    <li className="border-b border-gray-200 pb-2">
-                      <a className="flex flex-col">
-                        <span className="text-xs text-gray-500">Logged in as:</span>
-                        <span className="font-semibold">{user.nickname || user.name || user.email}</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a className="flex items-center gap-2 mt-2">
-                        <RiSettings5Line className="text-gray-600" /> Settings
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/api/auth/logout" className="flex items-center gap-2 text-red-500">
-                        <RiLogoutBoxRLine /> Logout
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            </>
-          }
-          {
-            !user &&
-            <li>
-              <a
-                className="md:p-4 py-2 block hover:bg-secondary text-white font-bold"
-                href="/api/auth/login"> Login</a>
-            </li>
-          }
-        </ul>
-      </div>
-    </nav >
+    </>
   )
 }

@@ -34,9 +34,8 @@ export default function CourierZoneRatesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-base-200">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Courier Zone Rate Management</h1>
+    <div className="bg-base-200">
+      <div className="container mx-auto px-4 py-2">
         <CourierZoneRateForm />
       </div>
     </div>

@@ -5,15 +5,7 @@ import BookingForm from '../../components/Forms/BookingForm';
 function AddBookingPage() {
 
   return (
-    <>
-      <div className="flex justify-between m-4">
-        <div className="">
-          <h2 className="text-2xl font-semibold">Add Booking</h2>
-        </div>
-      </div>
-
-      <BookingForm></BookingForm>
-    </>
+    <BookingForm></BookingForm>
   );
 }
 

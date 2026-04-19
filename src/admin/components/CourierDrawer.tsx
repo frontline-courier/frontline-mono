@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 interface Courier {
   _id?: string;
@@ -36,7 +36,7 @@ const CourierDrawer = ({ isOpen, onClose, onSubmit, editingCourier, error }: Cou
     }
   }, [editingCourier, reset]);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     reset({
       Courier: '',
       Description: '',
@@ -44,7 +44,7 @@ const CourierDrawer = ({ isOpen, onClose, onSubmit, editingCourier, error }: Cou
       Mode: 1 // Set default Mode when clearing form
     });
     onClose();
-  };
+  }, [onClose, reset]);
 
   // Handle ESC key
   useEffect(() => {
@@ -55,7 +55,7 @@ const CourierDrawer = ({ isOpen, onClose, onSubmit, editingCourier, error }: Cou
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, []);
+  }, [handleClear]);
 
   return (
     <div className="drawer drawer-end z-50">

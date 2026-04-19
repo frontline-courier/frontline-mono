@@ -135,9 +135,6 @@ function StockEntry(props: any) {
   return <>
     <div className="flex justify-between m-4">
       <div>
-        <h2 className="text-2xl font-semibold">Stock Entry</h2>
-      </div>
-      <div>
         <button className="btn btn-secondary mr-2" onClick={handleAddCourier}>Courier</button>
         <button className="btn btn-secondary mr-2" onClick={handleAddCoLoader}>Co-Loader</button>
       </div>

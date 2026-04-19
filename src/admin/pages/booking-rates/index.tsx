@@ -5,15 +5,7 @@ import ShipmentForm from '../../components/Forms/BookingRateForm';
 function BookingRatesAddPage() {
 
   return (
-    <>
-      <div className="flex justify-between m-4">
-        <div className="">
-          <h2 className="text-2xl font-semibold">Add Booking Rate</h2>
-        </div>
-      </div>
-
-      <ShipmentForm />
-    </>
+    <ShipmentForm />
   );
 }
 

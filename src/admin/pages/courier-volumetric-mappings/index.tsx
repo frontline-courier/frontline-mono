@@ -177,10 +177,6 @@ const CourierVolumetricMappingsPage = () => {
               <li>Courier Volumetric Mappings</li>
             </ul>
           </div>
-          
-          <div className="flex justify-between items-center px-6 py-3">
-            <h1 className="text-2xl font-semibold">Courier Volumetric Mappings</h1>
-          </div>
 
           <div className="divider m-0"></div>
 

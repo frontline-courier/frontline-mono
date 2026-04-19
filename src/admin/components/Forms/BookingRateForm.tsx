@@ -1,6 +1,6 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { DoxType } from '../../models/DoxType';
 import { TransportMode } from '../../models/transportMode';
@@ -83,6 +83,8 @@ export default function ShipmentForm() {
   const discount = watch('discount');
   const shippingCost = watch('shippingCost');
   const insurance = watch('insurance');
+  const actualWeight = watch('actualWeight');
+  const totalVolWeight = watch('totalVolWeight');
   const doxType = watch('doxType');
   const transportMode = watch('transportMode');
   const courier = watch('courier');
@@ -123,10 +125,8 @@ export default function ShipmentForm() {
   }, []);
 
   // Memoize formula lookup for better performance
-  const getMappingKey = (courierId: number, transportModeId: number) => `${courierId}-${transportModeId}`;
-  
   // Get volumetric divisor based on courier and transport mode
-  const getVolumetricDivisor = () => {
+  const getVolumetricDivisor = useCallback(() => {
     if (!courier || !transportMode) return 5000; // Default divisor
     
     const courierNum = Number(courier);
@@ -189,25 +189,10 @@ export default function ShipmentForm() {
     
     setValue('formula', formula);
     return divisor;
-  };
-
-  // Memoize courier and transport mode changes to avoid unnecessary recalculations
-  useEffect(() => {
-    if (courier > 0 || transportMode > 0) {
-      // This will update the formula and recalculate volumetric weight
-      calculateVolumetricWeight();
-    }
-  }, [courier, transportMode]);
-
-  // Calculate volumetric weight when box dimensions change
-  useEffect(() => {
-    if (boxDimensions && boxDimensions.length > 0 && !isDox) {
-      calculateVolumetricWeight();
-    }
-  }, [boxDimensions, isDox]);
+  }, [courier, transportMode, courierList, mappings, setValue]);
 
   // Optimize box dimension calculation
-  const calculateVolumetricWeight = () => {
+  const calculateVolumetricWeight = useCallback(() => {
     if (!boxDimensions?.length || isDox) {
       setValue('totalVolWeight', 0);
       return;
@@ -227,14 +212,29 @@ export default function ShipmentForm() {
     }, 0);
     
     setValue('totalVolWeight', Number(totalVol.toFixed(2)));
-  };
+  }, [boxDimensions, isDox, getVolumetricDivisor, setValue]);
+
+  // Memoize courier and transport mode changes to avoid unnecessary recalculations
+  useEffect(() => {
+    if (courier > 0 || transportMode > 0) {
+      // This will update the formula and recalculate volumetric weight
+      calculateVolumetricWeight();
+    }
+  }, [courier, transportMode, calculateVolumetricWeight]);
+
+  // Calculate volumetric weight when box dimensions change
+  useEffect(() => {
+    if (boxDimensions && boxDimensions.length > 0 && !isDox) {
+      calculateVolumetricWeight();
+    }
+  }, [boxDimensions, isDox, calculateVolumetricWeight]);
 
   // Calculate chargeable weight based on max of volumetric and actual weight
   useEffect(() => {
-    const volWeight = Number(watch('totalVolWeight')) || 0;
-    const actWeight = Number(watch('actualWeight')) || 0;
+    const volWeight = Number(totalVolWeight) || 0;
+    const actWeight = Number(actualWeight) || 0;
     setValue('chargeableWeight', Number(Math.max(volWeight, actWeight).toFixed(2)));
-  }, [watch('totalVolWeight'), watch('actualWeight'), setValue]);
+  }, [actualWeight, totalVolWeight, setValue]);
 
   // Calculate insurance based on goods value and product type
   useEffect(() => {

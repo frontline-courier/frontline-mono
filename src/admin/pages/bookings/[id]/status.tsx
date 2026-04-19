@@ -74,12 +74,6 @@ function ShipmentStatusPage(props: any) {
 
   return (
     <>
-      <div className="flex justify-between m-4">
-        <div className="">
-          <h2 className="text-2xl font-semibold">Shipment Status</h2>
-        </div>
-      </div>
-
       <div className="flex m-4">
         {
           props.success &&

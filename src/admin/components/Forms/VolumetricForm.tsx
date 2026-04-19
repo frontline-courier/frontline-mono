@@ -86,7 +86,7 @@ export default function VolumetricForm() {
   // Trigger calculation whenever any relevant field changes
   useEffect(() => {
     calculateVolumetricWeight();
-  }, [length, width, height, weight, unit, selectedCourier, transportMode]);
+  }, [calculateVolumetricWeight]);
 
   // Set formula based on courier-transport mode mapping or default rules
   useEffect(() => {

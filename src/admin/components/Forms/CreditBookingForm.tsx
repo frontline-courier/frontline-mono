@@ -56,7 +56,7 @@ export default function CreateCreditForm() {
         }
       }
     })();
-  }, [])
+  }, [id, reset, router.pathname])
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     setLoader(true);

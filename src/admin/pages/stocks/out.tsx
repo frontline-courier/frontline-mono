@@ -114,9 +114,6 @@ function StockOutPage(props: any) {
   return <>
     <div className="flex justify-between m-4">
       <div>
-        <h2 className="text-2xl font-semibold">Stock Out</h2>
-      </div>
-      <div>
         <button className="btn btn-secondary" onClick={handleAddBooker}>Booker</button>
       </div>
     </div>

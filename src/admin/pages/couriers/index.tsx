@@ -151,7 +151,6 @@ const CouriersPage = () => {
       <div id="toast" className="fixed top-4 right-4 z-50" style={{ display: 'none' }}></div>
       
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Manage Couriers</h2>
         <div className="flex space-x-2">
             <div className="flex flex-col space-y-2">
               <div className="flex items-center space-x-2">

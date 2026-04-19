@@ -31,12 +31,6 @@ function AddCourierForStockEntry(props: any) {
   }
 
   return <>
-    <div className="flex justify-between m-4">
-      <div>
-        <h2 className="text-2xl font-semibold">Add Courier</h2>
-      </div>
-    </div>
-
     <div className="m-4 p-4 w-2/3 lg:w-1/2">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-control">

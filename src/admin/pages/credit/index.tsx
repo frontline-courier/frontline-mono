@@ -1,6 +1,6 @@
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import DataTable from 'react-data-table-component';
 import { BsThreeDotsVertical } from 'react-icons/bs';
@@ -37,16 +37,16 @@ function BookingPage() {
   const [perPage, setPerPage] = useState(25);
   const [searchData, setSearchData] = useState({ pod: '', client: '', courier: '', mode: '', service: '' });
 
-  const fetchShipment = async (page: number) => {
+  const fetchShipment = useCallback(async (page: number, limit = perPage) => {
 
     setLoading(true);
     const response =
       await axios.get(
-        `${apiPath.creditBooking}?page=${page}&limit=${perPage}&courier=${searchData.courier || ''}&mode=${searchData.mode || ''}&client=${searchData.client || ''}&pod=${searchData.pod}&service=${searchData.service}`);
+        `${apiPath.creditBooking}?page=${page}&limit=${limit}&courier=${searchData.courier || ''}&mode=${searchData.mode || ''}&client=${searchData.client || ''}&pod=${searchData.pod}&service=${searchData.service}`);
     setData(response.data.booking);
     setTotalRows(response.data.count);
     setLoading(false);
-  };
+  }, [perPage, searchData]);
 
   const handlePageChange = (page: number) => {
     fetchShipment(page);
@@ -54,11 +54,8 @@ function BookingPage() {
 
   const handlePerRowsChange = async (newPerPage: number, page: number) => {
     setLoading(true);
-    const response =
-      await axios.get(`${apiPath.creditBooking}?page=${page}&limit=${newPerPage}&courier=${searchData.courier || ''}&mode=${searchData.mode || ''}&client=${searchData.client || ''}&pod=${searchData.pod}&service=${searchData.service}`);
-    setData(response.data.booking);
     setPerPage(newPerPage);
-    setLoading(false);
+    await fetchShipment(page, newPerPage);
   };
 
   const onSubmit: SubmitHandler<any> = async (data) => {
@@ -151,7 +148,7 @@ function BookingPage() {
 
   useEffect(() => {
     fetchShipment(1); // fetch page 1 of users
-  }, [searchData]);
+  }, [fetchShipment]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
@@ -159,9 +156,6 @@ function BookingPage() {
   return (
     <>
       <div className="flex justify-between m-4">
-        <div className="">
-          <h2 className="text-2xl font-semibold">Booking</h2>
-        </div>
         <div>
           <form onSubmit={handleSubmit(onSubmit)} role="search">
             <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered" {...register('pod', { minLength: 3 })} />

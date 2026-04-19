@@ -57,7 +57,7 @@ const BookingPage = () => {
   }, []);
 
   // Fetch data whenever page or perPage changes in the URL
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(
@@ -73,7 +73,12 @@ const BookingPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, perPage, searchData]);
+
+  const getCourierName = useCallback((courierId: string): string => {
+    if (courierId === null || courierId === undefined) { return 'NA'; }
+    return courierList.find((c) => c.CourierId === parseInt(courierId, 10))?.Courier || 'NA';
+  }, [courierList]);
 
   // Add new useEffect to transform data after courierList is loaded
   useEffect(() => {
@@ -88,12 +93,12 @@ const BookingPage = () => {
       }));
       setData(transformedData);
     }
-  }, [rawBookingData, courierList]); // Dependencies on both raw data and courier list
+  }, [rawBookingData, courierList, getCourierName]); // Dependencies on both raw data and courier list
 
   useEffect(() => {
     fetchCouriers();
     fetchData();
-  }, [fetchCouriers, page, perPage, searchData]); // Dependency on fetchCouriers
+  }, [fetchCouriers, fetchData]); // Dependency on fetchCouriers
 
   // Handle loading and error states
   if (loadingCouriers) return <div>Loading couriers...</div>;
@@ -149,11 +154,6 @@ const BookingPage = () => {
   const getShipmentStatus = (status: string): string => {
     if (typeof status === 'string') { return status; }
     return statusList.find((s) => s.StatusId === parseInt(status, 10))?.ShipmentStatus || 'NA';
-  }
-
-  const getCourierName = (courierId: string): string => {
-    if (courierId === null || courierId === undefined) { return 'NA'; }
-    return courierList.find((c) => c.CourierId === parseInt(courierId, 10))?.Courier || 'NA';
   }
 
   const columns = [
@@ -328,7 +328,6 @@ const BookingPage = () => {
   return  (
     <>
       <div className="m-2 gap-2">
-        <h2 className="text-2xl font-semibold">Booking</h2>
         <form onSubmit={handleSubmit(onSubmit)} role="search" className='flex flex-row gap-2'>
           <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered input-sm" {...register('awbNumber', { minLength: 3 })} />
           <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered input-sm" {...register('referenceNumber', { minLength: 3 })} />

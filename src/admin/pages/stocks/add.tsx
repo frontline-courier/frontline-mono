@@ -13,9 +13,6 @@ function AddStockEntry() {
   return <>
     <div className="flex justify-between m-4">
       <div>
-        <h2 className="text-2xl font-semibold">Add Courier</h2>
-      </div>
-      <div>
         <button className="btn btn-secondary mr-2">Add Courier</button>
         <button className="btn btn-secondary">Add Stock</button>
       </div>
