@@ -83,11 +83,6 @@ export default function VolumetricForm() {
   const selectedCourier = watch('courier');
   const transportMode = watch('transportMode');
   
-  // Trigger calculation whenever any relevant field changes
-  useEffect(() => {
-    calculateVolumetricWeight();
-  }, [calculateVolumetricWeight]);
-
   // Set formula based on courier-transport mode mapping or default rules
   useEffect(() => {
     if (!transportMode || !selectedCourier) return;
@@ -190,6 +185,11 @@ export default function VolumetricForm() {
       setValue('chargeableWeight', actualWeightValue);
     }
   }, [length, width, height, weight, unit, specificMapping, transportMode, courierList, selectedCourier, setValue]);
+
+  // Trigger calculation whenever any relevant field changes
+  useEffect(() => {
+    calculateVolumetricWeight();
+  }, [calculateVolumetricWeight]);
 
   const onSubmit: SubmitHandler<VolumetricFormInputs> = async (data) => {
     calculateVolumetricWeight();
