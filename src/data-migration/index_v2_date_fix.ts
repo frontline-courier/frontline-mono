@@ -1,6 +1,17 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
+import dotenv from 'dotenv';
 
-const uri = "mongodb+srv://frontlineapp:AiOolcPeHzCN5dLx@frontline.tsxyg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+dotenv.config();
+
+const getRequiredEnv = (key: string): string => {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${key}`);
+  }
+  return value;
+};
+
+const uri = getRequiredEnv('MONGODB_URI');
 
 const client = new MongoClient(uri, {
   useNewUrlParser: true,

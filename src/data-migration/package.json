@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@supabase/supabase-js": "^1.22.3",
+    "dotenv": "^17.4.2",
     "firebase": "^8.8.0",
     "firebase-admin": "^9.11.0",
     "json-2-csv": "^3.14.4",

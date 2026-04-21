@@ -3,8 +3,19 @@ import firebase from 'firebase';
 // import { MongoClient } from 'mongodb';
 import { json2csv } from 'json-2-csv';
 import fs from 'fs';
+import dotenv from 'dotenv';
 
-// const uri = "mongodb+srv://frontlineapp:SNveY2tiKp3NqfJ@frontline.tsxyg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+dotenv.config();
+
+const getRequiredEnv = (key: string): string => {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${key}`);
+  }
+  return value;
+};
+
+// const uri = getRequiredEnv('MONGODB_URI');
 
 // const client = new MongoClient(uri, {
 //   useNewUrlParser: true,
@@ -105,14 +116,14 @@ const getCourierName = (courierId: string): string => {
 }
 
 var app = firebase.initializeApp({
-  apiKey: 'AIzaSyBM65EL-d5ppnBlGOZ5MYoMKVDtb0z-lKI',
-  authDomain: 'varun-enterprises.firebaseapp.com',
-  databaseURL: 'https://varun-enterprises.firebaseio.com',
-  projectId: 'varun-enterprises',
-  storageBucket: 'varun-enterprises.appspot.com',
-  messagingSenderId: '627419010873',
-  appId: '1:627419010873:web:054515e9f51513b160bae8',
-  measurementId: 'G-QPTMSCRH73',
+  apiKey: getRequiredEnv('FIREBASE_API_KEY'),
+  authDomain: getRequiredEnv('FIREBASE_AUTH_DOMAIN'),
+  databaseURL: getRequiredEnv('FIREBASE_DATABASE_URL'),
+  projectId: getRequiredEnv('FIREBASE_PROJECT_ID'),
+  storageBucket: getRequiredEnv('FIREBASE_STORAGE_BUCKET'),
+  messagingSenderId: getRequiredEnv('FIREBASE_MESSAGING_SENDER_ID'),
+  appId: getRequiredEnv('FIREBASE_APP_ID'),
+  measurementId: getRequiredEnv('FIREBASE_MEASUREMENT_ID'),
 });
 
 
