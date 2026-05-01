@@ -31,3 +31,33 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.booking-table .rdt_Table {
+  min-width: 1120px;
+}
+
+.booking-table .rdt_TableHeadRow,
+.booking-table .rdt_TableRow {
+  overflow: visible;
+}
+
+.booking-table .rdt_TableCol:last-child,
+.booking-table .rdt_TableCell:last-child {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  background: #ffffff;
+  box-shadow: -10px 0 18px -18px rgba(15, 23, 42, 0.55);
+}
+
+.booking-table .rdt_TableCol:last-child {
+  z-index: 3;
+}
+
+.booking-table .rdt_TableCell:last-child {
+  overflow: visible;
+}
+
+.booking-table .rdt_Pagination {
+  border-top: 1px solid #e2e8f0;
+}

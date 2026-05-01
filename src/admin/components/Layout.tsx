@@ -139,9 +139,9 @@ export default function Layout({ children }: LayoutProps) {
         isCollapsed={isSidebarCollapsed}
         onToggleCollapsed={toggleSidebarCollapsed}
       />
-      <div className={isSidebarCollapsed ? 'lg:pl-16' : 'lg:pl-64'}>
+      <div className={isSidebarCollapsed ? 'lg:pl-14' : 'lg:pl-56'}>
         <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
-          <div className="flex items-center justify-between gap-4 px-4 py-4 sm:px-6">
+          <div className="flex items-center justify-between gap-4 px-3 py-3 sm:px-4 lg:px-5">
             <div className="flex items-center gap-3">
               <button
                 type="button"
@@ -246,8 +246,8 @@ export default function Layout({ children }: LayoutProps) {
           </div>
         </header>
 
-        <main className="px-3 py-3 sm:px-4 sm:py-4">
-          <div className="mx-auto w-full max-w-7xl">{children}</div>
+        <main className="px-2 py-3 sm:px-3 sm:py-4 lg:px-4">
+          <div className="mx-auto w-full max-w-none">{children}</div>
         </main>
       </div>
     </div>

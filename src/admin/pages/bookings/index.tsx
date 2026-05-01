@@ -161,31 +161,37 @@ const BookingPage = () => {
       name: 'AWB',
       selector: (row: any) => row.awbNumber,
       sortable: true,
+      minWidth: '120px',
     },
     {
       name: 'Reference',
       selector: (row: any) => row.referenceNumber,
       sortable: true,
+      minWidth: '120px',
     },
     {
       name: 'tp #',
       selector: (row: any) => row.thirdPartyNumber,
       sortable: true,
+      minWidth: '120px',
     },
     {
       name: 'Leaf',
       selector: (row: any) => row.additionalLeaf,
       sortable: true,
+      width: '90px',
     },
     {
       name: 'courier',
       selector: (row: any) => row.courier,
       sortable: true,
+      minWidth: '120px',
     },
     {
       name: 'BookedDate',
       selector: (row: any) => row.bookedDate,
       sortable: true,
+      minWidth: '140px',
     },
     // {
     //   name: 'ShipperName',
@@ -194,16 +200,19 @@ const BookingPage = () => {
     {
       name: 'ReceiverName',
       selector: (row: any) => row.receiverName,
+      minWidth: '120px',
     },
     {
       name: 'DoxType',
       selector: (row: any) => row.doxType,
       sortable: true,
+      minWidth: '90px',
     },
     {
       name: 'ShipmentMode',
       selector: (row: any) => row.shipmentMode,
       sortable: true,
+      minWidth: '120px',
     },
     // {
     //   name: 'TransportMode',
@@ -218,6 +227,7 @@ const BookingPage = () => {
       name: 'Status',
       selector: (row: any) => <div className={`badge badge-outline ${getShipmentStatusColor(row.shipmentStatus)}`}>{row.shipmentStatus}</div>,
       sortable: true,
+      minWidth: '110px',
     },
     // {
     //   name: 'CoCourier',
@@ -228,9 +238,13 @@ const BookingPage = () => {
       name: 'Weight',
       selector: (row: any) => row.actualWeight,
       sortable: true,
+      width: '90px',
     },
     {
       name: '',
+      width: '78px',
+      allowOverflow: true,
+      button: true,
       cell: (row: any) => {
         return <div className="dropdown dropdown-end">
           <div tabIndex={0} className="m-1 btn btn-xs btn-secondary"><BsThreeDotsVertical /></div>
@@ -306,74 +320,86 @@ const BookingPage = () => {
     link.click();
   }
 
-  const Export = (event: any) => <button className="btn btn-accent btn-outline btn-xs" onClick={(e: any) => event.onExport(e.target.value)}>Download</button>;
+  const Export = (event: any) => <button type="button" className="btn btn-accent btn-outline btn-sm w-full sm:w-auto" onClick={(e: any) => event.onExport(e.target.value)}>Download</button>;
 
   const NewBookingButton = () => (
-    <Link href="/bookings/create" className="btn btn-primary btn-outline btn-xs">
+    <Link href="/bookings/create" className="btn btn-primary btn-outline btn-sm w-full sm:w-auto">
       <span className="text-lg"><MdAdd /></span>
       <span>New Booking</span>
     </Link>
   );
 
   const DataTableButtons = () => {
-    return <>
+    return <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
       <Export onExport={() => downloadCSV(data)} />
       <NewBookingButton />
-    </>
+    </div>
   }
 
 
   return  (
     <>
-      <div className="m-2 gap-2">
-        <form onSubmit={handleSubmit(onSubmit)} role="search" className="flex flex-col gap-2 md:flex-row md:flex-wrap md:items-end">
-          <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered input-sm w-full md:w-44" {...register('awbNumber', { minLength: 3 })} />
-          <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered input-sm w-full md:w-40" {...register('referenceNumber', { minLength: 3 })} />
-          <input type="text" autoComplete="false" placeholder="Third Party #" className="input input-bordered input-sm w-full md:w-40" {...register('thirdPartyNumber', { minLength: 3 })} />
-          <select className={'select select-bordered select-sm w-full md:w-48'}  {...register('courier', { valueAsNumber: true },)}>
-            <option value={0}>-- courier --</option>
-            {
-              courierList.map((d) => {
-                return <option key={d.CourierId + d.Courier} value={d.CourierId}>{d.Courier}</option>
-              })
-            }
-          </select>
-          <select className={'select select-bordered select-sm w-full md:w-44'} {...register('shipmentMode', { valueAsNumber: true })}>
-            <option value={0}>-- shipment mode --</option>
-            <option value={1}>Domestic</option>
-            <option value={2}>International</option>
-            <option value={3}>Local</option>
-            <option value={0}>NA</option>
-          </select>
-          <select className="select select-bordered select-sm w-full md:w-44" {...register('status')}>
-            <option value="">-- status --</option>
-            {
-              statusList.map((s, i) => {
-                return <option key={s.StatusId} value={s.ShipmentStatus}>{s.ShipmentStatus}</option>
-              })
-            }
-          </select>
-          <input type="submit" className="btn btn-secondary btn-sm w-full md:w-auto" value="Search" />
-        </form>
-      </div>
+      <div className="mx-auto flex w-full max-w-full flex-col gap-3">
+        <section className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
+          <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
+            <form onSubmit={handleSubmit(onSubmit)} role="search" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:flex xl:flex-wrap xl:items-end xl:gap-3">
+              <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered input-sm w-full xl:w-44" {...register('awbNumber', { minLength: 3 })} />
+              <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered input-sm w-full xl:w-40" {...register('referenceNumber', { minLength: 3 })} />
+              <input type="text" autoComplete="false" placeholder="Third Party #" className="input input-bordered input-sm w-full xl:w-40" {...register('thirdPartyNumber', { minLength: 3 })} />
+              <select className={'select select-bordered select-sm w-full xl:w-48'}  {...register('courier', { valueAsNumber: true },)}>
+                <option value={0}>-- courier --</option>
+                {
+                  courierList.map((d) => {
+                    return <option key={d.CourierId + d.Courier} value={d.CourierId}>{d.Courier}</option>
+                  })
+                }
+              </select>
+              <select className={'select select-bordered select-sm w-full xl:w-44'} {...register('shipmentMode', { valueAsNumber: true })}>
+                <option value={0}>-- shipment mode --</option>
+                <option value={1}>Domestic</option>
+                <option value={2}>International</option>
+                <option value={3}>Local</option>
+                <option value={0}>NA</option>
+              </select>
+              <select className="select select-bordered select-sm w-full xl:w-44" {...register('status')}>
+                <option value="">-- status --</option>
+                {
+                  statusList.map((s, i) => {
+                    return <option key={s.StatusId} value={s.ShipmentStatus}>{s.ShipmentStatus}</option>
+                  })
+                }
+              </select>
+              <input type="submit" className="btn btn-secondary btn-sm w-full sm:col-span-2 lg:col-span-3 xl:w-auto" value="Search" />
+            </form>
+            <div className="xl:sticky xl:right-0 xl:self-start">
+              <DataTableButtons />
+            </div>
+          </div>
+        </section>
 
-      <DataTable
-        columns={columns}
-        data={data}
-        progressPending={loading}
-        expandableRows
-        expandableRowsComponent={ExpandedComponent}
-        pagination
-        paginationServer
-        paginationTotalRows={totalRows}
-        paginationPerPage={25}
-        paginationRowsPerPageOptions={[25, 50, 100, 250]}
-        onChangeRowsPerPage={handlePerRowsChange}
-        onChangePage={handlePageChange}
-        // fixedHeader
-        highlightOnHover
-        actions={<DataTableButtons />}
-      />
+        <div className="booking-table-shell overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="booking-table-scroll overflow-x-auto">
+            <div className="booking-table min-w-[1120px]">
+              <DataTable
+                columns={columns}
+                data={data}
+                progressPending={loading}
+                expandableRows
+                expandableRowsComponent={ExpandedComponent}
+                pagination
+                paginationServer
+                paginationTotalRows={totalRows}
+                paginationPerPage={25}
+                paginationRowsPerPageOptions={[25, 50, 100, 250]}
+                onChangeRowsPerPage={handlePerRowsChange}
+                onChangePage={handlePageChange}
+                // fixedHeader
+                highlightOnHover
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* {
         deleteModel &&
