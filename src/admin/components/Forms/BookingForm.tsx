@@ -2,7 +2,7 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
 import moment from 'moment';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { PageTypes } from '../../enums/pageTypes';
 import { getPageType } from '../../helpers/router/getPageType';
@@ -10,7 +10,7 @@ import { BookingFormInputs } from '../../interfaces/bookingForm';
 import { paymentModes } from '../../constants/paymentModes';
 
 const hasSelectedValue = (value: number) => value > 0 || 'Please select a value';
-const isFiniteNumber = (value: number) => Number.isFinite(value) || 'Please enter a valid number';
+const isFiniteNumber = (value: number | undefined) => typeof value === 'number' && Number.isFinite(value) || 'Please enter a valid number';
 const parseNumericInput = (value: string) => {
   if (value === '') {
     return undefined;
@@ -19,6 +19,27 @@ const parseNumericInput = (value: string) => {
   const parsedValue = Number(value);
   return Number.isFinite(parsedValue) ? parsedValue : Number.NaN;
 };
+const getNumericFieldValue = (value: unknown) => {
+  if (value === '' || value === null || value === undefined) {
+    return undefined;
+  }
+
+  const parsedValue = Number(value);
+  return Number.isFinite(parsedValue) ? parsedValue : undefined;
+};
+
+const getDefaultBookingFormValues = (): Partial<BookingFormInputs> => ({
+  courier: 0,
+  doxType: 0,
+  shipmentMode: 0,
+  transportMode: 0,
+  coCourier: 0,
+  paymentMode: '',
+  bookingAmount: undefined,
+  billAmount: undefined,
+  actualWeight: undefined,
+  bookedDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
+});
 
 export default function BookingForm() {
 
@@ -26,18 +47,11 @@ export default function BookingForm() {
   const { id } = router.query;
   const pageType = getPageType(router.pathname);
   const { user, error: userError, isLoading: isUserLoading } = useUser();
+  const defaultFormValues = useMemo(() => getDefaultBookingFormValues(), []);
 
   const { register, handleSubmit, watch, formState, reset, resetField } = useForm<BookingFormInputs>({
     mode: 'onChange',
-    defaultValues: {
-      courier: 0,
-      doxType: 0,
-      shipmentMode: 0,
-      transportMode: 0,
-      coCourier: 0,
-      paymentMode: '',
-      bookedDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
-    },
+    defaultValues: defaultFormValues,
   });
 
   const errors = formState.errors;
@@ -60,9 +74,15 @@ export default function BookingForm() {
         setCourierList(courierResponse.data.couriers);
 
         if (bookingResponse && bookingResponse.data) {
-          bookingResponse.data.bookedDate = moment(bookingResponse.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL);
-          bookingResponse.data.paymentMode = bookingResponse.data.paymentMode || '';
-          reset(bookingResponse.data);
+          reset({
+            ...defaultFormValues,
+            ...bookingResponse.data,
+            bookedDate: moment(bookingResponse.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL),
+            paymentMode: bookingResponse.data.paymentMode || '',
+            bookingAmount: getNumericFieldValue(bookingResponse.data.bookingAmount),
+            billAmount: getNumericFieldValue(bookingResponse.data.billAmount),
+            actualWeight: getNumericFieldValue(bookingResponse.data.actualWeight),
+          });
           if (pageType === PageTypes.DELETE) {
             setDelete(true);
           }
@@ -77,7 +97,7 @@ export default function BookingForm() {
     };
 
     fetchData();
-  }, [id, pageType, reset]);
+  }, [defaultFormValues, id, pageType, reset]);
 
   const onSubmit: SubmitHandler<BookingFormInputs> = async (data) => {
     setError('');
@@ -93,11 +113,7 @@ export default function BookingForm() {
       }
 
 
-      resetField('courier');
-      resetField('doxType');
-      resetField('shipmentMode');
-      resetField('transportMode');
-      reset({});
+  reset(defaultFormValues);
 
       // router.push('/bookings');
       router.back();
