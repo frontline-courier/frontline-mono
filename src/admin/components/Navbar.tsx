@@ -4,13 +4,19 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import {
+  HiCalculator,
   HiChartBar,
+  HiClipboardCheck,
   HiClipboardList,
   HiCollection,
   HiCreditCard,
   HiCube,
+  HiHome,
+  HiMap,
+  HiOfficeBuilding,
   HiOutlineX,
   HiTruck,
+  HiUsers,
 } from 'react-icons/hi'
 
 type NavItem = {
@@ -28,16 +34,16 @@ type NavGroup = {
 const navGroups: NavGroup[] = [
   {
     label: 'Overview',
-    icon: <HiChartBar className="h-4 w-4" />,
-    items: [{ href: '/', label: 'Dashboard', icon: <HiChartBar className="h-4 w-4" /> }],
+    icon: <HiHome className="h-4 w-4" />,
+    items: [{ href: '/', label: 'Dashboard', icon: <HiHome className="h-4 w-4" /> }],
   },
   {
     label: 'Bookings',
     icon: <HiClipboardList className="h-4 w-4" />,
     items: [
       { href: '/bookings', label: 'Booking Entry', icon: <HiClipboardList className="h-4 w-4" /> },
-      { href: '/booking-rates', label: 'Booking Rates', icon: <HiCollection className="h-4 w-4" /> },
-      { href: '/volumetric-calculator', label: 'Volumetric Calculator', icon: <HiCollection className="h-4 w-4" /> },
+      { href: '/booking-rates', label: 'Booking Rates', icon: <HiClipboardCheck className="h-4 w-4" /> },
+      { href: '/volumetric-calculator', label: 'Volumetric Calculator', icon: <HiCalculator className="h-4 w-4" /> },
     ],
   },
   {
@@ -46,7 +52,7 @@ const navGroups: NavGroup[] = [
     items: [
       { href: '/couriers', label: 'Manage Couriers', icon: <HiTruck className="h-4 w-4" /> },
       { href: '/courier-volumetric-mappings', label: 'Volumetric Mappings', icon: <HiCollection className="h-4 w-4" /> },
-      { href: '/courier-zone-rates', label: 'Zone Rates', icon: <HiCollection className="h-4 w-4" /> },
+      { href: '/courier-zone-rates', label: 'Zone Rates', icon: <HiMap className="h-4 w-4" /> },
     ],
   },
   {
@@ -64,8 +70,8 @@ const navGroups: NavGroup[] = [
       { href: '/stocks', label: 'Stock In', icon: <HiCube className="h-4 w-4" /> },
       { href: '/stocks/out', label: 'Stock Out', icon: <HiCollection className="h-4 w-4" /> },
       { href: '/stocks/courier', label: 'Couriers', icon: <HiTruck className="h-4 w-4" /> },
-      { href: '/stocks/co-loader', label: 'Co-loaders', icon: <HiCollection className="h-4 w-4" /> },
-      { href: '/stocks/booker', label: 'Bookers', icon: <HiClipboardList className="h-4 w-4" /> },
+      { href: '/stocks/co-loader', label: 'Co-loaders', icon: <HiOfficeBuilding className="h-4 w-4" /> },
+      { href: '/stocks/booker', label: 'Bookers', icon: <HiUsers className="h-4 w-4" /> },
     ],
   },
 ]
