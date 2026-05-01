@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { PageTypes } from '../../enums/pageTypes';
 import { getPageType } from '../../helpers/router/getPageType';
 import { BookingFormInputs } from '../../interfaces/bookingForm';
+import { bookedByOptions } from '../../constants/bookedByOptions';
 import { paymentModes } from '../../constants/paymentModes';
 
 const hasSelectedValue = (value: number) => value > 0 || 'Please select a value';
@@ -34,6 +35,7 @@ const getDefaultBookingFormValues = (): Partial<BookingFormInputs> => ({
   shipmentMode: 0,
   transportMode: 0,
   coCourier: 0,
+  bookedBy: '',
   paymentMode: '',
   bookingAmount: undefined,
   billAmount: undefined,
@@ -78,6 +80,7 @@ export default function BookingForm() {
             ...defaultFormValues,
             ...bookingResponse.data,
             bookedDate: moment(bookingResponse.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL),
+            bookedBy: bookingResponse.data.bookedBy || '',
             paymentMode: bookingResponse.data.paymentMode || '',
             bookingAmount: getNumericFieldValue(bookingResponse.data.bookingAmount),
             billAmount: getNumericFieldValue(bookingResponse.data.billAmount),
@@ -309,6 +312,18 @@ export default function BookingForm() {
           </div>
           <div className="form-control">
             <label className="label p-1">
+              <span className="label-text text-2xs">Booked By</span>
+            </label>
+            <select className={`select select-bordered ${errors.bookedBy && 'select-error'}`} {...register('bookedBy')}>
+              <option disabled={true} value="">-- booked by --</option>
+              {bookedByOptions.map((option) => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-control">
+            <label className="label p-1">
               <span className="label-text text-2xs">Payment Mode</span>
             </label>
             <select className={`select select-bordered ${errors.paymentMode && 'select-error'}`} {...register('paymentMode')}>
@@ -318,8 +333,6 @@ export default function BookingForm() {
               ))}
             </select>
           </div>
-
-          <div />
 
           <div className="form-control">
             <label className="label p-1">

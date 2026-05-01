@@ -1,0 +1,1 @@
+export const bookedByOptions = ['Staff 1', 'Staff 2'] as const;
