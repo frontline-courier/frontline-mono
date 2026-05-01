@@ -165,7 +165,7 @@ const BookingPage = () => {
       minWidth: '120px',
     },
     {
-      name: 'Leaf',
+      name: 'Vendor Leaf',
       selector: (row: any) => row.additionalLeaf,
       sortable: true,
       width: '90px',

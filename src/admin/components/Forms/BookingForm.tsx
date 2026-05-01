@@ -306,9 +306,9 @@ export default function BookingForm() {
           </div>
           <div className="form-control">
             <label className="label p-1">
-              <span className="label-text text-2xs">Add. Lead/Pouch</span>
+              <span className="label-text text-2xs">Vendor Leaf</span>
             </label>
-            <input type="text" placeholder="Add. Lead/Pouch" className="input input-bordered" {...register('additionalLeaf')} />
+            <input type="text" placeholder="Vendor Leaf" className="input input-bordered" {...register('additionalLeaf')} />
           </div>
           <div className="form-control">
             <label className="label p-1">
