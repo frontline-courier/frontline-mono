@@ -96,25 +96,30 @@ export default function ShipmentForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch data in parallel for better performance
-        const [courierResponse, mappingsResponse] = await Promise.all([
+        const [courierResult, mappingsResult] = await Promise.allSettled([
           axios.get('/api/couriers'),
           axios.get('/api/courier-volumetric-mappings')
         ]);
 
-        // Create a lookup object for faster mapping access
-        const mappingsData = mappingsResponse.data.mappings || [];
-        setMappings(mappingsData);
+        if (mappingsResult.status === 'fulfilled') {
+          setMappings(mappingsResult.value.data.mappings || []);
+        } else {
+          setMappings([]);
+        }
+
+        if (courierResult.status !== 'fulfilled') {
+          throw new Error('Failed to load couriers');
+        }
 
         // Process couriers with their volumetric formulas
-        const couriers = courierResponse.data.couriers.map((courier: any) => ({
+        const couriers = courierResult.value.data.couriers.map((courier: any) => ({
           ...courier,
           VolumetricDivisor: COURIER_FORMULAS[courier.CourierId]?.divisor || 5000,
           Formula: COURIER_FORMULAS[courier.CourierId]?.formula || 'L×B×H/5000'
         }));
         setCourierList(couriers);
       } catch (error) {
-        setErrorCouriers('Failed to load data');
+        setErrorCouriers('Failed to load couriers');
       } finally {
         setLoadingCouriers(false);
         setLoadingMappings(false);

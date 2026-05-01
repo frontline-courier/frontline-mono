@@ -25,7 +25,6 @@ const BookingPage = () => {
   const [courierList, setCourierList] = useState<any[]>([]); // State for couriers
   const [loadingCouriers, setLoadingCouriers] = useState(true); // Loading state for couriers
   const [errorCouriers, setErrorCouriers] = useState<string | null>(null); // Error state for couriers\ const { user, error, isLoading } = useUser();
-  const [data, setData] = useState([] as any);
   const [deleteModel, setDelete] = useState(false);
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
@@ -80,29 +79,26 @@ const BookingPage = () => {
     return courierList.find((c) => c.CourierId === parseInt(courierId, 10))?.Courier || 'NA';
   }, [courierList]);
 
-  // Add new useEffect to transform data after courierList is loaded
-  useEffect(() => {
-    if (rawBookingData.length > 0 && courierList.length > 0) {
-      const transformedData = rawBookingData.map((booking: any) => ({
-        ...booking,
-        courier: getCourierName(booking.courier),
-        bookedDate: moment(booking.bookedDate).format('DD-MM-YYYY HH:mm'),
-        doxType: getDoxType(booking.doxType),
-        shipmentMode: getShipmentMode(booking.shipmentMode),
-        shipmentStatus: getShipmentStatus(booking.shipmentStatus)
-      }));
-      setData(transformedData);
-    }
-  }, [rawBookingData, courierList, getCourierName]); // Dependencies on both raw data and courier list
-
   useEffect(() => {
     fetchCouriers();
     fetchData();
   }, [fetchCouriers, fetchData]); // Dependency on fetchCouriers
 
-  // Handle loading and error states
-  if (loadingCouriers) return <div>Loading couriers...</div>;
-  if (errorCouriers) return <div>{errorCouriers}</div>;
+  // get data from list
+  // to be removed after sometime
+  const getShipmentStatus = (status: string): string => {
+    if (typeof status === 'string') { return status; }
+    return statusList.find((s) => s.StatusId === parseInt(status, 10))?.ShipmentStatus || 'NA';
+  }
+
+  const data = rawBookingData.map((booking: any) => ({
+    ...booking,
+    courier: getCourierName(booking.courier),
+    bookedDate: moment(booking.bookedDate).format('DD-MM-YYYY HH:mm'),
+    doxType: getDoxType(booking.doxType),
+    shipmentMode: getShipmentMode(booking.shipmentMode),
+    shipmentStatus: getShipmentStatus(booking.shipmentStatus)
+  }));
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     setSearchData(data);
@@ -148,13 +144,6 @@ const BookingPage = () => {
       </table>
     );
   };
-
-  // get data from list
-  // to be removed after sometime
-  const getShipmentStatus = (status: string): string => {
-    if (typeof status === 'string') { return status; }
-    return statusList.find((s) => s.StatusId === parseInt(status, 10))?.ShipmentStatus || 'NA';
-  }
 
   const columns = [
     {
@@ -339,6 +328,12 @@ const BookingPage = () => {
 
   return  (
     <>
+      {errorCouriers ? (
+        <div className="alert alert-warning mb-3">
+          <span>{errorCouriers}. Showing bookings with fallback courier labels.</span>
+        </div>
+      ) : null}
+
       <div className="mx-auto flex w-full max-w-full flex-col gap-3">
         <section className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
           <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
