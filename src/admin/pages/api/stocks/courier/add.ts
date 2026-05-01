@@ -1,9 +1,12 @@
 import { Db } from 'mongodb';
 import nextConnect from 'next-connect';
+import { getErrorMessage, requireApiAuth } from '../../../../helpers/api';
+import { normalizeCourierStockPayload, ValidationError } from '../../../../helpers/apiValidation';
 import middleware from '../../../../helpers/database';
 
 const handler = nextConnect();
 
+handler.use(requireApiAuth);
 handler.use(middleware);
 
 handler.post(async (req: any, res: any) => {
@@ -11,15 +14,13 @@ handler.post(async (req: any, res: any) => {
   try {
     const collection = (req.db as Db).collection('stocks_courier');
 
-    await collection.insertOne({name: req.body.courier, type: req.body.type});
+    await collection.insertOne(normalizeCourierStockPayload(req.body));
 
     res.json({status: 'success'});
   }
   catch (err: any) {
-    res.send({status: 'error', error: err.message});
-  }
-  finally {
-    req.dbClient.close();
+    const statusCode = err instanceof ValidationError ? err.statusCode : 500;
+    res.status(statusCode).send({status: 'error', error: getErrorMessage(err)});
   }
 });
 

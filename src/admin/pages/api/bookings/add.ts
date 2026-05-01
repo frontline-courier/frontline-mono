@@ -1,30 +1,23 @@
 import nextConnect from 'next-connect';
+import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
+import { normalizeBookingPayload, ValidationError } from '../../../helpers/apiValidation';
 import middleware from '../../../helpers/database';
-import { bookedByOptions } from '../../../constants/bookedByOptions';
-import { paymentModes } from '../../../constants/paymentModes';
 
 const handler = nextConnect();
-const bookedByOptionsSet = new Set(bookedByOptions);
-const paymentModesSet = new Set(paymentModes);
 
+handler.use(requireApiAuth);
 handler.use(middleware);
 
 handler.post(async (req: any, res: any) => {
-    let data = req.body;
-    data.bookedDate = new Date(data.bookedDate);
-    data.bookedBy = bookedByOptionsSet.has(data.bookedBy as typeof bookedByOptions[number]) ? data.bookedBy : '';
-    data.paymentMode = paymentModesSet.has(data.paymentMode as typeof paymentModes[number]) ? data.paymentMode : '';
-
     try {
+        const data = normalizeBookingPayload(req.body);
         let doc = await req.db.collection('bookings').insertOne(data);
         res.send(doc);
     }
     catch (err: any) {
-        res.status(500).send({ error: err?.message })
+        const statusCode = err instanceof ValidationError ? err.statusCode : 500;
+        res.status(statusCode).send({ error: getErrorMessage(err) })
     }
-    finally {
-        req.dbClient.close();
-      }
 });
 
 export default handler;

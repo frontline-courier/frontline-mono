@@ -1,5 +1,7 @@
+import type { NextApiResponse } from 'next';
 import { MongoClient } from 'mongodb';
 import nextConnect from 'next-connect';
+import type { ApiRequestWithDb } from './api';
 
 const host = process.env.MONGO_DB_HOST;
 const user = process.env.MONGO_DB_USER;
@@ -8,10 +10,6 @@ const uri = `mongodb+srv://${user}:${pwd}@${host}/frontline?retryWrites=true&w=m
 
 let client: MongoClient | null = null;
 let clientPromise: Promise<MongoClient> | null = null;
-
-const sharedDbClient = {
-    close: async () => undefined,
-};
 
 async function getClient() {
     if (client) {
@@ -36,9 +34,8 @@ async function getClient() {
     return clientPromise;
 }
 
-async function database(req: any, res: any, next: any) {
+async function database(req: ApiRequestWithDb, res: NextApiResponse, next: () => void) {
     const connectedClient = await getClient();
-    req.dbClient = sharedDbClient;
     req.db = connectedClient.db('frontline-booking');
     return next();
 }

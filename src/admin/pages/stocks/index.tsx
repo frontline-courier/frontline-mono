@@ -268,7 +268,11 @@ function StockEntry(props: any) {
 export default withPageAuthRequired(StockEntry);
 
 export async function getServerSideProps(context: any) {
-  const stockIn = await fetch(`${process.env.API_HOST}/api/stocks/stock-in`);
+  const stockIn = await fetch(`${process.env.API_HOST}/api/stocks/stock-in`, {
+    headers: {
+      cookie: context.req.headers.cookie || '',
+    },
+  });
 
   const stockInData = await stockIn.json();
 

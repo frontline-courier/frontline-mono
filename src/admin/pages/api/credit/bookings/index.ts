@@ -1,26 +1,25 @@
 import { Db } from 'mongodb';
 import nextConnect from 'next-connect';
+import { getErrorMessage, requireApiAuth } from '../../../../helpers/api';
+import { normalizeCreditBookingPayload, ValidationError } from '../../../../helpers/apiValidation';
 import middleware from '../../../../helpers/database';
 
 const handler = nextConnect();
 
+handler.use(requireApiAuth);
 handler.use(middleware);
 
 // create
 handler.post(async (req: any, res: any) => {
-    let data = req.body;
-    data.bookedDate = new Date(data.bookedDate);
-
     try {
+        const data = normalizeCreditBookingPayload(req.body);
         let doc = await req.db.collection('credit_bookings').insertOne(data);
         res.send(doc);
     }
     catch (err: any) {
-        res.status(500).send({ error: err?.message })
+        const statusCode = err instanceof ValidationError ? err.statusCode : 500;
+        res.status(statusCode).send({ error: getErrorMessage(err) })
     }
-    finally {
-        req.dbClient.close();
-      }
 });
 
 // read all
@@ -55,16 +54,13 @@ handler.get(async (req: any, res: any) => {
         docs = await collection.find(query)
             .sort( { _id: -1 }).skip((page - 1 || 0) * limit).limit(limit).toArray();
 
-        count = await collection.find(query).count();
+        count = await collection.countDocuments(query);
     
         res.json({booking: [...docs], count: count});
     }
     catch (err) {
-        res.send({booking: [], count: 0});
+        res.status(500).send({ booking: [], count: 0, error: getErrorMessage(err) });
     }
-    finally {
-        req.dbClient.close();
-      }
 });
 
 export default handler;

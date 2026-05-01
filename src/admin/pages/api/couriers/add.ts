@@ -1,21 +1,18 @@
 import { Db } from 'mongodb';
 import nextConnect from 'next-connect';
+import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
+import { normalizeCourierPayload, ValidationError } from '../../../helpers/apiValidation';
 import middleware from '../../../helpers/database';
 import { resetCache } from '../../../lib/cache'; // Import cache functions
 
 const handler = nextConnect();
 
+handler.use(requireApiAuth);
 handler.use(middleware);
 
 handler.post(async (req: any, res: any) => {
-  const { CourierId, Courier, Description, Track, Mode, Status } = req.body;
-
-  // Validate request body
-  if (!CourierId || !Courier) {
-    return res.status(400).json({ status: 'error', error: 'CourierId and Courier are required.' });
-  }
-
   try {
+    const { CourierId, Courier, Description, Track, Mode, Status } = normalizeCourierPayload(req.body);
     const collection = (req.db as Db).collection('couriers');
     await collection.insertOne({ CourierId, Courier, Description, Track, Mode, Status });
 
@@ -23,10 +20,8 @@ handler.post(async (req: any, res: any) => {
 
     res.json({ status: 'success' });
   } catch (err) {
-    console.error('Error inserting courier:', err);
-    res.status(500).json({ status: 'error', error: (err as Error).message });
-  } finally {
-    req.dbClient.close();
+    const statusCode = err instanceof ValidationError ? err.statusCode : 500;
+    res.status(statusCode).json({ status: 'error', error: getErrorMessage(err) });
   }
 });
 

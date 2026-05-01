@@ -1,9 +1,11 @@
 import { Db } from 'mongodb';
 import nextConnect from 'next-connect';
+import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
 import middleware from '../../../helpers/database';
 
 const handler = nextConnect();
 
+handler.use(requireApiAuth);
 handler.use(middleware);
 
 handler.get(async (req: any, res: any) => {
@@ -45,16 +47,13 @@ handler.get(async (req: any, res: any) => {
         docs = await collection.find(query)
             .sort( { _id: -1 }).skip((page - 1 || 0) * limit).limit(limit).toArray();
 
-        count = await collection.find(query).count();
+        count = await collection.countDocuments(query);
     
         res.json({booking: [...docs], count: count});
     }
     catch (err) {
-        res.send({booking: [], count: 0});
+        res.status(500).send({ booking: [], count: 0, error: getErrorMessage(err) });
     }
-    finally {
-        req.dbClient.close();
-      }
 });
 
 export default handler;

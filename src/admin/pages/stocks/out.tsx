@@ -207,7 +207,11 @@ function StockOutPage(props: any) {
 export default withPageAuthRequired(StockOutPage);
 
 export async function getServerSideProps(context: any) {
-  const res = await fetch(`${process.env.API_HOST}/api/stocks/stock-out`)
+  const res = await fetch(`${process.env.API_HOST}/api/stocks/stock-out`, {
+    headers: {
+      cookie: context.req.headers.cookie || '',
+    },
+  })
   const data = await res.json()
 
   if (!data) {

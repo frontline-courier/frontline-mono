@@ -1,19 +1,33 @@
 import nextConnect from 'next-connect';
+import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
+import { normalizeBookingTrackQuery, ValidationError } from '../../../helpers/apiValidation';
 import middleware from '../../../helpers/database';
 
 const handler = nextConnect();
 
+handler.use(requireApiAuth);
 handler.use(middleware);
 
 handler.get(async (req: any, res: any) => {
-    const { id, track } = req.query;
+    const { id } = req.query;
     let doc;
 
     try {
+        const track = normalizeBookingTrackQuery(req.query.track);
+        const bookingId = typeof id === 'string' ? id.trim() : '';
+
+        if (!bookingId) {
+            throw new ValidationError('Id is required.');
+        }
+
         if (track === '1') {
-            doc = await req.db.collection('bookings').findOne({ awbNumber: id });
+            doc = await req.db.collection('bookings').findOne({ awbNumber: bookingId });
         } else if (track === '2') {
-            doc = await req.db.collection('bookings').findOne({ referenceNumber: id });
+            doc = await req.db.collection('bookings').findOne({ referenceNumber: bookingId });
+        }
+
+        if (!doc) {
+            return res.status(404).json({ error: 'Booking not found.' });
         }
 
         delete doc.additionalContacts;
@@ -23,10 +37,8 @@ handler.get(async (req: any, res: any) => {
         res.json(doc);
     }
     catch (err: any) {
-        res.status(500).send({ error: err?.message })
-    }
-    finally {
-        req.dbClient.close();
+        const statusCode = err instanceof ValidationError ? err.statusCode : 500;
+        res.status(statusCode).send({ error: getErrorMessage(err) })
     }
 
 });

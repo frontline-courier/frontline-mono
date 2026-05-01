@@ -1,27 +1,29 @@
 import { Db, ObjectId } from 'mongodb';
 import nextConnect from 'next-connect';
+import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
+import { normalizeCourierPayload, parseObjectId, ValidationError } from '../../../helpers/apiValidation';
 import middleware from '../../../helpers/database';
 import { resetCache } from '../../../lib/cache';
 
 const handler = nextConnect();
 
+handler.use(requireApiAuth);
 handler.use(middleware);
 
 // Update a courier by ID
 handler.put(async (req: any, res: any) => {
-  const { id } = req.query;
-  const { CourierId, Courier, Description, Track, Mode, Status } = req.body;
-
   try {
+    const courierId = parseObjectId(req.query.id, 'Courier id');
+    const { CourierId, Courier, Description, Track, Mode, Status } = normalizeCourierPayload(req.body);
     const collection = (req.db as Db).collection('couriers');
     await collection.updateOne(
-      { _id: new ObjectId(id) }, 
+      { _id: courierId }, 
       { $set: { 
         CourierId, 
         Courier, 
         Description, 
         Track, 
-        Mode: Number(Mode) || 1, // Ensure Mode is a number and default to 1 if not provided
+        Mode,
         Status 
       }} 
     );
@@ -30,27 +32,23 @@ handler.put(async (req: any, res: any) => {
 
     res.json({ status: 'success' });
   } catch (err) {
-    res.send({ status: 'error', error: (err as Error).message });
-  } finally {
-    req.dbClient.close();
+    const statusCode = err instanceof ValidationError ? err.statusCode : 500;
+    res.status(statusCode).send({ status: 'error', error: getErrorMessage(err) });
   }
 });
 
 // Delete a courier by ID
 handler.delete(async (req: any, res: any) => {
-  const { id } = req.query;
-
   try {
     const collection = (req.db as Db).collection('couriers');
-    await collection.deleteOne({ _id: new ObjectId(id) });
+    await collection.deleteOne({ _id: parseObjectId(req.query.id, 'Courier id') });
 
     resetCache(); // Reset cache
     
     res.json({ status: 'success' });
   } catch (err) {
-    res.send({ status: 'error', error: (err as Error).message });
-  } finally {
-    req.dbClient.close();
+    const statusCode = err instanceof ValidationError ? err.statusCode : 500;
+    res.status(statusCode).send({ status: 'error', error: getErrorMessage(err) });
   }
 });
 

@@ -1,9 +1,11 @@
 import { Db } from 'mongodb';
 import nextConnect from 'next-connect';
+import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
 import middleware from '../../../helpers/database';
 
 const handler = nextConnect();
 
+handler.use(requireApiAuth);
 handler.use(middleware);
 
 // GET handler to fetch courier zone rates
@@ -20,9 +22,7 @@ handler.get(async (req: any, res: any) => {
     const rates = await collection.find(query).toArray();
     res.json({ rates });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch courier zone rates' });
-  } finally {
-    req.dbClient.close();
+    res.status(500).json({ error: getErrorMessage(err) || 'Failed to fetch courier zone rates' });
   }
 });
 
@@ -64,9 +64,7 @@ handler.post(async (req: any, res: any) => {
       res.json({ message: 'Courier zone rates created successfully' });
     }
   } catch (err) {
-    res.status(500).json({ error: 'Failed to save courier zone rates' });
-  } finally {
-    req.dbClient.close();
+    res.status(500).json({ error: getErrorMessage(err) || 'Failed to save courier zone rates' });
   }
 });
 

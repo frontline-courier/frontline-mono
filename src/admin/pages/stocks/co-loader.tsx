@@ -77,7 +77,11 @@ function AddCourierForStockEntry(props: any) {
 export default withPageAuthRequired(AddCourierForStockEntry);
 
 export async function getServerSideProps(context: any) {
-  const res = await fetch(`${process.env.API_HOST}/api/stocks/coloader`)
+  const res = await fetch(`${process.env.API_HOST}/api/stocks/coloader`, {
+    headers: {
+      cookie: context.req.headers.cookie || '',
+    },
+  })
   const data = await res.json()
 
   if (!data) {

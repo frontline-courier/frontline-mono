@@ -188,7 +188,11 @@ function ShipmentStatusPage(props: any) {
 
 export async function getServerSideProps(context: any) {
   const { id } = context.params;
-  const res = await fetch(`${process.env.API_HOST}/api/bookings/${id}`)
+  const res = await fetch(`${process.env.API_HOST}/api/bookings/${id}`, {
+    headers: {
+      cookie: context.req.headers.cookie || '',
+    },
+  })
   const data = await res.json()
 
   if (!data) {

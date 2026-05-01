@@ -1,9 +1,11 @@
 import { Db } from 'mongodb';
 import nextConnect from 'next-connect';
+import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
 import middleware from '../../../helpers/database';
 
 const handler = nextConnect();
 
+handler.use(requireApiAuth);
 handler.use(middleware);
 
 handler.get(async (req: any, res: any) => {
@@ -12,7 +14,7 @@ handler.get(async (req: any, res: any) => {
     // stocks
     const stockCollection = (req.db as Db).collection('stocks');
     const stockDocs = await stockCollection.find({out: true});
-    const stockCount = await stockDocs.count();
+    const stockCount = await stockCollection.countDocuments({out: true});
     const stocks = Array.from(groupCourier(await stockDocs.toArray()));
     // courier
     const courierCollection = (req.db as Db).collection('stocks_courier');
@@ -33,10 +35,7 @@ handler.get(async (req: any, res: any) => {
 
   }
   catch (err) {
-    res.send({ stocks: [], count: 0 });
-  }
-  finally {
-    req.dbClient.close();
+    res.status(500).send({ stocks: [], count: 0, error: getErrorMessage(err) });
   }
 });
 

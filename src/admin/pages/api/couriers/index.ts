@@ -1,10 +1,12 @@
 import { Db } from 'mongodb';
 import nextConnect from 'next-connect';
+import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
 import middleware from '../../../helpers/database';
 import { getCache, setCache } from '../../../lib/cache'; // Import cache functions
 
 const handler = nextConnect();
 
+handler.use(requireApiAuth);
 handler.use(middleware);
 
 handler.get(async (req: any, res: any) => {
@@ -18,7 +20,7 @@ handler.get(async (req: any, res: any) => {
   try {
     const collection = (req.db as Db).collection('couriers');
     const docs = await collection.find();
-    const count = await docs.count();
+    const count = await collection.countDocuments();
     
     // Convert to array and sort by Courier name alphabetically
     const couriersArray = await docs.toArray();
@@ -31,9 +33,7 @@ handler.get(async (req: any, res: any) => {
 
     res.json(responseData);
   } catch (err) {
-    res.send({ couriers: [], count: 0 });
-  } finally {
-    req.dbClient.close();
+    res.status(500).send({ couriers: [], count: 0, error: getErrorMessage(err) });
   }
 });
 
