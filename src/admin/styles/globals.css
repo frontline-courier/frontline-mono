@@ -80,3 +80,24 @@ a {
 .booking-table .rdt_Pagination {
   border-top: 1px solid #e2e8f0;
 }
+
+.rdt_Pagination select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.25rem;
+  border-radius: 9999px;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 7.5 10 12l4.5-4.5'/%3E%3C/svg%3E") !important;
+  background-position: right 0.65rem center !important;
+  background-repeat: no-repeat !important;
+  background-size: 0.95rem 0.95rem !important;
+}
+
+.rdt_Pagination select:focus {
+  outline: none;
+}
+
+.rdt_Pagination select + svg {
+  display: none;
+}
