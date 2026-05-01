@@ -11,6 +11,14 @@ import { paymentModes } from '../../constants/paymentModes';
 
 const hasSelectedValue = (value: number) => value > 0 || 'Please select a value';
 const isFiniteNumber = (value: number) => Number.isFinite(value) || 'Please enter a valid number';
+const parseNumericInput = (value: string) => {
+  if (value === '') {
+    return undefined;
+  }
+
+  const parsedValue = Number(value);
+  return Number.isFinite(parsedValue) ? parsedValue : Number.NaN;
+};
 
 export default function BookingForm() {
 
@@ -251,19 +259,19 @@ export default function BookingForm() {
             <label className="label p-1">
               <span className="label-text text-2xs">Booking Amount</span>
             </label>
-            <input type="text" inputMode="decimal" placeholder="Booking Amount" className={`input input-bordered ${errors.bookingAmount && 'input-error'}`} {...register('bookingAmount', { required: true, valueAsNumber: true, validate: isFiniteNumber })} />
+            <input type="text" inputMode="decimal" placeholder="Booking Amount" className={`input input-bordered ${errors.bookingAmount && 'input-error'}`} {...register('bookingAmount', { required: true, setValueAs: parseNumericInput, validate: isFiniteNumber })} />
           </div>
           <div className="form-control">
             <label className="label p-1">
               <span className="label-text text-2xs">Bill Amount</span>
             </label>
-            <input type="text" inputMode="decimal" placeholder="Bill Amount" className={`input input-bordered ${errors.billAmount && 'input-error'}`} {...register('billAmount', { required: true, valueAsNumber: true, validate: isFiniteNumber })} />
+            <input type="text" inputMode="decimal" placeholder="Bill Amount" className={`input input-bordered ${errors.billAmount && 'input-error'}`} {...register('billAmount', { required: true, setValueAs: parseNumericInput, validate: isFiniteNumber })} />
           </div>
           <div className="form-control">
             <label className="label p-1">
               <span className="label-text text-2xs">Actual weight (Kg)</span>
             </label>
-            <input type="text" inputMode="decimal" placeholder="Actual weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register('actualWeight', { required: true, valueAsNumber: true, validate: isFiniteNumber })} />
+            <input type="text" inputMode="decimal" placeholder="Actual weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register('actualWeight', { required: true, setValueAs: parseNumericInput, validate: isFiniteNumber })} />
           </div>
           <div className="form-control">
             <label className="label p-1">
