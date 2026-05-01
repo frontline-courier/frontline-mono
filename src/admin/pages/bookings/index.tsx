@@ -326,11 +326,11 @@ const BookingPage = () => {
   return  (
     <>
       <div className="m-2 gap-2">
-        <form onSubmit={handleSubmit(onSubmit)} role="search" className='flex flex-row gap-2'>
-          <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered input-sm" {...register('awbNumber', { minLength: 3 })} />
-          <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered input-sm" {...register('referenceNumber', { minLength: 3 })} />
-          <input type="text" autoComplete="false" placeholder="Third Party #" className="input input-bordered input-sm" {...register('thirdPartyNumber', { minLength: 3 })} />
-          <select className={'select select-bordered select-sm'}  {...register('courier', { valueAsNumber: true },)}>
+        <form onSubmit={handleSubmit(onSubmit)} role="search" className="flex flex-col gap-2 md:flex-row md:flex-wrap md:items-end">
+          <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered input-sm w-full md:w-44" {...register('awbNumber', { minLength: 3 })} />
+          <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered input-sm w-full md:w-40" {...register('referenceNumber', { minLength: 3 })} />
+          <input type="text" autoComplete="false" placeholder="Third Party #" className="input input-bordered input-sm w-full md:w-40" {...register('thirdPartyNumber', { minLength: 3 })} />
+          <select className={'select select-bordered select-sm w-full md:w-48'}  {...register('courier', { valueAsNumber: true },)}>
             <option value={0}>-- courier --</option>
             {
               courierList.map((d) => {
@@ -338,14 +338,14 @@ const BookingPage = () => {
               })
             }
           </select>
-          <select className={'select select-bordered select-sm'} {...register('shipmentMode', { valueAsNumber: true })}>
+          <select className={'select select-bordered select-sm w-full md:w-44'} {...register('shipmentMode', { valueAsNumber: true })}>
             <option value={0}>-- shipment mode --</option>
             <option value={1}>Domestic</option>
             <option value={2}>International</option>
             <option value={3}>Local</option>
             <option value={0}>NA</option>
           </select>
-          <select className="select select-bordered select-sm" {...register('status')}>
+          <select className="select select-bordered select-sm w-full md:w-44" {...register('status')}>
             <option value="">-- status --</option>
             {
               statusList.map((s, i) => {
@@ -353,7 +353,7 @@ const BookingPage = () => {
               })
             }
           </select>
-          <input type="submit" className="btn btn-secondary mx-2 btn-sm" value="Search" />
+          <input type="submit" className="btn btn-secondary btn-sm w-full md:w-auto" value="Search" />
         </form>
       </div>
 
