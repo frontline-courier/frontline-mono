@@ -19,6 +19,63 @@ import { shipmentStatus } from '../../models/shipmentStatus';
 
 const statusList = courierStatus.sort((a, b) => a.ShipmentStatus.localeCompare(b.ShipmentStatus));
 
+const expandedFieldSections = [
+  {
+    title: 'Shipment Details',
+    fields: [
+      ['courier', 'Courier'],
+      ['doxType', 'Dox Type'],
+      ['shipmentMode', 'Shipment Mode'],
+      ['paymentMode', 'Payment Mode'],
+      ['bookedDate', 'Booked Date'],
+      ['shipmentStatus', 'Status'],
+    ],
+  },
+  {
+    title: 'Reference Details',
+    fields: [
+      ['awbNumber', 'AWB Number'],
+      ['referenceNumber', 'Reference Number'],
+      ['thirdPartyNumber', 'Third Party Number'],
+      ['additionalLeaf', 'Vendor Leaf'],
+      ['actualWeight', 'Actual Weight'],
+      ['additionalWeights', 'Additional Weights'],
+    ],
+  },
+  {
+    title: 'Sender And Receiver',
+    fields: [
+      ['shipperName', 'Shipper Name'],
+      ['origin', 'Origin'],
+      ['receiverName', 'Receiver Name'],
+      ['destination', 'Destination'],
+      ['additionalContacts', 'Additional Contacts'],
+      ['deliveryOfficeLocation', 'Delivery Office'],
+    ],
+  },
+  {
+    title: 'Internal Notes',
+    fields: [
+      ['remarks', 'Remarks'],
+      ['internalRemarks', 'Internal Remarks'],
+      ['createdBy', 'Created By'],
+      ['_id', 'Booking Id'],
+    ],
+  },
+];
+
+const getExpandedFieldValue = (value: unknown): string => {
+  if (value === null || value === undefined || value === '') {
+    return 'Not available';
+  }
+
+  if (typeof value === 'number') {
+    return String(value);
+  }
+
+  return String(value);
+};
+
 const BookingPage = () => {
   const router = useRouter();
   const { page = 1 } = router.query; // Get page from query, default to 1
@@ -133,24 +190,90 @@ const BookingPage = () => {
     }
   }
 
-  const ExpandedComponent = ({ data }: any) => {
-    return (
-      <table className="table table-xs table-zebra">
-        <tbody>
-          {Object.entries(data).map(([key, value]) => {
-            if (typeof value !== 'string') {
-              return null; // Skip if value is not a string
-            }
+  const getShipmentStatusBadgeClass = (s: string) => {
+    switch ((s + '').toLowerCase()) {
+      case 'booked':
+        return 'badge-error badge-outline';
+      case 'in transit':
+        return 'badge-warning badge-outline';
+      case 'delivered':
+        return 'badge-success badge-outline';
+      case 'taken for delivery':
+        return 'badge-info badge-outline';
+      default:
+        return 'badge-ghost';
+    }
+  }
 
-            return (
-              <tr key={key}>
-                <td>{key}</td>
-                <td>{value}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+  const ExpandedComponent = ({ data }: any) => {
+    const statusBadgeClass = getShipmentStatusBadgeClass(data.shipmentStatus);
+
+    return (
+      <div className="border-t border-base-200 bg-base-200/40 px-4 py-4 sm:px-5">
+        <div className="card border border-base-200 bg-base-100 shadow-sm">
+          <div className="card-body gap-4 p-4 sm:p-5">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-base-content/60">Booking Snapshot</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="badge badge-outline badge-primary gap-1 px-3 py-3 text-xs font-semibold">
+                    <span className="opacity-70">AWB</span>
+                    <span>{getExpandedFieldValue(data.awbNumber)}</span>
+                  </div>
+                  <div className="badge badge-outline badge-secondary gap-1 px-3 py-3 text-xs font-semibold">
+                    <span className="opacity-70">Ref</span>
+                    <span>{getExpandedFieldValue(data.referenceNumber)}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className={`badge ${statusBadgeClass} px-3 py-3 text-xs font-semibold`}>
+                  {getExpandedFieldValue(data.shipmentStatus)}
+                </span>
+                <span className="badge badge-outline px-3 py-3 text-xs font-medium">
+                  {getExpandedFieldValue(data.courier)}
+                </span>
+              </div>
+            </div>
+
+            <div className="stats stats-vertical border border-base-200 bg-base-200/40 md:stats-horizontal">
+              <div className="stat px-4 py-3">
+                <div className="stat-title text-base-content/60">Receiver</div>
+                <div className="stat-value text-lg text-base-content">{getExpandedFieldValue(data.receiverName)}</div>
+                <div className="stat-desc truncate">{getExpandedFieldValue(data.destination)}</div>
+              </div>
+              <div className="stat px-4 py-3">
+                <div className="stat-title text-base-content/60">Booked</div>
+                <div className="stat-value text-lg text-base-content">{getExpandedFieldValue(data.bookedDate)}</div>
+                <div className="stat-desc">Payment: {getExpandedFieldValue(data.paymentMode)}</div>
+              </div>
+              <div className="stat px-4 py-3">
+                <div className="stat-title text-base-content/60">Weight</div>
+                <div className="stat-value text-lg text-base-content">{getExpandedFieldValue(data.actualWeight)}</div>
+                <div className="stat-desc">Leaf: {getExpandedFieldValue(data.additionalLeaf)}</div>
+              </div>
+            </div>
+
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+              {expandedFieldSections.map((section) => (
+                <section key={section.title} className="card border border-base-200 bg-base-100 shadow-sm">
+                  <div className="card-body gap-3 p-3">
+                    <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-base-content/60">{section.title}</h3>
+                <dl className="space-y-3">
+                  {section.fields.map(([field, label]) => (
+                    <div key={field} className="rounded-box border border-base-200 bg-base-200/30 px-3 py-2">
+                      <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-base-content/50">{label}</dt>
+                      <dd className="mt-1 break-words text-sm font-medium text-base-content">{getExpandedFieldValue(data[field])}</dd>
+                    </div>
+                  ))}
+                </dl>
+                  </div>
+                </section>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     );
   };
 
