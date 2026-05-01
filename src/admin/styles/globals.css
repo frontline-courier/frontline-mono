@@ -56,6 +56,25 @@ a {
 
 .booking-table .rdt_TableCell:last-child {
   overflow: visible;
+  isolation: isolate;
+  z-index: 4;
+}
+
+.booking-table .rdt_TableRow:focus-within,
+.booking-table .rdt_TableCell:last-child:focus-within {
+  z-index: 20;
+}
+
+.booking-table .booking-action-dropdown {
+  position: relative;
+}
+
+.booking-table .booking-action-dropdown:focus-within {
+  z-index: 30;
+}
+
+.booking-table .booking-action-menu {
+  z-index: 40;
 }
 
 .booking-table .rdt_Pagination {

@@ -246,9 +246,9 @@ const BookingPage = () => {
       allowOverflow: true,
       button: true,
       cell: (row: any) => {
-        return <div className="dropdown dropdown-end">
+        return <div className="booking-action-dropdown dropdown dropdown-end">
           <div tabIndex={0} className="m-1 btn btn-xs btn-secondary"><BsThreeDotsVertical /></div>
-          <ul tabIndex={0} className="p-1 shadow menu dropdown-content bg-base-100 rounded-box w-40 right-0 top-0 z-[1]">
+          <ul tabIndex={0} className="booking-action-menu menu dropdown-content p-1 shadow bg-base-100 rounded-box w-40 right-0 top-full mt-2 z-[60]">
             <li><a href={`/bookings/${row._id}/edit`}> <AiFillEdit className="mr-2" /> Edit</a></li>
             <li><a href={`/bookings/${row._id}/view`}> <AiFillRead className="mr-2" /> View</a></li>
             {/* <li><a> <AiFillDelete className="mr-2" onClick={handleDeleteModel} /> Delete</a></li> */}
