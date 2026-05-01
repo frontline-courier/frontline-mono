@@ -152,20 +152,16 @@ export default function Layout({ children }: LayoutProps) {
                       {accountLabel}
                     </li>
                     <li>
-                      <Link href="/api/auth/logout">
-                        <a className="flex items-center gap-2 text-red-600">
-                          <RiLogoutBoxRLine className="h-4 w-4" />
-                          Logout
-                        </a>
+                      <Link href="/api/auth/logout" className="flex items-center gap-2 text-red-600">
+                        <RiLogoutBoxRLine className="h-4 w-4" />
+                        Logout
                       </Link>
                     </li>
                   </ul>
                 </div>
               ) : (
-                <Link href="/api/auth/login">
-                  <a className="btn btn-primary btn-sm rounded-full shadow-sm">
-                    Login
-                  </a>
+                <Link href="/api/auth/login" className="btn btn-primary btn-sm rounded-full shadow-sm">
+                  Login
                 </Link>
               )}
             </div>

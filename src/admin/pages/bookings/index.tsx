@@ -309,11 +309,9 @@ const BookingPage = () => {
   const Export = (event: any) => <button className="btn btn-accent btn-outline btn-xs" onClick={(e: any) => event.onExport(e.target.value)}>Download</button>;
 
   const NewBookingButton = () => (
-    <Link href="/bookings/create">
-      <a className="btn btn-primary btn-outline btn-xs">
-        <span className="text-lg"><MdAdd /></span>
-        <span>New Booking</span>
-      </a>
+    <Link href="/bookings/create" className="btn btn-primary btn-outline btn-xs">
+      <span className="text-lg"><MdAdd /></span>
+      <span>New Booking</span>
     </Link>
   );
 
