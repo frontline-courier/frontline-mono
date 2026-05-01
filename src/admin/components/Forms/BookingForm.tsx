@@ -10,7 +10,7 @@ import { BookingFormInputs } from '../../interfaces/bookingForm';
 import { paymentModes } from '../../constants/paymentModes';
 
 const hasSelectedValue = (value: number) => value > 0 || 'Please select a value';
-const isFiniteNumber = (value: number | undefined) => typeof value === 'number' && Number.isFinite(value) || 'Please enter a valid number';
+const isFiniteNumber = (value: number | undefined) => value === undefined || (typeof value === 'number' && Number.isFinite(value)) || 'Please enter a valid number';
 const parseNumericInput = (value: string) => {
   if (value === '') {
     return undefined;
