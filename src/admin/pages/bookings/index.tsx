@@ -318,10 +318,10 @@ const BookingPage = () => {
     link.click();
   }
 
-  const Export = (event: any) => <button type="button" className="btn btn-accent btn-outline btn-sm w-full sm:w-auto" onClick={(e: any) => event.onExport(e.target.value)}>Download</button>;
+  const Export = (event: any) => <button type="button" className="btn btn-sm rounded-xl border-primary bg-base-100 text-primary shadow-sm hover:bg-primary/10 hover:text-primary sm:w-auto" onClick={(e: any) => event.onExport(e.target.value)}>Download</button>;
 
   const NewBookingButton = () => (
-    <Link href="/bookings/create" className="btn btn-primary btn-outline btn-sm w-full sm:w-auto">
+    <Link href="/bookings/create" className="btn btn-sm rounded-xl border-primary bg-primary !text-white shadow-sm hover:brightness-95 hover:!text-white sm:w-auto">
       <span className="text-lg"><MdAdd /></span>
       <span>New Booking</span>
     </Link>
