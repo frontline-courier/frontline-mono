@@ -9,6 +9,9 @@ import { getPageType } from '../../helpers/router/getPageType';
 import { BookingFormInputs } from '../../interfaces/bookingForm';
 import { paymentModes } from '../../constants/paymentModes';
 
+const hasSelectedValue = (value: number) => value > 0 || 'Please select a value';
+const isFiniteNumber = (value: number) => Number.isFinite(value) || 'Please enter a valid number';
+
 export default function BookingForm() {
 
   const router = useRouter();
@@ -69,6 +72,7 @@ export default function BookingForm() {
   }, [id, pageType, reset]);
 
   const onSubmit: SubmitHandler<BookingFormInputs> = async (data) => {
+    setError('');
     setLoader(true);
 
     try {
@@ -157,7 +161,7 @@ export default function BookingForm() {
             <label className="label p-1">
               <span className="label-text text-2xs">Courier</span>
             </label>
-            <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register('courier', { required: true, valueAsNumber: true },)}>
+            <select className={`select select-bordered ${errors.courier && 'select-error'}`}  {...register('courier', { valueAsNumber: true, validate: hasSelectedValue },)}>
               <option disabled={true} value={0}>-- courier --</option>
               {
                 courierList.map((d) => {
@@ -183,7 +187,7 @@ export default function BookingForm() {
             <label className="label p-1">
               <span className="label-text text-2xs">DoxType</span>
             </label>
-            <select className={`select select-bordered ${errors.doxType && 'select-error'}`} {...register('doxType', { required: true, valueAsNumber: true })}>
+            <select className={`select select-bordered ${errors.doxType && 'select-error'}`} {...register('doxType', { valueAsNumber: true, validate: hasSelectedValue })}>
               <option disabled={true} value={0}>-- dox type --</option>
               <option value={1}>Dox</option>
               <option value={2}>Non Dox</option>
@@ -207,7 +211,7 @@ export default function BookingForm() {
             <label className="label p-1">
               <span className="label-text text-2xs">Shipment Mode</span>
             </label>
-            <select className={`select select-bordered ${errors.shipmentMode && 'select-error'}`} {...register('shipmentMode', { required: true, valueAsNumber: true })}>
+            <select className={`select select-bordered ${errors.shipmentMode && 'select-error'}`} {...register('shipmentMode', { valueAsNumber: true, validate: hasSelectedValue })}>
               <option disabled={true} value={0}>-- shipment mode --</option>
               <option value={1}>Domestic</option>
               <option value={2}>International</option>
@@ -219,7 +223,7 @@ export default function BookingForm() {
             <label className="label p-1">
               <span className="label-text text-2xs">Transport Mode</span>
             </label>
-            <select className={`select select-bordered ${errors.transportMode && 'select-error'}`} {...register('transportMode', { required: true, valueAsNumber: true })}>
+            <select className={`select select-bordered ${errors.transportMode && 'select-error'}`} {...register('transportMode', { valueAsNumber: true, validate: hasSelectedValue })}>
               <option disabled={true} value={0}>-- transport mode --</option>
               <option value={1}>Air</option>
               <option value={2}>Cargo</option>
@@ -236,7 +240,7 @@ export default function BookingForm() {
             <label className="label p-1">
               <span className="label-text text-2xs">Co Courier</span>
             </label>
-            <select className={`select select-bordered ${errors.awbNumber && 'select-error'}`} {...register('coCourier', { valueAsNumber: true })}>
+            <select className={`select select-bordered ${errors.coCourier && 'select-error'}`} {...register('coCourier', { valueAsNumber: true })}>
               <option disabled={true} value={0}>-- co courier --</option>
               <option value={1}>Yes</option>
               <option value={0}>No</option>
@@ -247,19 +251,19 @@ export default function BookingForm() {
             <label className="label p-1">
               <span className="label-text text-2xs">Booking Amount</span>
             </label>
-            <input type="text" placeholder="Booking Amount" className={`input input-bordered ${errors.bookingAmount && 'input-error'}`} {...register('bookingAmount', { required: true, valueAsNumber: true })} />
+            <input type="text" inputMode="decimal" placeholder="Booking Amount" className={`input input-bordered ${errors.bookingAmount && 'input-error'}`} {...register('bookingAmount', { required: true, valueAsNumber: true, validate: isFiniteNumber })} />
           </div>
           <div className="form-control">
             <label className="label p-1">
               <span className="label-text text-2xs">Bill Amount</span>
             </label>
-            <input type="text" placeholder="Bill Amount" className={`input input-bordered ${errors.billAmount && 'input-error'}`} {...register('billAmount', { required: true, valueAsNumber: true })} />
+            <input type="text" inputMode="decimal" placeholder="Bill Amount" className={`input input-bordered ${errors.billAmount && 'input-error'}`} {...register('billAmount', { required: true, valueAsNumber: true, validate: isFiniteNumber })} />
           </div>
           <div className="form-control">
             <label className="label p-1">
               <span className="label-text text-2xs">Actual weight (Kg)</span>
             </label>
-            <input type="text" placeholder="Actual weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register('actualWeight', { required: true, valueAsNumber: true })} />
+            <input type="text" inputMode="decimal" placeholder="Actual weight" className={`input input-bordered ${errors.actualWeight && 'input-error'}`} {...register('actualWeight', { required: true, valueAsNumber: true, validate: isFiniteNumber })} />
           </div>
           <div className="form-control">
             <label className="label p-1">
@@ -327,7 +331,7 @@ export default function BookingForm() {
         }
 
         <div className="modal-action">
-          <div className="btn btn-wide"><button onClick={router.back}>Back to Bookings</button></div>
+          <div className="btn btn-wide"><button type="button" onClick={router.back}>Back to Bookings</button></div>
           {/* <label htmlFor="my-modal-2" className="btn btn-primary btn-wide" onClick={insertBooking}>Save</label> */}
           {!loader && pageType !== PageTypes.VIEW && <input type="submit" className="btn btn-primary btn-wide" disabled={!formState.isValid}></input>}
         </div>

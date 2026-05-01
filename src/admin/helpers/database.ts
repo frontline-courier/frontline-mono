@@ -6,12 +6,12 @@ const user = process.env.MONGO_DB_USER;
 const pwd = process.env.MONGO_DB_PWD;
 const uri = `mongodb+srv://${user}:${pwd}@${host}/frontline?retryWrites=true&w=majority`;
 
-const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-} as any);
-
 async function database(req: any, res: any, next: any) {
+    const client = new MongoClient(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    } as any);
+
     await client.connect();
     req.dbClient = client;
     req.db = client.db('frontline-booking');
