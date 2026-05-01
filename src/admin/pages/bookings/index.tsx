@@ -100,6 +100,15 @@ const BookingPage = () => {
     shipmentStatus: getShipmentStatus(booking.shipmentStatus)
   }));
 
+  const activeFilterCount = [
+    searchData.awbNumber,
+    searchData.referenceNumber,
+    searchData.thirdPartyNumber,
+    searchData.status,
+    searchData.courier > 0 ? searchData.courier : '',
+    searchData.shipmentMode > 0 ? searchData.shipmentMode : '',
+  ].filter(Boolean).length;
+
   const onSubmit: SubmitHandler<any> = async (data) => {
     setSearchData(data);
   };
@@ -335,6 +344,31 @@ const BookingPage = () => {
       ) : null}
 
       <div className="mx-auto flex w-full max-w-full flex-col gap-3">
+        <section className="rounded-2xl border border-slate-200 bg-gradient-to-r from-white via-slate-50 to-slate-100 p-4 shadow-sm">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+            <div className="space-y-1">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Booking Operations</p>
+              <p className="max-w-2xl text-sm text-slate-600">
+                Search by AWB, reference, third-party number, courier, mode, or status and jump into edit and status workflows from the same screen.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
+                <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Visible</div>
+                <div className="text-lg font-semibold text-slate-900">{data.length}</div>
+              </div>
+              <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
+                <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Total</div>
+                <div className="text-lg font-semibold text-slate-900">{totalRows}</div>
+              </div>
+              <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm col-span-2 sm:col-span-1">
+                <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Filters</div>
+                <div className="text-lg font-semibold text-slate-900">{activeFilterCount}</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
           <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
             <form onSubmit={handleSubmit(onSubmit)} role="search" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:flex xl:flex-wrap xl:items-end xl:gap-3">
