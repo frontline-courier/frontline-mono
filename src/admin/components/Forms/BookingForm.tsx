@@ -111,6 +111,8 @@ export default function BookingForm() {
         // not implemented
       } else if (pageType === PageTypes.EDIT) {
         await axios.post('/api/bookings/update', { ...data, updatedBy: user?.email });
+        await router.replace('/bookings');
+        return;
       } else {
         await axios.post('/api/bookings/add', { ...data, shipmentStatus: 'Booked', createdBy: user?.email });
       }
