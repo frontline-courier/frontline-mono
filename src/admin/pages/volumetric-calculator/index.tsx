@@ -11,18 +11,6 @@ const VolumetricCalculator = () => {
       </Head>
       <div className="flex flex-col">
         <div className="w-full">
-          <div className="text-sm breadcrumbs px-6 py-3 bg-base-200">
-            <ul>
-              <li>
-                <Link href="/">Home</Link>
-              </li>
-              <li>Volumetric Calculator</li>
-            </ul>
-          </div>
-          <div className="divider m-0"></div>
-          
-          
-
           <VolumetricForm />
         </div>
       </div>
