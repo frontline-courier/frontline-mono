@@ -1,1 +1,1 @@
-export const paymentModes = ['UPI', 'NEFT', 'Cash'] as const;
+export const paymentModes = ['PayTM', 'GPay', 'PhonePe', 'BHIM', 'NEFT', 'Cash'] as const;
