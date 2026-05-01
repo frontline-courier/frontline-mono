@@ -1,1 +1,1 @@
-export const bookedByOptions = ['Staff 1', 'Staff 2'] as const;
+export const bookedByOptions = ['Varalakshmi', 'Sathya', 'Kavitha', 'Varun'] as const;

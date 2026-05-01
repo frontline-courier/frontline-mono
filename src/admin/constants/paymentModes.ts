@@ -1,1 +1,1 @@
-export const paymentModes = ['BHIM', 'Cash', 'GPay', 'NEFT', 'PayTM', 'PhonePe'] as const;
+export const paymentModes = ['BharatPe', 'BHIM', 'Cash', 'Cheque', 'GPay', 'Navi', 'NEFT', 'PayTM', 'PhonePe'] as const;
