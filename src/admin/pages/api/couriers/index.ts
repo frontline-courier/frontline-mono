@@ -1,12 +1,11 @@
 import { Db } from 'mongodb';
 import nextConnect from 'next-connect';
-import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
+import { getErrorMessage } from '../../../helpers/api';
 import middleware from '../../../helpers/database';
 import { getCache, setCache } from '../../../lib/cache'; // Import cache functions
 
 const handler = nextConnect();
 
-handler.use(requireApiAuth);
 handler.use(middleware);
 
 handler.get(async (req: any, res: any) => {

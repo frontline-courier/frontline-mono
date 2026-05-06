@@ -1,11 +1,10 @@
 import nextConnect from 'next-connect';
-import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
+import { getErrorMessage } from '../../../helpers/api';
 import { normalizeBookingTrackQuery, ValidationError } from '../../../helpers/apiValidation';
 import middleware from '../../../helpers/database';
 
 const handler = nextConnect();
 
-handler.use(requireApiAuth);
 handler.use(middleware);
 
 handler.get(async (req: any, res: any) => {
