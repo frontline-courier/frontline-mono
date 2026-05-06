@@ -24,6 +24,10 @@ interface CourierType {
   Status: number;
 }
 
+const COURIER_LISTS_CACHE_KEY = 'courierLists:v2';
+const COURIER_LISTS_CACHE_TIME_KEY = 'courierListsTime:v2';
+const LEGACY_COURIER_LISTS_CACHE_KEYS = ['courierLists', 'courierListsTime'];
+
 @Component({
   selector: 'app-track',
   templateUrl: './track.component.html',
@@ -71,8 +75,8 @@ export class TrackComponent implements OnInit {
   }
 
   async getCourierLists() {
-    const cachedData = localStorage.getItem('courierLists');
-    const cacheTime = localStorage.getItem('courierListsTime');
+    const cachedData = localStorage.getItem(COURIER_LISTS_CACHE_KEY);
+    const cacheTime = localStorage.getItem(COURIER_LISTS_CACHE_TIME_KEY);
 
     // Check if cached data exists and is less than 4 hours old
     if (cachedData && cacheTime) {
@@ -89,9 +93,13 @@ export class TrackComponent implements OnInit {
           console.warn('Invalid cached courier list. Fetching a fresh copy.', err);
         }
 
-        localStorage.removeItem('courierLists');
-        localStorage.removeItem('courierListsTime');
+        localStorage.removeItem(COURIER_LISTS_CACHE_KEY);
+        localStorage.removeItem(COURIER_LISTS_CACHE_TIME_KEY);
       }
+    }
+
+    for (const legacyKey of LEGACY_COURIER_LISTS_CACHE_KEYS) {
+      localStorage.removeItem(legacyKey);
     }
 
     // Fetch new data if no valid cache
@@ -100,8 +108,8 @@ export class TrackComponent implements OnInit {
       const courierReponse = await res.json();
       this.courierLists = Array.isArray(courierReponse?.couriers) ? courierReponse.couriers : [];
       // Cache the data and the current time
-      localStorage.setItem('courierLists', JSON.stringify(this.courierLists));
-      localStorage.setItem('courierListsTime', new Date().getTime().toString());
+      localStorage.setItem(COURIER_LISTS_CACHE_KEY, JSON.stringify(this.courierLists));
+      localStorage.setItem(COURIER_LISTS_CACHE_TIME_KEY, new Date().getTime().toString());
     } catch (err) {
       console.error('Error fetching courier lists:', err);
     }
