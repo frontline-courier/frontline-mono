@@ -38,7 +38,7 @@ export class TrackComponent implements OnInit {
   ) { }
 
   courierStatus = courierStatus;
-  courierLists: CourierType[];
+  courierLists: CourierType[] = [];
   statusRelation = statusRelation;
   getDoxType = getDoxType;
   getShipmentMode = getShipmentMode;
@@ -47,20 +47,27 @@ export class TrackComponent implements OnInit {
   trackResult: any;
   loader = true;
   status = false;
-  courier: CourierType;
+  courier: CourierType | undefined;
   courierAPIResult: any;
   courierAPIStatus: boolean;
 
-  ngOnInit(): void {
-    let id = this.route.snapshot.queryParamMap.get('id');
-    let track = this.route.snapshot.queryParamMap.get('track');
+  async ngOnInit(): Promise<void> {
+    const id = this.route.snapshot.queryParamMap.get('id');
+    const track = this.route.snapshot.queryParamMap.get('track');
 
-    if (id === '' || track === '' || ['1', '2'].includes(track) === false) {
+    if (!id || !track || ['1', '2'].includes(track) === false) {
       this.router.navigate(['home']);
+      return;
     }
-    this.getTrackingInfo(id, track);
 
-    this.getCourierLists();
+    await Promise.all([
+      this.getCourierLists(),
+      this.getTrackingInfo(id, track),
+    ]);
+
+    if (this.status && this.trackResult) {
+      this.constructStatus();
+    }
   }
 
   async getCourierLists() {
@@ -71,8 +78,19 @@ export class TrackComponent implements OnInit {
     if (cachedData && cacheTime) {
       const now = new Date().getTime();
       if (now - Number(cacheTime) < 4 * 60 * 60 * 1000) { // 4 hours in milliseconds
-        this.courierLists = JSON.parse(cachedData); // Use cached data
-        return;
+        try {
+          const parsedData = JSON.parse(cachedData);
+
+          if (Array.isArray(parsedData)) {
+            this.courierLists = parsedData;
+            return;
+          }
+        } catch (err) {
+          console.warn('Invalid cached courier list. Fetching a fresh copy.', err);
+        }
+
+        localStorage.removeItem('courierLists');
+        localStorage.removeItem('courierListsTime');
       }
     }
 
@@ -80,7 +98,7 @@ export class TrackComponent implements OnInit {
     try {
       const res = await fetch('https://next.frontlinecourier.com/api/couriers', { mode: 'cors' });
       const courierReponse = await res.json();
-      this.courierLists = courierReponse.couriers;
+      this.courierLists = Array.isArray(courierReponse?.couriers) ? courierReponse.couriers : [];
       // Cache the data and the current time
       localStorage.setItem('courierLists', JSON.stringify(this.courierLists));
       localStorage.setItem('courierListsTime', new Date().getTime().toString());
@@ -98,7 +116,6 @@ export class TrackComponent implements OnInit {
       if (data && data._id) {
         this.status = true;
         this.trackResult = data;
-        this.constructStatus();
       } else {
         this.status = false;
       }
@@ -127,6 +144,7 @@ export class TrackComponent implements OnInit {
   }
 
   async constructStatus() {
+    this.statusList = [];
 
     if (this.trackResult) {
 
@@ -198,11 +216,11 @@ export class TrackComponent implements OnInit {
   }
 
   getCourierName(id: number): string {
-    return this.courierLists.find((x) => x.CourierId === id).Courier;
+    return this.courierLists.find((x) => x.CourierId === id)?.Courier || '';
   };
 
   getCourierUrl(id: number): string {
-    return this.courierLists.find((x) => x.CourierId === id).Track;
+    return this.courierLists.find((x) => x.CourierId === id)?.Track || '';
   };
 
   getCourierMode(id: number): number {
