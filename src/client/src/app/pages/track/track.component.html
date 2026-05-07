@@ -49,7 +49,7 @@
 
     <!-- Results -->
     <div *ngIf="!loader && status">
-      <!-- AWB Badge + Status Banner -->
+      <!-- Status Banner -->
       <div class="track-status-banner mb-4 tracking-status-intransit">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
           <div>
@@ -64,8 +64,8 @@
       </div>
 
       <div class="row g-4">
-        <!-- ── Shipment Details Card (Mode: default) ── -->
-        <div class="col-lg-5" *ngIf="!courier?.Mode">
+        <!-- ── Shipment Details Card ── -->
+        <div class="col-lg-5">
           <div class="track-card h-100">
             <div class="track-card-header">
               <svg
@@ -96,69 +96,74 @@
                   <dt>Booked Date</dt>
                   <dd>{{ trackResult.bookedDate | date: 'medium' }}</dd>
                 </div>
-                <div class="track-detail-row">
-                  <dt>Origin</dt>
-                  <dd>{{ trackResult.origin }}</dd>
-                </div>
-                <div class="track-detail-row">
-                  <dt>Destination</dt>
-                  <dd>{{ trackResult.destination }}</dd>
-                </div>
-                <div class="track-detail-row">
-                  <dt>Package Type</dt>
-                  <dd>{{ getDoxType(trackResult.doxType) }}</dd>
-                </div>
-                <div class="track-detail-row">
-                  <dt>Shipment Mode</dt>
-                  <dd>{{ getShipmentMode(trackResult.shipmentMode) }}</dd>
-                </div>
-                <div class="track-detail-row">
-                  <dt>Transport Mode</dt>
-                  <dd
-                    [class.fw-bold]="
-                      getTransportMode(trackResult.transportMode).toLowerCase().includes('surface')
+
+                <!-- Internal mode: show full shipment details -->
+                <ng-container *ngIf="trackResult.courierMode !== 'link'">
+                  <div class="track-detail-row">
+                    <dt>Origin</dt>
+                    <dd>{{ trackResult.origin }}</dd>
+                  </div>
+                  <div class="track-detail-row">
+                    <dt>Destination</dt>
+                    <dd>{{ trackResult.destination }}</dd>
+                  </div>
+                  <div class="track-detail-row">
+                    <dt>Package Type</dt>
+                    <dd>{{ getDoxType(trackResult.doxType) }}</dd>
+                  </div>
+                  <div class="track-detail-row">
+                    <dt>Shipment Mode</dt>
+                    <dd>{{ getShipmentMode(trackResult.shipmentMode) }}</dd>
+                  </div>
+                  <div class="track-detail-row">
+                    <dt>Transport Mode</dt>
+                    <dd
+                      [class.fw-bold]="
+                        getTransportMode(trackResult.transportMode)
+                          .toLowerCase()
+                          .includes('surface')
+                      "
+                    >
+                      {{ getTransportMode(trackResult.transportMode) }}
+                    </dd>
+                  </div>
+                  <div class="track-detail-row" *ngIf="trackResult.receivedPerson">
+                    <dt>Received By</dt>
+                    <dd>{{ trackResult.receivedPerson }}</dd>
+                  </div>
+                  <div
+                    class="track-detail-row"
+                    *ngIf="
+                      trackResult.receivedPersonRelation &&
+                      trackResult.receivedPersonRelation !== 'NULL'
                     "
                   >
-                    {{ getTransportMode(trackResult.transportMode) }}
-                  </dd>
-                </div>
-                <div class="track-detail-row" *ngIf="trackResult.receivedPerson">
-                  <dt>Received By</dt>
-                  <dd>{{ trackResult.receivedPerson }}</dd>
-                </div>
-                <div
-                  class="track-detail-row"
-                  *ngIf="
-                    trackResult.receivedPersonRelation &&
-                    trackResult.receivedPersonRelation !== 'NULL'
-                  "
-                >
-                  <dt>Relation</dt>
-                  <dd>{{ getStatusRelation(trackResult.receivedPersonRelation) }}</dd>
-                </div>
-                <div class="track-detail-row" *ngIf="trackResult.deliveryOfficeAddress">
-                  <dt>Delivery Office</dt>
-                  <dd>{{ trackResult.deliveryOfficeAddress }}</dd>
-                </div>
+                    <dt>Relation</dt>
+                    <dd>{{ getStatusRelation(trackResult.receivedPersonRelation) }}</dd>
+                  </div>
+                  <div class="track-detail-row" *ngIf="trackResult.deliveryOfficeAddress">
+                    <dt>Delivery Office</dt>
+                    <dd>{{ trackResult.deliveryOfficeAddress }}</dd>
+                  </div>
+                </ng-container>
+
                 <div class="track-detail-row" *ngIf="trackResult.remarks">
                   <dt>Remarks</dt>
                   <dd class="fw-semibold">{{ trackResult.remarks }}</dd>
                 </div>
-                <div class="track-detail-row">
+                <div class="track-detail-row" *ngIf="trackResult.courierName">
                   <dt>Courier</dt>
-                  <dd>{{ getCourierName(trackResult.courier) }}</dd>
+                  <dd>{{ trackResult.courierName }}</dd>
                 </div>
+
+                <!-- Courier website link: only for 'link' and 'internal' modes with a track URL -->
                 <div
                   class="track-detail-row"
-                  *ngIf="getCourierTrackUrl(trackResult.courier, trackResult.awbNumber)"
+                  *ngIf="getTrackUrl() && trackResult.courierMode !== 'link'"
                 >
                   <dt>Courier Website</dt>
                   <dd>
-                    <a
-                      [href]="getCourierTrackUrl(trackResult.courier, trackResult.awbNumber)"
-                      target="_blank"
-                      class="track-external-link"
-                    >
+                    <a [href]="getTrackUrl()" target="_blank" class="track-external-link">
                       Track on courier site
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -181,52 +186,12 @@
                   </dd>
                 </div>
               </dl>
-            </div>
-          </div>
-        </div>
 
-        <!-- ── Shipment Details Card (Mode 2: external courier) ── -->
-        <div class="col-lg-5" *ngIf="courier?.Mode === 2">
-          <div class="track-card h-100">
-            <div class="track-card-header">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-                class="me-2"
-              >
-                <path
-                  d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"
-                />
-              </svg>
-              Shipment Details
-            </div>
-            <div class="track-card-body">
-              <dl class="track-detail-list">
-                <div class="track-detail-row">
-                  <dt>AWB Number</dt>
-                  <dd>{{ trackResult.awbNumber }}</dd>
-                </div>
-                <div class="track-detail-row">
-                  <dt>Reference Number</dt>
-                  <dd>{{ trackResult.referenceNumber || '—' }}</dd>
-                </div>
-                <div class="track-detail-row">
-                  <dt>Booked Date</dt>
-                  <dd>{{ trackResult.bookedDate | date: 'medium' }}</dd>
-                </div>
-                <div class="track-detail-row" *ngIf="trackResult.remarks">
-                  <dt>Remarks</dt>
-                  <dd class="fw-semibold">{{ trackResult.remarks }}</dd>
-                </div>
-              </dl>
-
-              <div class="track-external-cta mt-3">
+              <!-- Link mode: prominent CTA button -->
+              <div class="track-external-cta mt-3" *ngIf="trackResult.courierMode === 'link'">
                 <a
-                  *ngIf="trackResult.referenceNumber; else refNotFoundBlock"
-                  [href]="getCourierTrackUrl(trackResult.courier, trackResult.referenceNumber)"
+                  *ngIf="getTrackUrl(); else refNotFoundBlock"
+                  [href]="getTrackUrl()"
                   target="_blank"
                   class="btn btn-primary w-100"
                 >
@@ -260,8 +225,8 @@
           </div>
         </div>
 
-        <!-- ── Timeline Card (Mode: default only) ── -->
-        <div class="col-lg-7" *ngIf="!courier?.Mode">
+        <!-- ── Timeline Card (internal mode only) ── -->
+        <div class="col-lg-7" *ngIf="trackResult.courierMode !== 'link'">
           <div class="track-card h-100">
             <div class="track-card-header">
               <svg
@@ -283,7 +248,7 @@
               <div class="track-timeline">
                 <div
                   class="track-timeline-item"
-                  *ngFor="let item of statusList; let i = index; let last = last"
+                  *ngFor="let item of statusList; let last = last"
                   [class.track-timeline-item--latest]="last"
                 >
                   <div class="track-timeline-dot" [class.track-timeline-dot--latest]="last"></div>
