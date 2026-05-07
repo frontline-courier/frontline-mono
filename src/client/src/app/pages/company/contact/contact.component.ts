@@ -1,27 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, EmailValidator } from '@angular/forms';
 import { HttpServiceService } from 'src/app/services/http-service.service';
-import * as moment from 'moment';
+import { formatDate } from 'src/app/utils/date-utils';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
-  standalone: false
+  standalone: false,
 })
 export class ContactComponent implements OnInit {
-
-  contactForm: UntypedFormGroup;
-  mailSent: boolean;
-  mailCompleted: boolean;
+  contactForm!: UntypedFormGroup;
+  mailSent = false;
+  mailCompleted = false;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
-    private httpService: HttpServiceService,
-  ) { }
+    private httpService: HttpServiceService
+  ) {}
 
   ngOnInit(): void {
-
     this.contactForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       email: ['', [new EmailValidator()]],
@@ -33,17 +31,18 @@ export class ContactComponent implements OnInit {
   // deprecated
   // can be removed in upcoming releases.
   sendEmail() {
-
     const emailBody = {
-      to: ['Aravind from FrontlineCourier <aravin.it@gmail.com>', 'Varun from FrontlineCourier <varunn.cliquee@gmail.com>'],
+      to: [
+        'Aravind from FrontlineCourier <aravin.it@gmail.com>',
+        'Varun from FrontlineCourier <varunn.cliquee@gmail.com>',
+      ],
       cc: undefined,
       bcc: undefined,
-      from: "Varun from FrontlineCourier <noreply@epix.io>", // Use the email address or domain you verified above
+      from: 'Varun from FrontlineCourier <noreply@epix.io>', // Use the email address or domain you verified above
       replyTo: this.contactForm.value.email || undefined,
-      subject: `Contact Request - Frontlinecourier.com - ${this.contactForm.value.name} - ${moment().format('DD MMM YYYY h:mm A (ddd)')}`,
+      subject: `Contact Request - Frontlinecourier.com - ${this.contactForm.value.name} - ${formatDate(new Date(), 'DD MMM YYYY h:mm A (ddd)')}`,
       text: this.contactForm.value.body,
-      html:
-        `<p>Hi Team,</p>
+      html: `<p>Hi Team,</p>
       <p>Contact Request received. Please find the details below:</p>
       <p><strong>Contact Person</strong>: ${this.contactForm.value.name}</p>
       <p><strong>Phone</strong>: ${this.contactForm.value.phone}</p>
@@ -55,28 +54,26 @@ export class ContactComponent implements OnInit {
       <br/>
       <p>---</p>`,
     };
-    this.httpService.sendEmail(emailBody)
-      .then(
-        (data) => {
-          this.mailSent = true;
-          this.mailCompleted = true;
-        },
-        (err) => {
-          this.mailSent = false;
-          this.mailCompleted = true;
-        });
-
+    this.httpService.sendEmail(emailBody).then(
+      data => {
+        this.mailSent = true;
+        this.mailCompleted = true;
+      },
+      err => {
+        this.mailSent = false;
+        this.mailCompleted = true;
+      }
+    );
 
     const emailBody2 = {
       to: this.contactForm.value.email,
       cc: undefined,
       bcc: undefined,
-      from: "Varun from FrontlineCourier <noreply@epix.io>", // Use the email address or domain you verified above
-      replyTo: "Varun from FrontlineCourier <varunn.cliquee@gmail.com>",
+      from: 'Varun from FrontlineCourier <noreply@epix.io>', // Use the email address or domain you verified above
+      replyTo: 'Varun from FrontlineCourier <varunn.cliquee@gmail.com>',
       subject: `Thanks for reaching FrontlineCourier.com`,
       text: this.contactForm.value.body,
-      html:
-        `<p>Hi Team,</p>
+      html: `<p>Hi Team,</p>
           <p>Contact Request received. Please find the details below:</p>
           <p><strong>Contact Person</strong>: ${this.contactForm.value.name}</p>
           <p><strong>Phone</strong>: ${this.contactForm.value.phone}</p>
@@ -88,15 +85,15 @@ export class ContactComponent implements OnInit {
           <br/>
           <p>---</p>`,
     };
-    this.httpService.sendEmail(emailBody2)
-      .then(
-        (data) => {
-          this.mailSent = true;
-          this.mailCompleted = true;
-        },
-        (err) => {
-          this.mailSent = false;
-          this.mailCompleted = true;
-        });
+    this.httpService.sendEmail(emailBody2).then(
+      data => {
+        this.mailSent = true;
+        this.mailCompleted = true;
+      },
+      err => {
+        this.mailSent = false;
+        this.mailCompleted = true;
+      }
+    );
   }
 }

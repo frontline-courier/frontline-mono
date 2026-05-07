@@ -2,21 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { MD5, enc } from 'crypto-js';
-import * as moment from 'moment';
-import * as jwt from 'jsonwebtoken';
+import { nowUtc } from 'src/app/utils/date-utils';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HttpServiceService {
-
-  constructor(
-    private http: HttpClient,
-  ) { }
+  constructor(private http: HttpClient) {}
 
   async sendEmail(emailBody: any): Promise<boolean> {
-
-    const currentTime = moment().utc().format();
+    const currentTime = nowUtc();
     const apiSecret = 'epix.io';
     const secretKey = MD5(apiSecret).toString(enc.Hex) + '.' + MD5(currentTime).toString(enc.Hex);
     const apiKey = MD5(secretKey).toString(enc.Hex);
@@ -33,11 +28,15 @@ export class HttpServiceService {
 
     let status = false;
 
-    this.http.post(environment.apiUrl + environment.apiPaths.email, emailBody, options)
-      .subscribe(
-        (data) => { status = true },
-        (err) => { console.log(err); status = false;  });
-
+    this.http.post(environment.apiUrl + environment.apiPaths.email, emailBody, options).subscribe(
+      data => {
+        status = true;
+      },
+      err => {
+        console.log(err);
+        status = false;
+      }
+    );
 
     return status;
   }
