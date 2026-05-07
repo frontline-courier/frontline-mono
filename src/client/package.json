@@ -18,12 +18,10 @@
   },
   "lint-staged": {
     "src/**/*.ts": [
-      "prettier --write",
-      "eslint --fix"
+      "prettier --write"
     ],
     "src/**/*.html": [
-      "prettier --write",
-      "eslint --fix"
+      "prettier --write"
     ],
     "src/**/*.{scss,css,json}": [
       "prettier --write"

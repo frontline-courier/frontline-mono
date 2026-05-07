@@ -1,212 +1,310 @@
 <div class="container body-container">
   <div class="main-container">
-    <h3>Track Your Shipment</h3>
-    <hr />
+    <!-- Header -->
+    <div class="track-header mb-4">
+      <h3 class="track-title">Shipment Tracking</h3>
+      <p class="track-subtitle text-muted mb-0">Real-time status for your parcel</p>
+    </div>
 
-    <div class="row" *ngIf="!loader && status">
-      <div class="col-md-6" id="track-column-1">
-
-        <div *ngIf="!courier?.Mode">
-          <table class="table table-hover">
-            <tbody>
-              <tr>
-                <th scope="row">AWB Number</th>
-                <td>{{ trackResult.awbNumber }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Reference Number</th>
-                <td>{{ trackResult.referenceNumber }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Booked Date</th>
-                <td>{{ trackResult.bookedDate | date:'medium' }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Origin</th>
-                <td>{{ trackResult.origin }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Destination</th>
-                <td>{{ trackResult.destination }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Package Type</th>
-                <td>{{ getDoxType(trackResult.doxType) }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Shipment Mode</th>
-                <td>{{ getShipmentMode(trackResult.shipmentMode) }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Transport Mode</th>
-                <td>
-                  <span
-                    *ngIf="getTransportMode(trackResult.transportMode).toLowerCase().includes('surface'); else elseBlock"
-                    class="fw-bold fs-6">{{ getTransportMode(trackResult.transportMode) }}</span>
-                  <ng-template #elseBlock>{{ getTransportMode(trackResult.transportMode) }}</ng-template>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Received By</th>
-                <td>{{ trackResult.receivedPerson }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Relation</th>
-                <td *ngIf="trackResult.receivedPersonRelation  && trackResult.receivedPersonRelation !== 'NULL'">{{
-                  getStatusRelation(trackResult.receivedPersonRelation) }}</td>
-                <td *ngIf="!(trackResult.receivedPersonRelation  && trackResult.receivedPersonRelation !== 'NULL')">
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Delivery Office Location</th>
-                <td>{{ trackResult.deliveryOfficeAddress }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Remarks</th>
-                <td class="fw-bold fs-6">{{ trackResult.remarks }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Courier</th>
-                <td>{{ getCourierName(trackResult.courier) }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Website</th>
-                <td>{{ getCourierUrl(trackResult.courier) }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <!-- Loading State -->
+    <div class="row" *ngIf="loader">
+      <div class="col-12">
+        <div class="track-loading-card">
+          <div class="spinner-border text-primary me-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span class="text-muted">Fetching shipment details…</span>
         </div>
+      </div>
+    </div>
 
-        <div *ngIf="courier?.Mode === 2">
-          <table class="table table-hover">
-            <tr>
-              <th scope="row">AWB Number</th>
-              <td>{{ trackResult.awbNumber }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Reference Number</th>
-              <td>{{ trackResult.referenceNumber }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Booked Date</th>
-              <td>{{ trackResult.bookedDate | date:'medium' }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Remarks</th>
-              <td class="fw-bold fs-8">{{ trackResult.remarks }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Tracking Details</th>
-              <td class="fw-bold fs-8">
-
-                <a *ngIf="trackResult.referenceNumber; else refNotFoundBlock"
-                  href="{{getCourierUrl(trackResult.courier).replace('<AWB>', trackResult.referenceNumber)}}"
-                  target="_blank">Click here for details
-                </a>
-                <ng-template #refNotFoundBlock>Please contact us for reference number!</ng-template>
-              </td>
-            </tr>
-
-          </table>
+    <!-- Error State -->
+    <div class="row" *ngIf="!loader && !status">
+      <div class="col-12">
+        <div class="track-error-card">
+          <div class="track-error-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="40"
+              height="40"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path
+                d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"
+              />
+            </svg>
+          </div>
+          <div>
+            <h5 class="mb-1">Shipment Not Found</h5>
+            <p class="mb-0 text-muted">
+              The AWB or reference number provided is invalid. Please verify and try again, or
+              <a href="/contact">contact us</a> for help.
+            </p>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <!-- <div *ngIf="courier.Mode === 3 && courierAPIResult">
-          <h2>Shipment Details</h2>
-          <table class="table table-hover">
-            <tbody>
-              <tr>
-                <th>Waybill Number</th>
-                <td>{{ courierAPIResult.ShipmentData.Shipment[0].$.WaybillNo }}</td>
-              </tr>
-              <tr>
-                <th>Service</th>
-                <td>{{ courierAPIResult.ShipmentData.Shipment[0].Service[0] }}</td>
-              </tr>
-              <tr>
-                <th>Pick Up Date</th>
-                <td>{{ courierAPIResult.ShipmentData.Shipment[0].PickUpDate[0] }}</td>
-              </tr>
-              <tr>
-                <th>Pick Up Time</th>
-                <td>{{ courierAPIResult.ShipmentData.Shipment[0].PickUpTime[0] }}</td>
-              </tr>
-              <tr>
-                <th>Origin</th>
-                <td>{{ courierAPIResult.ShipmentData.Shipment[0].Origin[0] }}</td>
-              </tr>
-              <tr>
-                <th>Destination</th>
-                <td>{{ courierAPIResult.ShipmentData.Shipment[0].Destination[0] }}</td>
-              </tr>
-              <tr>
-                <th>Status</th>
-                <td>{{ courierAPIResult.ShipmentData.Shipment[0].Status[0] }}</td>
-              </tr>
-              <tr>
-                <th>Expected Delivery Date</th>
-                <td>{{ courierAPIResult.ShipmentData.Shipment[0].ExpectedDeliveryDate[0] }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <h4>Status History</h4>
-          <table class="table table-hover" *ngIf="courierAPIResult.ShipmentData?.Shipment[0].Status">
-            <thead>
-              <tr>
-                <th>Status Date</th>
-                <th>Status Time</th>
-                <th>Status</th>
-                <th>Received By</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let scanDetail of courierAPIResult.ShipmentData.Shipment[0].Scans[0].ScanDetail">
-                <td>{{ scanDetail.ScanDate[0] }}</td>
-                <td>{{ scanDetail.ScanTime[0] }}</td>
-                <td>{{ scanDetail.Scan[0] }}</td>
-                <td>{{ scanDetail.ScannedLocation[0] }}</td>
-              </tr>
-            </tbody>
-          </table>
-
+    <!-- Results -->
+    <div *ngIf="!loader && status">
+      <!-- AWB Badge + Status Banner -->
+      <div class="track-status-banner mb-4 tracking-status-intransit">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div>
+            <div class="track-status-label">Current Status</div>
+            <div class="track-status-value">{{ statusList[statusList.length - 1]?.status }}</div>
+          </div>
+          <div class="track-awb-badge">
+            <span class="track-awb-label">AWB</span>
+            <span class="track-awb-number">{{ trackResult.awbNumber }}</span>
+          </div>
         </div>
-
-        <div *ngIf="courier.Mode === 3 && !courierAPIStatus">
-          Unable to get the shipment details from {{courier?.Courier}}. Please check bill number or reference number.
-        </div> -->
-
       </div>
 
-      <div class="col-md-6" *ngIf="!courier?.Mode">
-        <div id="tracking-pre"></div>
-        <div id="tracking">
-          <div class="text-center tracking-status-intransit">
-            <p class="tracking-status text-tight">{{statusList[statusList.length - 1].status}}</p>
+      <div class="row g-4">
+        <!-- ── Shipment Details Card (Mode: default) ── -->
+        <div class="col-lg-5" *ngIf="!courier?.Mode">
+          <div class="track-card h-100">
+            <div class="track-card-header">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                class="me-2"
+              >
+                <path
+                  d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"
+                />
+              </svg>
+              Shipment Details
+            </div>
+            <div class="track-card-body">
+              <dl class="track-detail-list">
+                <div class="track-detail-row">
+                  <dt>AWB Number</dt>
+                  <dd>{{ trackResult.awbNumber }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Reference Number</dt>
+                  <dd>{{ trackResult.referenceNumber || '—' }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Booked Date</dt>
+                  <dd>{{ trackResult.bookedDate | date: 'medium' }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Origin</dt>
+                  <dd>{{ trackResult.origin }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Destination</dt>
+                  <dd>{{ trackResult.destination }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Package Type</dt>
+                  <dd>{{ getDoxType(trackResult.doxType) }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Shipment Mode</dt>
+                  <dd>{{ getShipmentMode(trackResult.shipmentMode) }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Transport Mode</dt>
+                  <dd
+                    [class.fw-bold]="
+                      getTransportMode(trackResult.transportMode).toLowerCase().includes('surface')
+                    "
+                  >
+                    {{ getTransportMode(trackResult.transportMode) }}
+                  </dd>
+                </div>
+                <div class="track-detail-row" *ngIf="trackResult.receivedPerson">
+                  <dt>Received By</dt>
+                  <dd>{{ trackResult.receivedPerson }}</dd>
+                </div>
+                <div
+                  class="track-detail-row"
+                  *ngIf="
+                    trackResult.receivedPersonRelation &&
+                    trackResult.receivedPersonRelation !== 'NULL'
+                  "
+                >
+                  <dt>Relation</dt>
+                  <dd>{{ getStatusRelation(trackResult.receivedPersonRelation) }}</dd>
+                </div>
+                <div class="track-detail-row" *ngIf="trackResult.deliveryOfficeAddress">
+                  <dt>Delivery Office</dt>
+                  <dd>{{ trackResult.deliveryOfficeAddress }}</dd>
+                </div>
+                <div class="track-detail-row" *ngIf="trackResult.remarks">
+                  <dt>Remarks</dt>
+                  <dd class="fw-semibold">{{ trackResult.remarks }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Courier</dt>
+                  <dd>{{ getCourierName(trackResult.courier) }}</dd>
+                </div>
+                <div
+                  class="track-detail-row"
+                  *ngIf="getCourierTrackUrl(trackResult.courier, trackResult.awbNumber)"
+                >
+                  <dt>Courier Website</dt>
+                  <dd>
+                    <a
+                      [href]="getCourierTrackUrl(trackResult.courier, trackResult.awbNumber)"
+                      target="_blank"
+                      class="track-external-link"
+                    >
+                      Track on courier site
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="12"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                        class="ms-1"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"
+                        />
+                      </svg>
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </div>
           </div>
-          <div class="tracking-list">
-            <div class="tracking-item" *ngFor="let status of statusList">
-              <div class="tracking-icon status-intransit">
-                <svg class="svg-inline--fa fa-circle fa-w-16" aria-hidden="true" data-prefix="fas" data-icon="circle"
-                  role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                  <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z">
-                  </path>
-                </svg>
+        </div>
+
+        <!-- ── Shipment Details Card (Mode 2: external courier) ── -->
+        <div class="col-lg-5" *ngIf="courier?.Mode === 2">
+          <div class="track-card h-100">
+            <div class="track-card-header">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                class="me-2"
+              >
+                <path
+                  d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"
+                />
+              </svg>
+              Shipment Details
+            </div>
+            <div class="track-card-body">
+              <dl class="track-detail-list">
+                <div class="track-detail-row">
+                  <dt>AWB Number</dt>
+                  <dd>{{ trackResult.awbNumber }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Reference Number</dt>
+                  <dd>{{ trackResult.referenceNumber || '—' }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Booked Date</dt>
+                  <dd>{{ trackResult.bookedDate | date: 'medium' }}</dd>
+                </div>
+                <div class="track-detail-row" *ngIf="trackResult.remarks">
+                  <dt>Remarks</dt>
+                  <dd class="fw-semibold">{{ trackResult.remarks }}</dd>
+                </div>
+              </dl>
+
+              <div class="track-external-cta mt-3">
+                <a
+                  *ngIf="trackResult.referenceNumber; else refNotFoundBlock"
+                  [href]="getCourierTrackUrl(trackResult.courier, trackResult.referenceNumber)"
+                  target="_blank"
+                  class="btn btn-primary w-100"
+                >
+                  View Detailed Tracking
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                    class="ms-2"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"
+                    />
+                  </svg>
+                </a>
+                <ng-template #refNotFoundBlock>
+                  <div class="alert alert-warning mb-0">
+                    Reference number not available. Please <a href="/contact">contact us</a> for
+                    details.
+                  </div>
+                </ng-template>
               </div>
-              <div class="tracking-date">{{ status.statusDate }}<span> {{ status.statusTime}} </span></div>
-              <div class="tracking-content"> {{ status.status}} <span> {{ status.remark }} </span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Timeline Card (Mode: default only) ── -->
+        <div class="col-lg-7" *ngIf="!courier?.Mode">
+          <div class="track-card h-100">
+            <div class="track-card-header">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                class="me-2"
+              >
+                <path
+                  d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"
+                />
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+              </svg>
+              Tracking History
+            </div>
+            <div class="track-card-body">
+              <div class="track-timeline">
+                <div
+                  class="track-timeline-item"
+                  *ngFor="let item of statusList; let i = index; let last = last"
+                  [class.track-timeline-item--latest]="last"
+                >
+                  <div class="track-timeline-dot" [class.track-timeline-dot--latest]="last"></div>
+                  <div class="track-timeline-connector" *ngIf="!last"></div>
+                  <div class="track-timeline-content">
+                    <div class="track-timeline-status" [class.fw-bold]="last">
+                      {{ item.status }}
+                    </div>
+                    <div class="track-timeline-remark text-muted" *ngIf="item.remark">
+                      {{ item.remark }}
+                    </div>
+                    <div class="track-timeline-time text-muted">
+                      <small>{{ item.statusDate }} &middot; {{ item.statusTime }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="row" *ngIf="loader">
-      <p>Status Loading...</p>
-    </div>
-
-    <div class="row" *ngIf="!loader && !status">
-      <p><strong>Provided AWB/Reference Number is invalid. Please check the air way bill number or contact us.</strong>
-      </p>
     </div>
   </div>
 </div>

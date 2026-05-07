@@ -58,6 +58,8 @@ module.exports = [
     },
     rules: {
       ...angularTemplatePlugin.configs['recommended'].rules,
+      // Migration-guidance rules — warn only, do not block commits on existing code
+      '@angular-eslint/template/prefer-control-flow': 'warn',
     },
   },
 ];

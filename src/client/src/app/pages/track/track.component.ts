@@ -241,4 +241,9 @@ export class TrackComponent implements OnInit {
   getCourierMode(id: number): number {
     return this.courierLists.find(x => x.CourierId === id)?.Mode || 1;
   }
+
+  getCourierTrackUrl(courierId: number, awb: string): string {
+    const url = this.getCourierUrl(courierId);
+    return url ? url.replace('<AWB>', awb) : '';
+  }
 }

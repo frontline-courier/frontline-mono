@@ -1,27 +1,88 @@
-#track-column-1 {
-  font-size: 12px;
+// ── Page Header ────────────────────────────────────────────────────────────
+.track-header {
+  border-left: 4px solid #0d6efd;
+  padding-left: 1rem;
 
-  .table td, .table th {
-    padding: .25rem;
+  .track-title {
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+  }
+
+  .track-subtitle {
+    font-size: 0.9rem;
   }
 }
 
-.tracking-detail {
-  padding: 3rem 0;
+// ── Loading State ───────────────────────────────────────────────────────────
+.track-loading-card {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 0.75rem;
+  padding: 2rem;
 }
-#tracking {
-  margin-bottom: 1rem;
+
+// ── Error State ─────────────────────────────────────────────────────────────
+.track-error-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  background: #fff5f5;
+  border: 1px solid #f5c6cb;
+  border-radius: 0.75rem;
+  padding: 1.5rem 2rem;
+  color: #842029;
+
+  .track-error-icon {
+    flex-shrink: 0;
+    opacity: 0.75;
+  }
 }
-[class*="tracking-status-"] p {
-  margin: 0;
-  font-size: 1.1rem;
+
+// ── Status Banner ───────────────────────────────────────────────────────────
+.track-status-banner {
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.75rem;
   color: #fff;
-  text-transform: uppercase;
-  text-align: center;
+
+  .track-status-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.85;
+    margin-bottom: 0.2rem;
+  }
+
+  .track-status-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .track-awb-badge {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    text-align: right;
+
+    .track-awb-label {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.8;
+    }
+
+    .track-awb-number {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+  }
 }
-[class*="tracking-status-"] {
-  padding: 1.6rem 0;
-}
+
+// Status banner colours (reuse existing naming convention)
 .tracking-status-intransit {
   background-color: #4db565;
 }
@@ -30,6 +91,7 @@
 }
 .tracking-status-deliveryoffice {
   background-color: #f7dc6f;
+  color: #333 !important;
 }
 .tracking-status-delivered {
   background-color: #4cbb87;
@@ -46,98 +108,142 @@
 }
 .tracking-status-pending {
   background-color: #ccc;
+  color: #333 !important;
 }
 .tracking-status-inforeceived {
   background-color: #214977;
 }
-.tracking-list {
-  border: 1px solid #e5e5e5;
+
+// ── Cards ───────────────────────────────────────────────────────────────────
+.track-card {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+
+  .track-card-header {
+    display: flex;
+    align-items: center;
+    padding: 0.9rem 1.25rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #495057;
+  }
+
+  .track-card-body {
+    padding: 1.25rem;
+  }
 }
-.tracking-item {
-  border-left: 1px solid #e5e5e5;
+
+// ── Detail List ─────────────────────────────────────────────────────────────
+.track-detail-list {
+  margin: 0;
+
+  .track-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #f1f3f5;
+    font-size: 0.875rem;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    dt {
+      font-weight: 500;
+      color: #6c757d;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    dd {
+      margin: 0;
+      text-align: right;
+      color: #212529;
+      word-break: break-word;
+    }
+  }
+}
+
+// ── External link ───────────────────────────────────────────────────────────
+.track-external-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ── Timeline ────────────────────────────────────────────────────────────────
+.track-timeline {
   position: relative;
-  padding: 2rem 1.5rem 0.5rem 2.5rem;
-  font-size: 0.9rem;
-  margin-left: 3rem;
-  min-height: 5rem;
+  padding: 0.25rem 0;
 }
-.tracking-item:last-child {
-  padding-bottom: 4rem;
+
+.track-timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  position: relative;
+  padding-bottom: 1.5rem;
+
+  &:last-child {
+    padding-bottom: 0;
+  }
 }
-.tracking-item .tracking-date {
-  margin-bottom: 0.5rem;
-}
-.tracking-item .tracking-date span {
-  color: #888;
-  font-size: 85%;
-  padding-left: 0.4rem;
-}
-.tracking-item .tracking-content {
-  padding: 0.5rem 0.8rem;
-  background-color: #f4f4f4;
-  border-radius: 0.5rem;
-}
-.tracking-item .tracking-content span {
-  display: block;
-  color: #888;
-  font-size: 85%;
-}
-.tracking-item .tracking-icon {
-  //  line-height:2.6rem;
-  position: absolute;
-  left: -1.3rem;
-  width: 2.6rem;
-  height: 2.6rem;
-  text-align: center;
+
+.track-timeline-dot {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  font-size: 1.1rem;
-  background-color: #fff;
-  color: #fff;
-}
-.tracking-item .tracking-icon.status-sponsored {
-  background-color: #f68;
-}
-.tracking-item .tracking-icon.status-delivered {
-  background-color: #4cbb87;
-}
-.tracking-item .tracking-icon.status-outfordelivery {
-  background-color: #f5a551;
-}
-.tracking-item .tracking-icon.status-deliveryoffice {
-  background-color: #f7dc6f;
-}
-.tracking-item .tracking-icon.status-attemptfail {
-  background-color: #b789c7;
-}
-.tracking-item .tracking-icon.status-exception {
-  background-color: #d26759;
-}
-.tracking-item .tracking-icon.status-inforeceived {
-  background-color: #214977;
-}
-.tracking-item .tracking-icon.status-fl {
-  background-color: #007bff;
-}
-.tracking-item .tracking-icon.status-intransit {
-  color: #e5e5e5;
-  border: 1px solid #e5e5e5;
-  font-size: 0.6rem;
-}
-@media (min-width: 992px) {
-  .tracking-item {
-    margin-left: 10rem;
+  background: #ced4da;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px #ced4da;
+  margin-top: 0.2rem;
+  z-index: 1;
+
+  &.track-timeline-dot--latest {
+    background: #0d6efd;
+    box-shadow: 0 0 0 2px #0d6efd;
+    width: 16px;
+    height: 16px;
   }
-  .tracking-item .tracking-date {
-    position: absolute;
-    left: -10rem;
-    width: 7.5rem;
-    text-align: right;
+}
+
+.track-timeline-connector {
+  position: absolute;
+  left: 6px;
+  top: 18px;
+  bottom: 0;
+  width: 2px;
+  background: #e9ecef;
+}
+
+.track-timeline-content {
+  flex: 1;
+  min-width: 0;
+
+  .track-timeline-status {
+    font-size: 0.9rem;
+    color: #212529;
+    margin-bottom: 0.1rem;
   }
-  .tracking-item .tracking-date span {
-    display: block;
+
+  .track-timeline-remark {
+    font-size: 0.8rem;
+    margin-bottom: 0.15rem;
   }
-  .tracking-item .tracking-content {
-    padding: 0;
-    background-color: transparent;
+
+  .track-timeline-time {
+    font-size: 0.78rem;
   }
 }
