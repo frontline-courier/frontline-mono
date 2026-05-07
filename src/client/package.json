@@ -6,9 +6,28 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
+    "lint:eslint": "eslint src/",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "format": "prettier --write \"src/**/*.{ts,html,scss,css,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,html,scss,css,json}\"",
     "e2e": "ng e2e",
-    "deploy": "npm run build --configuration=production && firebase deploy --only hosting:frontline-client"
+    "deploy": "npm run build --configuration=production && firebase deploy --only hosting:frontline-client",
+    "prepare": "cd ../.. && git config core.hooksPath src/client/.husky"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "src/**/*.html": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "src/**/*.{scss,css,json}": [
+      "prettier --write"
+    ]
   },
   "private": true,
   "dependencies": {
@@ -24,7 +43,7 @@
     "crypto-js": "^4.1.1",
     "firebase": "^11.1.0",
     "jquery": "^3.7.1",
-    "moment": "^2.29.4",
+
     "rxjs": "~7.8.1",
     "tslib": "^2.6.1",
     "zone.js": "~0.15.0"
@@ -32,17 +51,28 @@
   "devDependencies": {
     "@angular-devkit/architect": "0.1902.17",
     "@angular-devkit/build-angular": "^19.2.17",
+    "@angular-eslint/eslint-plugin": "^21.3.1",
+    "@angular-eslint/eslint-plugin-template": "^21.3.1",
+    "@angular-eslint/template-parser": "^21.3.1",
     "@angular/cli": "^19.2.17",
     "@angular/compiler-cli": "^19.2.17",
     "@angular/language-service": "^19.2.17",
     "@types/crypto-js": "^3.1.47",
     "@types/gtag.js": "^0.0.18",
     "@types/node": "^12.12.53",
+    "@typescript-eslint/eslint-plugin": "^8.59.2",
+    "@typescript-eslint/parser": "^8.59.2",
+    "eslint": "^10.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
     "firebase-tools": "^13.29.1",
     "fuzzy": "^0.1.3",
+    "husky": "^9.1.7",
     "inquirer": "^6.2.2",
     "inquirer-autocomplete-prompt": "^1.0.1",
+    "lint-staged": "^16.4.0",
     "open": "^7.0.3",
+    "prettier": "^3.8.3",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~5.8.0"
