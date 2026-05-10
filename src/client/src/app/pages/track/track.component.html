@@ -97,55 +97,51 @@
                   <dd>{{ trackResult.bookedDate | date: 'medium' }}</dd>
                 </div>
 
-                <!-- Internal mode: show full shipment details -->
-                <ng-container *ngIf="trackResult.courierMode !== 'link'">
-                  <div class="track-detail-row">
-                    <dt>Origin</dt>
-                    <dd>{{ trackResult.origin }}</dd>
-                  </div>
-                  <div class="track-detail-row">
-                    <dt>Destination</dt>
-                    <dd>{{ trackResult.destination }}</dd>
-                  </div>
-                  <div class="track-detail-row">
-                    <dt>Package Type</dt>
-                    <dd>{{ getDoxType(trackResult.doxType) }}</dd>
-                  </div>
-                  <div class="track-detail-row">
-                    <dt>Shipment Mode</dt>
-                    <dd>{{ getShipmentMode(trackResult.shipmentMode) }}</dd>
-                  </div>
-                  <div class="track-detail-row">
-                    <dt>Transport Mode</dt>
-                    <dd
-                      [class.fw-bold]="
-                        getTransportMode(trackResult.transportMode)
-                          .toLowerCase()
-                          .includes('surface')
-                      "
-                    >
-                      {{ getTransportMode(trackResult.transportMode) }}
-                    </dd>
-                  </div>
-                  <div class="track-detail-row" *ngIf="trackResult.receivedPerson">
-                    <dt>Received By</dt>
-                    <dd>{{ trackResult.receivedPerson }}</dd>
-                  </div>
-                  <div
-                    class="track-detail-row"
-                    *ngIf="
-                      trackResult.receivedPersonRelation &&
-                      trackResult.receivedPersonRelation !== 'NULL'
+                <!-- Show full shipment details (also visible for 'link' mode) -->
+                <div class="track-detail-row">
+                  <dt>Origin</dt>
+                  <dd>{{ trackResult.origin }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Destination</dt>
+                  <dd>{{ trackResult.destination }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Package Type</dt>
+                  <dd>{{ getDoxType(trackResult.doxType) }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Shipment Mode</dt>
+                  <dd>{{ getShipmentMode(trackResult.shipmentMode) }}</dd>
+                </div>
+                <div class="track-detail-row">
+                  <dt>Transport Mode</dt>
+                  <dd
+                    [class.fw-bold]="
+                      getTransportMode(trackResult.transportMode).toLowerCase().includes('surface')
                     "
                   >
-                    <dt>Relation</dt>
-                    <dd>{{ getStatusRelation(trackResult.receivedPersonRelation) }}</dd>
-                  </div>
-                  <div class="track-detail-row" *ngIf="trackResult.deliveryOfficeAddress">
-                    <dt>Delivery Office</dt>
-                    <dd>{{ trackResult.deliveryOfficeAddress }}</dd>
-                  </div>
-                </ng-container>
+                    {{ getTransportMode(trackResult.transportMode) }}
+                  </dd>
+                </div>
+                <div class="track-detail-row" *ngIf="trackResult.receivedPerson">
+                  <dt>Received By</dt>
+                  <dd>{{ trackResult.receivedPerson }}</dd>
+                </div>
+                <div
+                  class="track-detail-row"
+                  *ngIf="
+                    trackResult.receivedPersonRelation &&
+                    trackResult.receivedPersonRelation !== 'NULL'
+                  "
+                >
+                  <dt>Relation</dt>
+                  <dd>{{ getStatusRelation(trackResult.receivedPersonRelation) }}</dd>
+                </div>
+                <div class="track-detail-row" *ngIf="trackResult.deliveryOfficeAddress">
+                  <dt>Delivery Office</dt>
+                  <dd>{{ trackResult.deliveryOfficeAddress }}</dd>
+                </div>
 
                 <div class="track-detail-row" *ngIf="trackResult.remarks">
                   <dt>Remarks</dt>
