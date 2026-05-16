@@ -8,6 +8,7 @@ import { PageTypes } from '../../enums/pageTypes';
 import { getPageType } from '../../helpers/router/getPageType';
 import { BookingFormInputs } from '../../interfaces/bookingForm';
 import { bookedByOptions } from '../../constants/bookedByOptions';
+import { importDutyOptions } from '../../constants/importDutyOptions';
 import { paymentModes } from '../../constants/paymentModes';
 
 const hasSelectedValue = (value: number) => value > 0 || 'Please select a value';
@@ -34,7 +35,7 @@ const getDefaultBookingFormValues = (): Partial<BookingFormInputs> => ({
   doxType: 0,
   shipmentMode: 0,
   transportMode: 0,
-  coCourier: 0,
+  importDuty: '',
   bookedBy: '',
   paymentMode: '',
   bookingAmount: undefined,
@@ -267,12 +268,13 @@ export default function BookingForm() {
           </div>
           <div className="form-control">
             <label className="label p-1">
-              <span className="label-text text-2xs">Co Courier</span>
+              <span className="label-text text-2xs">Import Duty</span>
             </label>
-            <select className={`select select-bordered ${errors.coCourier && 'select-error'}`} {...register('coCourier', { valueAsNumber: true })}>
-              <option disabled={true} value={0}>-- co courier --</option>
-              <option value={1}>Yes</option>
-              <option value={0}>No</option>
+            <select className={`select select-bordered ${errors.importDuty && 'select-error'}`} {...register('importDuty')}>
+              <option disabled={true} value="">-- import duty --</option>
+              {importDutyOptions.map((option) => (
+                <option key={option} value={option}>{option}</option>
+              ))}
             </select>
           </div>
 

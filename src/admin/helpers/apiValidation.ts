@@ -5,6 +5,7 @@ import { creditCourier } from '../constants/credit/couriers';
 import { creditModes } from '../constants/credit/mode';
 import { creditServices } from '../constants/credit/service';
 import { statusRelation } from '../constants/deliveryRelation';
+import { importDutyOptions } from '../constants/importDutyOptions';
 import { paymentModes } from '../constants/paymentModes';
 import { courierStatus } from '../constants/shipmentStatus';
 
@@ -20,6 +21,7 @@ export class ValidationError extends Error {
 
 const bookedBySet = new Set(bookedByOptions);
 const paymentModeSet = new Set(paymentModes);
+const importDutySet = new Set(importDutyOptions);
 const creditClientSet = new Set(creditClients.map((client) => client.name));
 const creditCourierSet = new Set(creditCourier);
 const creditModeSet = new Set(creditModes);
@@ -163,7 +165,7 @@ export function normalizeBookingPayload(input: unknown, partial = false) {
   setValueIfDefined(normalizedPayload, 'destination', ensureTrimmedString(body.destination, 'Destination'));
   setValueIfDefined(normalizedPayload, 'shipmentMode', ensureFiniteNumber(body.shipmentMode, 'Shipment Mode', { required: !partial, integer: true }));
   setValueIfDefined(normalizedPayload, 'transportMode', ensureFiniteNumber(body.transportMode, 'Transport Mode', { integer: true }));
-  setValueIfDefined(normalizedPayload, 'coCourier', ensureFiniteNumber(body.coCourier, 'Co Courier', { integer: true }));
+  setValueIfDefined(normalizedPayload, 'importDuty', ensureAllowedString(body.importDuty, 'Import Duty', importDutySet));
   setValueIfDefined(normalizedPayload, 'bookingAmount', ensureFiniteNumber(body.bookingAmount, 'Booking Amount'));
   setValueIfDefined(normalizedPayload, 'billAmount', ensureFiniteNumber(body.billAmount, 'Bill Amount'));
   setValueIfDefined(normalizedPayload, 'actualWeight', ensureFiniteNumber(body.actualWeight, 'Actual Weight'));

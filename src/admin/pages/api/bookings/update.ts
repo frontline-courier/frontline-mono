@@ -25,6 +25,10 @@ handler.post(async (req: any, res: any) => {
         },
             {
                 $set: data,
+                // If coCourier is being unset, we need to explicitly set it to an empty string to avoid validation errors in the booking model.
+                $unset: {
+                    coCourier: '',
+                },
             });
 
         res.json(doc);

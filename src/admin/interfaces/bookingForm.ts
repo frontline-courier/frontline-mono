@@ -1,3 +1,5 @@
+import { ImportDutyOption } from '../constants/importDutyOptions';
+
 export type BookingFormInputs = {
     awbNumber: string,
     referenceNumber: string,
@@ -10,7 +12,7 @@ export type BookingFormInputs = {
     destination: string,
     shipmentMode: number,
     transportMode: number,
-    coCourier: number,
+    importDuty: ImportDutyOption | '',
     bookingAmount?: number,
     billAmount?: number,
     actualWeight?: number,
