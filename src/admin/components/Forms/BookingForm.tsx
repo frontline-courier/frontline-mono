@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { PageTypes } from '../../enums/pageTypes';
 import { getPageType } from '../../helpers/router/getPageType';
 import { BookingFormInputs } from '../../interfaces/bookingForm';
+import { branchOptions } from '../../constants/branchOptions';
 import { bookedByOptions } from '../../constants/bookedByOptions';
 import { importDutyOptions } from '../../constants/importDutyOptions';
 import { paymentModes } from '../../constants/paymentModes';
@@ -38,8 +39,8 @@ const getDefaultBookingFormValues = (): Partial<BookingFormInputs> => ({
   importDuty: '',
   bookedBy: '',
   paymentMode: '',
+  branch: '',
   bookingAmount: undefined,
-  billAmount: undefined,
   actualWeight: undefined,
   bookedDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
 });
@@ -83,8 +84,8 @@ export default function BookingForm() {
             bookedDate: moment(bookingResponse.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL),
             bookedBy: bookingResponse.data.bookedBy || '',
             paymentMode: bookingResponse.data.paymentMode || '',
+            branch: bookingResponse.data.branch || '',
             bookingAmount: getNumericFieldValue(bookingResponse.data.bookingAmount),
-            billAmount: getNumericFieldValue(bookingResponse.data.billAmount),
             actualWeight: getNumericFieldValue(bookingResponse.data.actualWeight),
           });
           if (pageType === PageTypes.DELETE) {
@@ -286,9 +287,14 @@ export default function BookingForm() {
           </div>
           <div className="form-control">
             <label className="label p-1">
-              <span className="label-text text-2xs">Bill Amount</span>
+              <span className="label-text text-2xs">Branch</span>
             </label>
-            <input type="text" inputMode="decimal" placeholder="Bill Amount" className={`input input-bordered ${errors.billAmount && 'input-error'}`} {...register('billAmount', { required: true, setValueAs: parseNumericInput, validate: isFiniteNumber })} />
+            <select className={`select select-bordered ${errors.branch && 'select-error'}`} {...register('branch')}>
+              <option disabled={true} value="">-- branch --</option>
+              {branchOptions.map((option) => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
           </div>
           <div className="form-control">
             <label className="label p-1">

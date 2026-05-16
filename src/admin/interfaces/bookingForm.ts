@@ -1,3 +1,4 @@
+import { BranchOption } from '../constants/branchOptions';
 import { ImportDutyOption } from '../constants/importDutyOptions';
 
 export type BookingFormInputs = {
@@ -14,7 +15,7 @@ export type BookingFormInputs = {
     transportMode: number,
     importDuty: ImportDutyOption | '',
     bookingAmount?: number,
-    billAmount?: number,
+    branch: BranchOption | '',
     actualWeight?: number,
     bookedBy: string,
     paymentMode: string,

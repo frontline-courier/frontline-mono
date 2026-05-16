@@ -25,9 +25,11 @@ handler.post(async (req: any, res: any) => {
         },
             {
                 $set: data,
-                // If coCourier is being unset, we need to explicitly set it to an empty string to avoid validation errors in the booking model.
+                // TODO: can remove later
+                // these are fields that are no longer used but we want to remove them from existing documents
                 $unset: {
                     coCourier: '',
+                    billAmount: '',
                 },
             });
 

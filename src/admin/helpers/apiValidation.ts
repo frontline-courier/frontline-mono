@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import { branchOptions } from '../constants/branchOptions';
 import { bookedByOptions } from '../constants/bookedByOptions';
 import { creditClients } from '../constants/credit/clients';
 import { creditCourier } from '../constants/credit/couriers';
@@ -20,6 +21,7 @@ export class ValidationError extends Error {
 }
 
 const bookedBySet = new Set(bookedByOptions);
+const branchSet = new Set(branchOptions);
 const paymentModeSet = new Set(paymentModes);
 const importDutySet = new Set(importDutyOptions);
 const creditClientSet = new Set(creditClients.map((client) => client.name));
@@ -166,8 +168,8 @@ export function normalizeBookingPayload(input: unknown, partial = false) {
   setValueIfDefined(normalizedPayload, 'shipmentMode', ensureFiniteNumber(body.shipmentMode, 'Shipment Mode', { required: !partial, integer: true }));
   setValueIfDefined(normalizedPayload, 'transportMode', ensureFiniteNumber(body.transportMode, 'Transport Mode', { integer: true }));
   setValueIfDefined(normalizedPayload, 'importDuty', ensureAllowedString(body.importDuty, 'Import Duty', importDutySet));
+  setValueIfDefined(normalizedPayload, 'branch', ensureAllowedString(body.branch, 'Branch', branchSet));
   setValueIfDefined(normalizedPayload, 'bookingAmount', ensureFiniteNumber(body.bookingAmount, 'Booking Amount'));
-  setValueIfDefined(normalizedPayload, 'billAmount', ensureFiniteNumber(body.billAmount, 'Bill Amount'));
   setValueIfDefined(normalizedPayload, 'actualWeight', ensureFiniteNumber(body.actualWeight, 'Actual Weight'));
   setValueIfDefined(normalizedPayload, 'bookedBy', ensureAllowedString(body.bookedBy, 'Booked By', bookedBySet));
   setValueIfDefined(normalizedPayload, 'paymentMode', ensureAllowedString(body.paymentMode, 'Payment Mode', paymentModeSet));
