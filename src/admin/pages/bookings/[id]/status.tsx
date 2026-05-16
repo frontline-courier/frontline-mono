@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { shipmentStatus } from '../../../models/shipmentStatus';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { statusRelation } from '../../../constants/deliveryRelation';
 import moment from 'moment';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { courierStatus } from '../../../../shared/courier-status';
 
-const status = shipmentStatus;
+const status = courierStatus;
 const relations = statusRelation;
 
 const getDefaultStatusFormValues = () => ({

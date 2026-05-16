@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { courierStatus } from '../../constants/courier-status';
 import { statusRelation } from '../../constants/status-relation';
 import { getDoxType } from '../../models/doxType';
 import { getShipmentMode } from '../../models/shipmentMode';
 import { getTransportMode } from '../../models/transportMode';
 import { formatDate, toUnix } from 'src/app/utils/date-utils';
+import { courierStatus, getShipmentStatus } from '../../../../../shared/courier-status';
 
 interface DeliveryResult {
   statusDate: string;
@@ -106,9 +106,7 @@ export class TrackComponent implements OnInit {
   }
 
   getDeliveryStatusText(id: number): string {
-    if (typeof id === 'string') return id;
-    const found = this.courierStatus.find(c => c.StatusId === id);
-    return found?.ShipmentStatus || '';
+    return getShipmentStatus(id, '');
   }
 
   getStatusRelation(id: number | string): string {

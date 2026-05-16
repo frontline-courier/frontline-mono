@@ -3,6 +3,7 @@ import nextConnect from 'next-connect';
 import { getErrorMessage, requireApiAuth } from '../../../../helpers/api';
 import { normalizeBookingStatusPayload, ValidationError } from '../../../../helpers/apiValidation';
 import middleware from '../../../../helpers/database';
+import { getShipmentStatus, isSameShipmentStatus } from '../../../../../shared/courier-status';
 
 const handler = nextConnect();
 
@@ -17,7 +18,13 @@ handler.post(async (req: any, res: any) => {
             throw new ValidationError('Booking id is invalid.');
         }
 
-        const { receivedPerson, receivedPersonRelation, remark, statusDate, statusId } = normalizeBookingStatusPayload(req.body);
+        const { receivedPerson, receivedPersonRelation, remark, statusDate, statusId } = normalizeBookingStatusPayload(req.body) as {
+            receivedPerson?: string;
+            receivedPersonRelation?: string;
+            remark?: string;
+            statusDate?: Date;
+            statusId: string;
+        };
         const doc =
             await req.db.collection('bookings')
                 .updateOne(
@@ -45,7 +52,12 @@ handler.put(async (req: any, res: any) => {
             throw new ValidationError('Booking id is invalid.');
         }
 
-        const { action, remark, statusDate, statusId } = normalizeBookingStatusPayload(req.body, true);
+        const { action, remark, statusDate, statusId } = normalizeBookingStatusPayload(req.body, true) as {
+            action: 'delete';
+            remark?: string;
+            statusDate: Date;
+            statusId: string;
+        };
 
         if (action === 'delete') {
             const normalizedStatusDate = statusDate instanceof Date ? statusDate : new Date(String(statusDate));
@@ -63,7 +75,7 @@ handler.put(async (req: any, res: any) => {
 
             const nextDelivery = currentDelivery.filter((entry: any) => {
                 const matchesEntry = !deleted
-                    && entry?.statusId === statusId
+                    && isSameShipmentStatus(entry?.statusId, statusId)
                     && (entry?.remark || '') === (remark || '')
                     && new Date(entry?.statusDate).getTime() === deleteStatusTime;
 
@@ -88,7 +100,7 @@ handler.put(async (req: any, res: any) => {
                         {
                             $set: {
                                 delivery: nextDelivery,
-                                shipmentStatus: nextDelivery[nextDelivery.length - 1]?.statusId || 'Booked',
+                                shipmentStatus: getShipmentStatus(nextDelivery[nextDelivery.length - 1]?.statusId, 'Booked'),
                                 receivedPerson: '',
                                 receivedPersonRelation: '',
                             },

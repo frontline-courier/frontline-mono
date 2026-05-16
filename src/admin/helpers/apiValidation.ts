@@ -8,7 +8,7 @@ import { creditServices } from '../constants/credit/service';
 import { statusRelation } from '../constants/deliveryRelation';
 import { importDutyOptions } from '../constants/importDutyOptions';
 import { paymentModes } from '../constants/paymentModes';
-import { courierStatus } from '../constants/shipmentStatus';
+import { normalizeShipmentStatusValue } from '../../shared/courier-status';
 
 export class ValidationError extends Error {
   statusCode: number;
@@ -29,7 +29,6 @@ const creditCourierSet = new Set(creditCourier);
 const creditModeSet = new Set(creditModes);
 const creditServiceSet = new Set(creditServices);
 const relationSet = new Set(statusRelation.map((relation) => relation.Name));
-const shipmentStatusSet = new Set(courierStatus.map((status) => status.ShipmentStatus));
 
 function ensureRecord(value: unknown, fieldName = 'Request body') {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
@@ -140,6 +139,30 @@ function ensureAllowedString(
   }
 
   return normalizedValue;
+}
+
+function ensureShipmentStatus(
+  value: unknown,
+  fieldName: string,
+  options: { required?: boolean } = {},
+) {
+  if (value === undefined || value === null || value === '') {
+    if (options.required) {
+      throw new ValidationError(`${fieldName} is required.`);
+    }
+
+    return undefined;
+  }
+
+  const resolvedStatus = normalizeShipmentStatusValue(
+    typeof value === 'number' || typeof value === 'string' ? value : undefined,
+  );
+
+  if (!resolvedStatus) {
+    throw new ValidationError(`${fieldName} is invalid.`);
+  }
+
+  return resolvedStatus;
 }
 
 export function parseObjectId(value: unknown, fieldName = 'id') {
@@ -306,7 +329,7 @@ export function normalizeBookingStatusPayload(input: unknown, allowDelete = fals
   setValueIfDefined(
     normalizedPayload,
     'statusId',
-    ensureAllowedString(body.statusId, 'Status', shipmentStatusSet, { required: true }),
+    ensureShipmentStatus(body.statusId, 'Status', { required: true }),
   );
 
   return normalizedPayload;

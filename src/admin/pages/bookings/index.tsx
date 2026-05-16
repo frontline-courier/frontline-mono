@@ -3,7 +3,6 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import DataTable from 'react-data-table-component';
-import { courierStatus } from '../../constants/shipmentStatus';
 import { getDoxType } from '../../models/DoxType';
 import { getShipmentMode } from '../../models/shipmentMode';
 import { getTransportMode } from '../../models/transportMode';
@@ -15,9 +14,9 @@ import moment from 'moment';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
-import { shipmentStatus } from '../../models/shipmentStatus';
+import { courierStatus, getShipmentStatus } from '../../../shared/courier-status';
 
-const statusList = courierStatus.sort((a, b) => a.ShipmentStatus.localeCompare(b.ShipmentStatus));
+const statusList = [...courierStatus].sort((a, b) => a.ShipmentStatus.localeCompare(b.ShipmentStatus));
 
 const expandedFieldSections = [
   {
@@ -140,13 +139,6 @@ const BookingPage = () => {
     fetchCouriers();
     fetchData();
   }, [fetchCouriers, fetchData]); // Dependency on fetchCouriers
-
-  // get data from list
-  // to be removed after sometime
-  const getShipmentStatus = (status: string): string => {
-    if (typeof status === 'string') { return status; }
-    return statusList.find((s) => s.StatusId === parseInt(status, 10))?.ShipmentStatus || 'NA';
-  }
 
   const data = rawBookingData.map((booking: any) => ({
     ...booking,

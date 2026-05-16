@@ -1,4 +1,11 @@
-export const shipmentStatus = [
+export type CourierStatusEntry = {
+  StatusId: number;
+  ShipmentStatus: string;
+  Sequence: number | string;
+  Description: number | string;
+};
+
+export const courierStatus: CourierStatusEntry[] = [
   {
     StatusId: 1,
     ShipmentStatus: 'Booked',
@@ -31,7 +38,7 @@ export const shipmentStatus = [
   },
   {
     StatusId: 6,
-    ShipmentStatus: 'Reached destinatation',
+    ShipmentStatus: 'Reached Destination',
     Sequence: 'NULL',
     Description: 'NULL'
   },
@@ -49,31 +56,31 @@ export const shipmentStatus = [
   },
   {
     StatusId: 9,
-    ShipmentStatus: 'Returned  to Orgin',
+    ShipmentStatus: 'Returned to Origin',
     Sequence: 'NULL',
     Description: 1
   },
   {
     StatusId: 10,
-    ShipmentStatus: 'Incorrect address',
+    ShipmentStatus: 'Incorrect Address',
     Sequence: 'NULL',
     Description: 1
   },
   {
     StatusId: 11,
-    ShipmentStatus: 'Wrong phone  / Not reach',
+    ShipmentStatus: 'Wrong Phone Number or Not Reachable',
     Sequence: 'NULL',
     Description: 1
   },
   {
     StatusId: 12,
-    ShipmentStatus: 'Wrong pincode in pack',
+    ShipmentStatus: 'Wrong Pincode in Shipment',
     Sequence: 'NULL',
     Description: 1
   },
   {
     StatusId: 13,
-    ShipmentStatus: 'No service area',
+    ShipmentStatus: 'No Service Area',
     Sequence: 'NULL',
     Description: 1
   },
@@ -85,7 +92,7 @@ export const shipmentStatus = [
   },
   {
     StatusId: 15,
-    ShipmentStatus: 'Taken for delivery',
+    ShipmentStatus: 'Taken for Delivery',
     Sequence: 'NULL',
     Description: 'NULL'
   },
@@ -115,13 +122,13 @@ export const shipmentStatus = [
   },
   {
     StatusId: 20,
-    ShipmentStatus: 'LOAD LATE CUTOFF',
+    ShipmentStatus: 'Load Late - Cutoff',
     Sequence: 'NULL',
     Description: 'NULL'
   },
   {
     StatusId: 21,
-    ShipmentStatus: 'REFUSED TO ACCEPT',
+    ShipmentStatus: 'Refused to Accept',
     Sequence: 'NULL',
     Description: 'NULL'
   },
@@ -133,7 +140,7 @@ export const shipmentStatus = [
   },
   {
     StatusId: 23,
-    ShipmentStatus: 'Canceled By Shipper',
+    ShipmentStatus: 'Canceled by Shipper',
     Sequence: 'NULL',
     Description: 'NULL'
   },
@@ -145,7 +152,7 @@ export const shipmentStatus = [
   },
   {
     StatusId: 25,
-    ShipmentStatus: 'Clearance process ok',
+    ShipmentStatus: 'Clearance process Ok',
     Sequence: 'NULL',
     Description: 'NULL'
   },
@@ -157,25 +164,25 @@ export const shipmentStatus = [
   },
   {
     StatusId: 27,
-    ShipmentStatus: 'FORWARDED IN CO COURIER',
+    ShipmentStatus: 'Forwarded in Co-courier',
     Sequence: 'NULL',
     Description: 'NULL'
   },
   {
     StatusId: 28,
-    ShipmentStatus: 'PARTY COME AND COLLECT',
+    ShipmentStatus: 'Party Come and Collect',
     Sequence: 'NULL',
     Description: 'NULL'
   },
   {
     StatusId: 29,
-    ShipmentStatus: 'LOAD ARRIVED  LATE',
+    ShipmentStatus: 'Load Arrived Late',
     Sequence: 'NULL',
     Description: 'NULL'
   },
   {
     StatusId: 30,
-    ShipmentStatus: 'UNDER PROCESSING',
+    ShipmentStatus: 'Under Processing',
     Sequence: 'NULL',
     Description: 'NULL'
   },
@@ -187,7 +194,7 @@ export const shipmentStatus = [
   },
   {
     StatusId: 32,
-    ShipmentStatus: 'IMPORT DUTY NOT PAID',
+    ShipmentStatus: 'Import Duty Not Paid',
     Sequence: 'NULL',
     Description: 'NULL'
   },
@@ -199,31 +206,31 @@ export const shipmentStatus = [
   },
   {
     StatusId: 34,
-    ShipmentStatus: 'LABEL CREATED IN CHENNAI',
+    ShipmentStatus: 'Label Created in Chennai',
     Sequence: 1,
     Description: 'LABEL CREATED IN CHENNAI'
   },
   {
     StatusId: 35,
-    ShipmentStatus: 'INFORMED TO CONSIGNEE',
+    ShipmentStatus: 'Informed to Consignee',
     Sequence: 'NULL',
     Description: 'NULL'
   },
   {
     StatusId: 36,
-    ShipmentStatus: 'SECURITY  GATE DELIVERY',
+    ShipmentStatus: 'Security Gate Delivery',
     Sequence: 'NULL',
     Description: 'NULL'
   },
   {
     StatusId: 37,
-    ShipmentStatus: 'INFORMED TO SHIPPER',
+    ShipmentStatus: 'Informed to Shipper',
     Sequence: 'NULL',
     Description: 'NULL'
   },
   {
     StatusId: 38,
-    ShipmentStatus: 'CHEMICAL  POWER',
+    ShipmentStatus: 'Chemical Power',
     Sequence: 'NULL',
     Description: 'NULL'
   },
@@ -259,7 +266,7 @@ export const shipmentStatus = [
   },
   {
     StatusId: 45,
-    ShipmentStatus: 'Shipment  hold',
+    ShipmentStatus: 'Shipment hold',
     Sequence: 'NULL',
     Description: 'NULL'
   },
@@ -271,7 +278,7 @@ export const shipmentStatus = [
   },
   {
     StatusId: 47,
-    ShipmentStatus: 'waiting for clearance',
+    ShipmentStatus: 'Waiting for Clearance',
     Sequence: 'NULL',
     Description: 'waiting for clearance'
   },
@@ -283,9 +290,9 @@ export const shipmentStatus = [
   },
   {
     StatusId: 50,
-    ShipmentStatus: 'RTO delivered  Shipper',
+    ShipmentStatus: 'RTO delivered - Shipper',
     Sequence: 'NULL',
-    Description: 'RTO delivered  Shipper'
+    Description: 'RTO delivered - Shipper'
   },
   {
     StatusId: 52,
@@ -319,8 +326,83 @@ export const shipmentStatus = [
   }
 ];
 
-export function getShipmentStatus(statusId: number | string): string {
-  if (typeof statusId === 'string') { return statusId; }
-  return shipmentStatus.find((k) => k.StatusId === statusId)?.ShipmentStatus || 'NA';
+const statusById = new Map(courierStatus.map((entry) => [entry.StatusId, entry]));
+const statusByText = new Map(courierStatus.map((entry) => [entry.ShipmentStatus, entry]));
+
+function toStatusLookupKey(value: string) {
+  return value.trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ');
 }
 
+const canonicalTextByLookupKey = new Map(
+  courierStatus.map((entry) => [toStatusLookupKey(entry.ShipmentStatus), entry.ShipmentStatus]),
+);
+
+const legacyStatusAliases = new Map<string, string>([
+  ['reached destinatation', 'Reached Destination'],
+  ['returned to orgin', 'Returned to Origin'],
+  ['wrong phone not reach', 'Wrong Phone Number or Not Reachable'],
+  ['wrong pincode in pack', 'Wrong Pincode in Shipment'],
+  ['shipment hold', 'Shipment hold'],
+  ['waiting for clearance', 'Waiting for Clearance'],
+]);
+
+export function resolveCourierStatus(value: number | string | null | undefined) {
+  if (typeof value === 'number') {
+    return statusById.get(value);
+  }
+
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue) {
+    return undefined;
+  }
+
+  const exactMatch = statusByText.get(trimmedValue);
+
+  if (exactMatch) {
+    return exactMatch;
+  }
+
+  const lookupKey = toStatusLookupKey(trimmedValue);
+  const canonicalText = legacyStatusAliases.get(lookupKey) || canonicalTextByLookupKey.get(lookupKey);
+
+  return canonicalText ? statusByText.get(canonicalText) : undefined;
+}
+
+export function normalizeShipmentStatusValue(value: number | string | null | undefined) {
+  return resolveCourierStatus(value)?.ShipmentStatus;
+}
+
+export function getShipmentStatus(value: number | string | null | undefined, fallback = 'NA') {
+  const normalizedStatus = normalizeShipmentStatusValue(value);
+
+  if (normalizedStatus) {
+    return normalizedStatus;
+  }
+
+  if (typeof value === 'string') {
+    const trimmedValue = value.trim();
+    return trimmedValue || fallback;
+  }
+
+  return fallback;
+}
+
+export function isSameShipmentStatus(left: number | string | null | undefined, right: number | string | null | undefined) {
+  const leftStatus = resolveCourierStatus(left);
+  const rightStatus = resolveCourierStatus(right);
+
+  if (leftStatus && rightStatus) {
+    return leftStatus.StatusId === rightStatus.StatusId;
+  }
+
+  if (typeof left === 'string' && typeof right === 'string') {
+    return toStatusLookupKey(left) === toStatusLookupKey(right);
+  }
+
+  return left === right;
+}

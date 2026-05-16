@@ -7,6 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
+    "test:status-normalization": "node --experimental-strip-types --test ../shared/courier-status.test.ts",
     "lint": "ng lint",
     "lint:eslint": "eslint src/",
     "typecheck": "tsc -p tsconfig.app.json --noEmit",
