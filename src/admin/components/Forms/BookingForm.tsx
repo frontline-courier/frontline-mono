@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { Controller, useForm, SubmitHandler } from 'react-hook-form';
 import { PageTypes } from '../../enums/pageTypes';
 import { getPageType } from '../../helpers/router/getPageType';
 import { BookingFormInputs } from '../../interfaces/bookingForm';
@@ -11,6 +11,7 @@ import { branchOptions } from '../../constants/branchOptions';
 import { bookedByOptions } from '../../constants/bookedByOptions';
 import { importDutyOptions } from '../../constants/importDutyOptions';
 import { creditStatusOptions, paymentModes } from '../../constants/paymentModes';
+import PaymentModeSelect from './PaymentModeSelect';
 
 const hasSelectedValue = (value: number) => value > 0 || 'Please select a value';
 const isFiniteNumber = (value: number | undefined) => value === undefined || (typeof value === 'number' && Number.isFinite(value)) || 'Please enter a valid number';
@@ -59,7 +60,7 @@ export default function BookingForm() {
   const { user, error: userError, isLoading: isUserLoading } = useUser();
   const defaultFormValues = useMemo(() => getDefaultBookingFormValues(), []);
 
-  const { register, handleSubmit, watch, formState, reset, getValues } = useForm<BookingFormInputs>({
+  const { register, handleSubmit, watch, formState, reset, getValues, control } = useForm<BookingFormInputs>({
     mode: 'onChange',
     defaultValues: defaultFormValues,
   });
@@ -385,12 +386,18 @@ export default function BookingForm() {
             <label className="label p-1">
               <span className="label-text text-2xs">Payment Mode</span>
             </label>
-            <select className={`select select-bordered ${errors.paymentMode && 'select-error'}`} {...register('paymentMode')}>
-              <option disabled={true} value="">-- payment mode --</option>
-              {paymentModes.map(mode => (
-                <option key={mode} value={mode}>{mode}</option>
-              ))}
-            </select>
+            <Controller
+              control={control}
+              name="paymentMode"
+              render={({ field }) => (
+                <PaymentModeSelect
+                  options={paymentModes}
+                  value={field.value || ''}
+                  hasError={Boolean(errors.paymentMode)}
+                  onChange={field.onChange}
+                />
+              )}
+            />
           </div>
 
           <div className="form-control">
