@@ -24,6 +24,7 @@ const bookedBySet = new Set(bookedByOptions);
 const branchSet = new Set(branchOptions);
 const paymentModeSet = new Set(paymentModes);
 const importDutySet = new Set(importDutyOptions);
+const INTERNATIONAL_SHIPMENT_MODE = 2;
 const creditClientSet = new Set(creditClients.map((client) => client.name));
 const creditCourierSet = new Set(creditCourier);
 const creditModeSet = new Set(creditModes);
@@ -178,6 +179,12 @@ export function parseObjectId(value: unknown, fieldName = 'id') {
 export function normalizeBookingPayload(input: unknown, partial = false) {
   const body = ensureRecord(input);
   const normalizedPayload: Record<string, unknown> = {};
+  const shipmentMode = ensureFiniteNumber(body.shipmentMode, 'Shipment Mode', { required: !partial, integer: true });
+  const importDuty = ensureAllowedString(body.importDuty, 'Import Duty', importDutySet);
+
+  if (importDuty !== undefined && shipmentMode !== INTERNATIONAL_SHIPMENT_MODE) {
+    throw new ValidationError('Import Duty is applicable only for international shipment mode.');
+  }
 
   setValueIfDefined(normalizedPayload, 'awbNumber', ensureTrimmedString(body.awbNumber, 'AWB Number', { required: !partial }));
   setValueIfDefined(normalizedPayload, 'referenceNumber', ensureTrimmedString(body.referenceNumber, 'Reference Number'));
@@ -188,9 +195,11 @@ export function normalizeBookingPayload(input: unknown, partial = false) {
   setValueIfDefined(normalizedPayload, 'doxType', ensureFiniteNumber(body.doxType, 'Dox Type', { integer: true }));
   setValueIfDefined(normalizedPayload, 'receiverName', ensureTrimmedString(body.receiverName, 'Receiver Name'));
   setValueIfDefined(normalizedPayload, 'destination', ensureTrimmedString(body.destination, 'Destination'));
-  setValueIfDefined(normalizedPayload, 'shipmentMode', ensureFiniteNumber(body.shipmentMode, 'Shipment Mode', { required: !partial, integer: true }));
+  setValueIfDefined(normalizedPayload, 'shipmentMode', shipmentMode);
   setValueIfDefined(normalizedPayload, 'transportMode', ensureFiniteNumber(body.transportMode, 'Transport Mode', { integer: true }));
-  setValueIfDefined(normalizedPayload, 'importDuty', ensureAllowedString(body.importDuty, 'Import Duty', importDutySet));
+  if (shipmentMode === INTERNATIONAL_SHIPMENT_MODE) {
+    setValueIfDefined(normalizedPayload, 'importDuty', importDuty);
+  }
   setValueIfDefined(normalizedPayload, 'branch', ensureAllowedString(body.branch, 'Branch', branchSet));
   setValueIfDefined(normalizedPayload, 'bookingAmount', ensureFiniteNumber(body.bookingAmount, 'Booking Amount'));
   setValueIfDefined(normalizedPayload, 'actualWeight', ensureFiniteNumber(body.actualWeight, 'Actual Weight'));

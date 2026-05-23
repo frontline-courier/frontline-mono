@@ -4,6 +4,8 @@ import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
 import { normalizeBookingPayload, ValidationError } from '../../../helpers/apiValidation';
 import middleware from '../../../helpers/database';
 
+const INTERNATIONAL_SHIPMENT_MODE = 2;
+
 const handler = nextConnect();
 
 handler.use(requireApiAuth);
@@ -19,6 +21,14 @@ handler.post(async (req: any, res: any) => {
         }
 
         const data = normalizeBookingPayload(payload, true);
+        const unsetPayload: Record<string, string> = {
+            coCourier: '',
+            billAmount: '',
+        };
+
+        if (data.shipmentMode !== undefined && data.shipmentMode !== INTERNATIONAL_SHIPMENT_MODE) {
+            unsetPayload.importDuty = '';
+        }
 
         let doc = await req.db.collection('bookings').updateOne({
             _id: new ObjectId(id)
@@ -27,10 +37,7 @@ handler.post(async (req: any, res: any) => {
                 $set: data,
                 // TODO: can remove later
                 // these are fields that are no longer used but we want to remove them from existing documents
-                $unset: {
-                    coCourier: '',
-                    billAmount: '',
-                },
+                $unset: unsetPayload,
             });
 
         res.json(doc);

@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "tsx --test \"tests/**/*.test.ts\""
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^2.4.0",
@@ -37,6 +38,7 @@
     "eslint-config-next": "^14",
     "postcss": "^8.4.14",
     "tailwindcss": "^4.2.4",
+    "tsx": "^4.20.6",
     "typescript": "5.0.4"
   },
   "resolutions": {
