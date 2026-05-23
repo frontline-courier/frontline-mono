@@ -20,13 +20,7 @@ const pageTitles: Record<string, string> = {
   '/volumetric-calculator': 'Volumetric Weight Calculator',
   '/credit': 'Credit Entry',
   '/credit/create': 'Create Credit Entry',
-  '/credit/reports': 'Credit Reports',
-  '/stocks': 'Stock In',
   '/stocks/add': 'Add Courier',
-  '/stocks/out': 'Stock Out',
-  '/stocks/courier': 'Add Courier',
-  '/stocks/co-loader': 'Add Co-Loader',
-  '/stocks/booker': 'Add Booker',
 }
 
 function getPageTitle(pathname: string) {
