@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { cn } from '../../lib/utils';
 
 type PaymentModeSelectProps = {
   options: readonly string[];
@@ -10,7 +11,7 @@ type PaymentModeSelectProps = {
 const CREDIT_PAYMENT_MODE = 'Credit';
 
 export const getPaymentModeOptionClassName = (mode: string) => (
-  mode === CREDIT_PAYMENT_MODE ? 'text-error' : 'text-base-content'
+  mode === CREDIT_PAYMENT_MODE ? 'text-status-danger' : 'text-status-default'
 );
 
 export default function PaymentModeSelect({ options, value, hasError = false, onChange }: PaymentModeSelectProps) {
@@ -49,7 +50,12 @@ export default function PaymentModeSelect({ options, value, hasError = false, on
     <div className="relative" ref={containerRef}>
       <button
         type="button"
-        className={`select select-bordered flex w-full items-center justify-between text-left font-normal ${hasError ? 'select-error' : ''}`}
+        className={cn(
+          'flex h-10 w-full items-center justify-between rounded-xl border bg-white px-3 py-2 text-left text-sm font-normal text-slate-900 shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2',
+          hasError
+            ? 'border-red-300 focus-visible:ring-red-200'
+            : 'border-slate-200 focus-visible:ring-slate-300 hover:border-slate-300'
+        )}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         onClick={() => setIsOpen((currentValue) => !currentValue)}
@@ -58,7 +64,7 @@ export default function PaymentModeSelect({ options, value, hasError = false, on
       </button>
 
       {isOpen ? (
-        <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-lg border border-base-300 bg-base-100 shadow-xl">
+        <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
           <ul className="max-h-64 overflow-y-auto py-1" role="listbox" aria-label="Payment mode options">
             {options.map((mode) => {
               const isSelected = mode === value;
@@ -69,7 +75,10 @@ export default function PaymentModeSelect({ options, value, hasError = false, on
                     type="button"
                     role="option"
                     aria-selected={isSelected}
-                    className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm hover:bg-base-200 ${getPaymentModeOptionClassName(mode)}`}
+                    className={cn(
+                      'flex w-full items-center justify-between px-4 py-2 text-left text-sm transition-colors hover:bg-slate-50',
+                      getPaymentModeOptionClassName(mode)
+                    )}
                     onClick={() => {
                       onChange(mode);
                       setIsOpen(false);

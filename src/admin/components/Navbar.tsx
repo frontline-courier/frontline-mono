@@ -14,6 +14,7 @@ import {
   HiOutlineX,
   HiTruck,
 } from 'react-icons/hi'
+import { Button } from './ui/button'
 
 type NavItem = {
   href: string
@@ -188,14 +189,16 @@ export default function AppNavbar({ isCollapsed, onToggleCollapsed }: AppNavbarP
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
         ].join(' ')}
       >
-        <button
+        <Button
           type="button"
-          className="btn btn-circle btn-sm absolute right-3 top-3 z-10 border-slate-700 bg-slate-900 text-slate-100 hover:bg-slate-800"
+          variant="ghost"
+          size="icon"
+          className="absolute right-3 top-3 z-10 rounded-full border border-slate-700 bg-slate-900 text-slate-100 hover:bg-slate-800 hover:text-white"
           onClick={() => setIsSidebarOpen(false)}
           aria-label="Close navigation"
         >
           <HiOutlineX className="h-4 w-4" />
-        </button>
+        </Button>
         <SidebarContent
           pathname={router.pathname}
           isCollapsed={false}

@@ -1,5 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
+import { Alert } from './ui/alert';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Select } from './ui/select';
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from './ui/sheet';
 
 interface Courier {
   _id?: string;
@@ -58,88 +63,52 @@ const CourierDrawer = ({ isOpen, onClose, onSubmit, editingCourier, error }: Cou
   }, [handleClear]);
 
   return (
-    <div className="drawer drawer-end z-50">
-      <input 
-        type="checkbox" 
-        id="courier-drawer" 
-        className="drawer-toggle" 
-        checked={isOpen}
-        onChange={onClose}
-      />
-      
-      <div className="drawer-side">
-        <label htmlFor="courier-drawer" className="drawer-overlay"></label>
-        <div className="menu p-4 w-96 min-h-full bg-base-200 text-base-content">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-bold">{editingCourier ? 'Edit' : 'Add'} Courier</h3>
-            <button className="btn btn-square btn-sm" onClick={handleClear}>×</button>
-          </div>
-          
-          {error && (
-            <div className="alert alert-error mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{error}</span>
-            </div>
-          )}
+    <Sheet open={isOpen} onOpenChange={(nextOpen) => !nextOpen && onClose()}>
+      <SheetContent className="overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle>{editingCourier ? 'Edit' : 'Add'} Courier</SheetTitle>
+        </SheetHeader>
+
+        <div className="px-6 pb-6 pt-4 text-slate-700">
+          {error && <Alert variant="error" className="mb-4">{error}</Alert>}
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Courier Name</label>
-              <input 
-                className="input input-bordered w-full" 
-                type="text" 
-                placeholder="Courier Name" 
-                {...register('Courier', { required: true })} 
-              />
+              <label className="mb-1 block text-sm font-medium">Courier Name</label>
+              <Input type="text" placeholder="Courier Name" {...register('Courier', { required: true })} />
             </div>
-            
+
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Description</label>
-              <input 
-                className="input input-bordered w-full" 
-                type="text" 
-                placeholder="Description" 
-                {...register('Description')} 
-              />
+              <label className="mb-1 block text-sm font-medium">Description</label>
+              <Input type="text" placeholder="Description" {...register('Description')} />
             </div>
-            
+
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Tracking URL</label>
-              <input 
-                className="input input-bordered w-full" 
-                type="text" 
-                placeholder="Tracking URL" 
-                {...register('Track')} 
-              />
+              <label className="mb-1 block text-sm font-medium">Tracking URL</label>
+              <Input type="text" placeholder="Tracking URL" {...register('Track')} />
             </div>
-            
+
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Mode</label>
-              <select 
-                className="select select-bordered w-full" 
-                {...register('Mode')}
-                defaultValue={1}
-              >
+              <label className="mb-1 block text-sm font-medium">Mode</label>
+              <Select {...register('Mode')} defaultValue={1}>
                 <option value={1}>Internal</option>
                 <option value={2}>Link</option>
                 <option value={3}>API</option>
-              </select>
+              </Select>
             </div>
-            
-            <div className="flex justify-end gap-2">
-              <button type="button" className="btn btn-outline" onClick={handleClear}>
+
+            <SheetFooter className="px-0 pb-0">
+              <Button type="button" variant="outline" onClick={handleClear}>
                 Cancel
-              </button>
-              <button type="submit" className="btn btn-primary">
+              </Button>
+              <Button type="submit">
                 {editingCourier ? 'Update' : 'Add'} Courier
-              </button>
-            </div>
+              </Button>
+            </SheetFooter>
           </form>
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 };
 

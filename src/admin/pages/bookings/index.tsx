@@ -547,9 +547,9 @@ const BookingPage = () => {
           </div>
         </section>
 
-        <div className="booking-table-shell overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="booking-table-scroll overflow-x-auto">
-            <div className="booking-table min-w-[1120px]">
+        <div className="booking-table-shell min-h-[14rem] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="booking-table-scroll min-h-[14rem] overflow-x-auto">
+            <div className="booking-table min-h-[14rem] min-w-[1120px]">
               <DataTable
                 columns={columns}
                 data={data}
