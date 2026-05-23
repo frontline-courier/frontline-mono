@@ -108,10 +108,10 @@ export default function BookingForm() {
   }, [defaultFormValues, id, pageType, reset]);
 
   useEffect(() => {
-    if (!isInternationalShipment) {
+    if (shipmentMode !== INTERNATIONAL_SHIPMENT_MODE) {
       resetField('importDuty', { defaultValue: '' });
     }
-  }, [isInternationalShipment, resetField]);
+  }, [isInternationalShipment, shipmentMode, resetField]);
 
   const onSubmit: SubmitHandler<BookingFormInputs> = async (data) => {
     setError('');
