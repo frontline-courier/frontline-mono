@@ -7,6 +7,8 @@ import { BiUserCircle } from 'react-icons/bi'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import AppNavbar from './Navbar'
+import { Button } from './ui/button'
+import { Spinner } from './ui/spinner'
 
 const pageTitles: Record<string, string> = {
   '/': 'Dashboard',
@@ -139,7 +141,7 @@ export default function Layout({ children }: LayoutProps) {
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                className="btn btn-ghost btn-sm lg:hidden"
+                className="inline-flex h-8 items-center justify-center rounded-lg px-3 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 lg:hidden"
                 onClick={openSidebar}
                 aria-label="Open navigation"
               >
@@ -147,7 +149,7 @@ export default function Layout({ children }: LayoutProps) {
               </button>
               <button
                 type="button"
-                className="btn btn-ghost btn-sm hidden lg:inline-flex"
+                className="hidden h-8 items-center justify-center rounded-lg px-3 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 lg:inline-flex"
                 onClick={toggleSidebarCollapsed}
                 aria-label={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
               >
@@ -167,7 +169,7 @@ export default function Layout({ children }: LayoutProps) {
             <div className="flex items-center">
               {isUserLoading ? (
                 <div className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white shadow-sm">
-                  <span className="loading loading-spinner loading-xs text-primary"></span>
+                  <Spinner size="sm" />
                 </div>
               ) : user ? (
                 <div className="relative" ref={accountMenuRef}>
@@ -232,9 +234,9 @@ export default function Layout({ children }: LayoutProps) {
                   ) : null}
                 </div>
               ) : (
-                <Link href="/api/auth/login" className="btn btn-primary btn-sm rounded-full shadow-sm">
-                  Login
-                </Link>
+                <Button asChild size="sm" className="rounded-full shadow-sm">
+                  <Link href="/api/auth/login">Login</Link>
+                </Button>
               )}
             </div>
           </div>
