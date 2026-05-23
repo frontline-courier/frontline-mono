@@ -60,7 +60,7 @@ handler.get(async (req: any, res: any) => {
     const mode = parseInt(req.query.mode, 10) || 0;
     const status = req.query.status || '';
     const paymentMode = req.query.paymentMode || '';
-    const creditStatus = req.query.creditStatus || '';
+    const creditStatus = Array.isArray(req.query.creditStatus) ? req.query.creditStatus[0] || '' : req.query.creditStatus || '';
 
     let docs = [];
     let count = 0;
