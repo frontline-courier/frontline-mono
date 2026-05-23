@@ -30,6 +30,7 @@ const getNumericFieldValue = (value: unknown) => {
   const parsedValue = Number(value);
   return Number.isFinite(parsedValue) ? parsedValue : undefined;
 };
+const INTERNATIONAL_SHIPMENT_MODE = 2;
 
 const getDefaultBookingFormValues = (): Partial<BookingFormInputs> => ({
   courier: 0,
@@ -57,6 +58,8 @@ export default function BookingForm() {
     mode: 'onChange',
     defaultValues: defaultFormValues,
   });
+  const shipmentMode = watch('shipmentMode');
+  const isInternationalShipment = shipmentMode === INTERNATIONAL_SHIPMENT_MODE;
 
   const errors = formState.errors;
   const [loader, setLoader] = useState(false);
@@ -103,6 +106,12 @@ export default function BookingForm() {
 
     fetchData();
   }, [defaultFormValues, id, pageType, reset]);
+
+  useEffect(() => {
+    if (!isInternationalShipment) {
+      resetField('importDuty', { defaultValue: '' });
+    }
+  }, [isInternationalShipment, resetField]);
 
   const onSubmit: SubmitHandler<BookingFormInputs> = async (data) => {
     setError('');
@@ -271,7 +280,11 @@ export default function BookingForm() {
             <label className="label p-1">
               <span className="label-text text-2xs">Import Duty</span>
             </label>
-            <select className={`select select-bordered ${errors.importDuty && 'select-error'}`} {...register('importDuty')}>
+            <select
+              className={`select select-bordered ${errors.importDuty && 'select-error'}`}
+              disabled={!isInternationalShipment}
+              {...register('importDuty')}
+            >
               <option disabled={true} value="">-- import duty --</option>
               {importDutyOptions.map((option) => (
                 <option key={option} value={option}>{option}</option>
