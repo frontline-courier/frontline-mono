@@ -13,6 +13,7 @@ export type BookingFilterParams = {
     mode?: number;
     status?: string;
     paymentMode?: string;
+    creditStatus?: string;
 };
 
 export function buildBookingsQuery(params: BookingFilterParams) {
@@ -39,6 +40,9 @@ export function buildBookingsQuery(params: BookingFilterParams) {
     if (params.paymentMode) {
         query.paymentMode = params.paymentMode;
     }
+    if (params.creditStatus) {
+        query.creditStatus = params.creditStatus;
+    }
 
     return query;
 }
@@ -56,10 +60,11 @@ handler.get(async (req: any, res: any) => {
     const mode = parseInt(req.query.mode, 10) || 0;
     const status = req.query.status || '';
     const paymentMode = req.query.paymentMode || '';
+    const creditStatus = req.query.creditStatus || '';
 
     let docs = [];
     let count = 0;
-    const query = buildBookingsQuery({ awb, ref, tpn, courier, mode, status, paymentMode });
+    const query = buildBookingsQuery({ awb, ref, tpn, courier, mode, status, paymentMode, creditStatus });
 
     try {
         const collection = (req.db as Db).collection('bookings');

@@ -24,10 +24,23 @@ handler.post(async (req: any, res: any) => {
         const unsetPayload: Record<string, string> = {
             coCourier: '',
             billAmount: '',
+            deliveryOfficeLocation: '',
         };
 
         if (data.shipmentMode !== undefined && data.shipmentMode !== INTERNATIONAL_SHIPMENT_MODE) {
             unsetPayload.importDuty = '';
+        }
+
+        if (data.paymentMode !== undefined && data.paymentMode !== 'Credit') {
+            unsetPayload.creditStatus = '';
+            unsetPayload.paidAmount = '';
+            unsetPayload.dueAmount = '';
+            unsetPayload.creditNotes = '';
+        }
+
+        if (data.creditStatus !== undefined && data.creditStatus !== 'Pending - Partial') {
+            unsetPayload.paidAmount = '';
+            unsetPayload.dueAmount = '';
         }
 
         let doc = await req.db.collection('bookings').updateOne({

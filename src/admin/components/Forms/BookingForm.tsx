@@ -10,7 +10,7 @@ import { BookingFormInputs } from '../../interfaces/bookingForm';
 import { branchOptions } from '../../constants/branchOptions';
 import { bookedByOptions } from '../../constants/bookedByOptions';
 import { importDutyOptions } from '../../constants/importDutyOptions';
-import { paymentModes } from '../../constants/paymentModes';
+import { creditStatusOptions, paymentModes } from '../../constants/paymentModes';
 
 const hasSelectedValue = (value: number) => value > 0 || 'Please select a value';
 const isFiniteNumber = (value: number | undefined) => value === undefined || (typeof value === 'number' && Number.isFinite(value)) || 'Please enter a valid number';
@@ -31,6 +31,8 @@ const getNumericFieldValue = (value: unknown) => {
   return Number.isFinite(parsedValue) ? parsedValue : undefined;
 };
 const INTERNATIONAL_SHIPMENT_MODE = 2;
+const CREDIT_PAYMENT_MODE = 'Credit';
+const PENDING_PARTIAL_CREDIT_STATUS = 'Pending - Partial';
 
 const getDefaultBookingFormValues = (): Partial<BookingFormInputs> => ({
   courier: 0,
@@ -40,8 +42,11 @@ const getDefaultBookingFormValues = (): Partial<BookingFormInputs> => ({
   importDuty: '',
   bookedBy: '',
   paymentMode: '',
+  creditStatus: '',
+  creditNotes: '',
   branch: '',
   bookingAmount: undefined,
+  dueAmount: undefined,
   actualWeight: undefined,
   bookedDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
 });
@@ -54,12 +59,17 @@ export default function BookingForm() {
   const { user, error: userError, isLoading: isUserLoading } = useUser();
   const defaultFormValues = useMemo(() => getDefaultBookingFormValues(), []);
 
-  const { register, handleSubmit, watch, formState, reset, resetField } = useForm<BookingFormInputs>({
+  const { register, handleSubmit, watch, formState, reset, getValues } = useForm<BookingFormInputs>({
     mode: 'onChange',
     defaultValues: defaultFormValues,
   });
   const shipmentMode = watch('shipmentMode');
+  const paymentMode = watch('paymentMode');
+  const creditStatus = watch('creditStatus');
+  const bookingAmount = watch('bookingAmount');
   const isInternationalShipment = shipmentMode === INTERNATIONAL_SHIPMENT_MODE;
+  const isCreditPayment = paymentMode === CREDIT_PAYMENT_MODE;
+  const isPendingPartialCredit = isCreditPayment && creditStatus === PENDING_PARTIAL_CREDIT_STATUS;
 
   const errors = formState.errors;
   const [loader, setLoader] = useState(false);
@@ -87,8 +97,11 @@ export default function BookingForm() {
             bookedDate: moment(bookingResponse.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL),
             bookedBy: bookingResponse.data.bookedBy || '',
             paymentMode: bookingResponse.data.paymentMode || '',
+            creditStatus: bookingResponse.data.creditStatus || '',
+            creditNotes: bookingResponse.data.creditNotes || '',
             branch: bookingResponse.data.branch || '',
             bookingAmount: getNumericFieldValue(bookingResponse.data.bookingAmount),
+            dueAmount: getNumericFieldValue(bookingResponse.data.dueAmount),
             actualWeight: getNumericFieldValue(bookingResponse.data.actualWeight),
           });
           if (pageType === PageTypes.DELETE) {
@@ -109,9 +122,32 @@ export default function BookingForm() {
 
   useEffect(() => {
     if (shipmentMode !== INTERNATIONAL_SHIPMENT_MODE) {
-      resetField('importDuty', { defaultValue: '' });
+      reset({
+        ...getValues(),
+        importDuty: '',
+      });
     }
-  }, [isInternationalShipment, shipmentMode, resetField]);
+  }, [getValues, isInternationalShipment, reset, shipmentMode]);
+
+  useEffect(() => {
+    if (!isCreditPayment) {
+      reset({
+        ...getValues(),
+        creditStatus: '',
+        dueAmount: undefined,
+        creditNotes: '',
+      });
+    }
+  }, [getValues, isCreditPayment, reset]);
+
+  useEffect(() => {
+    if (!isPendingPartialCredit) {
+      reset({
+        ...getValues(),
+        dueAmount: undefined,
+      });
+    }
+  }, [getValues, isPendingPartialCredit, reset]);
 
   const onSubmit: SubmitHandler<BookingFormInputs> = async (data) => {
     setError('');
@@ -365,16 +401,77 @@ export default function BookingForm() {
           </div>
           <div className="form-control">
             <label className="label p-1">
-              <span className="label-text text-2xs">Delivery Office Location</span>
-            </label>
-            <textarea className="textarea h-24 textarea-bordered" placeholder="Delivery Office Location" {...register('deliveryOfficeLocation')}></textarea>
-          </div>
-          <div className="form-control">
-            <label className="label p-1">
               <span className="label-text text-2xs">Internal Remarks</span>
             </label>
             <textarea className="textarea h-24 textarea-bordered" placeholder="Internal Remarks" {...register('internalRemarks')}></textarea>
           </div>
+          {isCreditPayment && (
+            <div className="md:col-span-2 lg:col-span-3">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="form-control">
+                  <label className="label p-1">
+                    <span className="label-text text-2xs">Credit Status</span>
+                  </label>
+                  <select
+                    className={`select select-bordered ${errors.creditStatus && 'select-error'}`}
+                    {...register('creditStatus', {
+                      validate: (value) => !isCreditPayment || value !== '' || 'Please select credit status',
+                    })}
+                  >
+                    <option disabled={true} value="">-- credit status --</option>
+                    {creditStatusOptions.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-control">
+                  <label className="label p-1">
+                    <span className="label-text text-2xs">Credit Note</span>
+                  </label>
+                  <textarea className="textarea h-24 textarea-bordered" placeholder="Credit Note" {...register('creditNotes')}></textarea>
+                </div>
+                {isPendingPartialCredit && (
+                  <div className="form-control">
+                    <label className="label p-1">
+                      <span className="label-text text-2xs">Due Amount</span>
+                    </label>
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      placeholder="Due Amount"
+                      className={`input input-bordered ${errors.dueAmount && 'input-error'}`}
+                      {...register('dueAmount', {
+                        setValueAs: parseNumericInput,
+                        validate: (value) => {
+                          if (!isPendingPartialCredit) {
+                            return true;
+                          }
+
+                          if (value === undefined) {
+                            return 'Due amount is required';
+                          }
+
+                          if (!Number.isFinite(value)) {
+                            return 'Please enter a valid number';
+                          }
+
+                          if (value < 0) {
+                            return 'Due amount cannot be negative';
+                          }
+
+                          if (bookingAmount !== undefined && value > bookingAmount) {
+                            return 'Due amount cannot exceed booking amount';
+                          }
+
+                          return true;
+                        },
+                      })}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
         </div>
 

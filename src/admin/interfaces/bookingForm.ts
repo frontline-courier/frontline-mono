@@ -1,5 +1,6 @@
 import { BranchOption } from '../constants/branchOptions';
 import { ImportDutyOption } from '../constants/importDutyOptions';
+import { CreditStatusOption } from '../constants/paymentModes';
 
 export type BookingFormInputs = {
     awbNumber: string,
@@ -19,9 +20,11 @@ export type BookingFormInputs = {
     actualWeight?: number,
     bookedBy: string,
     paymentMode: string,
+    creditStatus: CreditStatusOption | '',
+    dueAmount?: number,
+    creditNotes: string,
     remarks: string,
     internalRemarks: string,
-    deliveryOfficeLocation: string,
     additionalContacts: string,
     additionalWeights: string,
     additionalLeaf: string,

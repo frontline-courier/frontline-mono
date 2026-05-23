@@ -7,7 +7,7 @@ import { creditModes } from '../constants/credit/mode';
 import { creditServices } from '../constants/credit/service';
 import { statusRelation } from '../constants/deliveryRelation';
 import { importDutyOptions } from '../constants/importDutyOptions';
-import { paymentModes } from '../constants/paymentModes';
+import { creditStatusOptions, paymentModes } from '../constants/paymentModes';
 import { normalizeShipmentStatusValue } from '../../shared/courier-status';
 
 export class ValidationError extends Error {
@@ -23,8 +23,11 @@ export class ValidationError extends Error {
 const bookedBySet = new Set(bookedByOptions);
 const branchSet = new Set(branchOptions);
 const paymentModeSet = new Set(paymentModes);
+const creditStatusSet = new Set<string>(creditStatusOptions);
 const importDutySet = new Set(importDutyOptions);
 const INTERNATIONAL_SHIPMENT_MODE = 2;
+const CREDIT_PAYMENT_MODE = 'Credit';
+const CREDIT_STATUS_PENDING_PARTIAL = 'Pending - Partial';
 const creditClientSet = new Set(creditClients.map((client) => client.name));
 const creditCourierSet = new Set(creditCourier);
 const creditModeSet = new Set(creditModes);
@@ -181,6 +184,35 @@ export function normalizeBookingPayload(input: unknown, partial = false) {
   const normalizedPayload: Record<string, unknown> = {};
   const shipmentMode = ensureFiniteNumber(body.shipmentMode, 'Shipment Mode', { required: !partial, integer: true });
   const importDuty = ensureAllowedString(body.importDuty, 'Import Duty', importDutySet);
+  const paymentMode = ensureAllowedString(body.paymentMode, 'Payment Mode', paymentModeSet);
+  const creditStatus = ensureAllowedString(body.creditStatus, 'Credit Status', creditStatusSet);
+  const dueAmount = ensureFiniteNumber(body.dueAmount, 'Due Amount');
+
+  if (creditStatus !== undefined && paymentMode !== CREDIT_PAYMENT_MODE) {
+    throw new ValidationError('Credit Status is allowed only when Payment Mode is Credit.');
+  }
+
+  if (paymentMode === CREDIT_PAYMENT_MODE && !partial && creditStatus === undefined) {
+    throw new ValidationError('Credit Status is required when Payment Mode is Credit.');
+  }
+
+  if (creditStatus === CREDIT_STATUS_PENDING_PARTIAL) {
+    if (dueAmount === undefined) {
+      throw new ValidationError('Due Amount is required when Credit Status is Pending - Partial.');
+    }
+
+    if (dueAmount < 0) {
+      throw new ValidationError('Due Amount must be zero or more.');
+    }
+
+    const bookingAmount = ensureFiniteNumber(body.bookingAmount, 'Booking Amount');
+
+    if (bookingAmount !== undefined && dueAmount > bookingAmount) {
+      throw new ValidationError('Due Amount cannot exceed Booking Amount.');
+    }
+  } else if (dueAmount !== undefined) {
+    throw new ValidationError('Due Amount is allowed only when Credit Status is Pending - Partial.');
+  }
 
   if (importDuty !== undefined && shipmentMode !== INTERNATIONAL_SHIPMENT_MODE) {
     throw new ValidationError('Import Duty is applicable only for international shipment mode.');
@@ -204,10 +236,12 @@ export function normalizeBookingPayload(input: unknown, partial = false) {
   setValueIfDefined(normalizedPayload, 'bookingAmount', ensureFiniteNumber(body.bookingAmount, 'Booking Amount'));
   setValueIfDefined(normalizedPayload, 'actualWeight', ensureFiniteNumber(body.actualWeight, 'Actual Weight'));
   setValueIfDefined(normalizedPayload, 'bookedBy', ensureAllowedString(body.bookedBy, 'Booked By', bookedBySet));
-  setValueIfDefined(normalizedPayload, 'paymentMode', ensureAllowedString(body.paymentMode, 'Payment Mode', paymentModeSet));
+  setValueIfDefined(normalizedPayload, 'paymentMode', paymentMode);
+  setValueIfDefined(normalizedPayload, 'creditStatus', creditStatus);
+  setValueIfDefined(normalizedPayload, 'dueAmount', dueAmount);
+  setValueIfDefined(normalizedPayload, 'creditNotes', ensureTrimmedString(body.creditNotes, 'Credit Notes'));
   setValueIfDefined(normalizedPayload, 'remarks', ensureTrimmedString(body.remarks, 'Remarks'));
   setValueIfDefined(normalizedPayload, 'internalRemarks', ensureTrimmedString(body.internalRemarks, 'Internal Remarks'));
-  setValueIfDefined(normalizedPayload, 'deliveryOfficeLocation', ensureTrimmedString(body.deliveryOfficeLocation, 'Delivery Office Location'));
   setValueIfDefined(normalizedPayload, 'additionalContacts', ensureTrimmedString(body.additionalContacts, 'Additional Contacts'));
   setValueIfDefined(normalizedPayload, 'additionalWeights', ensureTrimmedString(body.additionalWeights, 'Additional Weights'));
   setValueIfDefined(normalizedPayload, 'additionalLeaf', ensureTrimmedString(body.additionalLeaf, 'Additional Leaf'));
