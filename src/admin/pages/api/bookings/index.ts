@@ -5,6 +5,44 @@ import middleware from '../../../helpers/database';
 
 const handler = nextConnect();
 
+export type BookingFilterParams = {
+    awb?: string;
+    ref?: string;
+    tpn?: string;
+    courier?: number;
+    mode?: number;
+    status?: string;
+    paymentMode?: string;
+};
+
+export function buildBookingsQuery(params: BookingFilterParams) {
+    const query: Record<string, unknown> = {};
+
+    if (params.awb) {
+        query.awbNumber = params.awb;
+    }
+    if (params.ref) {
+        query.referenceNumber = params.ref;
+    }
+    if (params.tpn) {
+        query.thirdPartyNumber = params.tpn;
+    }
+    if (params.courier) {
+        query.courier = params.courier;
+    }
+    if (params.mode) {
+        query.shipmentMode = params.mode;
+    }
+    if (params.status) {
+        query.shipmentStatus = { $regex: params.status, $options: 'i' };
+    }
+    if (params.paymentMode) {
+        query.paymentMode = params.paymentMode;
+    }
+
+    return query;
+}
+
 handler.use(requireApiAuth);
 handler.use(middleware);
 
@@ -17,29 +55,11 @@ handler.get(async (req: any, res: any) => {
     const courier = parseInt(req.query.courier, 10) || 0;
     const mode = parseInt(req.query.mode, 10) || 0;
     const status = req.query.status || '';
+    const paymentMode = req.query.paymentMode || '';
 
     let docs = [];
     let count = 0;
-    let query: any = {};
-
-    if (awb) {
-        query.awbNumber = awb;
-    }
-    if (ref) {
-        query.referenceNumber = ref;
-    }
-    if (tpn) {
-        query.thirdPartyNumber = tpn;
-    }
-    if (courier) {
-        query.courier = courier;
-    }
-    if (mode) {
-        query.shipmentMode = mode;
-    }
-    if (status) {
-        query.shipmentStatus = { $regex: status, $options: 'i' };
-    }
+    const query = buildBookingsQuery({ awb, ref, tpn, courier, mode, status, paymentMode });
 
     try {
         const collection = (req.db as Db).collection('bookings');

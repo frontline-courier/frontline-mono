@@ -15,6 +15,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
 import { courierStatus, getShipmentStatus } from '../../../shared/courier-status';
+import { paymentModes } from '../../constants/paymentModes';
 
 const statusList = [...courierStatus].sort((a, b) => a.ShipmentStatus.localeCompare(b.ShipmentStatus));
 
@@ -85,7 +86,7 @@ const BookingPage = () => {
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(25);
-  const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', thirdPartyNumber: '', courier: 0, shipmentMode: 0, status: '' });
+  const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', thirdPartyNumber: '', courier: 0, shipmentMode: 0, status: '', paymentMode: '' });
   const [rawBookingData, setRawBookingData] = useState([]); // Add this state to store raw data
 
   // useForm hook
@@ -95,7 +96,8 @@ const BookingPage = () => {
       courier: 0,
       status: 0,
       shipmentMode: 0,
-      shipmentStatus: ''
+      shipmentStatus: '',
+      paymentMode: ''
     }
   });
 
@@ -118,6 +120,7 @@ const BookingPage = () => {
       const response = await axios.get(
         `/api/bookings?page=${page}&limit=${perPage}&courier=${searchData.courier || 0
         }&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''
+        }&paymentMode=${searchData.paymentMode || ''
         }&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}&tpn=${searchData.thirdPartyNumber}`
       );
       
@@ -154,6 +157,7 @@ const BookingPage = () => {
     searchData.referenceNumber,
     searchData.thirdPartyNumber,
     searchData.status,
+    searchData.paymentMode,
     searchData.courier > 0 ? searchData.courier : '',
     searchData.shipmentMode > 0 ? searchData.shipmentMode : '',
   ].filter(Boolean).length;
@@ -464,7 +468,7 @@ const BookingPage = () => {
             <div className="space-y-1">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Booking Operations</p>
               <p className="max-w-2xl text-sm text-slate-600">
-                Search by AWB, reference, third-party number, courier, mode, or status and jump into edit and status workflows from the same screen.
+                Search by AWB, reference, third-party number, courier, mode, status, or payment mode and jump into edit and status workflows from the same screen.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -485,12 +489,12 @@ const BookingPage = () => {
         </section>
 
         <section className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
-          <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
-            <form onSubmit={handleSubmit(onSubmit)} role="search" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:flex xl:flex-wrap xl:items-end xl:gap-3">
-              <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered input-sm w-full xl:w-44" {...register('awbNumber', { minLength: 3 })} />
-              <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered input-sm w-full xl:w-40" {...register('referenceNumber', { minLength: 3 })} />
-              <input type="text" autoComplete="false" placeholder="Third Party #" className="input input-bordered input-sm w-full xl:w-40" {...register('thirdPartyNumber', { minLength: 3 })} />
-              <select className={'select select-bordered select-sm w-full xl:w-48'}  {...register('courier', { valueAsNumber: true },)}>
+          <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between xl:gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} role="search" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 xl:flex xl:flex-1 xl:flex-wrap xl:items-end xl:gap-3">
+              <input type="text" autoComplete="false" placeholder="AWB Number" className="input input-bordered input-sm w-full xl:w-36" {...register('awbNumber', { minLength: 3 })} />
+              <input type="text" autoComplete="false" placeholder="Reference" className="input input-bordered input-sm w-full xl:w-32" {...register('referenceNumber', { minLength: 3 })} />
+              <input type="text" autoComplete="false" placeholder="Third Party #" className="input input-bordered input-sm w-full xl:w-32" {...register('thirdPartyNumber', { minLength: 3 })} />
+              <select className={'select select-bordered select-sm w-full xl:w-40'}  {...register('courier', { valueAsNumber: true },)}>
                 <option value={0}>-- courier --</option>
                 {
                   courierList.map((d) => {
@@ -498,14 +502,14 @@ const BookingPage = () => {
                   })
                 }
               </select>
-              <select className={'select select-bordered select-sm w-full xl:w-44'} {...register('shipmentMode', { valueAsNumber: true })}>
+              <select className={'select select-bordered select-sm w-full xl:w-36'} {...register('shipmentMode', { valueAsNumber: true })}>
                 <option value={0}>-- shipment mode --</option>
                 <option value={1}>Domestic</option>
                 <option value={2}>International</option>
                 <option value={3}>Local</option>
                 <option value={0}>NA</option>
               </select>
-              <select className="select select-bordered select-sm w-full xl:w-44" {...register('status')}>
+              <select className="select select-bordered select-sm w-full xl:w-36" {...register('status')}>
                 <option value="">-- status --</option>
                 {
                   statusList.map((s, i) => {
@@ -513,9 +517,15 @@ const BookingPage = () => {
                   })
                 }
               </select>
-              <input type="submit" className="btn btn-secondary btn-sm w-full sm:col-span-2 lg:col-span-3 xl:w-auto" value="Search" />
+              <select className="select select-bordered select-sm w-full xl:w-36" {...register('paymentMode')}>
+                <option value="">-- payment mode --</option>
+                {paymentModes.map((mode) => (
+                  <option key={mode} value={mode}>{mode}</option>
+                ))}
+              </select>
+              <input type="submit" className="btn btn-secondary btn-sm w-full sm:col-span-2 lg:col-span-4 xl:w-auto" value="Search" />
             </form>
-            <div className="xl:sticky xl:right-0 xl:self-start">
+            <div className="xl:flex-none xl:self-end">
               <DataTableButtons />
             </div>
           </div>
