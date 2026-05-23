@@ -15,7 +15,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
 import { courierStatus, getShipmentStatus } from '../../../shared/courier-status';
-import { paymentModes } from '../../constants/paymentModes';
+import { creditStatusOptions, paymentModes } from '../../constants/paymentModes';
 
 const statusList = [...courierStatus].sort((a, b) => a.ShipmentStatus.localeCompare(b.ShipmentStatus));
 
@@ -27,6 +27,7 @@ const expandedFieldSections = [
       ['doxType', 'Dox Type'],
       ['shipmentMode', 'Shipment Mode'],
       ['paymentMode', 'Payment Mode'],
+      ['creditStatus', 'Credit Status'],
       ['bookedDate', 'Booked Date'],
       ['shipmentStatus', 'Status'],
     ],
@@ -50,7 +51,13 @@ const expandedFieldSections = [
       ['receiverName', 'Receiver Name'],
       ['destination', 'Destination'],
       ['additionalContacts', 'Additional Contacts'],
-      ['deliveryOfficeLocation', 'Delivery Office'],
+    ],
+  },
+  {
+    title: 'Credit Tracking',
+    fields: [
+      ['dueAmount', 'Due Amount'],
+      ['creditNotes', 'Credit Notes'],
     ],
   },
   {
@@ -86,7 +93,7 @@ const BookingPage = () => {
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(25);
-  const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', thirdPartyNumber: '', courier: 0, shipmentMode: 0, status: '', paymentMode: '' });
+  const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', thirdPartyNumber: '', courier: 0, shipmentMode: 0, status: '', paymentMode: '', creditStatus: '' });
   const [rawBookingData, setRawBookingData] = useState([]); // Add this state to store raw data
 
   // useForm hook
@@ -97,7 +104,8 @@ const BookingPage = () => {
       status: 0,
       shipmentMode: 0,
       shipmentStatus: '',
-      paymentMode: ''
+      paymentMode: '',
+      creditStatus: ''
     }
   });
 
@@ -121,6 +129,7 @@ const BookingPage = () => {
         `/api/bookings?page=${page}&limit=${perPage}&courier=${searchData.courier || 0
         }&mode=${searchData.shipmentMode || 0}&status=${searchData.status || ''
         }&paymentMode=${searchData.paymentMode || ''
+        }&creditStatus=${searchData.creditStatus || ''
         }&awb=${searchData.awbNumber}&ref=${searchData.referenceNumber}&tpn=${searchData.thirdPartyNumber}`
       );
       
@@ -158,6 +167,7 @@ const BookingPage = () => {
     searchData.thirdPartyNumber,
     searchData.status,
     searchData.paymentMode,
+    searchData.creditStatus,
     searchData.courier > 0 ? searchData.courier : '',
     searchData.shipmentMode > 0 ? searchData.shipmentMode : '',
   ].filter(Boolean).length;
@@ -241,7 +251,7 @@ const BookingPage = () => {
               <div className="stat px-4 py-3">
                 <div className="stat-title text-base-content/60">Booked</div>
                 <div className="stat-value text-lg text-base-content">{getExpandedFieldValue(data.bookedDate)}</div>
-                <div className="stat-desc">Payment: {getExpandedFieldValue(data.paymentMode)}</div>
+                <div className="stat-desc">Payment: {getExpandedFieldValue(data.paymentMode)}{data.creditStatus ? ` • ${getExpandedFieldValue(data.creditStatus)}` : ''}</div>
               </div>
               <div className="stat px-4 py-3">
                 <div className="stat-title text-base-content/60">Weight</div>
@@ -521,6 +531,12 @@ const BookingPage = () => {
                 <option value="">-- payment mode --</option>
                 {paymentModes.map((mode) => (
                   <option key={mode} value={mode}>{mode}</option>
+                ))}
+              </select>
+              <select className="select select-bordered select-sm w-full xl:w-40" {...register('creditStatus')}>
+                <option value="">-- credit status --</option>
+                {creditStatusOptions.map((status) => (
+                  <option key={status} value={status}>{status}</option>
                 ))}
               </select>
               <input type="submit" className="btn btn-secondary btn-sm w-full sm:col-span-2 lg:col-span-4 xl:w-auto" value="Search" />
