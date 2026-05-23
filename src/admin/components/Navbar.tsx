@@ -5,18 +5,14 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import {
   HiCalculator,
-  HiChartBar,
   HiClipboardCheck,
   HiClipboardList,
   HiCollection,
   HiCreditCard,
-  HiCube,
   HiHome,
   HiMap,
-  HiOfficeBuilding,
   HiOutlineX,
   HiTruck,
-  HiUsers,
 } from 'react-icons/hi'
 
 type NavItem = {
@@ -60,18 +56,6 @@ const navGroups: NavGroup[] = [
     icon: <HiCreditCard className="h-4 w-4" />,
     items: [
       { href: '/credit', label: 'Credit Entry', icon: <HiCreditCard className="h-4 w-4" /> },
-      { href: '/credit/reports', label: 'Reports', icon: <HiChartBar className="h-4 w-4" /> },
-    ],
-  },
-  {
-    label: 'Stocks',
-    icon: <HiCube className="h-4 w-4" />,
-    items: [
-      { href: '/stocks', label: 'Stock In', icon: <HiCube className="h-4 w-4" /> },
-      { href: '/stocks/out', label: 'Stock Out', icon: <HiCollection className="h-4 w-4" /> },
-      { href: '/stocks/courier', label: 'Couriers', icon: <HiTruck className="h-4 w-4" /> },
-      { href: '/stocks/co-loader', label: 'Co-loaders', icon: <HiOfficeBuilding className="h-4 w-4" /> },
-      { href: '/stocks/booker', label: 'Bookers', icon: <HiUsers className="h-4 w-4" /> },
     ],
   },
 ]
