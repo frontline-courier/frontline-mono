@@ -231,7 +231,7 @@ export default function BookingForm() {
             <label className="label p-1">
               <span className="label-text text-2xs">Booking Date</span>
             </label>
-            <input type="datetime-local" placeholder="Booking Date" className={`input input-bordered ${errors.bookedDate && 'input-error'}`} {...register('bookedDate', { required: true, valueAsDate: true, })} />
+            <input type="datetime-local" placeholder="Booking Date" className={`input input-bordered ${errors.bookedDate && 'input-error'}`} {...register('bookedDate', { required: true })} />
           </div>
 
           <div className="form-control">
