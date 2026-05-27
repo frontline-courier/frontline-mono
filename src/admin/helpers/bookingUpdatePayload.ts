@@ -55,18 +55,29 @@ export function buildBookingUpdatePayload(payload: Record<string, unknown>): {
     $unset.paidAmount = '';
     $unset.dueAmount = '';
     $unset.creditNotes = '';
+    // creditNotes has no cross-field validation guard so normalizeBookingPayload can
+    // include it in data even when paymentMode is absent. Remove it from $set to
+    // avoid a MongoDB "conflicting update paths" error.
+    delete data.creditStatus;
+    delete data.dueAmount;
+    delete data.creditNotes;
   } else if (data.paymentMode !== undefined && data.paymentMode !== 'Credit') {
     // Payment mode changed to a non-Credit value — remove credit-only fields.
     $unset.creditStatus = '';
     $unset.paidAmount = '';
     $unset.dueAmount = '';
     $unset.creditNotes = '';
+    // Same as above: creditNotes may still be in data; remove it from $set.
+    delete data.creditStatus;
+    delete data.dueAmount;
+    delete data.creditNotes;
   }
 
   // Remove paidAmount / dueAmount when credit status is no longer Pending - Partial.
   if (data.creditStatus !== undefined && data.creditStatus !== 'Pending - Partial') {
     $unset.paidAmount = '';
     $unset.dueAmount = '';
+    delete data.dueAmount;
   }
 
   // --- generic optional string fields ---

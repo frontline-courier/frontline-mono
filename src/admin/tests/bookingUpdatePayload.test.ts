@@ -119,6 +119,35 @@ test('paymentMode: omitted → credit fields not touched', () => {
 });
 
 // ---------------------------------------------------------------------------
+// $set / $unset conflict guard — creditNotes
+// creditNotes has no cross-field validation, so normalizeBookingPayload can
+// include it in data even when paymentMode is being removed/changed. Without
+// the explicit delete, MongoDB throws "conflicting update paths".
+// ---------------------------------------------------------------------------
+
+test('creditNotes not in $set when paymentMode is cleared (avoids $set/$unset conflict)', () => {
+  const { $set, $unset } = buildBookingUpdatePayload({
+    ...basePayload(),
+    paymentMode: '',
+    creditNotes: 'still has a note',
+  });
+
+  assert.ok(inUnset($unset, 'creditNotes'), 'creditNotes must be in $unset');
+  assert.ok(!inSet($set, 'creditNotes'), 'creditNotes must NOT be in $set — would cause MongoDB conflict');
+});
+
+test('creditNotes not in $set when paymentMode changes to non-Credit (avoids $set/$unset conflict)', () => {
+  const { $set, $unset } = buildBookingUpdatePayload({
+    ...basePayload(),
+    paymentMode: 'Cash',
+    creditNotes: 'still has a note',
+  });
+
+  assert.ok(inUnset($unset, 'creditNotes'), 'creditNotes must be in $unset');
+  assert.ok(!inSet($set, 'creditNotes'), 'creditNotes must NOT be in $set — would cause MongoDB conflict');
+});
+
+// ---------------------------------------------------------------------------
 // importDuty — cleared while shipmentMode stays international
 // ---------------------------------------------------------------------------
 
