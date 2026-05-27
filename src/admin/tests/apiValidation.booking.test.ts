@@ -25,7 +25,7 @@ test('rejects importDuty when shipmentMode is not International', () => {
       normalizeBookingPayload({
         ...getBaseBookingPayload(),
         shipmentMode: 1,
-        importDuty: 'Duty Fee (DP)',
+        importDuty: 'Duty FREE (DP)',
       });
     },
     (error: unknown) => {
