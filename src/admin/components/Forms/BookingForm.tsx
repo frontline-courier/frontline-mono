@@ -154,15 +154,24 @@ export default function BookingForm() {
     setError('');
     setLoader(true);
 
+    // The datetime-local input produces a bare string like "2026-05-20T10:00" with no
+    // timezone suffix. The browser correctly interprets this as local time when passed to
+    // `new Date()`, so `.toISOString()` produces the right UTC value. Without this
+    // conversion the server (which runs in UTC) would treat the bare string as UTC,
+    // causing the date to drift forward by the user's UTC offset on every save.
+    const bookedDateISO = data.bookedDate
+      ? new Date(data.bookedDate).toISOString()
+      : data.bookedDate;
+
     try {
       if (pageType === PageTypes.DELETE) {
         // not implemented
       } else if (pageType === PageTypes.EDIT) {
-        await axios.post('/api/bookings/update', { ...data, updatedBy: user?.email });
+        await axios.post('/api/bookings/update', { ...data, bookedDate: bookedDateISO, updatedBy: user?.email });
         await router.replace('/bookings');
         return;
       } else {
-        await axios.post('/api/bookings/add', { ...data, shipmentStatus: 'Booked', createdBy: user?.email });
+        await axios.post('/api/bookings/add', { ...data, bookedDate: bookedDateISO, shipmentStatus: 'Booked', createdBy: user?.email });
       }
 
 

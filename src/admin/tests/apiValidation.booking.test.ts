@@ -9,6 +9,39 @@ const getBaseBookingPayload = () => ({
   shipmentMode: 2,
 });
 
+// ─── bookedDate timezone-safety tests ───────────────────────────────────────
+// The datetime-local <input> produces bare strings like "2026-05-20T10:00"
+// with no TZ suffix. If the server accepted these it would treat them as UTC
+// even though the browser intended local time, causing the date to drift
+// forward by the user's UTC offset on every save. The API must reject bare
+// strings and require a proper ISO string with a TZ suffix.
+
+test('accepts bookedDate with a full UTC ISO string', () => {
+  const normalized = normalizeBookingPayload({
+    ...getBaseBookingPayload(),
+    bookedDate: '2026-05-20T04:30:00.000Z',
+  });
+
+  assert.ok(normalized.bookedDate instanceof Date);
+  assert.equal(normalized.bookedDate.toISOString(), '2026-05-20T04:30:00.000Z');
+});
+
+test('rejects a bare datetime-local bookedDate string (no TZ suffix)', () => {
+  assert.throws(
+    () => {
+      normalizeBookingPayload({
+        ...getBaseBookingPayload(),
+        bookedDate: '2026-05-20T10:00',
+      });
+    },
+    (error: unknown) => {
+      assert.ok(error instanceof ValidationError);
+      assert.match(error.message, /timezone/i);
+      return true;
+    },
+  );
+});
+
 test('allows importDuty when shipmentMode is International', () => {
   const normalized = normalizeBookingPayload({
     ...getBaseBookingPayload(),

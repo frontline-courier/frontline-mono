@@ -107,6 +107,17 @@ function ensureDate(value: unknown, fieldName: string, required = false) {
     return undefined;
   }
 
+  // A bare datetime-local string (e.g. "2026-05-20T10:00", no TZ suffix) is
+  // ambiguous: browsers treat it as local time, but the server (UTC) treats it as
+  // UTC — causing the date to drift by the user's UTC offset on every save.
+  // Always require a proper ISO string with a timezone suffix here; clients must
+  // convert via `new Date(localString).toISOString()` before posting.
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value)) {
+    throw new ValidationError(
+      `${fieldName} must include timezone information (e.g. "2026-05-20T04:30:00.000Z"). Bare datetime-local strings are not accepted.`,
+    );
+  }
+
   const parsedDate = value instanceof Date ? value : new Date(String(value));
 
   if (Number.isNaN(parsedDate.getTime())) {
