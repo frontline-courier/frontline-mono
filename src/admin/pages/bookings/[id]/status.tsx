@@ -42,7 +42,8 @@ function ShipmentStatusPage(props: any) {
     try {
       setError('');
       setStatusUpdate(true);
-      await axios.post(`/api/bookings/${bookingData._id}/status`, data);
+      const payload = { ...data, statusDate: new Date(data.statusDate).toISOString() };
+      await axios.post(`/api/bookings/${bookingData._id}/status`, payload);
 
       const { remark, statusDate, statusId, receivedPerson, receivedPersonRelation } = data;
 
