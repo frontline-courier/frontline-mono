@@ -45,7 +45,7 @@ function ShipmentStatusPage(props: any) {
       const payload = { ...data, statusDate: new Date(data.statusDate).toISOString() };
       await axios.post(`/api/bookings/${bookingData._id}/status`, payload);
 
-      const { remark, statusDate, statusId, receivedPerson, receivedPersonRelation } = data;
+      const { remark, statusDate, statusId, receivedPerson, receivedPersonRelation } = payload;
 
       setBookingData((currentBooking: any) => ({
         ...currentBooking,
