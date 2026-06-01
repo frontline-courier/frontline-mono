@@ -1,6 +1,5 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
-import moment from 'moment';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm, SubmitHandler } from 'react-hook-form';
@@ -12,6 +11,7 @@ import { bookedByOptions } from '../../constants/bookedByOptions';
 import { importDutyOptions } from '../../constants/importDutyOptions';
 import { creditStatusOptions, paymentModes } from '../../constants/paymentModes';
 import PaymentModeSelect from './PaymentModeSelect';
+import { toDatetimeLocalString } from '../../helpers/dateHelpers';
 
 const hasSelectedValue = (value: number) => value > 0 || 'Please select a value';
 const isFiniteNumber = (value: number | undefined) => value === undefined || (typeof value === 'number' && Number.isFinite(value)) || 'Please enter a valid number';
@@ -49,7 +49,7 @@ const getDefaultBookingFormValues = (): Partial<BookingFormInputs> => ({
   bookingAmount: undefined,
   dueAmount: undefined,
   actualWeight: undefined,
-  bookedDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
+  bookedDate: toDatetimeLocalString()
 });
 
 export default function BookingForm() {
@@ -95,7 +95,7 @@ export default function BookingForm() {
           reset({
             ...defaultFormValues,
             ...bookingResponse.data,
-            bookedDate: moment(bookingResponse.data.bookedDate).format(moment.HTML5_FMT.DATETIME_LOCAL),
+            bookedDate: toDatetimeLocalString(bookingResponse.data.bookedDate),
             bookedBy: bookingResponse.data.bookedBy || '',
             paymentMode: bookingResponse.data.paymentMode || '',
             creditStatus: bookingResponse.data.creditStatus || '',

@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { statusRelation } from '../../../constants/deliveryRelation';
-import moment from 'moment';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { toDatetimeLocalString, formatDisplayDatetime } from '../../../helpers/dateHelpers';
 import { courierStatus } from '../../../../shared/courier-status';
 
 const status = courierStatus;
 const relations = statusRelation;
 
 const getDefaultStatusFormValues = () => ({
-  statusDate: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
+  statusDate: toDatetimeLocalString(),
   statusId: '',
   remark: '',
   receivedPerson: '',
@@ -42,9 +42,10 @@ function ShipmentStatusPage(props: any) {
     try {
       setError('');
       setStatusUpdate(true);
-      await axios.post(`/api/bookings/${bookingData._id}/status`, data);
+      const payload = { ...data, statusDate: new Date(data.statusDate).toISOString() };
+      await axios.post(`/api/bookings/${bookingData._id}/status`, payload);
 
-      const { remark, statusDate, statusId, receivedPerson, receivedPersonRelation } = data;
+      const { remark, statusDate, statusId, receivedPerson, receivedPersonRelation } = payload;
 
       setBookingData((currentBooking: any) => ({
         ...currentBooking,
@@ -123,7 +124,7 @@ function ShipmentStatusPage(props: any) {
                   <div className="stat py-4">
                     <div className="stat-title">Last Updated</div>
                     <div className="stat-value text-sm font-medium">
-                      {currentStatusUpdatedAt ? moment(currentStatusUpdatedAt).format('Do MMM YYYY - hh:mm a (ddd)') : 'Booked only'}
+                      {currentStatusUpdatedAt ? formatDisplayDatetime(currentStatusUpdatedAt) : 'Booked only'}
                     </div>
                   </div>
                 </div>
@@ -148,7 +149,7 @@ function ShipmentStatusPage(props: any) {
                     <tbody>
                       <tr>
                         <td className="font-medium">Booked</td>
-                        <td>{moment(bookingData.bookedDate).format('Do MMM YYYY - hh:mm a (ddd)')}</td>
+                        <td>{formatDisplayDatetime(bookingData.bookedDate)}</td>
                         <td>-</td>
                         <td></td>
                       </tr>
@@ -160,7 +161,7 @@ function ShipmentStatusPage(props: any) {
                             <td>
                               <span className="badge badge-outline">{status.statusId}</span>
                             </td>
-                            <td>{moment(status.statusDate).format('Do MMM YYYY - hh:mm a (ddd)')}</td>
+                            <td>{formatDisplayDatetime(status.statusDate)}</td>
                             <td>{status.remark || '-'}</td>
                             <td>
                               {isLatestStatus && (
