@@ -10,8 +10,8 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { AiFillEdit, AiFillRead } from 'react-icons/ai';
 import { MdUpdate, MdAdd } from 'react-icons/md';
 import DeletePage from './delete';
-import moment from 'moment';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { formatDisplayDatetimeShort } from '../../helpers/dateHelpers';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
 import { courierStatus, getShipmentStatus } from '../../../shared/courier-status';
@@ -155,7 +155,7 @@ const BookingPage = () => {
   const data = rawBookingData.map((booking: any) => ({
     ...booking,
     courier: getCourierName(booking.courier),
-    bookedDate: moment(booking.bookedDate).format('DD-MM-YYYY HH:mm'),
+    bookedDate: formatDisplayDatetimeShort(booking.bookedDate),
     doxType: getDoxType(booking.doxType),
     shipmentMode: getShipmentMode(booking.shipmentMode),
     shipmentStatus: getShipmentStatus(booking.shipmentStatus)

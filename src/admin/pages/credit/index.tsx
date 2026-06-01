@@ -6,8 +6,8 @@ import DataTable from 'react-data-table-component';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 
-import moment from 'moment';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { formatDisplayDate } from '../../helpers/dateHelpers';
 import { MdUpdate } from 'react-icons/md';
 import { apiPath } from '../../constants/path/apiPath';
 import { creditModes } from '../../constants/credit/mode';
@@ -95,7 +95,7 @@ function BookingPage() {
     },
     {
       name: 'BookedDate',
-      selector: (row: any) => moment(row.bookedDate).format('DD-MM-YYYY'),
+      selector: (row: any) => formatDisplayDate(row.bookedDate),
       sortable: true,
     },
     {

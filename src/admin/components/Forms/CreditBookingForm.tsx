@@ -1,6 +1,5 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
-import moment from 'moment';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -13,6 +12,7 @@ import { creditServices } from '../../constants/credit/service';
 import { pagePath } from '../../constants/path/pagePath';
 import { volumeWeightCalculation } from '../../helpers/calculations/volumeWeightCalculation';
 import { volumeFieldValidation } from '../../helpers/validations/volumeFieldValidation';
+import { toDateInputString } from '../../helpers/dateHelpers';
 
 export default function CreateCreditForm() {
 
@@ -23,7 +23,7 @@ export default function CreateCreditForm() {
       courier: '',
       mode: '',
       service: '',
-      bookedDate: moment().format('yyyy-MM-DD')
+      bookedDate: toDateInputString()
     }
   });
   const errors = formState.errors;
@@ -42,7 +42,7 @@ export default function CreateCreditForm() {
           const result = await axios.get(`/api/credit/bookings/${id}`);
 
           if (result.data) {
-            result.data.bookedDate = moment(result.data.bookedDate).format('yyyy-MM-DD');
+            result.data.bookedDate = toDateInputString(result.data.bookedDate);
           }
           reset(result.data);
         } catch (err) {
