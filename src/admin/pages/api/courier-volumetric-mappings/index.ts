@@ -3,6 +3,8 @@ import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 import { ObjectId } from 'mongodb';
 import nextConnect from 'next-connect';
 import middleware from '../../../helpers/database';
+import { buildVolumetricMappingUniquenessQuery } from '../../../helpers/mappingQueries';
+import { isNumericInput } from '../../../helpers/numbers';
 
 // Using a different approach to avoid TypeScript errors
 const handler = async (req: any, res: NextApiResponse) => {
@@ -64,20 +66,32 @@ const handler = async (req: any, res: NextApiResponse) => {
       case 'POST':
         // Create a new mapping
         const { courierId, formulaId, transportMode } = req.body;
+        const numericCourierId = Number(courierId);
+        const numericFormulaId = Number(formulaId);
+        const numericTransportMode = Number(transportMode);
 
-        if (!courierId || !formulaId || !transportMode) {
-          return res.status(400).json({ error: 'Missing required fields' });
+        if (
+          !isNumericInput(courierId)
+          || !isNumericInput(formulaId)
+          || !isNumericInput(transportMode)
+          || numericCourierId <= 0
+          || numericFormulaId <= 0
+          || numericTransportMode <= 0
+        ) {
+          return res.status(400).json({ error: 'Missing or invalid required fields' });
         }
 
-        // Check if mapping already exists
-        const existingMapping = await courierVolumetricMappingsCollection.findOne({ courierId });
+        // Check if mapping already exists for this courier + transport mode
+        const existingMapping = await courierVolumetricMappingsCollection.findOne(
+          buildVolumetricMappingUniquenessQuery(numericCourierId, numericTransportMode),
+        );
 
         if (existingMapping) {
-          return res.status(400).json({ error: 'Mapping for this courier already exists' });
+          return res.status(400).json({ error: 'Mapping for this courier and transport mode already exists' });
         }
 
         // Get courier details
-        const courier = await couriersCollection.findOne({ CourierId: courierId });
+        const courier = await couriersCollection.findOne({ CourierId: numericCourierId });
         
         // Get formula name based on the formula ID
         const formulaNames = {
@@ -90,11 +104,11 @@ const handler = async (req: any, res: NextApiResponse) => {
 
         // Insert new mapping
         const newMapping = {
-          courierId,
-          formulaId,
-          transportMode,
+          courierId: numericCourierId,
+          formulaId: numericFormulaId,
+          transportMode: numericTransportMode,
           courierName: courier ? courier.Courier : 'Unknown',
-          formulaName: formulaNames[formulaId as keyof typeof formulaNames] || 'Unknown',
+          formulaName: formulaNames[numericFormulaId as keyof typeof formulaNames] || 'Unknown',
           createdAt: new Date(),
           updatedAt: new Date(),
           createdBy: user.email,

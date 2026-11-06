@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { ValidationError, normalizeBookingPayload } from '../helpers/apiValidation';
+import { ValidationError, escapeRegex, normalizeBookingPayload } from '../helpers/apiValidation';
 
 const getBaseBookingPayload = () => ({
   awbNumber: 'AWB12345',
@@ -196,4 +196,71 @@ test('rejects dueAmount greater than bookingAmount for Pending - Partial credit 
       return true;
     },
   );
+});
+
+// ─── shipmentStatus + audit fields ──────────────────────────────────────────
+
+test('defaults shipmentStatus to Booked on create', () => {
+  const normalized = normalizeBookingPayload(getBaseBookingPayload());
+
+  assert.equal(normalized.shipmentStatus, 'Booked');
+});
+
+test('accepts and normalizes a provided shipmentStatus on create', () => {
+  const normalized = normalizeBookingPayload({
+    ...getBaseBookingPayload(),
+    shipmentStatus: 'in transit',
+  });
+
+  assert.equal(normalized.shipmentStatus, 'In Transit');
+});
+
+test('does not add a default shipmentStatus on partial updates', () => {
+  const normalized = normalizeBookingPayload(getBaseBookingPayload(), true);
+
+  assert.ok(!('shipmentStatus' in normalized));
+});
+
+test('ignores a provided shipmentStatus on partial updates', () => {
+  const normalized = normalizeBookingPayload({
+    ...getBaseBookingPayload(),
+    shipmentStatus: 'In Transit',
+  }, true);
+
+  assert.ok(!('shipmentStatus' in normalized));
+});
+
+test('rejects an invalid shipmentStatus', () => {
+  assert.throws(
+    () => {
+      normalizeBookingPayload({
+        ...getBaseBookingPayload(),
+        shipmentStatus: 'Not a real status',
+      });
+    },
+    (error: unknown) => {
+      assert.ok(error instanceof ValidationError);
+      assert.match(error.message, /Shipment Status is invalid/i);
+      return true;
+    },
+  );
+});
+
+test('persists createdBy and updatedBy audit fields', () => {
+  const normalized = normalizeBookingPayload({
+    ...getBaseBookingPayload(),
+    createdBy: ' creator@example.com ',
+    updatedBy: ' updater@example.com ',
+  });
+
+  assert.equal(normalized.createdBy, 'creator@example.com');
+  assert.equal(normalized.updatedBy, 'updater@example.com');
+});
+
+test('escapeRegex escapes every regex metacharacter', () => {
+  const raw = 'Pending (Partial) [v1] $5.00 + tax?';
+  const escaped = escapeRegex(raw);
+
+  assert.equal(escaped, 'Pending \\(Partial\\) \\[v1\\] \\$5\\.00 \\+ tax\\?');
+  assert.doesNotThrow(() => new RegExp(escaped));
 });

@@ -1,6 +1,7 @@
 import { Db } from 'mongodb';
 import nextConnect from 'next-connect';
 import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
+import { escapeRegex } from '../../../helpers/apiValidation';
 import middleware from '../../../helpers/database';
 
 const handler = nextConnect();
@@ -35,7 +36,7 @@ export function buildBookingsQuery(params: BookingFilterParams) {
         query.shipmentMode = params.mode;
     }
     if (params.status) {
-        query.shipmentStatus = { $regex: params.status, $options: 'i' };
+        query.shipmentStatus = { $regex: escapeRegex(params.status), $options: 'i' };
     }
     if (params.paymentMode) {
         query.paymentMode = params.paymentMode;

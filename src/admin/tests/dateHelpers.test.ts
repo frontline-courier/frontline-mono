@@ -3,6 +3,7 @@ import test from 'node:test';
 import {
   toDatetimeLocalString,
   toDateInputString,
+  formatDisplayDatetime,
   formatDisplayDatetimeShort,
   formatDisplayDate,
 } from '../helpers/dateHelpers';
@@ -93,4 +94,27 @@ test('formatDisplayDate and formatDisplayDatetimeShort share the same date porti
 
   // The date part (DD-MM-YYYY) in both outputs must agree
   assert.equal(datetime.slice(0, 10), dateOnly);
+});
+
+// ─── Invalid/missing input must never crash rendering ───────────────────────
+
+test('display formatters return an empty string for missing dates', () => {
+  assert.equal(formatDisplayDatetime(undefined), '');
+  assert.equal(formatDisplayDatetime(null), '');
+  assert.equal(formatDisplayDatetime(''), '');
+  assert.equal(formatDisplayDatetimeShort(undefined), '');
+  assert.equal(formatDisplayDate(undefined), '');
+});
+
+test('display formatters return an empty string for invalid dates', () => {
+  assert.equal(formatDisplayDatetime('not-a-date'), '');
+  assert.equal(formatDisplayDatetimeShort('not-a-date'), '');
+  assert.equal(formatDisplayDate('not-a-date'), '');
+});
+
+test('input formatters return an empty string for invalid dates', () => {
+  assert.equal(toDatetimeLocalString('not-a-date'), '');
+  assert.equal(toDatetimeLocalString(null), '');
+  assert.equal(toDateInputString('not-a-date'), '');
+  assert.equal(toDateInputString(null), '');
 });

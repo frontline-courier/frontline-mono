@@ -1,3 +1,18 @@
+type DateInput = Date | string | null | undefined;
+
+/**
+ * Parse a Date/ISO string and return `null` for missing or invalid values.
+ * Keeping this guard centralised means a bad/missing date can never crash render.
+ */
+function parseDate(date: DateInput): Date | null {
+  if (date === undefined || date === null || date === '') {
+    return null;
+  }
+
+  const parsedDate = date instanceof Date ? date : new Date(date);
+  return Number.isNaN(parsedDate.getTime()) ? null : parsedDate;
+}
+
 /**
  * Format a Date (or ISO string) as a local "YYYY-MM-DDTHH:mm" string suitable
  * for <input type="datetime-local"> default values.
@@ -5,8 +20,13 @@
  * IMPORTANT: do NOT use toISOString().slice(0,16) here — that gives UTC time
  * and would pre-fill the input with the wrong local time for the user.
  */
-export function toDatetimeLocalString(date: Date | string = new Date()): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
+export function toDatetimeLocalString(date: DateInput = new Date()): string {
+  const d = parseDate(date);
+
+  if (!d) {
+    return '';
+  }
+
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 }
 
@@ -14,8 +34,13 @@ export function toDatetimeLocalString(date: Date | string = new Date()): string 
  * Format a Date (or ISO string) as a local "YYYY-MM-DD" string suitable
  * for <input type="date"> default values.
  */
-export function toDateInputString(date: Date | string = new Date()): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
+export function toDateInputString(date: DateInput = new Date()): string {
+  const d = parseDate(date);
+
+  if (!d) {
+    return '';
+  }
+
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 }
 
@@ -24,8 +49,12 @@ export function toDateInputString(date: Date | string = new Date()): string {
  * Replacement for moment(date).format('Do MMM YYYY - hh:mm a (ddd)').
  * Uses the browser/server locale for ordinal suffix.
  */
-export function formatDisplayDatetime(date: Date | string): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
+export function formatDisplayDatetime(date: DateInput): string {
+  const d = parseDate(date);
+
+  if (!d) {
+    return '';
+  }
 
   const datePart = d.toLocaleDateString('en-IN', {
     day: 'numeric',
@@ -46,8 +75,12 @@ export function formatDisplayDatetime(date: Date | string): string {
  * Format a date for display: "23-05-2026 10:30"
  * Replacement for moment(date).format('DD-MM-YYYY HH:mm').
  */
-export function formatDisplayDatetimeShort(date: Date | string): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
+export function formatDisplayDatetimeShort(date: DateInput): string {
+  const d = parseDate(date);
+
+  if (!d) {
+    return '';
+  }
 
   const dd = String(d.getDate()).padStart(2, '0');
   const mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -62,8 +95,12 @@ export function formatDisplayDatetimeShort(date: Date | string): string {
  * Format a date for display: "23-05-2026"
  * Replacement for moment(date).format('DD-MM-YYYY').
  */
-export function formatDisplayDate(date: Date | string): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
+export function formatDisplayDate(date: DateInput): string {
+  const d = parseDate(date);
+
+  if (!d) {
+    return '';
+  }
 
   const dd = String(d.getDate()).padStart(2, '0');
   const mm = String(d.getMonth() + 1).padStart(2, '0');

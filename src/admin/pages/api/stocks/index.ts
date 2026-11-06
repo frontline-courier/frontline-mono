@@ -7,6 +7,7 @@ import {
   ValidationError,
 } from '../../../helpers/apiValidation';
 import middleware from '../../../helpers/database';
+import { buildStockDuplicateQuery } from '../../../helpers/stockQueries';
 
 const handler = nextConnect();
 
@@ -17,8 +18,14 @@ handler.post(async (req: any, res: any) => {
   try {
     const body = normalizeStockEntriesPayload(req.body);
     const collection = (req.db as Db).collection('stocks');
- 
-    const docs = await collection.find({ awb: { $in: body.map((v: any) => v.awb) }, courier: body[0].courier });
+
+    // normalizeStockEntriesPayload guarantees both fields are present because
+    // they are validated as required.
+    const duplicateEntries = body.map((entry) => ({
+      awb: entry.awb as string,
+      courier: entry.courier as string,
+    }));
+    const docs = await collection.find(buildStockDuplicateQuery(duplicateEntries));
 
     const docLength = (await docs.toArray()).length;
 
@@ -26,7 +33,7 @@ handler.post(async (req: any, res: any) => {
       return res.send({ success: false, error: 'AWB already available in stock!' });
     }
 
-    await collection.insertMany(req.body);
+    await collection.insertMany(body);
 
     res.send({ success: true });
   }

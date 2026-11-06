@@ -30,7 +30,7 @@ export class ContactComponent implements OnInit {
 
   // deprecated
   // can be removed in upcoming releases.
-  sendEmail() {
+  async sendEmail() {
     const emailBody = {
       to: [
         'Aravind from FrontlineCourier <aravin.it@gmail.com>',
@@ -54,16 +54,7 @@ export class ContactComponent implements OnInit {
       <br/>
       <p>---</p>`,
     };
-    this.httpService.sendEmail(emailBody).then(
-      data => {
-        this.mailSent = true;
-        this.mailCompleted = true;
-      },
-      err => {
-        this.mailSent = false;
-        this.mailCompleted = true;
-      }
-    );
+    const teamSent = await this.httpService.sendEmail(emailBody);
 
     const emailBody2 = {
       to: this.contactForm.value.email,
@@ -85,15 +76,9 @@ export class ContactComponent implements OnInit {
           <br/>
           <p>---</p>`,
     };
-    this.httpService.sendEmail(emailBody2).then(
-      data => {
-        this.mailSent = true;
-        this.mailCompleted = true;
-      },
-      err => {
-        this.mailSent = false;
-        this.mailCompleted = true;
-      }
-    );
+    const customerSent = await this.httpService.sendEmail(emailBody2);
+
+    this.mailSent = teamSent && customerSent;
+    this.mailCompleted = true;
   }
 }

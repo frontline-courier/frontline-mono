@@ -61,7 +61,7 @@ export default function VolumetricForm() {
         setCourierList(couriers);
         
         // Fetch volumetric mappings
-        const mappingsResponse = await axios.get('/api/courier-volumetric-mappings');
+        const mappingsResponse = await axios.get('/api/courier-volumetric-mappings?limit=1000');
         setMappings(mappingsResponse.data.mappings || []);
       } catch (error) {
         setErrorCouriers('Failed to load data');
@@ -89,7 +89,7 @@ export default function VolumetricForm() {
     
     // First check if there's a specific mapping for this courier and transport mode
     const specificMapping = mappings.find(m => 
-      m.courierId === Number(selectedCourier) && m.transportMode === Number(transportMode)
+      Number(m.courierId) === Number(selectedCourier) && Number(m.transportMode) === Number(transportMode)
     );
     
     if (specificMapping) {
@@ -118,7 +118,7 @@ export default function VolumetricForm() {
     if (!selectedCourier || !transportMode) return null;
     
     return mappings.find(m => 
-      m.courierId === Number(selectedCourier) && m.transportMode === Number(transportMode)
+      Number(m.courierId) === Number(selectedCourier) && Number(m.transportMode) === Number(transportMode)
     );
   };
   

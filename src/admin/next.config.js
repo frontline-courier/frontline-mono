@@ -4,5 +4,4 @@ module.exports = {
     externalDir: true,
   },
   reactStrictMode: false,
-  swcMinify: true,
 }

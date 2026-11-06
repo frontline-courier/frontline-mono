@@ -2,9 +2,9 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { DoxType } from '../../models/DoxType';
-import { TransportMode } from '../../models/transportMode';
 import { ShipmentMode } from '../../models/shipmentMode';
+import { calculateInsuranceAmount } from '../../helpers/calculations/bookingRateCalculation';
+import { transportModeOptions, getTransportModeOptionLabel } from '../../constants/transportModeOptions';
 
 // Define volumetric formulas in one place
 const VOLUMETRIC_FORMULAS = [
@@ -16,7 +16,7 @@ const VOLUMETRIC_FORMULAS = [
 ];
 
 // Create a lookup object for courier-to-formula mapping
-const COURIER_FORMULAS: { [key: number]: { divisor: number, formula: string } } = 
+const COURIER_FORMULAS: { [key: number]: { divisor: number, formula: string } } =
   VOLUMETRIC_FORMULAS.reduce((acc, formula) => {
     acc[formula.id] = { divisor: formula.divisor, formula: formula.formula };
     return acc;
@@ -80,6 +80,7 @@ export default function ShipmentForm() {
   const boxDimensions = watch('boxDimensions');
   const goodsValue = watch('goodsValue');
   const isUsedProduct = watch('isUsedProduct');
+  const isUsedProductFlag = (isUsedProduct as unknown) === true || (isUsedProduct as unknown) === 'true';
   const discount = watch('discount');
   const shippingCost = watch('shippingCost');
   const insurance = watch('insurance');
@@ -88,7 +89,7 @@ export default function ShipmentForm() {
   const doxType = watch('doxType');
   const transportMode = watch('transportMode');
   const courier = watch('courier');
-  
+
   // Check if document type is Dox
   const isDox = Number(doxType) === 1;
 
@@ -98,7 +99,7 @@ export default function ShipmentForm() {
       try {
         const [courierResult, mappingsResult] = await Promise.allSettled([
           axios.get('/api/couriers'),
-          axios.get('/api/courier-volumetric-mappings')
+          axios.get('/api/courier-volumetric-mappings?limit=1000')
         ]);
 
         if (mappingsResult.status === 'fulfilled') {
@@ -133,28 +134,28 @@ export default function ShipmentForm() {
   // Get volumetric divisor based on courier and transport mode
   const getVolumetricDivisor = useCallback(() => {
     if (!courier || !transportMode) return 5000; // Default divisor
-    
+
     const courierNum = Number(courier);
     const transportModeNum = Number(transportMode);
-    
+
     // Check for Bluedart Surface Economy first - this always takes precedence
     const selectedCourier = courierList.find(c => c.CourierId === courierNum);
     const courierName = selectedCourier?.Courier || '';
-    
+
     if (courierName.includes('Bluedart Surface')) {
       // Force the formula to be L×B×H/27000×8 for Bluedart Surface Economy
       setValue('formula', 'L×B×H/27000×8');
       return 27000/8;
     }
-    
+
     // Check if there's a specific mapping for this courier and transport mode
-    const specificMapping = mappings.find(m => 
-      m.courierId === courierNum && m.transportMode === transportModeNum
+    const specificMapping = mappings.find(m =>
+      Number(m.courierId) === courierNum && Number(m.transportMode) === transportModeNum
     );
-    
+
     if (specificMapping) {
       // Use the formula from the mapping
-      const formulaObj = VOLUMETRIC_FORMULAS.find((f) => 
+      const formulaObj = VOLUMETRIC_FORMULAS.find((f) =>
         f.id === specificMapping.formulaId
       );
       if (formulaObj) {
@@ -162,11 +163,11 @@ export default function ShipmentForm() {
         return formulaObj.divisor;
       }
     }
-    
+
     // Calculate volumetric weight based on transport mode
     let divisor = 5000; // Default divisor
     let formula = 'L×B×H/5000'; // Default formula
-    
+
     switch (transportModeNum) {
       case 1: // Air Courier
       case 3: // Air Cargo
@@ -191,7 +192,7 @@ export default function ShipmentForm() {
           formula = selectedCourier.Formula || 'L×B×H/5000';
         }
     }
-    
+
     setValue('formula', formula);
     return divisor;
   }, [courier, transportMode, courierList, mappings, setValue]);
@@ -202,20 +203,20 @@ export default function ShipmentForm() {
       setValue('totalVolWeight', 0);
       return;
     }
-    
+
     const divisor = getVolumetricDivisor();
-    
+
     // Use reduce for a single pass through the array
     const totalVol = boxDimensions.reduce((acc, box) => {
       // Destructure for cleaner code
       const { length = 0, width = 0, height = 0 } = box;
       // Only do the calculation if all dimensions are present
-      const boxVol = (length && width && height) 
-        ? (length * width * height) / divisor 
+      const boxVol = (length && width && height)
+        ? (length * width * height) / divisor
         : 0;
       return acc + boxVol;
     }, 0);
-    
+
     setValue('totalVolWeight', Number(totalVol.toFixed(2)));
   }, [boxDimensions, isDox, getVolumetricDivisor, setValue]);
 
@@ -243,15 +244,8 @@ export default function ShipmentForm() {
 
   // Calculate insurance based on goods value and product type
   useEffect(() => {
-    const goodsValueNum = Number(goodsValue) || 0;
-    if (goodsValueNum > 0) {
-      const insuranceRate = isUsedProduct ? 0.03 : 0.025; // 3% for used products, 2.5% for new products
-      const insuranceAmount = goodsValueNum * insuranceRate;
-      setValue('insurance', Number(insuranceAmount.toFixed(2)));
-    } else {
-      setValue('insurance', 0);
-    }
-  }, [goodsValue, isUsedProduct, setValue]);
+    setValue('insurance', calculateInsuranceAmount(goodsValue, isUsedProductFlag));
+  }, [goodsValue, isUsedProductFlag, setValue]);
 
   // Calculate total value
   useEffect(() => {
@@ -259,7 +253,7 @@ export default function ShipmentForm() {
     const insuranceNum = Number(insurance) || 0;
     const discountNum = Number(discount) || 0;
     const shippingCostNum = Number(shippingCost) || 0;
-    
+
     const total = goodsValueNum + insuranceNum - discountNum + shippingCostNum;
     setValue('totalValue', Number(total.toFixed(2)));
   }, [goodsValue, insurance, discount, shippingCost, setValue]);
@@ -268,7 +262,7 @@ export default function ShipmentForm() {
   const handleBoxesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const count = Math.max(1, parseInt(e.target.value) || 1);
     const currentDimensions = watch('boxDimensions');
-    const newDimensions = Array(count).fill(null).map((_, index) => 
+    const newDimensions = Array(count).fill(null).map((_, index) =>
       currentDimensions[index] || { length: 0, width: 0, height: 0 }
     );
     setValue('numberOfBoxes', count);
@@ -350,11 +344,11 @@ export default function ShipmentForm() {
           </label>
           <select
             className={`select select-bordered w-full ${errors.transportMode ? 'select-error' : ''}`}
-            {...register('transportMode', { required: true })}
+            {...register('transportMode', { required: true, valueAsNumber: true })}
           >
             <option value={0}>Select Transport Mode</option>
-            {Object.entries(TransportMode).map(([key, value]) => (
-              <option key={key} value={key}>{value}</option>
+            {transportModeOptions.map((option) => (
+              <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </select>
           {errors.transportMode && <span className="text-error text-sm">Please select a transport mode</span>}
@@ -435,8 +429,8 @@ export default function ShipmentForm() {
                           step="0.1"
                           min="0"
                           className="input input-bordered w-full"
-                          {...register(`boxDimensions.${index}.length`, { 
-                            required: !isDox, 
+                          {...register(`boxDimensions.${index}.length`, {
+                            required: !isDox,
                             min: 0,
                             onChange: (e) => handleBoxDimensionChange(index, 'length', e.target.value)
                           })}
@@ -456,8 +450,8 @@ export default function ShipmentForm() {
                           step="0.1"
                           min="0"
                           className="input input-bordered w-full"
-                          {...register(`boxDimensions.${index}.width`, { 
-                            required: !isDox, 
+                          {...register(`boxDimensions.${index}.width`, {
+                            required: !isDox,
                             min: 0,
                             onChange: (e) => handleBoxDimensionChange(index, 'width', e.target.value)
                           })}
@@ -477,8 +471,8 @@ export default function ShipmentForm() {
                           step="0.1"
                           min="0"
                           className="input input-bordered w-full"
-                          {...register(`boxDimensions.${index}.height`, { 
-                            required: !isDox, 
+                          {...register(`boxDimensions.${index}.height`, {
+                            required: !isDox,
                             min: 0,
                             onChange: (e) => handleBoxDimensionChange(index, 'height', e.target.value)
                           })}
@@ -490,8 +484,8 @@ export default function ShipmentForm() {
                     </div>
                   </div>
                   <div className="mt-2 text-sm text-base-content/70">
-                    Volume: {((Number(boxDimensions[index]?.length) || 0) * 
-                             (Number(boxDimensions[index]?.width) || 0) * 
+                    Volume: {((Number(boxDimensions[index]?.length) || 0) *
+                             (Number(boxDimensions[index]?.width) || 0) *
                              (Number(boxDimensions[index]?.height) || 0)).toFixed(2)} cm³
                   </div>
                 </div>
@@ -518,13 +512,13 @@ export default function ShipmentForm() {
               </div>
               <div className="mt-2 md:mt-0 flex items-center text-sm">
                 <span className={`badge ${
-                  mappings.some(m => m.courierId === Number(courier) && m.transportMode === Number(transportMode)) 
-                    ? 'badge-success' 
+                  mappings.some(m => Number(m.courierId) === Number(courier) && Number(m.transportMode) === Number(transportMode))
+                    ? 'badge-success'
                     : courierList.find(c => c.CourierId === Number(courier))?.Courier?.includes('Bluedart Surface')
                         ? 'badge-warning'
                         : 'badge-info'
                 }`}>
-                  {mappings.some(m => m.courierId === Number(courier) && m.transportMode === Number(transportMode))
+                  {mappings.some(m => Number(m.courierId) === Number(courier) && Number(m.transportMode) === Number(transportMode))
                     ? 'Custom Formula'
                     : courierList.find(c => c.CourierId === Number(courier))?.Courier?.includes('Bluedart Surface')
                         ? 'Courier-Specific Formula'
@@ -533,8 +527,8 @@ export default function ShipmentForm() {
                 <div className="ml-2 text-base-content/70">
                   {(() => {
                     const selectedCourier = courierList.find(c => c.CourierId === Number(courier));
-                    const transportModeText = Object.entries(TransportMode).find(([key]) => Number(key) === Number(transportMode))?.[1] || 'transport mode';
-                    
+                    const transportModeText = getTransportModeOptionLabel(transportMode);
+
                     if (selectedCourier?.Courier?.includes('Bluedart Surface')) {
                       return (
                         <span className="text-warning font-medium">
@@ -542,7 +536,7 @@ export default function ShipmentForm() {
                         </span>
                       );
                     }
-                    
+
                     return `Based on ${selectedCourier?.Courier || 'selected courier'} and ${transportModeText}`;
                   })()}
                 </div>
@@ -570,13 +564,13 @@ export default function ShipmentForm() {
                     })()}
                   </span>
                   <span className={`ml-2 badge ${
-                    mappings.some(m => m.courierId === Number(courier) && m.transportMode === Number(transportMode)) 
-                      ? 'badge-success' 
+                    mappings.some(m => Number(m.courierId) === Number(courier) && Number(m.transportMode) === Number(transportMode))
+                      ? 'badge-success'
                       : courierList.find(c => c.CourierId === Number(courier))?.Courier?.includes('Bluedart Surface')
                           ? 'badge-warning'
                           : 'badge-info'
                   } badge-sm`}>
-                    {mappings.some(m => m.courierId === Number(courier) && m.transportMode === Number(transportMode))
+                    {mappings.some(m => Number(m.courierId) === Number(courier) && Number(m.transportMode) === Number(transportMode))
                       ? 'Custom'
                       : courierList.find(c => c.CourierId === Number(courier))?.Courier?.includes('Bluedart Surface')
                           ? 'Courier-Specific'
@@ -690,19 +684,19 @@ export default function ShipmentForm() {
                       // Check for Bluedart Surface Economy first
                       const selectedCourier = courierList.find(c => c.CourierId === Number(courier));
                       const isBluedartSurface = selectedCourier?.Courier?.includes('Bluedart Surface') || false;
-                      
+
                       // Use the correct formula based on courier
                       let formula = isBluedartSurface ? 'L×B×H/27000×8' : (watch('formula') || 'L×B×H/5000');
                       let divisor = 5000;
                       let divisorDisplay = '5000';
-                      
+
                       if (isBluedartSurface) {
                         divisor = 27000/8;
                         divisorDisplay = '27000÷8 = 3375';
                       } else if (formula.includes('/')) {
                         const parts = formula.split('/');
                         divisorDisplay = parts[1];
-                        
+
                         // Handle special case like L×B×H/27000×8
                         if (divisorDisplay.includes('×')) {
                           const [base, multiplier] = divisorDisplay.split('×');
@@ -712,10 +706,10 @@ export default function ShipmentForm() {
                           divisor = parseFloat(divisorDisplay);
                         }
                       }
-                      
+
                       const volume = Number(boxDimensions[0].length) * Number(boxDimensions[0].width) * Number(boxDimensions[0].height);
                       const volumetricWeight = volume / divisor;
-                      
+
                       return (
                         <>
                           <span>{volume.toFixed(2)} ÷ {divisorDisplay} = </span>
@@ -803,7 +797,7 @@ export default function ShipmentForm() {
                     type="radio"
                     value="false"
                     className="radio radio-primary"
-                    {...register('isUsedProduct')}
+                    {...register('isUsedProduct', { setValueAs: (value) => value === 'true' })}
                   />
                   <span className="label-text ml-2">New (2.5%)</span>
                 </label>
@@ -812,7 +806,7 @@ export default function ShipmentForm() {
                     type="radio"
                     value="true"
                     className="radio radio-primary"
-                    {...register('isUsedProduct')}
+                    {...register('isUsedProduct', { setValueAs: (value) => value === 'true' })}
                   />
                   <span className="label-text ml-2">Used (3%)</span>
                 </label>
@@ -837,7 +831,7 @@ export default function ShipmentForm() {
                 </div>
               </div>
               <span className="text-sm text-base-content/70 mt-1">
-                {isUsedProduct ? '3% of goods value' : '2.5% of goods value'}
+                {isUsedProductFlag ? '3% of goods value' : '2.5% of goods value'}
               </span>
             </div>
           </div>
@@ -870,4 +864,4 @@ export default function ShipmentForm() {
       </div>
     </form>
   );
-} 
+}

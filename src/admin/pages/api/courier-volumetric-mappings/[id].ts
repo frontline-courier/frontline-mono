@@ -3,6 +3,8 @@ import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 import { ObjectId } from 'mongodb';
 import nextConnect from 'next-connect';
 import middleware from '../../../helpers/database';
+import { buildVolumetricMappingUniquenessQuery } from '../../../helpers/mappingQueries';
+import { isNumericInput } from '../../../helpers/numbers';
 
 const handler = async (req: any, res: NextApiResponse) => {
   const session = await getSession(req, res);
@@ -49,9 +51,19 @@ const handler = async (req: any, res: NextApiResponse) => {
       case 'PUT':
         // Update a mapping
         const { courierId, formulaId, transportMode } = req.body;
+        const numericCourierId = Number(courierId);
+        const numericFormulaId = Number(formulaId);
+        const numericTransportMode = Number(transportMode);
 
-        if (!courierId || !formulaId || !transportMode) {
-          return res.status(400).json({ error: 'Missing required fields' });
+        if (
+          !isNumericInput(courierId)
+          || !isNumericInput(formulaId)
+          || !isNumericInput(transportMode)
+          || numericCourierId <= 0
+          || numericFormulaId <= 0
+          || numericTransportMode <= 0
+        ) {
+          return res.status(400).json({ error: 'Missing or invalid required fields' });
         }
 
         // Check if mapping exists
@@ -61,18 +73,17 @@ const handler = async (req: any, res: NextApiResponse) => {
           return res.status(404).json({ error: 'Mapping not found' });
         }
 
-        // Check if updating to a courier that already has a different mapping
-        const conflictMapping = await courierVolumetricMappingsCollection.findOne({ 
-          courierId, 
-          _id: { $ne: objectId }
-        });
+        // Check if updating to a courier + transport mode that already has a different mapping
+        const conflictMapping = await courierVolumetricMappingsCollection.findOne(
+          buildVolumetricMappingUniquenessQuery(numericCourierId, numericTransportMode, objectId),
+        );
 
         if (conflictMapping) {
-          return res.status(400).json({ error: 'Another mapping for this courier already exists' });
+          return res.status(400).json({ error: 'Another mapping for this courier and transport mode already exists' });
         }
 
         // Get courier details
-        const courierInfo = await couriersCollection.findOne({ CourierId: courierId });
+        const courierInfo = await couriersCollection.findOne({ CourierId: numericCourierId });
         
         // Get formula name based on the formula ID
         const formulaNames = {
@@ -85,11 +96,11 @@ const handler = async (req: any, res: NextApiResponse) => {
 
         // Update the mapping
         const updateData = {
-          courierId,
-          formulaId,
-          transportMode,
+          courierId: numericCourierId,
+          formulaId: numericFormulaId,
+          transportMode: numericTransportMode,
           courierName: courierInfo ? courierInfo.Courier : 'Unknown',
-          formulaName: formulaNames[formulaId as keyof typeof formulaNames] || 'Unknown',
+          formulaName: formulaNames[numericFormulaId as keyof typeof formulaNames] || 'Unknown',
           updatedAt: new Date(),
           updatedBy: user.email
         };

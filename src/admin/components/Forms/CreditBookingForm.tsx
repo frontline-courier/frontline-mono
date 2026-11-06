@@ -13,6 +13,11 @@ import { pagePath } from '../../constants/path/pagePath';
 import { volumeWeightCalculation } from '../../helpers/calculations/volumeWeightCalculation';
 import { volumeFieldValidation } from '../../helpers/validations/volumeFieldValidation';
 import { toDateInputString } from '../../helpers/dateHelpers';
+import {
+  calculateCarrierInsurance,
+  calculateCreditTotal,
+  calculateFovRisk,
+} from '../../helpers/calculations/creditCalculation';
 
 export default function CreateCreditForm() {
 
@@ -101,15 +106,37 @@ export default function CreateCreditForm() {
     setValue('actualWeight', volumeWeightCalculation(volFormula, l, b, h));
   }
 
-  const onAmountChange = async (e: any) => {
-    const amount = parseFloat(e.target.value);
-    const carrierInsurance = Math.round((amount * (2.5 / 100)) * 100) / 100;
-    const fovRisk = Math.round((amount * (0.25 / 100)) * 100) / 100;
+  const recalcTotal = (overrides: {
+    amount?: number;
+    odaEdl?: number;
+    carrierInsurance?: number;
+    fovRisk?: number;
+  } = {}) => {
+    setValue('total', calculateCreditTotal({
+      amount: overrides.amount ?? (Number(watch('amount')) || 0),
+      odaEdl: overrides.odaEdl ?? (Number(watch('odaEdl')) || 0),
+      carrierInsurance: overrides.carrierInsurance ?? (Number(watch('carrierInsurance')) || 0),
+      fovRisk: overrides.fovRisk ?? (Number(watch('fovRisk')) || 0),
+    }));
+  };
 
+  const onAmountChange = (e: any) => {
+    const amount = parseFloat(e.target.value) || 0;
+    const carrierInsurance = calculateCarrierInsurance(amount);
+    const fovRisk = calculateFovRisk(amount);
+
+    setValue('amount', amount, { shouldValidate: true, shouldDirty: true });
     setValue('carrierInsurance', carrierInsurance);
     setValue('fovRisk', fovRisk);
-    setValue('total',  Math.round((amount + carrierInsurance+ fovRisk) * 100) / 100);
-  }
+    recalcTotal({ amount, carrierInsurance, fovRisk });
+  };
+
+  const onOdaEdlChange = (e: any) => {
+    const odaEdl = parseFloat(e.target.value) || 0;
+
+    setValue('odaEdl', odaEdl, { shouldValidate: true, shouldDirty: true });
+    recalcTotal({ odaEdl });
+  };
 
   return (
     <>
@@ -228,7 +255,7 @@ export default function CreateCreditForm() {
               <label className="label p-1">
                 <span className="label-text text-2xs">ODA / EDL</span>
               </label>
-              <input type="text" placeholder="ODA / EDL" className={`input input-bordered ${errors.odaEdl && 'input-error'}`} {...register('odaEdl', { valueAsNumber: true })} />
+              <input type="text" placeholder="ODA / EDL" className={`input input-bordered ${errors.odaEdl && 'input-error'}`} {...register('odaEdl', { valueAsNumber: true })} onChange={onOdaEdlChange} />
             </div>
 
             <div className="form-control">
