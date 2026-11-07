@@ -49,7 +49,8 @@ const getDefaultBookingFormValues = (): Partial<BookingFormInputs> => ({
   bookingAmount: undefined,
   dueAmount: undefined,
   actualWeight: undefined,
-  bookedDate: toDatetimeLocalString()
+  bookedDate: toDatetimeLocalString(),
+  insured: false,
 });
 
 export default function BookingForm() {
@@ -104,6 +105,7 @@ export default function BookingForm() {
             bookingAmount: getNumericFieldValue(bookingResponse.data.bookingAmount),
             dueAmount: getNumericFieldValue(bookingResponse.data.dueAmount),
             actualWeight: getNumericFieldValue(bookingResponse.data.actualWeight),
+            insured: bookingResponse.data.insured === true,
           });
           if (pageType === PageTypes.DELETE) {
             setDelete(true);
@@ -175,7 +177,7 @@ export default function BookingForm() {
       }
 
 
-  reset(defaultFormValues);
+      reset(defaultFormValues);
 
       // router.push('/bookings');
       router.back();
@@ -336,6 +338,22 @@ export default function BookingForm() {
                 <option key={option} value={option}>{option}</option>
               ))}
             </select>
+          </div>
+
+          <div className="form-control">
+            <label className="label p-1">
+              <span className="label-text text-2xs">Transit Insurance</span>
+            </label>
+            <label className="label cursor-pointer justify-start gap-3 p-1">
+              <input
+                type="checkbox"
+                className="toggle toggle-success"
+                {...register('insured')}
+              />
+              <span className="label-text text-sm font-medium">
+                {watch('insured') ? 'Insured — Coverage Active' : 'Not Insured — No Coverage'}
+              </span>
+            </label>
           </div>
 
           <div className="form-control">

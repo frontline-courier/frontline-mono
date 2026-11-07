@@ -127,4 +127,20 @@ export class TrackComponent implements OnInit {
   getTrackUrl(): string {
     return buildCourierTrackUrl(this.trackResult);
   }
+
+  /** True when the booking has a chosen import duty (DAP or DP). */
+  hasImportDuty(): boolean {
+    const duty: string = this.trackResult?.importDuty ?? '';
+    return duty.trim().length > 0;
+  }
+
+  /** True when this is an international shipment (shipmentMode === 2). */
+  isInternational(): boolean {
+    return Number(this.trackResult?.shipmentMode) === 2;
+  }
+
+  /** True when the booking is NOT insured (insured field is false or absent). */
+  isUninsured(): boolean {
+    return this.trackResult?.insured !== true;
+  }
 }

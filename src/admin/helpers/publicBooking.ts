@@ -13,6 +13,8 @@ export const PUBLIC_BOOKING_FIELDS = [
   'doxType',
   'shipmentMode',
   'transportMode',
+  'importDuty',
+  'insured',
   'shipmentStatus',
   'receivedPerson',
   'receivedPersonRelation',

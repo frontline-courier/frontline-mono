@@ -86,30 +86,38 @@
 .tracking-status-intransit {
   background-color: #4db565;
 }
+
 .tracking-status-outfordelivery {
   background-color: #f5a551;
 }
+
 .tracking-status-deliveryoffice {
   background-color: #f7dc6f;
   color: #333 !important;
 }
+
 .tracking-status-delivered {
   background-color: #4cbb87;
 }
+
 .tracking-status-attemptfail {
   background-color: #b789c7;
 }
+
 .tracking-status-error,
 .tracking-status-exception {
   background-color: #d26759;
 }
+
 .tracking-status-expired {
   background-color: #616e7d;
 }
+
 .tracking-status-pending {
   background-color: #ccc;
   color: #333 !important;
 }
+
 .tracking-status-inforeceived {
   background-color: #214977;
 }
@@ -246,4 +254,41 @@
   .track-timeline-time {
     font-size: 0.78rem;
   }
+}
+
+// ── Import Duty Badge ────────────────────────────────────────────────────────
+.track-badge {
+  display: inline-block;
+  padding: 0.2em 0.65em;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.4;
+
+  &--success {
+    background-color: #d1f5dc;
+    color: #0f6b30;
+    border: 1px solid #a3e9bb;
+  }
+
+  &--danger {
+    background-color: #fde8e8;
+    color: #9b1c1c;
+    border: 1px solid #f8b4b4;
+  }
+}
+
+// ── Transit Insurance Warning Banner ────────────────────────────────────────
+.track-insurance-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: #fff8e6;
+  border: 1px solid #f6c94e;
+  border-left: 4px solid #d4a017;
+  border-radius: 0.6rem;
+  padding: 0.9rem 1.25rem;
+  color: #7a4f00;
+  font-size: 0.875rem;
+  line-height: 1.5;
 }

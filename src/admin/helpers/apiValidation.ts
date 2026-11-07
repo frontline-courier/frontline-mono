@@ -266,6 +266,12 @@ export function normalizeBookingPayload(input: unknown, partial = false) {
   setValueIfDefined(normalizedPayload, 'thirdPartyNumber', ensureTrimmedString(body.thirdPartyNumber, 'Third Party Number'));
   setValueIfDefined(normalizedPayload, 'createdBy', ensureTrimmedString(body.createdBy, 'Created By'));
   setValueIfDefined(normalizedPayload, 'updatedBy', ensureTrimmedString(body.updatedBy, 'Updated By'));
+  // insured is a boolean toggle; default to false when not provided on create
+  if ('insured' in body) {
+    normalizedPayload.insured = body.insured === true || body.insured === 'true';
+  } else if (!partial) {
+    normalizedPayload.insured = false;
+  }
 
   return normalizedPayload;
 }
