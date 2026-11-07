@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { CourierZoneRateInputs, WEIGHT_SLABS } from '../../interfaces/courierZoneRate';
 import { PINCODE_TO_ZONE_MAP } from '../../constants/zone';
-import { TransportMode } from '../../models/transportMode';
+import { transportModeOptions } from '../../constants/transportModeOptions';
 
 export default function CourierZoneRateForm() {
   const { user } = useUser();
@@ -131,7 +131,11 @@ export default function CourierZoneRateForm() {
                 </label>
                 <select
                   className={`select select-bordered w-full ${errors.courier ? 'select-error' : ''}`}
-                  {...register('courier', { required: true })}
+                  {...register('courier', {
+                    required: true,
+                    valueAsNumber: true,
+                    validate: (value) => value > 0 || 'Please select a courier',
+                  })}
                 >
                   <option value={0}>Select Courier</option>
                   {courierList.map((courier) => (
@@ -169,11 +173,15 @@ export default function CourierZoneRateForm() {
                 </label>
                 <select
                   className={`select select-bordered w-full ${errors.transportMode ? 'select-error' : ''}`}
-                  {...register('transportMode', { required: true })}
+                  {...register('transportMode', {
+                    required: true,
+                    valueAsNumber: true,
+                    validate: (value) => value > 0 || 'Please select a transport mode',
+                  })}
                 >
                   <option value={0}>Select Transport Mode</option>
-                  {Object.entries(TransportMode).map(([key, value]) => (
-                    <option key={key} value={key}>{value}</option>
+                  {transportModeOptions.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
                   ))}
                 </select>
                 {errors.transportMode && <span className="text-error text-sm mt-1">Please select a transport mode</span>}

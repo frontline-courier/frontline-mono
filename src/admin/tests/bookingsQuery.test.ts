@@ -39,3 +39,18 @@ test('does not add creditStatus filter when empty', () => {
 
   assert.ok(!Object.prototype.hasOwnProperty.call(query, 'creditStatus'));
 });
+
+test('escapes regex metacharacters in the status filter', () => {
+  const query = buildBookingsQuery({ status: 'Pending (Partial)' });
+
+  assert.deepEqual(query, {
+    shipmentStatus: { $regex: 'Pending \\(Partial\\)', $options: 'i' },
+  });
+});
+
+test('escapes a status that would otherwise be an invalid regex', () => {
+  const query = buildBookingsQuery({ status: '[' });
+
+  assert.equal((query.shipmentStatus as any).$regex, '\\[');
+  assert.doesNotThrow(() => new RegExp((query.shipmentStatus as any).$regex));
+});

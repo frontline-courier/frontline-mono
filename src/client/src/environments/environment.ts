@@ -19,8 +19,9 @@ export const environment = {
     measurementId: 'G-QPTMSCRH73',
   },
   apiUrl: 'http://localhost:3000',
+  adminApiUrl: 'https://next.frontlinecourier.com',
   apiPaths: {
-    email: '/v1/email'
+    email: '/v1/email',
   },
 };
 

@@ -194,6 +194,12 @@ export function normalizeBookingPayload(input: unknown, partial = false) {
   const body = ensureRecord(input);
   const normalizedPayload: Record<string, unknown> = {};
   const shipmentMode = ensureFiniteNumber(body.shipmentMode, 'Shipment Mode', { required: !partial, integer: true });
+  // Only create requests set the status here. Status changes go through the
+  // dedicated status endpoint, and the edit form may contain a stale/legacy
+  // status value that should not block or overwrite an unrelated update.
+  const shipmentStatus = partial
+    ? undefined
+    : ensureShipmentStatus(body.shipmentStatus, 'Shipment Status') ?? 'Booked';
   const importDuty = ensureAllowedString(body.importDuty, 'Import Duty', importDutySet);
   const paymentMode = ensureAllowedString(body.paymentMode, 'Payment Mode', paymentModeSet);
   const creditStatus = ensureAllowedString(body.creditStatus, 'Credit Status', creditStatusSet);
@@ -239,6 +245,7 @@ export function normalizeBookingPayload(input: unknown, partial = false) {
   setValueIfDefined(normalizedPayload, 'receiverName', ensureTrimmedString(body.receiverName, 'Receiver Name'));
   setValueIfDefined(normalizedPayload, 'destination', ensureTrimmedString(body.destination, 'Destination'));
   setValueIfDefined(normalizedPayload, 'shipmentMode', shipmentMode);
+  setValueIfDefined(normalizedPayload, 'shipmentStatus', shipmentStatus);
   setValueIfDefined(normalizedPayload, 'transportMode', ensureFiniteNumber(body.transportMode, 'Transport Mode', { integer: true }));
   if (shipmentMode === INTERNATIONAL_SHIPMENT_MODE) {
     setValueIfDefined(normalizedPayload, 'importDuty', importDuty);
@@ -257,8 +264,18 @@ export function normalizeBookingPayload(input: unknown, partial = false) {
   setValueIfDefined(normalizedPayload, 'additionalWeights', ensureTrimmedString(body.additionalWeights, 'Additional Weights'));
   setValueIfDefined(normalizedPayload, 'additionalLeaf', ensureTrimmedString(body.additionalLeaf, 'Additional Leaf'));
   setValueIfDefined(normalizedPayload, 'thirdPartyNumber', ensureTrimmedString(body.thirdPartyNumber, 'Third Party Number'));
+  setValueIfDefined(normalizedPayload, 'createdBy', ensureTrimmedString(body.createdBy, 'Created By'));
+  setValueIfDefined(normalizedPayload, 'updatedBy', ensureTrimmedString(body.updatedBy, 'Updated By'));
 
   return normalizedPayload;
+}
+
+/**
+ * Escape user input before using it inside a MongoDB `$regex`.
+ * Prevents invalid regex errors (e.g. a stray "(") and accidental pattern injection.
+ */
+export function escapeRegex(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 export function normalizeCourierPayload(input: unknown) {

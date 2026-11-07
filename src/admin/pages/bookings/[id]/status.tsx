@@ -149,7 +149,7 @@ function ShipmentStatusPage(props: any) {
                     <tbody>
                       <tr>
                         <td className="font-medium">Booked</td>
-                        <td>{formatDisplayDatetime(bookingData.bookedDate)}</td>
+                        <td>{bookingData?.bookedDate ? formatDisplayDatetime(bookingData.bookedDate) : 'NA'}</td>
                         <td>-</td>
                         <td></td>
                       </tr>
@@ -277,21 +277,30 @@ function ShipmentStatusPage(props: any) {
 
 export async function getServerSideProps(context: any) {
   const { id } = context.params;
-  const res = await fetch(`${process.env.API_HOST}/api/bookings/${id}`, {
-    headers: {
-      cookie: context.req.headers.cookie || '',
-    },
-  })
-  const data = await res.json()
 
-  if (!data) {
-    return {
-      success: false,
+  try {
+    const res = await fetch(`${process.env.API_HOST}/api/bookings/${id}`, {
+      headers: {
+        cookie: context.req.headers.cookie || '',
+      },
+    });
+
+    if (!res.ok) {
+      return { props: { data: null, success: false } };
     }
-  }
 
-  return {
-    props: { data, success: true },
+    const data = await res.json();
+
+    if (!data || data.error) {
+      return { props: { data: null, success: false } };
+    }
+
+    return {
+      props: { data, success: true },
+    };
+  } catch (error) {
+    console.error('Failed to load booking status page data:', error);
+    return { props: { data: null, success: false } };
   }
 }
 

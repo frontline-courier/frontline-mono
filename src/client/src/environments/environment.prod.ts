@@ -17,7 +17,8 @@ export const environment = {
   apiKey: 'API_SECRET_KEY = fe91bb2473be5cbaf76578ae0011bc3d',
   apiHost: 'frontlinecourier.com',
   apiUrl: 'https://api-v1-epix.web.app',
+  adminApiUrl: 'https://next.frontlinecourier.com',
   apiPaths: {
-    email: '/v1/email'
+    email: '/v1/email',
   },
 };

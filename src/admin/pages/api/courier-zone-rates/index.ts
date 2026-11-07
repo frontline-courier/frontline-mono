@@ -2,6 +2,7 @@ import { Db } from 'mongodb';
 import nextConnect from 'next-connect';
 import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
 import middleware from '../../../helpers/database';
+import { isNumericInput } from '../../../helpers/numbers';
 
 const handler = nextConnect();
 
@@ -32,31 +33,41 @@ handler.post(async (req: any, res: any) => {
     const collection = (req.db as Db).collection('courierZoneRates');
     const { courier, zone, transportMode, weightSlabs } = req.body;
 
+    const numericCourier = Number(courier);
+    const numericTransportMode = Number(transportMode);
+
     // Validate required fields
-    if (!courier || !zone || !transportMode || !weightSlabs) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    if (
+      !isNumericInput(courier)
+      || !isNumericInput(transportMode)
+      || numericCourier <= 0
+      || numericTransportMode <= 0
+      || !zone
+      || !weightSlabs
+    ) {
+      return res.status(400).json({ error: 'Missing or invalid required fields' });
     }
 
     // Check if rate mapping already exists
     const existingRate = await collection.findOne({
-      courier: Number(courier),
+      courier: numericCourier,
       zone,
-      transportMode: Number(transportMode)
+      transportMode: numericTransportMode
     });
 
     if (existingRate) {
       // Update existing rate
       await collection.updateOne(
-        { courier: Number(courier), zone, transportMode: Number(transportMode) },
+        { courier: numericCourier, zone, transportMode: numericTransportMode },
         { $set: { weightSlabs, updatedAt: new Date() } }
       );
       res.json({ message: 'Courier zone rates updated successfully' });
     } else {
       // Create new rate mapping
       await collection.insertOne({
-        courier: Number(courier),
+        courier: numericCourier,
         zone,
-        transportMode: Number(transportMode),
+        transportMode: numericTransportMode,
         weightSlabs,
         createdAt: new Date(),
         updatedAt: new Date()

@@ -16,6 +16,7 @@ import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
 import { courierStatus, getShipmentStatus } from '../../../shared/courier-status';
 import { creditStatusOptions, paymentModes } from '../../constants/paymentModes';
+import { downloadCSV } from '../../helpers/csv';
 
 const statusList = [...courierStatus].sort((a, b) => a.ShipmentStatus.localeCompare(b.ShipmentStatus));
 
@@ -92,7 +93,9 @@ const BookingPage = () => {
   const [deleteModel, setDelete] = useState(false);
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
-  const [perPage, setPerPage] = useState(25);
+  const perPageQuery = Array.isArray(router.query.perPage) ? router.query.perPage[0] : router.query.perPage;
+  const parsedPerPage = Number(perPageQuery);
+  const perPage = [25, 50, 100, 250].includes(parsedPerPage) ? parsedPerPage : 25;
   const [searchData, setSearchData] = useState({ awbNumber: '', referenceNumber: '', thirdPartyNumber: '', courier: 0, shipmentMode: 0, status: '', paymentMode: '', creditStatus: '' });
   const [rawBookingData, setRawBookingData] = useState([]); // Add this state to store raw data
 
@@ -156,6 +159,7 @@ const BookingPage = () => {
     ...booking,
     courier: getCourierName(booking.courier),
     bookedDate: formatDisplayDatetimeShort(booking.bookedDate),
+    bookedDateSort: new Date(booking.bookedDate).getTime() || 0,
     doxType: getDoxType(booking.doxType),
     shipmentMode: getShipmentMode(booking.shipmentMode),
     shipmentStatus: getShipmentStatus(booking.shipmentStatus)
@@ -318,6 +322,7 @@ const BookingPage = () => {
       name: 'BookedDate',
       selector: (row: any) => row.bookedDate,
       sortable: true,
+      sortFunction: (rowA: any, rowB: any) => rowA.bookedDateSort - rowB.bookedDateSort,
       minWidth: '140px',
     },
     // {
@@ -394,60 +399,25 @@ const BookingPage = () => {
     });
   };
 
-  const handlePerRowsChange = (newPerPage: number, newPage: number) => {
+  const handlePerRowsChange = (newPerPage: number) => {
     // Reset page to 1 when perPage changes
     router.push({
       pathname: '/bookings',
       query: { ...router.query, page: 1, perPage: newPerPage },
     });
-    setPerPage(newPerPage);
   };
 
-  // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
-  function convertArrayOfObjectsToCSV(array: any) {
-    let result: string;
+  const getExportKeys = () => Object.keys(data[0] ?? {}).filter((key) => key !== 'bookedDateSort');
 
-    const columnDelimiter = ',';
-    const lineDelimiter = '\n';
-    const keys = Object.keys(data[0]);
-
-    result = '';
-    result += keys.join(columnDelimiter);
-    result += lineDelimiter;
-
-    array.forEach((item: any) => {
-      let ctr = 0;
-      keys.forEach(key => {
-        if (ctr > 0) result += columnDelimiter;
-
-        result += item[key];
-
-        ctr++;
-      });
-      result += lineDelimiter;
-    });
-
-    return result;
-  }
-
-  // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
-  function downloadCSV(array: any) {
-    const link = document.createElement('a');
-    let csv = convertArrayOfObjectsToCSV(array);
-    if (csv == null) return;
-
-    const filename = `export${Date.now()}.csv`;
-
-    if (!csv.match(/^data:text\/csv/i)) {
-      csv = `data:text/csv;charset=utf-8,${csv}`;
-    }
-
-    link.setAttribute('href', encodeURI(csv));
-    link.setAttribute('download', filename);
-    link.click();
-  }
-
-  const Export = (event: any) => <button type="button" className="btn btn-sm rounded-xl border-primary bg-base-100 text-primary shadow-sm hover:bg-primary/10 hover:text-primary sm:w-auto" onClick={(e: any) => event.onExport(e.target.value)}>Download</button>;
+  const Export = () => (
+    <button
+      type="button"
+      className="btn btn-sm rounded-xl border-primary bg-base-100 text-primary shadow-sm hover:bg-primary/10 hover:text-primary sm:w-auto"
+      onClick={() => downloadCSV(data, getExportKeys())}
+    >
+      Download
+    </button>
+  );
 
   const NewBookingButton = () => (
     <Link href="/bookings/create" className="btn btn-sm rounded-xl border-primary bg-primary !text-white shadow-sm hover:brightness-95 hover:!text-white sm:w-auto">
@@ -458,7 +428,7 @@ const BookingPage = () => {
 
   const DataTableButtons = () => {
     return <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
-      <Export onExport={() => downloadCSV(data)} />
+      <Export />
       <NewBookingButton />
     </div>
   }
@@ -559,7 +529,7 @@ const BookingPage = () => {
                 pagination
                 paginationServer
                 paginationTotalRows={totalRows}
-                paginationPerPage={25}
+                paginationPerPage={perPage}
                 paginationRowsPerPageOptions={[25, 50, 100, 250]}
                 onChangeRowsPerPage={handlePerRowsChange}
                 onChangePage={handlePageChange}

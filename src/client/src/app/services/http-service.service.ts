@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { MD5, enc } from 'crypto-js';
+import { firstValueFrom } from 'rxjs';
 import { nowUtc } from 'src/app/utils/date-utils';
 
 @Injectable({
@@ -26,18 +27,14 @@ export class HttpServiceService {
       headers,
     };
 
-    let status = false;
-
-    this.http.post(environment.apiUrl + environment.apiPaths.email, emailBody, options).subscribe(
-      data => {
-        status = true;
-      },
-      err => {
-        console.log(err);
-        status = false;
-      }
-    );
-
-    return status;
+    try {
+      await firstValueFrom(
+        this.http.post(environment.apiUrl + environment.apiPaths.email, emailBody, options)
+      );
+      return true;
+    } catch (error) {
+      console.error('Failed to send email', error);
+      return false;
+    }
   }
 }

@@ -5,6 +5,8 @@ import { getDoxType } from '../../models/doxType';
 import { getShipmentMode } from '../../models/shipmentMode';
 import { getTransportMode } from '../../models/transportMode';
 import { formatDate, toUnix } from 'src/app/utils/date-utils';
+import { buildCourierTrackUrl } from 'src/app/utils/track-url';
+import { environment } from 'src/environments/environment';
 import { courierStatus, getShipmentStatus } from '../../../../../shared/courier-status';
 
 interface DeliveryResult {
@@ -56,7 +58,7 @@ export class TrackComponent implements OnInit {
   async getTrackingInfo(id: string, track: string) {
     try {
       const res = await fetch(
-        `https://next.frontlinecourier.com/api/bookings/find?track=${track}&id=${id}`,
+        `${environment.adminApiUrl}/api/bookings/find?track=${encodeURIComponent(track)}&id=${encodeURIComponent(id)}`,
         { mode: 'cors' }
       );
       const data = await res.json();
@@ -123,16 +125,6 @@ export class TrackComponent implements OnInit {
    * - 'api'      → no link (handled server-side)
    */
   getTrackUrl(): string {
-    const mode: string = this.trackResult?.courierMode ?? 'internal';
-    const rawUrl: string = this.trackResult?.courierTrack ?? '';
-
-    if (!rawUrl || mode === 'api') return '';
-
-    const awb =
-      mode === 'link'
-        ? (this.trackResult?.referenceNumber ?? this.trackResult?.awbNumber ?? '')
-        : (this.trackResult?.awbNumber ?? '');
-
-    return rawUrl.replace('<AWB>', awb).trim();
+    return buildCourierTrackUrl(this.trackResult);
   }
 }

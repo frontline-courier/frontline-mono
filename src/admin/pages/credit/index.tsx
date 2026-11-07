@@ -35,27 +35,35 @@ function BookingPage() {
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(25);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [searchData, setSearchData] = useState({ pod: '', client: '', courier: '', mode: '', service: '' });
 
   const fetchShipment = useCallback(async (page: number, limit = perPage) => {
-
     setLoading(true);
-    const response =
-      await axios.get(
-        `${apiPath.creditBooking}?page=${page}&limit=${limit}&courier=${searchData.courier || ''}&mode=${searchData.mode || ''}&client=${searchData.client || ''}&pod=${searchData.pod}&service=${searchData.service}`);
-    setData(response.data.booking);
-    setTotalRows(response.data.count);
-    setLoading(false);
+    setFetchError(null);
+
+    try {
+      const response = await axios.get(
+        `${apiPath.creditBooking}?page=${page}&limit=${limit}&courier=${searchData.courier || ''}&mode=${searchData.mode || ''}&client=${searchData.client || ''}&pod=${searchData.pod}&service=${searchData.service}`,
+      );
+      setData(response.data.booking ?? []);
+      setTotalRows(response.data.count ?? 0);
+    } catch (error: any) {
+      setData([]);
+      setTotalRows(0);
+      setFetchError(error.response?.data?.error || 'Failed to load credit bookings.');
+    } finally {
+      setLoading(false);
+    }
   }, [perPage, searchData]);
 
   const handlePageChange = (page: number) => {
     fetchShipment(page);
   };
 
-  const handlePerRowsChange = async (newPerPage: number, page: number) => {
-    setLoading(true);
+  const handlePerRowsChange = (newPerPage: number) => {
+    // Changing the page size resets to page 1; the effect below refetches.
     setPerPage(newPerPage);
-    await fetchShipment(page, newPerPage);
   };
 
   const onSubmit: SubmitHandler<any> = async (data) => {
@@ -97,6 +105,9 @@ function BookingPage() {
       name: 'BookedDate',
       selector: (row: any) => formatDisplayDate(row.bookedDate),
       sortable: true,
+      sortFunction: (rowA: any, rowB: any) => (
+        new Date(rowA.bookedDate).getTime() - new Date(rowB.bookedDate).getTime()
+      ),
     },
     {
       name: 'Destination',
@@ -204,6 +215,14 @@ function BookingPage() {
         </div>
       </div>
 
+      {fetchError && (
+        <div className="alert alert-error m-4">
+          <div className="flex-1">
+            <label>{fetchError}</label>
+          </div>
+        </div>
+      )}
+
       <div>
         <DataTable
           columns={columns}
@@ -212,7 +231,7 @@ function BookingPage() {
           pagination
           paginationServer
           paginationTotalRows={totalRows}
-          paginationPerPage={25}
+          paginationPerPage={perPage}
           paginationRowsPerPageOptions={[25, 50, 100, 250]}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}

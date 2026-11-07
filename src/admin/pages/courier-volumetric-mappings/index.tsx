@@ -295,15 +295,15 @@ const CourierVolumetricMappingsPage = () => {
                 </thead>
                 <tbody>
                   {mappings.map((mapping) => {
-                    const courier = courierList.find(c => c.CourierId === mapping.courierId);
-                    const formula = VOLUMETRIC_FORMULAS.find((f: { id: number }) => f.id === mapping.formulaId);
+                    const courier = courierList.find(c => Number(c.CourierId) === Number(mapping.courierId));
+                    const formula = VOLUMETRIC_FORMULAS.find((f: { id: number }) => Number(f.id) === Number(mapping.formulaId));
                     return (
                       <tr key={mapping.id} className={editingId === mapping.id ? 'bg-base-200' : ''}>
                         <td>{courier?.Courier || mapping.courierName || 'Unknown'}</td>
                         <td>
-                          {mapping.transportMode === 4 ? 'Sea Cargo' :
-                           mapping.transportMode === 6 ? 'Surface Courier' :
-                           mapping.transportMode === 8 ? 'Road Cargo' :
+                          {Number(mapping.transportMode) === 4 ? 'Sea Cargo' :
+                           Number(mapping.transportMode) === 6 ? 'Surface Courier' :
+                           Number(mapping.transportMode) === 8 ? 'Road Cargo' :
                            'Unknown'}
                         </td>
                         <td className="font-mono">{formula?.formula || mapping.formulaName || 'Unknown'}</td>

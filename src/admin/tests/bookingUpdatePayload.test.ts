@@ -210,3 +210,26 @@ test('legacy fields (coCourier, billAmount, deliveryOfficeLocation) always in $u
     assert.ok(inUnset($unset, field), `expected $unset to always contain "${field}"`);
   }
 });
+
+// ---------------------------------------------------------------------------
+// Audit fields
+// ---------------------------------------------------------------------------
+
+test('updatedBy is persisted in $set when provided', () => {
+  const { $set, $unset } = buildBookingUpdatePayload({
+    ...basePayload(),
+    updatedBy: 'admin@example.com',
+  });
+
+  assert.equal($set.updatedBy, 'admin@example.com');
+  assert.ok(!inUnset($unset, 'updatedBy'));
+});
+
+test('audit fields are not touched when omitted', () => {
+  const { $set, $unset } = buildBookingUpdatePayload(basePayload());
+
+  assert.ok(!inSet($set, 'createdBy'));
+  assert.ok(!inSet($set, 'updatedBy'));
+  assert.ok(!inUnset($unset, 'createdBy'));
+  assert.ok(!inUnset($unset, 'updatedBy'));
+});
