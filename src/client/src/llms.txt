@@ -1,0 +1,55 @@
+# Frontline Courier
+
+> Frontline Courier is a Chennai-based courier, cargo and freight forwarding company offering
+> domestic and international delivery, real-time shipment tracking, doorstep pickup, volumetric
+> weight calculation, priority delivery and transit insurance.
+
+Frontline Courier serves individuals and businesses across India and more than 220 countries.
+Bookings can be made online through pickup and quote forms, and every shipment can be tracked by
+POD/AWB number or reference number. The company works with DHL, Bluedart, Aramex, UPS, FedEx, TNT,
+DPD, DTDC, CityLink, Trackon and other regional partners.
+
+## Key facts
+
+- Head office: No 75, Chota Plaza Complex, Mounaswamy Mada Street, Ambattur O.T, Chennai 600053, Tamil Nadu, India
+- International bookings: +91 91761 11180
+- Domestic bookings: +91 99413 02000
+- Customer care: +91 78713 12000
+- Email: contact@frontlinecourier.com
+- Website: https://frontlinecourier.com
+- Coverage: India and 220+ countries
+- Tracking: https://frontlinecourier.com/track
+- Hours: Monday to Saturday, 9:30 AM to 7:00 PM
+
+## Core pages
+
+- [Home](https://frontlinecourier.com/): Overview of courier, cargo and tracking services.
+- [Track shipment](https://frontlinecourier.com/track): Real-time tracking by POD/AWB or reference number.
+- [Pricing and rates](https://frontlinecourier.com/pricing): Domestic, priority and international pricing overview.
+- [About us](https://frontlinecourier.com/about): Company background, mission, values and vision.
+- [Contact us](https://frontlinecourier.com/contact): Chennai office details, phone lines and contact form.
+- [Coverage and locations](https://frontlinecourier.com/coverage): Domestic regions, international coverage and branches.
+- [FAQ and help](https://frontlinecourier.com/faq): Booking, tracking, pricing, insurance and claims questions.
+- [Insurance and claims](https://frontlinecourier.com/insurance): Transit insurance coverage, exclusions and claims process.
+- [Terms and privacy](https://frontlinecourier.com/terms-and-privacy): Terms of use and privacy policy.
+
+## Services
+
+- [Domestic courier](https://frontlinecourier.com/service/domestic): Door-to-door courier across India with surface, air and priority options.
+- [International courier](https://frontlinecourier.com/service/international): Worldwide delivery through major courier partners with customs support.
+- [Air freight](https://frontlinecourier.com/service/air): Time-critical documents and cargo moved on the next available flight.
+- [Cargo](https://frontlinecourier.com/service/cargo): Bulk and heavy shipments moved by road with customised handling.
+- [Surface freight](https://frontlinecourier.com/service/surface): Cost-effective domestic and international surface shipping for large loads.
+- [Priority delivery](https://frontlinecourier.com/service/priority): Guaranteed 10:30 AM, 12:00 PM, next-day and Sunday delivery options.
+- [Domestic rate card](https://frontlinecourier.com/service/price): Indicative surface, air and cargo rates in INR.
+- [Volumetric weight calculator](https://frontlinecourier.com/service/volumetric-weight-calculation): Calculate dimensional weight for major courier partners.
+
+## Booking and requests
+
+- [Pickup request](https://frontlinecourier.com/service/pickup-request): Schedule a doorstep pickup.
+- [Get a quote](https://frontlinecourier.com/service/get-quote): Request a tailored domestic or international quote.
+- [Reach us](https://frontlinecourier.com/reach): Chennai branch addresses and map.
+
+## Optional
+
+- [Full site content for LLMs](https://frontlinecourier.com/llms-full.txt): Expanded text covering services, rates, coverage and FAQs.

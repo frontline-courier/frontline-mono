@@ -1,4 +1,8 @@
 User-Agent: *
 Disallow:
 
+# AI / LLM crawlers are welcome.
+# Concise site summary for LLMs: https://frontlinecourier.com/llms.txt
+# Full content for LLMs: https://frontlinecourier.com/llms-full.txt
+
 Sitemap: https://frontlinecourier.com/sitemap.xml

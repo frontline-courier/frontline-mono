@@ -1,16 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-domestic',
   templateUrl: './domestic.component.html',
   styleUrls: ['./domestic.component.scss'],
-  standalone: false
+  standalone: false,
 })
-export class DomesticComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class DomesticComponent {
+  constructor() {}
 }

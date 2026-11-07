@@ -1,25 +1,107 @@
-<div class="container body-container">
-  <div class="main-container">
-    <h2>International Service</h2>
-    <hr />
-
-    <div class="row">
-      <div class="col-md-12">
+<section class="fl-page-hero">
+  <div class="fl-container">
+    <nav class="fl-breadcrumb" aria-label="Breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/pricing">Services</a></li>
+        <li class="breadcrumb-item active" aria-current="page">International Courier</li>
+      </ol>
+    </nav>
+    <div class="fl-page-hero__inner">
+      <div>
+        <span class="fl-eyebrow">Worldwide delivery</span>
+        <h1 class="mt-2">Send it anywhere, at the right price</h1>
         <p>
-          We provide delivery to almost all the country in the world at lowest price in market. We have parterned
-        with all major service provider to provide reliable and fast delivery.
+          Door-to-door delivery to almost every country through DHL, FedEx, UPS, Aramex and our
+          wider freight network &mdash; with customs documentation support and optional insurance.
         </p>
-        <p>
-          In today's interconnected world, the ability to send documents, packages, and cargo across borders seamlessly is crucial for businesses and individuals alike. Whether you're an entrepreneur expanding your global reach or a student sending gifts to loved ones abroad, choosing a reliable and cost-effective shipping partner is essential.
-        </p>
-        <p>
-          At Frontline, we understand the intricacies of international shipping and are committed to providing our customers with an exceptional delivery experience. We've partnered with all major service providers to offer an unmatched network of shipping solutions, ensuring your shipments reach their destinations worldwide safely, on time, and at the most competitive rates in the market.
-        </p>
-
-        <a href="/contact" class="btn btn-success btn-sm">Contact Us</a>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <a routerLink="/service/get-quote" class="btn btn-success">Get a quote</a>
+          <a routerLink="/coverage" class="btn btn-light">Check coverage</a>
+        </div>
+      </div>
+      <div class="fl-page-hero__aside">
+        <h3>International checklist</h3>
+        <ul>
+          <li>Accurate declared value</li>
+          <li>Invoice and contents description</li>
+          <li>Destination customs requirements</li>
+          <li>Optional transit insurance</li>
+        </ul>
       </div>
     </div>
+  </div>
+</section>
 
+<section class="fl-section">
+  <div class="fl-container">
+    <div class="fl-grid fl-grid--2" style="align-items: start">
+      <div>
+        <span class="fl-kicker">Global reach</span>
+        <h2>A partner network without borders</h2>
+        <p class="fl-muted">
+          In today's interconnected world, sending documents, packages and cargo across borders
+          should be simple. Whether you are an entrepreneur expanding globally or a family sending
+          gifts abroad, choosing a reliable and cost-effective partner is essential.
+        </p>
+        <p class="fl-muted">
+          We have partnered with all major service providers to offer an unmatched network of
+          international shipping solutions &mdash; so your shipments arrive safely, on time and at
+          competitive rates.
+        </p>
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <a routerLink="/service/get-quote" class="btn btn-success">Request a quote</a>
+          <a routerLink="/insurance" class="btn btn-outline-primary">Insurance &amp; claims</a>
+        </div>
+      </div>
+
+      <div class="fl-card">
+        <h3>Popular destinations</h3>
+        <div class="fl-grid fl-grid--2 mt-3">
+          <div class="fl-stat">
+            <div class="fl-stat__value">3&ndash;6</div>
+            <div class="fl-stat__label">Days to Europe</div>
+          </div>
+          <div class="fl-stat">
+            <div class="fl-stat__value">3&ndash;7</div>
+            <div class="fl-stat__label">Days to North America</div>
+          </div>
+          <div class="fl-stat">
+            <div class="fl-stat__value">2&ndash;5</div>
+            <div class="fl-stat__label">Days to Middle East</div>
+          </div>
+          <div class="fl-stat">
+            <div class="fl-stat__value">3&ndash;7</div>
+            <div class="fl-stat__label">Days to Asia Pacific</div>
+          </div>
+        </div>
+        <p class="fl-form-note mt-3 mb-0">
+          Transit times are indicative and exclude customs clearance delays.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fl-section fl-section--alt">
+  <div class="fl-container">
     <app-common></app-common>
   </div>
-</div>
+</section>
+
+<section class="fl-section fl-section--tight">
+  <div class="fl-container">
+    <div class="fl-cta-band">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <h2 class="mb-1">Going global? Let's plan your shipment.</h2>
+          <p>Share the destination and contents and we will confirm the best service and price.</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <a routerLink="/service/get-quote" class="btn btn-success">Get a quote</a>
+          <a routerLink="/contact" class="btn btn-light">Talk to us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,47 +1,58 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, NavigationEnd, Router, RouterState } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { SeoService } from './services/seo.service';
 
 @Component({
   selector: 'app-root',
-  template: `<router-outlet></router-outlet>`,
+  template: `
+    <app-header></app-header>
+    <main id="main-content" class="fl-main">
+      <router-outlet></router-outlet>
+    </main>
+    <app-footer></app-footer>
+  `,
   styles: [],
-  standalone: false
+  standalone: false,
 })
-
 export class AppComponent {
   title = 'frontline-client';
 
   constructor(
     private router: Router,
-    private titleService: Title,
+    private seo: SeoService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.handleRouteEvents();
   }
 
-  handleRouteEvents() {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        const title = this.getTitle(this.router.routerState, this.router.routerState.root).join('-');
-        this.titleService.setTitle(title);
+  private handleRouteEvents(): void {
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe(event => {
+        const data = this.getRouteData(this.router.routerState.root);
+        const title = (data['title'] as string) || 'Home';
+
+        this.seo.update({
+          title,
+          description: data['description'] as string | undefined,
+          url: event.urlAfterRedirects,
+          jsonLd: data['jsonLd'] as Record<string, unknown> | Record<string, unknown>[] | undefined,
+        });
+
         gtag('event', 'page_view', {
           page_title: title,
           page_path: event.urlAfterRedirects,
-          page_location: this.document.location.href
-        })
-      }
-    });
+          page_location: this.document.location.href,
+        });
+      });
   }
 
-  getTitle(state: RouterState, parent: ActivatedRoute): string[] {
-    const data = [];
-    if (parent && parent.snapshot.data && parent.snapshot.data['title']) {
-      data.push(parent.snapshot.data['title']);
-    }
-    if (state && parent && parent.firstChild) {
-      data.push(...this.getTitle(state, parent.firstChild));
+  private getRouteData(route: ActivatedRoute): Record<string, unknown> {
+    const data: Record<string, unknown> = { ...route.snapshot.data };
+    if (route.firstChild) {
+      return { ...data, ...this.getRouteData(route.firstChild) };
     }
     return data;
   }

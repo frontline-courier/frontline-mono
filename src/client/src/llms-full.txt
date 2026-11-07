@@ -1,0 +1,229 @@
+# Frontline Courier — Full Site Content for LLMs
+
+Source: https://frontlinecourier.com
+Generated for AI crawlers and assistants. Prefer the canonical pages linked in llms.txt.
+
+## Company
+
+Frontline Courier is a courier, cargo and freight forwarding company based in Ambattur, Chennai,
+Tamil Nadu, India. The company provides domestic and international courier services, air freight,
+surface freight, cargo movement, doorstep pickup, shipment tracking, volumetric weight calculation
+and optional transit insurance. It serves individuals and businesses across India and works with
+international partners to deliver to more than 220 countries and territories.
+
+Frontline Courier has more than 100 business customers and operates as a hub for courier, parcel
+and logistics services. Its stated mission is to provide the best possible delivery experience by
+ensuring documents and packages reach their destinations safely, on time and within budget.
+
+Core values: reliability, efficiency and customer satisfaction.
+Vision: to become the standard for courier, cargo and logistics services by bringing tracking,
+service discovery, volumetric calculation, ratings and reviews into one trusted platform.
+
+## Contact and locations
+
+Head office / Ambattur O.T branch:
+No 75, Chota Plaza Complex, Mounaswamy Mada Street, Ambattur O.T, Chennai 600053, Tamil Nadu, India.
+
+Ambattur O.T second address:
+412 MTH Road, Everest Complex, Ground floor, next to KFC Restaurant and RR Mobiles,
+Ambattur O.T, Chennai 600053, Tamil Nadu, India.
+
+Ambattur Estate branch:
+No 2, Menambedu Road, Coromantel Town, Ambattur SIDCO Estate, next to South India Bank,
+Chennai 600098, Tamil Nadu, India.
+
+Phone:
+- International bookings: +91 91761 11180 / 40 / 70
+- Domestic bookings: +91 99413 02000 / +91 99413 12000
+- Domestic customer care: +91 78713 12000
+- Branch mobile: +91 81441 11180
+
+Email: contact@frontlinecourier.com
+Social: https://www.facebook.com/frontlinecourier
+Hours: Monday to Saturday, 9:30 AM to 7:00 PM. Priority Sunday delivery is available on select
+pin codes.
+
+## Services
+
+### Domestic courier
+Door-to-door delivery of documents and non-documents to major pin codes across India. Options
+include surface, air and priority delivery. Doorstep pickup is available. Shipments are tracked in
+real time. Indicative transit times range from 1 day within Chennai to 2-8 days for remote regions,
+depending on the service selected.
+
+### International courier
+Door-to-door delivery to almost every country. Frontline Courier works with DHL, Bluedart, Aramex,
+UPS, FedEx, TNT, DPD and other partners. Customs documentation support is available, and transit
+insurance can be added at booking. Indicative transit times: Europe 3-6 business days, North America
+3-7 business days, Middle East 2-5 business days, Asia Pacific 3-7 business days, Africa 5-9 business
+days, South America 5-9 business days. Customs clearance can add time.
+
+### Air freight
+Air service is used for time-critical documents, high-value parcels and cargo. Frontline Courier
+coordinates pickup, documentation, airline handling, customs and final delivery. Air service is
+available for domestic and international routes and can be customised for delicate machinery,
+electronics, samples and high-value goods.
+
+### Cargo
+Bulk and heavy shipments moved by road across India. Services include customised cargo planning,
+experienced handling, real-time tracking and optional insurance. Suitable for boxed cargo,
+palletised loads, machinery and specialised equipment.
+
+### Surface freight
+Cost-effective shipping for large, non-urgent consignments. Domestic surface delivery uses the
+roadway network; international surface freight uses sea routes. Surface courier has a minimum
+billing weight of 3 kg. Transit times range from 1 to 8 days domestically depending on distance.
+
+### Priority delivery
+- Priority 10:30: next possible business day delivery by 10:30 hours to select pin codes, with
+  money-back guarantee. Not available from all origins or to all destinations.
+- Priority 12:00: next possible business day delivery by 12:00 hours to select pin codes.
+- Priority Next Day: guaranteed next business day delivery for documents and parcels, single pieces
+  up to 30 kg, tamper-proof pouch, dedicated handling and support.
+- Priority Sunday: pickup before 6:00 PM on Saturday with Sunday delivery on select pin codes.
+
+Priority availability depends on local cut-off times, vehicle arrival times and flight schedules.
+
+## Pricing
+
+All rates are indicative, in Indian rupees (INR), and exclude GST, fuel surcharge and optional
+insurance unless stated. The higher of actual weight and volumetric weight is used for billing.
+Remote-area charges may apply. A written quote is recommended before dispatch.
+
+Domestic standard rates (up to 5 kg), examples:
+- Chennai, surface, 1 day: 250 g INR 22; 500 g INR 32; additional 500 g INR 15.
+- Tamil Nadu and Puducherry, surface, 1-2 days: 250 g INR 55; 500 g INR 70; additional 500 g INR 30.
+- Andhra, Kerala, Karnataka (excluding Hyderabad), surface, 1-3 days: 250 g INR 65; 500 g INR 82;
+  additional 500 g INR 40.
+- Hyderabad and Secunderabad, air, 1-2 days: 250 g INR 72; 500 g INR 102; additional 500 g INR 55.
+- Delhi, Mumbai, Kolkata, air, 1-3 days: 250 g INR 77; 500 g INR 107; additional 500 g INR 65.
+- North India, air, 1-3 days: 250 g INR 87; 500 g INR 112; additional 500 g INR 70.
+- Assam, Meghalaya, Mizoram, Tripura, Andaman and Port Blair, air, 2-5 days: 250 g INR 93;
+  500 g INR 130; additional 500 g INR 80.
+
+Domestic air cargo (per kg bands), examples:
+- Hyderabad and Secunderabad: INR 105 for 3-10 kg, 11-25 kg and 25-50 kg.
+- Delhi, Mumbai, Kolkata: INR 125.
+- North India: INR 145.
+- Assam, Meghalaya, Mizoram, Tripura, Andaman and Port Blair: INR 145.
+
+Domestic surface courier (minimum 3 kg), examples per kg:
+- Chennai: INR 22 (3-10 kg), INR 16 (11-25 kg), INR 16 (25-50 kg).
+- Tamil Nadu and Puducherry: INR 38 / 27 / 27.
+- Andhra, Kerala, Karnataka: INR 48 / 37 / 37.
+- Hyderabad and Secunderabad: INR 60 / 48 / 48.
+- Delhi, Mumbai, Kolkata: INR 70 / 58 / 85.
+- North India: INR 80 / 68 / 68.
+
+International pricing is provided on request and depends on destination, weight, dimensions, service
+level, contents and insurance.
+
+## Volumetric weight
+
+Volumetric (dimensional) weight reflects package density. Courier billing uses the greater of actual
+weight and volumetric weight. Measure length, width and height in centimetres, multiply them and
+divide by the courier's dimensional factor.
+
+Common formulas:
+- Air and international (most partners): (L x W x H) / 5000.
+- Some domestic partners: (L x W x H) / 6000.
+- Some surface and cargo partners: (L x W x H x 9) / 27000.
+- DTDC surface: (L x W x H) / 4750.
+- Overnite surface: (L x W x H) / 4000.
+
+The volumetric calculator at https://frontlinecourier.com/service/volumetric-weight-calculation
+supports Aramex, Bluedart, DHL, DTDC, FedEx, French Express, Overnite, Trackon, TNT, UPS, SkyKing,
+Shree Tirupati, Shree Maruthi, Shree Anjani and Maruthi.
+
+## Booking and pickup
+
+To book, submit the pickup request form at
+https://frontlinecourier.com/service/pickup-request or call the booking desk. Provide the pickup
+address, delivery address, shipment type (document or non-document), number of pieces, total weight
+and delivery location. The team confirms the pickup slot and provides an AWB number after collection.
+
+Quotes can be requested at https://frontlinecourier.com/service/get-quote with contact details,
+route, shipment count, weight, dimensions, contents, declared value and classification (commercial,
+non-commercial, sample, gift, personal or returnable item).
+
+## Tracking
+
+Track a shipment at https://frontlinecourier.com/track using either a POD/AWB number or a reference
+number. The tracking page shows current status, shipment details and status history. Some partner
+shipments provide an external tracking link on the courier's website. If no update appears for more
+than 24 hours, contact Frontline Courier with the AWB number.
+
+## Insurance and claims
+
+Transit insurance is optional and must be added at booking. Without insurance, no claim can be raised
+for loss or damage during transit.
+
+Covered: loss during transit, physical damage during handling or transit, and coverage up to the
+declared value subject to policy terms, for domestic and international shipments where declared.
+
+Not covered: prohibited or undeclared items, inherent vice, wear and tear, poor packaging, delays
+caused by customs, weather or force majeure, and shipments without insurance.
+
+Claims process:
+1. Notify Frontline Courier within 7 days of delivery or expected delivery with the AWB number.
+2. Provide photos of packaging and damage, plus an invoice or proof of value.
+3. The team reviews documents with the insurer and may request more information.
+4. Approved claims are settled according to policy terms.
+
+Useful documents: AWB/tracking number, invoice or purchase receipt, photos of the shipment and
+packaging, and a description of the damage or loss.
+
+## Frequently asked questions
+
+How do I book a shipment?
+Use the pickup request form or call the booking desk. Share the pickup address, delivery address,
+shipment type, weight and preferred service. The team confirms pickup and provides the AWB number.
+
+Do you offer doorstep pickup?
+Yes. Doorstep pickup is available in Chennai and across the partner network. Submit a pickup request
+with your preferred date.
+
+What items cannot be shipped?
+Prohibited items include cash, live animals, hazardous materials, firearms, narcotics and any goods
+restricted by the destination country. Declare exact contents when booking.
+
+How do I track my shipment?
+Visit the tracking page and enter the POD/AWB number or reference number, or use the search box in the
+site header.
+
+My tracking shows no updates. What should I do?
+Status scans can take a few hours to appear. If there is no update for more than 24 hours, contact
+Frontline Courier with the AWB number.
+
+Can I change the delivery address after booking?
+Address changes may be possible before out-for-delivery, subject to courier policy and additional
+charges. Contact the team as early as possible.
+
+How is shipping cost calculated?
+Cost depends on chargeable weight (actual or volumetric, whichever is higher), distance, service
+level and optional insurance.
+
+Is my shipment insured?
+Transit insurance is optional and must be added at booking. Without it, no claim can be raised for
+loss or damage during transit.
+
+How do I raise a claim?
+Notify Frontline Courier within 7 days of delivery with the AWB number, photos of the damage and a
+description of the contents.
+
+## Coverage summary
+
+Domestic: Chennai same day (surface, 1 day); Tamil Nadu and Puducherry 1-2 days; Andhra, Kerala,
+Karnataka 1-3 days; Hyderabad and Secunderabad 1-2 days; Delhi, Mumbai, Kolkata 1-3 days; North India
+1-3 days; Assam, Meghalaya, Mizoram, Tripura, Andaman and Port Blair 2-5 days. Surface transit is
+longer, typically 1-8 days.
+
+International: Europe, North America, Middle East, Asia Pacific, Africa and South America through
+major courier and freight partners. Transit times are indicative and exclude customs clearance.
+
+## Legal
+
+Terms of use and the privacy policy are published at
+https://frontlinecourier.com/terms-and-privacy. The website and services are provided as-is, and
+Frontline Courier's liability is limited as described in those terms. Personal information is
+collected to provide services, communicate about shipments, improve the service and prevent fraud.

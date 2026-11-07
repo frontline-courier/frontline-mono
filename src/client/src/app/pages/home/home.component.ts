@@ -6,15 +6,14 @@ import { Router } from '@angular/router';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  standalone: false
+  standalone: false,
 })
 export class HomeComponent implements OnInit {
-
   constructor(
     private formBuilder: UntypedFormBuilder,
-    private router: Router,
-  ) { }
-  
+    private router: Router
+  ) {}
+
   trackForm: UntypedFormGroup;
 
   ngOnInit(): void {
@@ -25,7 +24,6 @@ export class HomeComponent implements OnInit {
   }
 
   gotoTrack() {
-    this.router.navigate(['track'], { queryParams: this.trackForm.value } );
+    this.router.navigate(['track'], { queryParams: this.trackForm.value });
   }
-
 }

@@ -1,16 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-priority',
   templateUrl: './priority.component.html',
   styleUrls: ['./priority.component.scss'],
-  standalone: false
+  standalone: false,
 })
-export class PriorityComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class PriorityComponent {
+  constructor() {}
 }

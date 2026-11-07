@@ -1,6 +1,6 @@
 // ── Page Header ────────────────────────────────────────────────────────────
 .track-header {
-  border-left: 4px solid #0d6efd;
+  border-left: 4px solid var(--fl-blue);
   padding-left: 1rem;
 
   .track-title {
@@ -84,7 +84,7 @@
 
 // Status banner colours (reuse existing naming convention)
 .tracking-status-intransit {
-  background-color: #4db565;
+  background-color: var(--fl-green);
 }
 
 .tracking-status-outfordelivery {
@@ -97,7 +97,7 @@
 }
 
 .tracking-status-delivered {
-  background-color: #4cbb87;
+  background-color: var(--fl-green-600);
 }
 
 .tracking-status-attemptfail {
@@ -220,8 +220,8 @@
   z-index: 1;
 
   &.track-timeline-dot--latest {
-    background: #0d6efd;
-    box-shadow: 0 0 0 2px #0d6efd;
+    background: var(--fl-blue);
+    box-shadow: 0 0 0 2px var(--fl-blue);
     width: 16px;
     height: 16px;
   }

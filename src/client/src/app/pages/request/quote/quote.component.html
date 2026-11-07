@@ -1,15 +1,44 @@
-<div class="container body-container">
-  <div class="main-container">
-    <h2>Get Quotation</h2>
-    <hr />
+<section class="fl-page-hero">
+  <div class="fl-container">
+    <nav class="fl-breadcrumb" aria-label="Breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/pricing">Request</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Get a Quote</li>
+      </ol>
+    </nav>
+    <div class="fl-page-hero__inner">
+      <div>
+        <span class="fl-eyebrow">Tailored pricing</span>
+        <h1 class="mt-2">Get a quotation</h1>
+        <p>
+          Share a few details about your shipment and our team will respond with the best service,
+          transit time and price.
+        </p>
+      </div>
+      <div class="fl-page-hero__aside">
+        <h3>Helpful details</h3>
+        <ul>
+          <li>Pickup and delivery pin codes</li>
+          <li>Package dimensions and weight</li>
+          <li>Contents and declared value</li>
+          <li>Preferred delivery timeline</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <div class="row" *ngIf="mailSent || mailError">
-      <div class="col-md-12">
+<section class="fl-section">
+  <div class="fl-container">
+    <div class="fl-grid fl-grid--2" style="align-items: start">
+      <div class="fl-form-card">
         <div
           class="alert"
           [class.alert-success]="mailSent"
           [class.alert-danger]="!mailSent"
           role="alert"
+          *ngIf="mailSent || mailError"
         >
           <span *ngIf="mailSent"
             >Your quote request was sent successfully. Our team will contact you shortly.</span
@@ -18,194 +47,226 @@
             mailError || 'Failed to send your request. Please contact us through email or phone.'
           }}</span>
         </div>
-      </div>
-    </div>
 
-    <div class="row" *ngIf="!mailSent">
-      <div class="col-md-10">
-        <form class="form-horizontal" #quoteForm="ngForm" (ngSubmit)="sendQuote(quoteForm)">
-          <fieldset>
-            <div>
-              <div class="form-group row">
-                <label for="contactName" class="col-md-3">Contact Person Name: </label>
-                <div class="col-md-3">
-                  <input
-                    type="text"
-                    name="contactName"
-                    class="form-control"
-                    placeholder="Your Name"
-                    required="required"
-                    ngModel
-                  />
-                </div>
-                <label for="companyName" class="col-md-3">Company Name: (if any) </label>
-                <div class="col-md-3">
-                  <input
-                    type="text"
-                    name="companyName"
-                    class="form-control"
-                    placeholder="Company Name"
-                    ngModel
-                  />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="email" class="col-md-3">Email: </label>
-                <div class="col-md-3">
-                  <input
-                    type="email"
-                    name="email"
-                    class="form-control"
-                    placeholder="Your Email"
-                    required="required"
-                    ngModel
-                  />
-                </div>
-                <label for="mobile" class="col-md-3">Mobile: </label>
-                <div class="col-md-3">
-                  <input
-                    type="text"
-                    name="mobile"
-                    class="form-control"
-                    placeholder="Your Contact Number"
-                    required="required"
-                    ngModel
-                  />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="fromLocation" class="col-md-3">Pickup Location: </label>
-                <div class="col-md-3">
-                  <input
-                    type="text"
-                    name="fromLocation"
-                    class="form-control"
-                    placeholder="Your City or Pincode"
-                    required="required"
-                    ngModel
-                  />
-                </div>
-                <label for="toLocation" class="col-md-3">Delivery Location: </label>
-                <div class="col-md-3">
-                  <input
-                    type="text"
-                    name="toLocation"
-                    class="form-control"
-                    placeholder="Destination City or Pincode"
-                    required="required"
-                    ngModel
-                  />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="shipmentCount" class="col-md-2">No. of shipment: </label>
-                <div class="col-md-2">
-                  <input
-                    type="number"
-                    name="shipmentCount"
-                    class="form-control"
-                    placeholder="No. of piece"
-                    required="required"
-                    min="1"
-                    ngModel
-                  />
-                </div>
-                <label for="totalWeight" class="col-md-2">Total Weight: </label>
-                <div class="col-md-2">
-                  <input
-                    type="text"
-                    name="totalWeight"
-                    class="form-control"
-                    placeholder="Total weight in Kg"
-                    ngModel
-                  />
-                </div>
-                <label for="volumetricWeight" class="col-md-1">Volume Weight (in CM): </label>
-                <div class="col-md-1">
-                  <input type="text" name="volumeL" class="form-control" placeholder="L" ngModel />
-                </div>
-                <div class="col-md-1">
-                  <input type="text" name="volumeB" class="form-control" placeholder="B" ngModel />
-                </div>
-                <div class="col-md-1">
-                  <input type="text" name="volumeH" class="form-control" placeholder="H" ngModel />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="contentType" class="col-md-2">Content of Goods: </label>
-                <div class="col-md-2">
-                  <input
-                    type="text"
-                    name="contentType"
-                    class="form-control"
-                    placeholder="Content"
-                    required="required"
-                    ngModel
-                  />
-                </div>
-                <label for="contentWorth" class="col-md-2">Worth of Goods: </label>
-                <div class="col-md-2">
-                  <input
-                    type="text"
-                    name="contentWorth"
-                    class="form-control"
-                    placeholder="Total worth of goods"
-                    ngModel
-                  />
-                </div>
-                <label for="contentMode" class="col-md-2">Classification of Goods: </label>
-                <div class="col-md-2">
-                  <select name="contentMode" class="form-control" ngModel>
-                    <option value="Non Commerical">Non Commerical</option>
-                    <option value="Commerical">Commerical</option>
-                    <option value="Sample">Sample</option>
-                    <option value="Gift">Gift</option>
-                    <option value="Personal">Personal</option>
-                    <option value="Returnable Item">Returnable Item</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="remarks" class="col-md-3">Remarks/Comments: (if any) </label>
-                <div class="col-md-9">
-                  <textarea
-                    name="remarks"
-                    class="form-control"
-                    placeholder="any other additional information"
-                    ngModel
-                  ></textarea>
-                </div>
-              </div>
+        <form #quoteForm="ngForm" (ngSubmit)="sendQuote(quoteForm)" *ngIf="!mailSent">
+          <h2 class="mb-1">Shipment details</h2>
+          <p class="fl-form-note mb-4">
+            The more detail you share, the more accurate your quote will be.
+          </p>
 
-              <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-success" [disabled]="isSubmitting">
-                  {{ isSubmitting ? 'Sending...' : 'Get Quotation' }}
-                </button>
+          <h3 class="fl-fieldset-legend mb-2">Contact</h3>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="contactName" class="form-label">Contact person</label>
+              <input
+                type="text"
+                id="contactName"
+                name="contactName"
+                class="form-control"
+                placeholder="Your name"
+                required
+                ngModel
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="companyName" class="form-label">Company name (if any)</label>
+              <input
+                type="text"
+                id="companyName"
+                name="companyName"
+                class="form-control"
+                placeholder="Company name"
+                ngModel
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                placeholder="Your email"
+                required
+                ngModel
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="mobile" class="form-label">Mobile</label>
+              <input
+                type="text"
+                id="mobile"
+                name="mobile"
+                class="form-control"
+                placeholder="Your contact number"
+                required
+                ngModel
+              />
+            </div>
+          </div>
+
+          <hr />
+
+          <h3 class="fl-fieldset-legend mb-2">Route</h3>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="fromLocation" class="form-label">Pickup location</label>
+              <input
+                type="text"
+                id="fromLocation"
+                name="fromLocation"
+                class="form-control"
+                placeholder="City or pin code"
+                required
+                ngModel
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="toLocation" class="form-label">Delivery location</label>
+              <input
+                type="text"
+                id="toLocation"
+                name="toLocation"
+                class="form-control"
+                placeholder="Destination city or pin code"
+                required
+                ngModel
+              />
+            </div>
+          </div>
+
+          <hr />
+
+          <h3 class="fl-fieldset-legend mb-2">Shipment</h3>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label for="shipmentCount" class="form-label">No. of shipments</label>
+              <input
+                type="number"
+                id="shipmentCount"
+                name="shipmentCount"
+                class="form-control"
+                placeholder="No. of pieces"
+                required
+                min="1"
+                ngModel
+              />
+            </div>
+            <div class="col-md-4">
+              <label for="totalWeight" class="form-label">Total weight (kg)</label>
+              <input
+                type="text"
+                id="totalWeight"
+                name="totalWeight"
+                class="form-control"
+                placeholder="Total weight in kg"
+                ngModel
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Dimensions (cm)</label>
+              <div class="d-flex gap-2">
+                <input
+                  type="text"
+                  name="volumeL"
+                  class="form-control"
+                  placeholder="L"
+                  aria-label="Length"
+                  ngModel
+                />
+                <input
+                  type="text"
+                  name="volumeB"
+                  class="form-control"
+                  placeholder="B"
+                  aria-label="Breadth"
+                  ngModel
+                />
+                <input
+                  type="text"
+                  name="volumeH"
+                  class="form-control"
+                  placeholder="H"
+                  aria-label="Height"
+                  ngModel
+                />
               </div>
             </div>
-          </fieldset>
+            <div class="col-md-6">
+              <label for="contentType" class="form-label">Contents</label>
+              <input
+                type="text"
+                id="contentType"
+                name="contentType"
+                class="form-control"
+                placeholder="What are you sending?"
+                required
+                ngModel
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="contentWorth" class="form-label">Declared value</label>
+              <input
+                type="text"
+                id="contentWorth"
+                name="contentWorth"
+                class="form-control"
+                placeholder="Total worth of goods"
+                ngModel
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="contentMode" class="form-label">Classification</label>
+              <select id="contentMode" name="contentMode" class="form-select" ngModel>
+                <option value="Non Commerical">Non Commercial</option>
+                <option value="Commerical">Commercial</option>
+                <option value="Sample">Sample</option>
+                <option value="Gift">Gift</option>
+                <option value="Personal">Personal</option>
+                <option value="Returnable Item">Returnable Item</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="remarks" class="form-label">Remarks (if any)</label>
+              <input
+                type="text"
+                id="remarks"
+                name="remarks"
+                class="form-control"
+                placeholder="Any additional information"
+                ngModel
+              />
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success w-100 mt-4" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Sending...' : 'Request quotation' }}
+          </button>
         </form>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col fl-hr">
-        <hr />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <h4>Quick Information</h4>
-        <p>
-          You can calculate volumetric weight from here:
-          <a target="_blank" href="/service/volumetric-weight-calculation">click here</a>
-        </p>
-        <p>
-          You can find our pricing details here:
-          <a target="_blank" href="/service/price">click here</a>
-        </p>
+      <div class="fl-stack">
+        <div class="fl-card fl-card--soft">
+          <h3>Quick information</h3>
+          <p class="fl-card__text">Useful tools while you wait for your quote.</p>
+          <ul class="fl-list fl-list--check">
+            <li>
+              <a routerLink="/service/volumetric-weight-calculation"
+                >Volumetric weight calculator</a
+              >
+            </li>
+            <li><a routerLink="/service/price">Domestic rate card</a></li>
+            <li><a routerLink="/pricing">Pricing overview</a></li>
+            <li><a routerLink="/insurance">Insurance &amp; claims</a></li>
+          </ul>
+        </div>
+        <div class="fl-card">
+          <h3>Need it urgently?</h3>
+          <p class="fl-card__text">Call our booking desk and we will prioritise your request.</p>
+          <p class="fl-small mb-1"><strong>International:</strong> +91 91761 11180</p>
+          <p class="fl-small mb-0"><strong>Domestic:</strong> +91 99413 02000</p>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</section>

@@ -1,16 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-reach',
   templateUrl: './reach.component.html',
   styleUrls: ['./reach.component.scss'],
-  standalone: false
+  standalone: false,
 })
-export class ReachComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class ReachComponent {
+  constructor() {}
 }

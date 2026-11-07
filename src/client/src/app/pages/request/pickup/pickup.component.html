@@ -1,15 +1,44 @@
-<div class="container body-container">
-  <div class="main-container">
-    <h2>Pickup Request</h2>
-    <hr />
+<section class="fl-page-hero">
+  <div class="fl-container">
+    <nav class="fl-breadcrumb" aria-label="Breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/pricing">Request</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Pickup Request</li>
+      </ol>
+    </nav>
+    <div class="fl-page-hero__inner">
+      <div>
+        <span class="fl-eyebrow">Doorstep pickup</span>
+        <h1 class="mt-2">Schedule a pickup</h1>
+        <p>
+          Tell us where to collect your shipment and our team will confirm the pickup slot. No
+          account required.
+        </p>
+      </div>
+      <div class="fl-page-hero__aside">
+        <h3>Before you submit</h3>
+        <ul>
+          <li>Keep the package sealed and labelled</li>
+          <li>Have the destination pin code ready</li>
+          <li>Declare the exact shipment type</li>
+          <li>Choose a reachable phone number</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <div class="row" *ngIf="mailSent || mailError">
-      <div class="col-md-12">
+<section class="fl-section">
+  <div class="fl-container">
+    <div class="fl-grid fl-grid--2" style="align-items: start">
+      <div class="fl-form-card">
         <div
           class="alert"
           [class.alert-success]="mailSent"
           [class.alert-danger]="!mailSent"
           role="alert"
+          *ngIf="mailSent || mailError"
         >
           <span *ngIf="mailSent"
             >Your pickup request was sent successfully. Our team will contact you shortly.</span
@@ -18,141 +47,159 @@
             mailError || 'Failed to send your request. Please contact us through email or phone.'
           }}</span>
         </div>
-      </div>
-    </div>
 
-    <div class="row" *ngIf="!mailSent">
-      <div class="col-md-12">
-        <form #pickupForm="ngForm" (ngSubmit)="sendPickup(pickupForm)">
-          <div class="row">
+        <form #pickupForm="ngForm" (ngSubmit)="sendPickup(pickupForm)" *ngIf="!mailSent">
+          <h2 class="mb-1">Pickup details</h2>
+          <p class="fl-form-note mb-4">
+            Fields marked required help us confirm your pickup faster.
+          </p>
+
+          <div class="row g-3">
             <div class="col-md-6">
-              <div class="form-group">
-                <label for="name">Your Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="name"
-                  name="name"
-                  placeholder="Enter your name"
-                  required
-                  ngModel
-                />
-              </div>
-              <div class="form-group">
-                <label for="email">Email address</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="email"
-                  name="email"
-                  placeholder="Enter email"
-                  ngModel
-                />
-              </div>
-              <div class="form-group">
-                <label for="phone">Phone number</label>
-                <input
-                  type="tel"
-                  class="form-control"
-                  id="phone"
-                  name="phone"
-                  placeholder="Enter phone number"
-                  required
-                  ngModel
-                />
-              </div>
-              <div class="form-group">
-                <label for="address">Pickup Location</label>
-                <textarea
-                  class="form-control"
-                  id="address"
-                  name="address"
-                  rows="3"
-                  required
-                  ngModel
-                ></textarea>
-              </div>
+              <label for="name" class="form-label">Your name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                placeholder="Enter your name"
+                required
+                ngModel
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="phone" class="form-label">Phone number</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="phone"
+                name="phone"
+                placeholder="Enter phone number"
+                required
+                ngModel
+              />
+            </div>
+            <div class="col-12">
+              <label for="email" class="form-label">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Enter email"
+                ngModel
+              />
+            </div>
+            <div class="col-12">
+              <label for="address" class="form-label">Pickup location</label>
+              <textarea
+                class="form-control"
+                id="address"
+                name="address"
+                rows="3"
+                placeholder="Building, street, area, city and pin code"
+                required
+                ngModel
+              ></textarea>
             </div>
 
-            <div class="col-md-6">
-              <fieldset class="form-group">
-                <div class="row">
-                  <legend class="col-form-label col-sm-4 pt-0">Shipment Type</legend>
-                  <div class="col-sm-8">
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="shipmentType"
-                        id="shipmentType1"
-                        value="Dox"
-                        [(ngModel)]="shipmentType"
-                      />
-                      <label class="form-check-label" for="shipmentType1"> Document </label>
-                    </div>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="shipmentType"
-                        id="shipmentType2"
-                        value="NonDox"
-                        [(ngModel)]="shipmentType"
-                      />
-                      <label class="form-check-label" for="shipmentType2"> Non Document </label>
-                    </div>
+            <div class="col-12">
+              <fieldset>
+                <legend class="fl-fieldset-legend">Shipment type</legend>
+                <div class="d-flex flex-wrap gap-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="shipmentType"
+                      id="shipmentType1"
+                      value="Dox"
+                      [(ngModel)]="shipmentType"
+                    />
+                    <label class="form-check-label" for="shipmentType1">Document</label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="shipmentType"
+                      id="shipmentType2"
+                      value="NonDox"
+                      [(ngModel)]="shipmentType"
+                    />
+                    <label class="form-check-label" for="shipmentType2">Non document</label>
                   </div>
                 </div>
               </fieldset>
-              <div class="form-group">
-                <label for="shipmentQty">No of Shipment</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="shipmentQty"
-                  name="shipmentQty"
-                  placeholder="Number of Shipment"
-                  ngModel
-                />
-              </div>
-              <div class="form-group">
-                <label for="shipmentWeight">Total Weight</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="shipmentWeight"
-                  name="shipmentWeight"
-                  placeholder="Total Weight"
-                  ngModel
-                />
-              </div>
-              <div class="form-group">
-                <label for="deliveryAddress">Shipment/Delivery Location</label>
-                <textarea
-                  class="form-control"
-                  id="deliveryAddress"
-                  name="deliveryAddress"
-                  rows="3"
-                  required
-                  ngModel
-                ></textarea>
-              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="shipmentQty" class="form-label">Number of shipments</label>
+              <input
+                type="number"
+                class="form-control"
+                id="shipmentQty"
+                name="shipmentQty"
+                min="1"
+                placeholder="Number of pieces"
+                ngModel
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="shipmentWeight" class="form-label">Total weight</label>
+              <input
+                type="text"
+                class="form-control"
+                id="shipmentWeight"
+                name="shipmentWeight"
+                placeholder="Total weight in kg"
+                ngModel
+              />
+            </div>
+            <div class="col-12">
+              <label for="deliveryAddress" class="form-label">Delivery location</label>
+              <textarea
+                class="form-control"
+                id="deliveryAddress"
+                name="deliveryAddress"
+                rows="3"
+                placeholder="Destination city, area and pin code"
+                required
+                ngModel
+              ></textarea>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-12">
-              <button
-                type="submit"
-                class="btn btn-primary btn-block float-right"
-                [disabled]="isSubmitting"
-              >
-                {{ isSubmitting ? 'Sending...' : 'Submit' }}
-              </button>
-            </div>
-          </div>
+          <button type="submit" class="btn btn-success w-100 mt-4" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Sending...' : 'Submit pickup request' }}
+          </button>
         </form>
+      </div>
+
+      <div class="fl-stack">
+        <div class="fl-card fl-card--soft">
+          <h3>What happens next?</h3>
+          <ol class="fl-list mt-3">
+            <li>Our team reviews your request and confirms the pickup slot.</li>
+            <li>We share the AWB number once the shipment is collected.</li>
+            <li>You can track status in real time on the tracking page.</li>
+          </ol>
+        </div>
+        <div class="fl-card">
+          <h3>Prefer to talk?</h3>
+          <p class="fl-card__text">
+            Call our booking desk for urgent pickups, bulk shipments or special handling.
+          </p>
+          <p class="fl-small mb-1"><strong>International:</strong> +91 91761 11180</p>
+          <p class="fl-small mb-1"><strong>Domestic:</strong> +91 99413 02000</p>
+          <p class="fl-small mb-0"><strong>Customer care:</strong> +91 78713 12000</p>
+        </div>
+        <div class="fl-callout fl-callout--green">
+          <strong>Tip:</strong> parcels with accurate dimensions and weight are priced faster. Use
+          the <a routerLink="/service/volumetric-weight-calculation">volumetric calculator</a> if
+          unsure.
+        </div>
       </div>
     </div>
   </div>
-</div>
+</section>

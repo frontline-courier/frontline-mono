@@ -1,139 +1,342 @@
-<div class="container">
+<section class="fl-page-hero home-hero">
+  <div class="fl-container">
+    <div class="home-hero__grid">
+      <div class="home-hero__copy">
+        <span class="fl-eyebrow">Trusted courier &amp; cargo partner</span>
+        <h1 class="mt-2">Deliver anywhere, with complete peace of mind</h1>
+        <p class="home-hero__lead">
+          Frontline Courier moves your documents, parcels and cargo across India and around the
+          world. Real-time tracking, doorstep pickup and a partner network that reaches 220+
+          countries.
+        </p>
+        <div class="home-hero__actions">
+          <a routerLink="/service/pickup-request" class="btn btn-success btn-lg">Book a pickup</a>
+          <a routerLink="/service/get-quote" class="btn btn-light btn-lg">Get a quote</a>
+        </div>
+        <div class="home-hero__trust">
+          <span><strong>220+</strong> countries</span>
+          <span><strong>25+</strong> courier partners</span>
+          <span><strong>24h</strong> metro delivery</span>
+        </div>
+      </div>
 
-  <!-- row 1 -->
-  <div class="row shadow rounded p-4 m-4 text-light bg-dark">
-    <div class="col-md-6">
-      <h2>Welcome to Frontline Courier!</h2>
-      <p>We provide world-wide courier/cargo and fright forwarding service all over the world.</p>
-      <p><a class="btn btn-primary btn-lg" href="/contact">Contact Us </a></p>
-    </div>
-    <div class="col-md-6">
-      <div class="track-form ">
-        <h2>Track your shipment</h2>
-        <form [formGroup]="trackForm" autocomplete="off">
-          <div class="mb-3">
-            <input type="text" formControlName="id" name="id" class="form-control" id="trackTextBox2"
-              placeholder="Search POD/Reference number" value="" required="">
+      <div class="home-hero__track">
+        <div class="home-track-card">
+          <div class="home-track-card__head">
+            <span class="fl-icon fl-icon--green">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                <path
+                  d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"
+                />
+              </svg>
+            </span>
+            <div>
+              <h2 class="home-track-card__title">Track your shipment</h2>
+              <p class="home-track-card__sub">Real-time status for your parcel</p>
+            </div>
           </div>
-          <div class="mb-3">
-            <select class="form-select" id="track" name="track" aria-label="track" formControlName="track">
-              <option value="1" selected>POD Number</option>
+
+          <form [formGroup]="trackForm" autocomplete="off" (ngSubmit)="gotoTrack()">
+            <label class="form-label" for="trackTextBox2">POD / Reference number</label>
+            <input
+              type="text"
+              formControlName="id"
+              name="id"
+              class="form-control"
+              id="trackTextBox2"
+              placeholder="e.g. 1234567890"
+              required
+            />
+
+            <label class="form-label mt-3" for="track">Search by</label>
+            <select class="form-select" id="track" name="track" formControlName="track">
+              <option value="1">POD Number</option>
               <option value="2">Reference Number</option>
             </select>
-          </div>
-          <div class="d-grid">
-            <input class="btn btn-success btn-block pull-right" value="Track" id="trackBtn2" (click)="gotoTrack()">
-          </div>
-        </form>
+
+            <button class="btn btn-success w-100 mt-4" type="submit" id="trackBtn2">
+              Track shipment
+            </button>
+          </form>
+
+          <p class="home-track-card__help">
+            Need help? <a routerLink="/faq">Read the tracking FAQ</a>
+          </p>
+        </div>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="row">
-    <div class="col fl-hr">
-      <hr />
+<section class="fl-section">
+  <div class="fl-container">
+    <div class="fl-section-head fl-section-head--center">
+      <span class="fl-kicker">What we move</span>
+      <h2>One partner for every shipment</h2>
+      <p>
+        Whether it is a single envelope or palletised cargo, choose the service that fits your
+        timeline and budget.
+      </p>
+    </div>
+
+    <div class="fl-grid fl-grid--3">
+      <a routerLink="/service/domestic" class="fl-card fl-card--hover fl-card--link">
+        <span class="fl-icon">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M4.5 7.5a.5.5 0 0 1 0-1h5.793L8.146 4.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 7.5z"
+            />
+          </svg>
+        </span>
+        <h3 class="fl-card__title mt-3">Domestic courier</h3>
+        <p class="fl-card__text">
+          Fast, reliable delivery to every major pin code in India with surface and air options.
+        </p>
+        <span class="fl-card__cta">Explore domestic &rarr;</span>
+      </a>
+
+      <a routerLink="/service/international" class="fl-card fl-card--hover fl-card--link">
+        <span class="fl-icon fl-icon--green">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0a.5.5 0 0 1 .5.5v1.02a6.5 6.5 0 0 1 6 6.48h1a.5.5 0 0 1 0 1h-1a6.5 6.5 0 0 1-6 6.48v1.02a.5.5 0 0 1-1 0v-1.02a6.5 6.5 0 0 1-6-6.48h-1a.5.5 0 0 1 0-1h1a6.5 6.5 0 0 1 6-6.48V.5A.5.5 0 0 1 8 0m0 2.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11"
+            />
+          </svg>
+        </span>
+        <h3 class="fl-card__title mt-3">International courier</h3>
+        <p class="fl-card__text">
+          Door-to-door delivery to 220+ countries through DHL, FedEx, UPS, Aramex and more.
+        </p>
+        <span class="fl-card__cta">Go global &rarr;</span>
+      </a>
+
+      <a routerLink="/service/air" class="fl-card fl-card--hover fl-card--link">
+        <span class="fl-icon">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M6.428 1.151C6.708.591 7.292 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10.146 2.151 10.5 2.5c.35.35.77.639 1.349.928C12.408 3.708 13 4.292 13 5s-.592 1.292-1.151 1.572c-.579.279-1 .564-1.349.928-.35.35-.639.77-.928 1.349C9.292 9.408 8.708 10 8 10s-1.292-.592-1.572-1.151c-.279-.579-.564-1-.928-1.349-.35-.35-.77-.639-1.349-.928C3.592 6.292 3 5.708 3 5s.592-1.292 1.151-1.572c.579-.279 1-.564 1.349-.928.35-.35.639-.77.928-1.349"
+            />
+          </svg>
+        </span>
+        <h3 class="fl-card__title mt-3">Air freight</h3>
+        <p class="fl-card__text">
+          Time-critical documents and cargo moved on the next available flight, worldwide.
+        </p>
+        <span class="fl-card__cta">Ship by air &rarr;</span>
+      </a>
+
+      <a routerLink="/service/cargo" class="fl-card fl-card--hover fl-card--link">
+        <span class="fl-icon fl-icon--green">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"
+            />
+          </svg>
+        </span>
+        <h3 class="fl-card__title mt-3">Cargo</h3>
+        <p class="fl-card__text">
+          Bulk and heavy shipments moved by road with customised handling and tracking.
+        </p>
+        <span class="fl-card__cta">Move cargo &rarr;</span>
+      </a>
+
+      <a routerLink="/service/surface" class="fl-card fl-card--hover fl-card--link">
+        <span class="fl-icon">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-3.5v3.793L5.354 10.44a.5.5 0 1 0 .708.708l2.5-2.5A.5.5 0 0 0 8.5 8.5v-4a.5.5 0 0 0-1 0"
+            />
+          </svg>
+        </span>
+        <h3 class="fl-card__title mt-3">Surface freight</h3>
+        <p class="fl-card__text">
+          The most cost-effective option for large, non-urgent domestic and international loads.
+        </p>
+        <span class="fl-card__cta">Compare surface &rarr;</span>
+      </a>
+
+      <a routerLink="/service/priority" class="fl-card fl-card--hover fl-card--link">
+        <span class="fl-icon fl-icon--green">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M2.5 1a.5.5 0 0 0-.5.5v12a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-12a.5.5 0 0 0-.5-.5zM2 1.5A1.5 1.5 0 0 1 3.5 0h9A1.5 1.5 0 0 1 14 1.5v12a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5z"
+            />
+            <path
+              d="M4 3.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5"
+            />
+          </svg>
+        </span>
+        <h3 class="fl-card__title mt-3">Priority delivery</h3>
+        <p class="fl-card__text">
+          Guaranteed 10:30 AM, 12:00 PM, next-day and Sunday delivery on select pin codes.
+        </p>
+        <span class="fl-card__cta">See priority options &rarr;</span>
+      </a>
     </div>
   </div>
+</section>
 
-  <div class="row">
-    <div class="col-md-4 ">
-      <h2>Domestic Service</h2>
-      <p>Send your document or non-document to anywhere within your country on time. We have parterned with all
-        major service provider to provide reliable and fast delivery.</p>
-      <p><a class="btn btn-success" href="/service/domestic">Read more &raquo;</a></p>
+<section class="fl-section fl-section--alt">
+  <div class="fl-container">
+    <div class="fl-section-head">
+      <span class="fl-kicker">Why Frontline</span>
+      <h2>Built around your deadlines</h2>
     </div>
-    <div class="col-md-4">
-      <h2>International Service</h2>
-      <p>We provide delivery to almost all the country in the world at lowest price in market. We have parterned
-        with all major service provider to provide reliable and fast delivery.</p>
-      <p><a class="btn btn-success" href="/service/international">Read more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-      <h2>Cargo Service</h2>
-      <p>Shipment via cargo mode. This mode will deliver your shipment with domestic via roadways transport.</p>
-      <p><a class="btn btn-success" href="/service/cargo">Read more &raquo;</a></p>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col fl-hr">
-      <hr />
-    </div>
-  </div>
-
-  <app-common></app-common>
-
-  <div class="row">
-    <div class="col fl-hr">
-      <hr />
-    </div>
-  </div>
-
-  <div class="row home-service">
-    <div class="col-md-12">
-      <h3>Priority Services</h3>
-      <div class="row">
-        <div class="col-md-3">
-          <h4>Priority 10:30 AM</h4>
-          <p>
-            A guaranteed door-to-door time definite delivery of shipments by air the next possible business
-            day by 10:30 hours, targeted at time-critical business-to-business needs.
-
-          </p>
-          <a href="/service/priority" class="btn btn-success btn-sm">Read More..</a>
+    <div class="fl-grid fl-grid--4">
+      <div class="fl-feature">
+        <span class="fl-icon fl-icon--green">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 1 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
+            />
+          </svg>
+        </span>
+        <div>
+          <div class="fl-feature__title">Real-time tracking</div>
+          <p class="fl-feature__text">Follow every scan from pickup to delivery.</p>
         </div>
-        <div class="col-md-3">
-          <h4>Priority 12:00 PM</h4>
-          <p>
-            A guaranteed door-to-door time definite delivery of shipments by air the next possible business
-            day by 12:00 hours, targeted at time-critical business-to-business needs.
-
-          </p>
-          <a href="/service/priority" class="btn btn-success btn-sm">Read More..</a>
+      </div>
+      <div class="fl-feature">
+        <span class="fl-icon">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"
+            />
+          </svg>
+        </span>
+        <div>
+          <div class="fl-feature__title">Doorstep pickup</div>
+          <p class="fl-feature__text">Book online and we collect from your location.</p>
         </div>
-        <div class="col-md-3">
-          <h4>Priority Sunday</h4>
-          <p>
-            This service ensures all types of consignment pick up on the Saturday before 06:00 PM and
-            delivery on Sunday, and is available for select pin-codes across the country.
-          </p>
-          <a href="/service/priority" class="btn btn-success btn-sm">Read More..</a>
+      </div>
+      <div class="fl-feature">
+        <span class="fl-icon fl-icon--green">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524M5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"
+            />
+          </svg>
+        </span>
+        <div>
+          <div class="fl-feature__title">Optional insurance</div>
+          <p class="fl-feature__text">Protect high-value shipments in transit.</p>
         </div>
-        <div class="col-md-3">
-          <h4>Priority Next Day</h4>
-          <p>A premium service for Documents and Parcels created for Guaranteed Next Business Day Delivery.
-            Designed especially for time-sensitive documents & parcels.</p>
-          <a href="/service/priority" class="btn btn-success btn-sm">Read More..</a>
+      </div>
+      <div class="fl-feature">
+        <span class="fl-icon">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58z"
+            />
+          </svg>
+        </span>
+        <div>
+          <div class="fl-feature__title">Human support</div>
+          <p class="fl-feature__text">Talk to our Chennai team when you need help.</p>
         </div>
       </div>
     </div>
-
   </div>
+</section>
 
-  <div class="row">
-    <div class="col fl-hr">
-      <hr />
+<section class="fl-section">
+  <div class="fl-container">
+    <div class="fl-section-head">
+      <span class="fl-kicker">Time-definite</span>
+      <h2>Priority services</h2>
+      <p>When every hour matters, choose a guaranteed delivery window.</p>
+    </div>
+    <div class="fl-grid fl-grid--4">
+      <div class="fl-card fl-card--hover">
+        <span class="fl-badge">10:30 AM</span>
+        <h3 class="fl-card__title mt-3">Priority 10:30</h3>
+        <p class="fl-card__text mb-3">
+          Next business day delivery by 10:30 AM to select pin codes, with money-back guarantee.
+        </p>
+        <a routerLink="/service/priority" class="btn btn-outline-primary btn-sm">Read more</a>
+      </div>
+      <div class="fl-card fl-card--hover">
+        <span class="fl-badge">12:00 PM</span>
+        <h3 class="fl-card__title mt-3">Priority 12:00</h3>
+        <p class="fl-card__text mb-3">
+          Guaranteed delivery by noon the next business day for time-critical business shipments.
+        </p>
+        <a routerLink="/service/priority" class="btn btn-outline-primary btn-sm">Read more</a>
+      </div>
+      <div class="fl-card fl-card--hover">
+        <span class="fl-badge">Sunday</span>
+        <h3 class="fl-card__title mt-3">Priority Sunday</h3>
+        <p class="fl-card__text mb-3">
+          Saturday pickup with Sunday delivery on select pin codes across the country.
+        </p>
+        <a routerLink="/service/priority" class="btn btn-outline-primary btn-sm">Read more</a>
+      </div>
+      <div class="fl-card fl-card--hover">
+        <span class="fl-badge">Next day</span>
+        <h3 class="fl-card__title mt-3">Priority Next Day</h3>
+        <p class="fl-card__text mb-3">
+          A premium next-business-day service for sensitive documents and parcels.
+        </p>
+        <a routerLink="/service/priority" class="btn btn-outline-primary btn-sm">Read more</a>
+      </div>
     </div>
   </div>
+</section>
 
-  <div class="row">
-    <div class="col-md-12">
-      <h3>Volumetric weight calculation</h3>
+<section class="fl-section fl-section--alt">
+  <div class="fl-container">
+    <div class="fl-grid fl-grid--2" style="align-items: center">
+      <div>
+        <span class="fl-kicker">Plan ahead</span>
+        <h2>Know your chargeable weight</h2>
+        <p class="fl-muted">
+          Volumetric (dimensional) weight can be higher than actual weight for light, bulky parcels.
+          Use our calculator before you book so there are no surprises.
+        </p>
+        <ul class="fl-list fl-list--check mt-3">
+          <li>Supports all major courier partners</li>
+          <li>Domestic, international, surface and cargo</li>
+          <li>Instant results in kilograms</li>
+        </ul>
+        <a routerLink="/service/volumetric-weight-calculation" class="btn btn-success mt-2"
+          >Calculate now</a
+        >
+      </div>
+      <div class="fl-card fl-card--dark">
+        <h3>Popular partners</h3>
+        <p>
+          We work with DHL, Bluedart, Aramex, UPS, FedEx, TNT, DPD, DTDC, CityLink, Trackon and
+          other regional leaders.
+        </p>
+        <div class="home-partners">
+          <span>DHL</span><span>Bluedart</span><span>Aramex</span><span>UPS</span><span>FedEx</span
+          ><span>TNT</span><span>DTDC</span><span>Trackon</span>
+        </div>
+        <a routerLink="/pricing" class="btn btn-light mt-3">View pricing</a>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-10">
-      <p>Dimensional weight, also known as volumetric weight, is a pricing technique for commercial freight
-        transport (including courier and postal services), which uses an estimated weight that is calculated
-        from the length, width and height of a package.</p>
-      <p>The volumetric weight of a shipment is a calculation that reflects the density of a package. A less dense
-        item generally occupies more volume of space, in comparison to its actual weight. The volumetric or
-        dimensional weight is calculated and compared with the actual weight of the shipment to ascertain which
-        is greater; the higher weight is used to calculate the shipment cost.</p>
-    </div>
-    <div class="col-md-2">
-      <a href="/service/volumetric-weight-calculation" class="pull-right btn btn-success">Calcualte Now</a>
+</section>
+
+<section class="fl-section">
+  <div class="fl-container">
+    <app-common></app-common>
+  </div>
+</section>
+
+<section class="fl-section fl-section--tight">
+  <div class="fl-container">
+    <div class="fl-cta-band">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <h2 class="mb-1">Ready to send your next shipment?</h2>
+          <p>Book a pickup or get a tailored quote from our team in minutes.</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <a routerLink="/service/pickup-request" class="btn btn-success">Book a pickup</a>
+          <a routerLink="/contact" class="btn btn-light">Contact us</a>
+        </div>
+      </div>
     </div>
   </div>
-
-</div>
+</section>

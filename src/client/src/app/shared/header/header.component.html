@@ -1,0 +1,170 @@
+<a class="fl-skip-link" href="#main-content">Skip to content</a>
+
+<header class="fl-header">
+  <div class="fl-topbar">
+    <div class="fl-container fl-topbar__inner">
+      <div class="fl-topbar__contact">
+        <a href="tel:+919176111180">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58z"
+            />
+          </svg>
+          +91 91761 11180
+        </a>
+        <a href="mailto:contact@frontlinecourier.com">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"
+            />
+          </svg>
+          contact&#64;frontlinecourier.com
+        </a>
+      </div>
+      <div class="fl-topbar__meta">
+        <span>Mon&ndash;Sat &middot; 9:30 AM &ndash; 7:00 PM</span>
+        <a routerLink="/track" class="fl-topbar__cta">Track a shipment</a>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg fl-navbar" aria-label="Main navigation">
+    <div class="fl-container fl-navbar__inner">
+      <a class="navbar-brand fl-brand" routerLink="/home" aria-label="Frontline Courier home">
+        <img src="assets/logo.png" alt="Frontline Courier" width="176" height="27" />
+        <span class="fl-brand__tag">Courier &middot; Cargo &middot; Freight</span>
+      </a>
+
+      <button
+        class="navbar-toggler fl-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#flMainNav"
+        aria-controls="flMainNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="flMainNav">
+        <ul class="navbar-nav fl-nav ms-auto align-items-lg-center">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/home"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              >Home</a
+            >
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              (click)="$event.preventDefault()"
+              >Services</a
+            >
+            <ul class="dropdown-menu fl-dropdown">
+              <li><a class="dropdown-item" routerLink="/service/domestic">Domestic courier</a></li>
+              <li>
+                <a class="dropdown-item" routerLink="/service/international"
+                  >International courier</a
+                >
+              </li>
+              <li><a class="dropdown-item" routerLink="/service/air">Air freight</a></li>
+              <li><a class="dropdown-item" routerLink="/service/cargo">Cargo</a></li>
+              <li><a class="dropdown-item" routerLink="/service/surface">Surface freight</a></li>
+              <li><a class="dropdown-item" routerLink="/service/priority">Priority delivery</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item" routerLink="/service/volumetric-weight-calculation"
+                  >Volumetric weight</a
+                >
+              </li>
+              <li><a class="dropdown-item" routerLink="/service/price">Domestic rates</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/pricing" routerLinkActive="active">Pricing</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/track" routerLinkActive="active">Track</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              (click)="$event.preventDefault()"
+              >Request</a
+            >
+            <ul class="dropdown-menu fl-dropdown">
+              <li>
+                <a class="dropdown-item" routerLink="/service/pickup-request">Pickup request</a>
+              </li>
+              <li><a class="dropdown-item" routerLink="/service/get-quote">Get a quote</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              (click)="$event.preventDefault()"
+              >Company</a
+            >
+            <ul class="dropdown-menu fl-dropdown">
+              <li><a class="dropdown-item" routerLink="/about">About us</a></li>
+              <li><a class="dropdown-item" routerLink="/contact">Contact us</a></li>
+              <li><a class="dropdown-item" routerLink="/coverage">Coverage &amp; locations</a></li>
+              <li><a class="dropdown-item" routerLink="/insurance">Insurance &amp; claims</a></li>
+              <li><a class="dropdown-item" routerLink="/faq">FAQ &amp; help</a></li>
+              <li>
+                <a class="dropdown-item" routerLink="/terms-and-privacy">Terms &amp; privacy</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+        <form class="fl-search" (ngSubmit)="submitSearch($event)" role="search">
+          <div class="fl-search__group">
+            <label class="visually-hidden" for="fl-nav-id">POD or reference number</label>
+            <input
+              class="form-control fl-search__input"
+              type="text"
+              id="fl-nav-id"
+              name="id"
+              placeholder="POD / Ref #"
+              autocomplete="off"
+              [(ngModel)]="searchId"
+            />
+            <label class="visually-hidden" for="fl-nav-track">Search by</label>
+            <select
+              class="form-select fl-search__select"
+              id="fl-nav-track"
+              name="track"
+              [(ngModel)]="searchType"
+            >
+              <option value="1">POD No.</option>
+              <option value="2">Ref No.</option>
+            </select>
+            <button class="btn btn-success fl-search__btn" type="submit">Track</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </nav>
+</header>

@@ -1,16 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-international',
   templateUrl: './international.component.html',
   styleUrls: ['./international.component.scss'],
-  standalone: false
+  standalone: false,
 })
-export class InternationalComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class InternationalComponent {
+  constructor() {}
 }

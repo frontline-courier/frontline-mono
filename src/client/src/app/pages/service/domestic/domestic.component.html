@@ -1,42 +1,101 @@
-<div class="container body-container">
-  <div class="main-container">
-    <h2>Domestic Service</h2>
-    <hr />
-
-    <div class="row">
-      <div class="col-md-12">
+<section class="fl-page-hero">
+  <div class="fl-container">
+    <nav class="fl-breadcrumb" aria-label="Breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/pricing">Services</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Domestic Courier</li>
+      </ol>
+    </nav>
+    <div class="fl-page-hero__inner">
+      <div>
+        <span class="fl-eyebrow">Across India</span>
+        <h1 class="mt-2">Domestic courier that keeps its promise</h1>
         <p>
-          Send your document or non-document to anywhere within your country on
-          time. We have parterned with all major service provider to provide
-          reliable and fast delivery.
+          Send documents or parcels to any major pin code in India with surface, air and priority
+          options. Doorstep pickup, real-time tracking and a partner network built for reliability.
         </p>
-        <p>
-          Experience Unmatched Efficiency and Reliability with Our Nationwide
-          Delivery Services
-        </p>
-        <p>
-          In today's fast-paced world, timely and dependable delivery is crucial
-          for businesses and individuals alike. Whether you're sending important
-          documents, urgent packages, or even gifts for loved ones, choosing a
-          shipping partner that can consistently deliver your goods on time and
-          in perfect condition is paramount.
-        </p>
-        <p>
-          At Frontline Courier, we understand the importance of meeting your
-          delivery needs with precision and care. That's why we've meticulously
-          crafted a comprehensive range of shipping options to suit your
-          specific requirements, ensuring that your documents and non-documents
-          reach their destinations seamlessly.
-        </p>
-        <p>
-          We offer a diverse array of shipping services to cater to your unique
-          requirements
-        </p>
-
-        <a href="/contact" class="btn btn-success btn-sm">Contact Us</a>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <a routerLink="/service/pickup-request" class="btn btn-success">Book a pickup</a>
+          <a routerLink="/service/price" class="btn btn-light">View rate card</a>
+        </div>
+      </div>
+      <div class="fl-page-hero__aside">
+        <h3>Why choose us</h3>
+        <ul>
+          <li>Pickup from your doorstep</li>
+          <li>Surface, air and priority modes</li>
+          <li>Live status updates</li>
+          <li>Competitive, transparent rates</li>
+        </ul>
       </div>
     </div>
+  </div>
+</section>
 
+<section class="fl-section">
+  <div class="fl-container">
+    <div class="fl-grid fl-grid--2" style="align-items: start">
+      <div>
+        <span class="fl-kicker">Domestic service</span>
+        <h2>Unmatched efficiency and reliability</h2>
+        <p class="fl-muted">
+          In today's fast-paced world, timely and dependable delivery matters. Whether you are
+          sending important documents, urgent packages or gifts for loved ones, choosing a shipping
+          partner that delivers on time and in perfect condition is essential.
+        </p>
+        <p class="fl-muted">
+          At Frontline Courier, we have built a comprehensive range of domestic shipping options to
+          suit your specific requirements &mdash; ensuring your documents and parcels reach their
+          destinations seamlessly.
+        </p>
+        <a routerLink="/contact" class="btn btn-success mt-2">Contact us</a>
+      </div>
+
+      <div class="fl-grid fl-grid--1">
+        <div class="fl-card fl-card--soft">
+          <h3 class="fl-card__title">Surface delivery</h3>
+          <p class="fl-card__text mb-0">
+            The most economical option for non-urgent parcels, with wide pin-code coverage and
+            reliable transit schedules.
+          </p>
+        </div>
+        <div class="fl-card fl-card--soft">
+          <h3 class="fl-card__title">Air delivery</h3>
+          <p class="fl-card__text mb-0">
+            Faster metro-to-metro delivery for time-sensitive documents and packages.
+          </p>
+        </div>
+        <div class="fl-card fl-card--soft">
+          <h3 class="fl-card__title">Priority delivery</h3>
+          <p class="fl-card__text mb-0">
+            Guaranteed 10:30 AM, 12:00 PM or next-day delivery on select pin codes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fl-section fl-section--alt">
+  <div class="fl-container">
     <app-common></app-common>
   </div>
-</div>
+</section>
+
+<section class="fl-section fl-section--tight">
+  <div class="fl-container">
+    <div class="fl-cta-band">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <h2 class="mb-1">Ship across India with Frontline</h2>
+          <p>Book a pickup today or speak to our team about regular shipments.</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <a routerLink="/service/pickup-request" class="btn btn-success">Book a pickup</a>
+          <a routerLink="/service/price" class="btn btn-light">See rates</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

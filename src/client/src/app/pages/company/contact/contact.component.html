@@ -1,55 +1,132 @@
-<div class="container body-container">
-    <div class="main-container">
-        <h2>Contact Us</h2>
-        <hr />
-
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Ambattur O.T branches</h3>
-
-                <address>
-                    No 75, Chota Plaza Complex <br />
-                    Mounaswamy Mada Street <br />
-                    Ambattur O.T, Chennai <br />
-                    Tamil Nadu - 600053 <br />
-                    India <br />
-                </address>
-
-                <hr />
-
-                <address>
-                    412 MTH Road, Everest Complex <br />
-                    Ground floor <br />
-                    (Next to KFC Restaurant and RR Mobiles) <br />
-                    Ambattur O.T, Chennai <br />
-                    Tamil Nadu - 600053 <br />
-                    India <br />
-                </address>
-
-                <hr />
-
-                <address>
-                    <strong>Email:</strong> <a href="mailto:contact@frontlinecourier.com">
-                        contact&#64;frontlinecourier.com
-                    </a><br />
-                    <strong>International Booking:</strong> +91 9176111180 / 40 / 70<br />
-                    <strong>Domestic Booking:</strong> +91 9941302000 / 9941312000<br />
-                    <strong>Domestic Customer Care:</strong> +91 7871312000
-                </address>
-            </div>
-
-            <div class="col-md-6" *ngIf="mailCompleted">
-                <div class="alert alert-success" role="alert" *ngIf="mailSent">
-                    Email Send Successfully! Our Team will contact you.
-                </div>
-                <div class="alert alert-danger" role="alert" *ngIf="!mailSent">
-                    Failed to send your request! Please contact us through email or phone.
-                </div>
-            </div>
-
-            <div class="col-md-6" *ngIf="!mailCompleted">
-                <iframe aria-label='Contact' frameborder="0" style="height:750px;width:99%;border:none;" src='https://forms.zohopublic.in/frontline/form/Contact/formperma/_k5O0zbR7wvk5gvaq3yNz0CQh718owuSEmFrgjn0Rpo'></iframe>
-            </div>
-        </div>
+<section class="fl-page-hero">
+  <div class="fl-container">
+    <nav class="fl-breadcrumb" aria-label="Breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
+      </ol>
+    </nav>
+    <div class="fl-page-hero__inner">
+      <div>
+        <span class="fl-eyebrow">We're here to help</span>
+        <h1 class="mt-2">Talk to Frontline Courier</h1>
+        <p>
+          Questions about a booking, an international shipment or a claim? Reach our Chennai team by
+          phone, email or the form below.
+        </p>
+      </div>
+      <div class="fl-page-hero__aside">
+        <h3>Direct lines</h3>
+        <ul>
+          <li>International: +91 91761 11180</li>
+          <li>Domestic: +91 99413 02000</li>
+          <li>Customer care: +91 78713 12000</li>
+        </ul>
+      </div>
     </div>
-</div>
+  </div>
+</section>
+
+<section class="fl-section">
+  <div class="fl-container">
+    <div class="fl-grid fl-grid--3">
+      <div class="fl-card">
+        <span class="fl-icon">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"
+            />
+          </svg>
+        </span>
+        <h3 class="fl-card__title mt-3">Head office</h3>
+        <address class="fl-muted fl-small">
+          No 75, Chota Plaza Complex<br />
+          Mounaswamy Mada Street<br />
+          Ambattur O.T, Chennai &ndash; 600053<br />
+          Tamil Nadu, India
+        </address>
+      </div>
+      <div class="fl-card">
+        <span class="fl-icon fl-icon--green">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58z"
+            />
+          </svg>
+        </span>
+        <h3 class="fl-card__title mt-3">Phone</h3>
+        <p class="fl-small mb-1">
+          <strong>International:</strong> <a href="tel:+919176111180">+91 91761 11180</a>
+        </p>
+        <p class="fl-small mb-1">
+          <strong>Domestic:</strong> <a href="tel:+919941302000">+91 99413 02000</a>
+        </p>
+        <p class="fl-small mb-0">
+          <strong>Customer care:</strong> <a href="tel:+917871312000">+91 78713 12000</a>
+        </p>
+      </div>
+      <div class="fl-card">
+        <span class="fl-icon">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"
+            />
+          </svg>
+        </span>
+        <h3 class="fl-card__title mt-3">Email</h3>
+        <p class="fl-small mb-1">
+          <a href="mailto:contact@frontlinecourier.com">contact&#64;frontlinecourier.com</a>
+        </p>
+        <p class="fl-small fl-muted mb-0">
+          We reply within one business day. For urgent shipments, please call.
+        </p>
+      </div>
+    </div>
+
+    <div class="fl-grid fl-grid--2 mt-4" style="align-items: start">
+      <div>
+        <span class="fl-kicker">Branches</span>
+        <h2>Visit us in Chennai</h2>
+        <div class="fl-card mt-3">
+          <h3 class="fl-card__title">Ambattur O.T</h3>
+          <address class="fl-muted fl-small mb-0">
+            412 MTH Road, Everest Complex, Ground floor<br />
+            (Next to KFC Restaurant and RR Mobiles)<br />
+            Ambattur O.T, Chennai &ndash; 600053<br />
+            Tamil Nadu, India
+          </address>
+        </div>
+        <div class="fl-card mt-3">
+          <h3 class="fl-card__title">Ambattur Estate</h3>
+          <address class="fl-muted fl-small mb-0">
+            No 2, Menambedu Road, Coromantel Town<br />
+            Ambattur SIDCO Estate (Next to South India Bank)<br />
+            Chennai &ndash; 600098, Tamil Nadu, India
+          </address>
+        </div>
+      </div>
+
+      <div>
+        <span class="fl-kicker">Send a message</span>
+        <h2>Contact form</h2>
+
+        <div class="alert alert-success mt-3" role="alert" *ngIf="mailCompleted && mailSent">
+          Email sent successfully. Our team will contact you.
+        </div>
+        <div class="alert alert-danger mt-3" role="alert" *ngIf="mailCompleted && !mailSent">
+          Failed to send your request. Please contact us through email or phone.
+        </div>
+
+        <div class="fl-card mt-3 p-0" style="overflow: hidden" *ngIf="!mailCompleted">
+          <iframe
+            aria-label="Contact form"
+            title="Frontline Courier contact form"
+            frameborder="0"
+            style="height: 750px; width: 100%; border: none; display: block"
+            src="https://forms.zohopublic.in/frontline/form/Contact/formperma/_k5O0zbR7wvk5gvaq3yNz0CQh718owuSEmFrgjn0Rpo"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

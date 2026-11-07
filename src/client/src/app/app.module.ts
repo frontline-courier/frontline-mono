@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -19,9 +19,10 @@ import { QuoteComponent } from './pages/request/quote/quote.component';
 import { ContactComponent } from './pages/company/contact/contact.component';
 import { AboutComponent } from './pages/company/about/about.component';
 import { ReachComponent } from './pages/company/reach/reach.component';
-import { environment } from 'src/environments/environment';
 import { TrackComponent } from './pages/track/track.component';
 import { CommonComponent } from './pages/common/common.component';
+import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 // import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 // import { getAnalytics, provideAnalytics } from '@angular/fire/analytics';
@@ -44,7 +45,7 @@ import { CommonComponent } from './pages/common/common.component';
     ContactComponent,
     AboutComponent,
     ReachComponent,
-    TrackComponent
+    TrackComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,13 +54,13 @@ import { CommonComponent } from './pages/common/common.component';
     FormsModule,
     ReactiveFormsModule,
     CommonComponent,
+    HeaderComponent,
+    FooterComponent,
     // provideFirebaseApp(() => initializeApp(environment.firebase)),
     // provideFirestore(() => getFirestore()),
     // provideAnalytics(() => getAnalytics()),
   ],
-  exports: [
-    CommonComponent
-  ],
-  bootstrap: [AppComponent]
+  exports: [CommonComponent],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,0 +1,238 @@
+.fl-header {
+  position: sticky;
+  top: 0;
+  z-index: 1040;
+  background: #fff;
+  box-shadow: 0 8px 30px rgba(11, 27, 51, 0.07);
+}
+
+/* ── Top utility bar ────────────────────────────────────────────────────── */
+.fl-topbar {
+  background: linear-gradient(90deg, #071a33 0%, #0a2c53 60%, #0b3b67 100%);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.78rem;
+}
+
+.fl-topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 38px;
+}
+
+.fl-topbar__contact,
+.fl-topbar__meta {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.fl-topbar a {
+  color: rgba(255, 255, 255, 0.82);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+}
+
+.fl-topbar a:hover {
+  color: #fff;
+}
+
+.fl-topbar__cta {
+  color: #8fe4a6 !important;
+  font-weight: 700 !important;
+}
+
+/* ── Navbar ─────────────────────────────────────────────────────────────── */
+.fl-navbar {
+  padding: 0;
+  background: #fff;
+  border-bottom: 1px solid var(--fl-line);
+}
+
+.fl-navbar__inner {
+  min-height: var(--fl-header-h);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.fl-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.35rem 0;
+  margin-right: 0.5rem;
+}
+
+.fl-brand img {
+  width: 176px;
+  height: auto;
+  display: block;
+}
+
+.fl-brand__tag {
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fl-muted);
+  font-weight: 600;
+  padding-left: 2px;
+}
+
+.fl-nav {
+  gap: 0.15rem;
+}
+
+.fl-nav .nav-link {
+  color: var(--fl-ink-soft);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.55rem 0.7rem !important;
+  border-radius: 9px;
+  transition:
+    color 0.16s ease,
+    background-color 0.16s ease;
+}
+
+.fl-nav .nav-link:hover,
+.fl-nav .nav-link.active {
+  color: var(--fl-blue);
+  background: var(--fl-blue-050);
+}
+
+.fl-nav .dropdown-toggle::after {
+  margin-left: 0.35rem;
+  vertical-align: 0.15em;
+  opacity: 0.55;
+}
+
+.fl-dropdown {
+  border: 1px solid var(--fl-line);
+  border-radius: 14px;
+  box-shadow: var(--fl-shadow);
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  min-width: 230px;
+}
+
+.fl-dropdown .dropdown-item {
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--fl-ink-soft);
+}
+
+.fl-dropdown .dropdown-item:hover,
+.fl-dropdown .dropdown-item:focus {
+  background: var(--fl-blue-050);
+  color: var(--fl-blue-700);
+}
+
+/* ── Search ─────────────────────────────────────────────────────────────── */
+.fl-search {
+  margin-left: 0.75rem;
+}
+
+.fl-search__group {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--fl-bg);
+  border: 1px solid var(--fl-line);
+  border-radius: 12px;
+  padding: 0.28rem;
+}
+
+.fl-search__input {
+  border: 0;
+  background: transparent;
+  min-width: 130px;
+  padding: 0.42rem 0.6rem;
+  font-size: 0.86rem;
+  box-shadow: none !important;
+}
+
+.fl-search__select {
+  border: 0;
+  background-color: transparent;
+  width: auto;
+  padding: 0.42rem 1.75rem 0.42rem 0.5rem;
+  font-size: 0.82rem;
+  box-shadow: none !important;
+  border-left: 1px solid var(--fl-line);
+  border-radius: 0;
+}
+
+.fl-search__btn {
+  --bs-btn-padding-y: 0.42rem;
+  --bs-btn-padding-x: 0.85rem;
+  --bs-btn-font-size: 0.84rem;
+  border-radius: 9px;
+  white-space: nowrap;
+}
+
+.fl-toggler {
+  border: 1px solid var(--fl-line);
+  padding: 0.4rem 0.55rem;
+  border-radius: 10px;
+}
+
+.fl-toggler:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 112, 240, 0.15);
+}
+
+@media (max-width: 1199.98px) {
+  .fl-search {
+    margin: 0.75rem 0 0.5rem;
+    width: 100%;
+  }
+  .fl-search__input {
+    flex: 1;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .fl-topbar {
+    display: none;
+  }
+  .fl-nav {
+    padding: 0.75rem 0 0.25rem;
+    align-items: stretch !important;
+  }
+  .fl-nav .nav-link {
+    padding: 0.6rem 0.75rem !important;
+  }
+  .fl-dropdown {
+    box-shadow: none;
+    border: 1px solid var(--fl-line);
+    margin-top: 0.25rem;
+  }
+  .fl-navbar__inner {
+    min-height: 66px;
+  }
+  .fl-brand img {
+    width: 150px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .fl-search__group {
+    flex-wrap: wrap;
+  }
+  .fl-search__input {
+    flex: 1 1 100%;
+  }
+  .fl-search__select {
+    border-left: 0;
+    border-top: 1px solid var(--fl-line);
+    flex: 1;
+    border-radius: 0;
+  }
+  .fl-search__btn {
+    flex: 0 0 auto;
+  }
+}

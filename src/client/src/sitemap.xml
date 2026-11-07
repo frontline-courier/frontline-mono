@@ -56,12 +56,42 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
+        <loc>https://frontlinecourier.com/pricing</loc>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://frontlinecourier.com/track</loc>
+        <priority>0.9</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://frontlinecourier.com/faq</loc>
+        <priority>0.6</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://frontlinecourier.com/coverage</loc>
+        <priority>0.6</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://frontlinecourier.com/insurance</loc>
+        <priority>0.6</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
         <loc>https://frontlinecourier.com/contact</loc>
         <priority>0.8</priority>
         <changefreq>weekly</changefreq>
     </url>
     <url>
         <loc>https://frontlinecourier.com/about</loc>
+        <priority>0.4</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://frontlinecourier.com/reach</loc>
         <priority>0.4</priority>
         <changefreq>weekly</changefreq>
     </url>
