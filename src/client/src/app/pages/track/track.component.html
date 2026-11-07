@@ -169,7 +169,9 @@
 
                 <div class="track-detail-row" *ngIf="trackResult.remarks">
                   <dt>Remarks</dt>
-                  <dd class="fw-semibold">{{ trackResult.remarks }}</dd>
+                  <dd>
+                    <span class="track-badge track-badge--remarks">{{ trackResult.remarks }}</span>
+                  </dd>
                 </div>
                 <div class="track-detail-row" *ngIf="trackResult.courierName">
                   <dt>Courier</dt>

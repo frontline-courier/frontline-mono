@@ -276,6 +276,15 @@
     color: #9b1c1c;
     border: 1px solid #f8b4b4;
   }
+
+  &--remarks {
+    background-color: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+    white-space: normal;
+    text-align: left;
+    word-break: break-word;
+  }
 }
 
 // ── Transit Insurance Warning Banner ────────────────────────────────────────
