@@ -3,6 +3,7 @@ import nextConnect from 'next-connect';
 import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
 import { buildBookingUpdatePayload } from '../../../helpers/bookingUpdatePayload';
 import { ValidationError } from '../../../helpers/apiValidation';
+import { assertBookedByOptionExists } from '../../../helpers/bookedBy';
 import middleware from '../../../helpers/database';
 
 const handler = nextConnect();
@@ -17,6 +18,19 @@ handler.post(async (req: any, res: any) => {
 
         if (!ObjectId.isValid(id)) {
             throw new ValidationError('Booking id is invalid.');
+        }
+
+        // Only validate a changed bookedBy value. This keeps old bookings whose
+        // value was later renamed/removed from the managed list editable.
+        const bookedByValue = typeof payload.bookedBy === 'string' ? payload.bookedBy.trim() : '';
+        if (bookedByValue) {
+            const existingBooking = await req.db
+                .collection('bookings')
+                .findOne({ _id: new ObjectId(id) }, { projection: { bookedBy: 1 } });
+
+            if (bookedByValue !== existingBooking?.bookedBy) {
+                await assertBookedByOptionExists(req.db, bookedByValue);
+            }
         }
 
         const { $set, $unset } = buildBookingUpdatePayload(payload);

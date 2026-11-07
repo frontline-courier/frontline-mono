@@ -1,6 +1,7 @@
 import nextConnect from 'next-connect';
 import { getErrorMessage, requireApiAuth } from '../../../helpers/api';
 import { normalizeBookingPayload, ValidationError } from '../../../helpers/apiValidation';
+import { assertBookedByOptionExists } from '../../../helpers/bookedBy';
 import middleware from '../../../helpers/database';
 
 const handler = nextConnect();
@@ -11,6 +12,8 @@ handler.use(middleware);
 handler.post(async (req: any, res: any) => {
     try {
         const data = normalizeBookingPayload(req.body);
+        await assertBookedByOptionExists(req.db, typeof data.bookedBy === 'string' ? data.bookedBy : undefined);
+
         let doc = await req.db.collection('bookings').insertOne(data);
         res.send(doc);
     }

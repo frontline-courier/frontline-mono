@@ -7,7 +7,6 @@ import { PageTypes } from '../../enums/pageTypes';
 import { getPageType } from '../../helpers/router/getPageType';
 import { BookingFormInputs } from '../../interfaces/bookingForm';
 import { branchOptions } from '../../constants/branchOptions';
-import { bookedByOptions } from '../../constants/bookedByOptions';
 import { importDutyOptions } from '../../constants/importDutyOptions';
 import { creditStatusOptions, paymentModes } from '../../constants/paymentModes';
 import PaymentModeSelect from './PaymentModeSelect';
@@ -69,6 +68,7 @@ export default function BookingForm() {
   const paymentMode = watch('paymentMode');
   const creditStatus = watch('creditStatus');
   const bookingAmount = watch('bookingAmount');
+  const bookedBy = watch('bookedBy');
   const isInternationalShipment = shipmentMode === INTERNATIONAL_SHIPMENT_MODE;
   const isCreditPayment = paymentMode === CREDIT_PAYMENT_MODE;
   const isPendingPartialCredit = isCreditPayment && creditStatus === PENDING_PARTIAL_CREDIT_STATUS;
@@ -78,19 +78,33 @@ export default function BookingForm() {
   const [saveError, setError] = useState('');
   const [isDelete, setDelete] = useState(false);
   const [courierList, setCourierList] = useState<any[]>([]); // State for couriers
+  const [bookedByOptions, setBookedByOptions] = useState<string[]>([]); // State for booked by options
   const [loadingCouriers, setLoadingCouriers] = useState(true); // Loading state for couriers
   const [errorCouriers, setErrorCouriers] = useState<string | null>(null); // Error state for couriers\ const { user, error, isLoading } = useUser();
+
+  // Keep a legacy/renamed value selectable when editing an existing booking.
+  const bookedByChoices = useMemo(() => {
+    if (bookedBy && !bookedByOptions.includes(bookedBy)) {
+      return [...bookedByOptions, bookedBy];
+    }
+
+    return bookedByOptions;
+  }, [bookedBy, bookedByOptions]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoader(true);
-        const [courierResponse, bookingResponse] = await Promise.all([
+        const [courierResponse, bookedByResponse, bookingResponse] = await Promise.all([
           axios.get('/api/couriers'),
+          axios.get('/api/booked-by'),
           id ? axios.get(`/api/bookings/${id}`) : Promise.resolve(null)
         ]);
 
         setCourierList(courierResponse.data.couriers);
+        setBookedByOptions(
+          (bookedByResponse.data.bookedByUsers || []).map((user: any) => user.name),
+        );
 
         if (bookingResponse && bookingResponse.data) {
           reset({
@@ -112,7 +126,7 @@ export default function BookingForm() {
           }
         }
       } catch (error) {
-        setErrorCouriers('Failed to load couriers');
+        setErrorCouriers('Failed to load booking options');
         console.error(error);
       } finally {
         setLoader(false);
@@ -403,7 +417,7 @@ export default function BookingForm() {
             </label>
             <select className={`select select-bordered ${errors.bookedBy && 'select-error'}`} {...register('bookedBy')}>
               <option disabled={true} value="">-- booked by --</option>
-              {bookedByOptions.map((option) => (
+              {bookedByChoices.map((option) => (
                 <option key={option} value={option}>{option}</option>
               ))}
             </select>

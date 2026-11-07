@@ -1,6 +1,5 @@
 import { ObjectId } from 'mongodb';
 import { branchOptions } from '../constants/branchOptions';
-import { bookedByOptions } from '../constants/bookedByOptions';
 import { creditClients } from '../constants/credit/clients';
 import { creditCourier } from '../constants/credit/couriers';
 import { creditModes } from '../constants/credit/mode';
@@ -20,7 +19,6 @@ export class ValidationError extends Error {
   }
 }
 
-const bookedBySet = new Set(bookedByOptions);
 const branchSet = new Set(branchOptions);
 const paymentModeSet = new Set(paymentModes);
 const creditStatusSet = new Set<string>(creditStatusOptions);
@@ -253,7 +251,8 @@ export function normalizeBookingPayload(input: unknown, partial = false) {
   setValueIfDefined(normalizedPayload, 'branch', ensureAllowedString(body.branch, 'Branch', branchSet));
   setValueIfDefined(normalizedPayload, 'bookingAmount', ensureFiniteNumber(body.bookingAmount, 'Booking Amount'));
   setValueIfDefined(normalizedPayload, 'actualWeight', ensureFiniteNumber(body.actualWeight, 'Actual Weight'));
-  setValueIfDefined(normalizedPayload, 'bookedBy', ensureAllowedString(body.bookedBy, 'Booked By', bookedBySet));
+  // bookedBy is validated against the database-backed list in the API routes.
+  setValueIfDefined(normalizedPayload, 'bookedBy', ensureTrimmedString(body.bookedBy, 'Booked By'));
   setValueIfDefined(normalizedPayload, 'paymentMode', paymentMode);
   setValueIfDefined(normalizedPayload, 'creditStatus', creditStatus);
   setValueIfDefined(normalizedPayload, 'dueAmount', dueAmount);
@@ -336,6 +335,14 @@ export function normalizeNamedEntityPayload(input: unknown, fieldName: string) {
   const body = ensureRecord(input);
 
   return ensureTrimmedString(body[fieldName], fieldName, { required: true });
+}
+
+export function normalizeBookedByPayload(input: unknown) {
+  const body = ensureRecord(input);
+
+  return {
+    name: ensureTrimmedString(body.name, 'Name', { required: true }),
+  };
 }
 
 export function normalizeBookerPayload(input: unknown) {

@@ -13,6 +13,7 @@ import {
   HiMap,
   HiOutlineX,
   HiTruck,
+  HiUsers,
 } from 'react-icons/hi'
 
 type NavItem = {
@@ -38,6 +39,7 @@ const navGroups: NavGroup[] = [
     icon: <HiClipboardList className="h-4 w-4" />,
     items: [
       { href: '/bookings', label: 'Booking Entry', icon: <HiClipboardList className="h-4 w-4" /> },
+      { href: '/booked-by', label: 'Booked By Users', icon: <HiUsers className="h-4 w-4" /> },
       { href: '/booking-rates', label: 'Booking Rates', icon: <HiClipboardCheck className="h-4 w-4" /> },
       { href: '/volumetric-calculator', label: 'Volumetric Calculator', icon: <HiCalculator className="h-4 w-4" /> },
     ],

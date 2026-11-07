@@ -13,6 +13,7 @@ const pageTitles: Record<string, string> = {
   '/bookings': 'Booking Entry',
   '/bookings/create': 'Add Booking',
   '/bookings/quick': 'Quick Booking',
+  '/booked-by': 'Booked By Users',
   '/booking-rates': 'Booking Rates',
   '/couriers': 'Couriers',
   '/courier-volumetric-mappings': 'Courier Volumetric Mappings',
