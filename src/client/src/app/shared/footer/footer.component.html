@@ -74,7 +74,18 @@
     </div>
 
     <div class="fl-footer__bottom">
-      <p>&copy; {{ year }} Frontline Courier. All rights reserved.</p>
+      <p>
+        &copy; {{ year }} Frontline Courier. All rights reserved.
+        <span aria-hidden="true">&middot;</span>
+        <a
+          class="fl-footer__credit"
+          [href]="creditUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          (click)="onCreditClick()"
+          >{{ creditLabel }}</a
+        >
+      </p>
       <p>
         <a routerLink="/terms-and-privacy">Terms</a>
         <span aria-hidden="true">&middot;</span>

@@ -133,6 +133,18 @@
   align-items: center;
 }
 
+.fl-footer a.fl-footer__credit {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.fl-footer a.fl-footer__credit:hover,
+.fl-footer a.fl-footer__credit:focus-visible {
+  color: #fff;
+  text-decoration: underline;
+}
+
 @media (max-width: 1199.98px) {
   .fl-footer__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
