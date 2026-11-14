@@ -27,7 +27,7 @@ handler.post(async (req: any, res: any) => {
       throw new ValidationError('A Booked By user with this name already exists.', 409);
     }
 
-    await collection.insertOne({ name });
+    await collection.insertOne({ name, isActive: true });
 
     res.json({ status: 'success' });
   } catch (err: any) {

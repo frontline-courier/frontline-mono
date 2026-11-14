@@ -345,6 +345,30 @@ export function normalizeBookedByPayload(input: unknown) {
   };
 }
 
+export function normalizeBookedByUpdatePayload(input: unknown) {
+  const body = ensureRecord(input);
+  const payload: Record<string, unknown> = {};
+  const name = ensureTrimmedString(body.name, 'Name');
+
+  if (name !== undefined) {
+    payload.name = name;
+  }
+
+  if ('isActive' in body) {
+    if (typeof body.isActive !== 'boolean') {
+      throw new ValidationError('isActive must be a boolean.');
+    }
+
+    payload.isActive = body.isActive;
+  }
+
+  if (Object.keys(payload).length === 0) {
+    throw new ValidationError('At least one of name or isActive is required.');
+  }
+
+  return payload;
+}
+
 export function normalizeBookerPayload(input: unknown) {
   const body = ensureRecord(input);
 

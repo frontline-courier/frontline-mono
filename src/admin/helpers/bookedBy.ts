@@ -33,13 +33,28 @@ export async function ensureBookedBySeeded(db: Db) {
     const count = await collection.countDocuments();
 
     if (count === 0) {
-      await collection.insertMany(DEFAULT_BOOKED_BY_NAMES.map((name) => ({ name })));
+      await collection.insertMany(
+        DEFAULT_BOOKED_BY_NAMES.map((name) => ({ name, isActive: true })),
+      );
     }
   } catch (error) {
     // Release the claim so the next request can retry.
     await meta.deleteOne({ _id: BOOKED_BY_SEED_ID } as any);
     throw error;
   }
+}
+
+export type BookedByDoc = {
+  name: string;
+  isActive?: boolean;
+};
+
+/**
+ * Documents created before the inactive flag existed have no `isActive` field
+ * and must keep behaving as active.
+ */
+export function isBookedByActive(doc: Pick<BookedByDoc, 'isActive'> | null | undefined) {
+  return doc?.isActive !== false;
 }
 
 export async function assertBookedByOptionExists(db: Db, name: string | undefined) {
@@ -49,7 +64,11 @@ export async function assertBookedByOptionExists(db: Db, name: string | undefine
 
   const existing = await db.collection(BOOKED_BY_COLLECTION).findOne({ name });
 
-  if (!existing) {
+  if (!existing || !isBookedByActive(existing as { isActive?: boolean })) {
     throw new ValidationError('Booked By is invalid.');
   }
+}
+
+export async function countBookedByReferences(db: Db, name: string) {
+  return db.collection('bookings').countDocuments({ bookedBy: name });
 }

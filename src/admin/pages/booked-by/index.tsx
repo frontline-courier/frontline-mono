@@ -1,11 +1,12 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import axios from 'axios';
 import { FormEvent, useEffect, useMemo, useState } from 'react';
-import { HiPencil, HiPlus, HiSearch, HiTrash } from 'react-icons/hi';
+import { HiBan, HiCheckCircle, HiPencil, HiPlus, HiSearch, HiTrash } from 'react-icons/hi';
 
 type BookedByUser = {
   _id: string;
   name: string;
+  isActive: boolean;
 };
 
 function getApiError(error: any, fallback: string) {
@@ -24,8 +25,13 @@ function BookedByUsersPage() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('/api/booked-by');
-      setUsers(response.data.bookedByUsers || []);
+      const response = await axios.get('/api/booked-by?includeInactive=true');
+      setUsers(
+        (response.data.bookedByUsers || []).map((user: BookedByUser) => ({
+          ...user,
+          isActive: user.isActive !== false,
+        })),
+      );
     } catch (err) {
       setError(getApiError(err, 'Failed to load Booked By users'));
     } finally {
@@ -89,8 +95,33 @@ function BookedByUsersPage() {
     setError(null);
   };
 
+  const handleToggleActive = async (user: BookedByUser) => {
+    const nextIsActive = !user.isActive;
+    const action = nextIsActive ? 'activate' : 'deactivate';
+
+    if (!window.confirm(`Are you sure you want to ${action} "${user.name}"?`)) return;
+
+    setError(null);
+
+    try {
+      await axios.put(`/api/booked-by/${user._id}`, { isActive: nextIsActive });
+      setUsers((currentUsers) =>
+        currentUsers.map((item) =>
+          item._id === user._id ? { ...item, isActive: nextIsActive } : item,
+        ),
+      );
+    } catch (err) {
+      setError(getApiError(err, `Failed to ${action} Booked By user`));
+    }
+  };
+
   const handleDelete = async (user: BookedByUser) => {
-    if (!window.confirm(`Are you sure you want to delete "${user.name}"?`)) return;
+    if (
+      !window.confirm(
+        `Are you sure you want to permanently delete "${user.name}"? If this user is referenced by bookings, deactivate them instead.`,
+      )
+    )
+      return;
 
     setError(null);
 
@@ -115,7 +146,8 @@ function BookedByUsersPage() {
               {editingUser ? 'Edit Booked By user' : 'Add Booked By user'}
             </h2>
             <p className="text-sm text-slate-500">
-              These names populate the Booked By dropdown in the booking form.
+              These names populate the Booked By dropdown in the booking form. Inactive users stay
+              on existing bookings but are hidden from new bookings.
             </p>
 
             <form onSubmit={handleSubmit} className="mt-2 flex flex-col gap-3">
@@ -179,14 +211,22 @@ function BookedByUsersPage() {
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th className="w-40">Actions</th>
+                      <th>Status</th>
+                      <th className="w-64">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredUsers.map((user) => (
-                      <tr key={user._id}>
+                      <tr key={user._id} className={user.isActive ? undefined : 'opacity-60'}>
                         <td>{user.name}</td>
-                        <td className="flex gap-2">
+                        <td>
+                          <span
+                            className={`badge ${user.isActive ? 'badge-success' : 'badge-ghost'}`}
+                          >
+                            {user.isActive ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                        <td className="flex flex-wrap gap-2">
                           <button
                             type="button"
                             className="btn btn-outline btn-primary btn-xs"
@@ -194,6 +234,18 @@ function BookedByUsersPage() {
                           >
                             <HiPencil className="h-3 w-3" />
                             Edit
+                          </button>
+                          <button
+                            type="button"
+                            className={`btn btn-outline btn-xs ${user.isActive ? 'btn-warning' : 'btn-success'}`}
+                            onClick={() => handleToggleActive(user)}
+                          >
+                            {user.isActive ? (
+                              <HiBan className="h-3 w-3" />
+                            ) : (
+                              <HiCheckCircle className="h-3 w-3" />
+                            )}
+                            {user.isActive ? 'Deactivate' : 'Activate'}
                           </button>
                           <button
                             type="button"
@@ -208,7 +260,7 @@ function BookedByUsersPage() {
                     ))}
                     {filteredUsers.length === 0 ? (
                       <tr>
-                        <td colSpan={2} className="text-center text-slate-500">
+                        <td colSpan={3} className="text-center text-slate-500">
                           No Booked By users found.
                         </td>
                       </tr>
