@@ -152,7 +152,7 @@ export const courierStatus: CourierStatusEntry[] = [
   },
   {
     StatusId: 25,
-    ShipmentStatus: 'Clearance process Ok',
+    ShipmentStatus: 'Custom Clearance Completed at Destination',
     Sequence: 'NULL',
     Description: 'NULL'
   },
@@ -323,8 +323,48 @@ export const courierStatus: CourierStatusEntry[] = [
     ShipmentStatus: 'Adc process completed',
     Sequence: 'NULL',
     Description: 'NULL'
+  },
+  {
+    StatusId: 58,
+    ShipmentStatus: 'FDA Under Process',
+    Sequence: 'NULL',
+    Description: 'NULL'
+  },
+  {
+    StatusId: 59,
+    ShipmentStatus: 'FDA Process Completed',
+    Sequence: 'NULL',
+    Description: 'NULL'
+  },
+  {
+    StatusId: 60,
+    ShipmentStatus: 'Under FDA Clearance',
+    Sequence: 'NULL',
+    Description: 'NULL'
+  },
+  {
+    StatusId: 61,
+    ShipmentStatus: 'Shipment Hold for Packing',
+    Sequence: 'NULL',
+    Description: 'NULL'
+  },
+  {
+    StatusId: 62,
+    ShipmentStatus: 'Shipment Hold for FDA',
+    Sequence: 'NULL',
+    Description: 'NULL'
+  },
+  {
+    StatusId: 63,
+    ShipmentStatus: 'Shipment Hold for ID Proof',
+    Sequence: 'NULL',
+    Description: 'NULL'
   }
 ];
+
+export const sortedCourierStatus = [...courierStatus].sort((a, b) =>
+  a.ShipmentStatus.localeCompare(b.ShipmentStatus),
+);
 
 const statusById = new Map(courierStatus.map((entry) => [entry.StatusId, entry]));
 const statusByText = new Map(courierStatus.map((entry) => [entry.ShipmentStatus, entry]));
@@ -344,6 +384,10 @@ const legacyStatusAliases = new Map<string, string>([
   ['wrong pincode in pack', 'Wrong Pincode in Shipment'],
   ['shipment hold', 'Shipment hold'],
   ['waiting for clearance', 'Waiting for Clearance'],
+  ['clearance process ok', 'Custom Clearance Completed at Destination'],
+  ['fda under processs', 'FDA Under Process'],
+  ['under fda clearence', 'Under FDA Clearance'],
+  ['shilpment hold for packing', 'Shipment Hold for Packing'],
 ]);
 
 export function resolveCourierStatus(value: number | string | null | undefined) {

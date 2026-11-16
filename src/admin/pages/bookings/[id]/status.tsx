@@ -4,9 +4,9 @@ import axios from 'axios';
 import { statusRelation } from '../../../constants/deliveryRelation';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { toDatetimeLocalString, formatDisplayDatetime } from '../../../helpers/dateHelpers';
-import { courierStatus } from '../../../../shared/courier-status';
+import { sortedCourierStatus } from '../../../../shared/courier-status';
 
-const status = courierStatus;
+const status = sortedCourierStatus;
 const relations = statusRelation;
 
 const getDefaultStatusFormValues = () => ({

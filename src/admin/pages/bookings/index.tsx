@@ -14,11 +14,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { formatDisplayDatetimeShort } from '../../helpers/dateHelpers';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
-import { courierStatus, getShipmentStatus } from '../../../shared/courier-status';
+import { getShipmentStatus, sortedCourierStatus } from '../../../shared/courier-status';
 import { creditStatusOptions, paymentModes } from '../../constants/paymentModes';
 import { downloadCSV } from '../../helpers/csv';
 
-const statusList = [...courierStatus].sort((a, b) => a.ShipmentStatus.localeCompare(b.ShipmentStatus));
+const statusList = sortedCourierStatus;
 
 const expandedFieldSections = [
   {
