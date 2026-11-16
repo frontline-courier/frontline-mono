@@ -25,6 +25,13 @@ test('credit link opens in a new tab without access to the opener', () => {
   assert.match(template, new RegExp(`rel="${EXAFUL_LINK_REL}"`));
 });
 
+test('credit link has a decorative code mark hidden from assistive technology', () => {
+  const template = readFileSync(FOOTER_TEMPLATE, 'utf8');
+
+  assert.match(template, /class="fl-footer__credit-mark" aria-hidden="true"/);
+  assert.match(template, /&lt;\/&gt;/);
+});
+
 test('credit click sends the GA4 outbound click event', () => {
   const globals = globalThis as unknown as {
     window?: unknown;

@@ -83,8 +83,10 @@
           target="_blank"
           rel="noopener noreferrer"
           (click)="onCreditClick()"
-          >{{ creditLabel }}</a
         >
+          <span class="fl-footer__credit-mark" aria-hidden="true">&lt;/&gt;</span>
+          <span class="fl-footer__credit-text">{{ creditLabel }}</span>
+        </a>
       </p>
       <p>
         <a routerLink="/terms-and-privacy">Terms</a>
