@@ -63,6 +63,7 @@ const CouriersPage = () => {
   const getModeDisplay = (mode: number | null | undefined): string => {
     if (mode === 2) return 'link';
     if (mode === 3) return 'api';
+    if (mode === 4) return 'resolver';
     return 'internal'; // Default for 0, null, undefined, not exists, 1
   };
 

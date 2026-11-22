@@ -196,10 +196,10 @@
                   </dd>
                 </div>
 
-                <!-- Courier website link: only for 'link' and 'internal' modes with a track URL -->
+                <!-- Courier website link: only for modes that keep the internal timeline -->
                 <div
                   class="track-detail-row"
-                  *ngIf="getTrackUrl() && trackResult.courierMode !== 'link'"
+                  *ngIf="getTrackUrl() && !isExternalTracking()"
                 >
                   <dt>Courier Website</dt>
                   <dd>
@@ -228,7 +228,7 @@
               </dl>
 
               <!-- Link mode: prominent CTA button -->
-              <div class="track-external-cta mt-3" *ngIf="trackResult.courierMode === 'link'">
+              <div class="track-external-cta mt-3" *ngIf="isExternalTracking()">
                 <a
                   *ngIf="getTrackUrl(); else refNotFoundBlock"
                   [href]="getTrackUrl()"
@@ -256,7 +256,7 @@
                 </a>
                 <ng-template #refNotFoundBlock>
                   <div class="alert alert-warning mb-0">
-                    Reference number not available. Please <a href="/contact">contact us</a> for
+                    Tracking number not available. Please <a href="/contact">contact us</a> for
                     details.
                   </div>
                 </ng-template>
@@ -266,7 +266,7 @@
         </div>
 
         <!-- ── Timeline Card (internal mode only) ── -->
-        <div class="col-lg-7" *ngIf="trackResult.courierMode !== 'link'">
+        <div class="col-lg-7" *ngIf="!isExternalTracking()">
           <div class="track-card h-100">
             <div class="track-card-header">
               <svg

@@ -71,3 +71,52 @@ test('missing data returns an empty string', () => {
   assert.equal(buildCourierTrackUrl({}), '');
   assert.equal(buildCourierTrackUrl({ courierTrack: 'https://courier.example/track/<AWB>' }), '');
 });
+
+test('resolver mode uses the AWB and the admin API origin', () => {
+  const url = buildCourierTrackUrl(
+    {
+      courierMode: 'resolver',
+      courierTrack: '/api/tracking/shree-tirupati?awb=<AWB>',
+      awbNumber: '123456',
+      referenceNumber: 'REF1',
+    },
+    { adminApiUrl: 'https://next.frontlinecourier.com/' },
+  );
+
+  assert.equal(url, 'https://next.frontlinecourier.com/api/tracking/shree-tirupati?awb=123456');
+});
+
+test('resolver mode requires the admin API origin for relative templates', () => {
+  const booking = {
+    courierMode: 'resolver',
+    courierTrack: '/api/tracking/shree-tirupati?awb=<AWB>',
+    awbNumber: '123456',
+  };
+
+  assert.equal(buildCourierTrackUrl(booking), '');
+  assert.equal(buildCourierTrackUrl(booking, { adminApiUrl: '' }), '');
+  assert.equal(buildCourierTrackUrl(booking, { adminApiUrl: '   ' }), '');
+});
+
+test('resolver mode does not fall back to the reference number', () => {
+  const url = buildCourierTrackUrl(
+    {
+      courierMode: 'resolver',
+      courierTrack: '/api/tracking/shree-tirupati?awb=<AWB>',
+      referenceNumber: 'REF1',
+    },
+    { adminApiUrl: 'https://next.frontlinecourier.com' },
+  );
+
+  assert.equal(url, '');
+});
+
+test('resolver mode leaves absolute templates untouched', () => {
+  const url = buildCourierTrackUrl({
+    courierMode: 'resolver',
+    courierTrack: 'https://resolver.example/track/123456',
+    awbNumber: '123456',
+  });
+
+  assert.equal(url, 'https://resolver.example/track/123456');
+});

@@ -1,0 +1,46 @@
+name: Tracking health
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: tracking-health
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    name: Probe production tracking endpoints
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Admin health endpoint returns 200
+        run: |
+          code=$(curl -sS -o /tmp/health.json -w '%{http_code}' --max-time 20 \
+            https://next.frontlinecourier.com/api/health)
+          echo "HTTP $code"
+          cat /tmp/health.json
+          test "$code" = "200"
+
+      - name: Resolver rejects an invalid AWB with 400
+        run: |
+          code=$(curl -sS -o /tmp/bad-awb.json -w '%{http_code}' --max-time 20 \
+            'https://next.frontlinecourier.com/api/tracking/shree-tirupati?awb=not-a-number')
+          echo "HTTP $code"
+          cat /tmp/bad-awb.json
+          test "$code" = "400"
+
+      - name: Resolver returns a tracking URL for a known AWB
+        run: |
+          code=$(curl -sS -o /tmp/track.json -w '%{http_code}' --max-time 30 \
+            'https://next.frontlinecourier.com/api/tracking/shree-tirupati?awb=12&format=json')
+          echo "HTTP $code"
+          cat /tmp/track.json
+          test "$code" = "200"
+          node -e "const d=require('/tmp/track.json'); if (!/docnos=/.test(d.trackingUrl || '')) { console.error('missing docnos token'); process.exit(1); }"

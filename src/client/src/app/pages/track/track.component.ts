@@ -123,9 +123,16 @@ export class TrackComponent implements OnInit {
    * - 'link'     → replace <AWB> with referenceNumber (external courier deep-link)
    * - 'internal' → replace <AWB> with awbNumber (Frontline-managed / generic)
    * - 'api'      → no link (handled server-side)
+   * - 'resolver' → resolve <AWB> through the admin API (server-side form replay)
    */
   getTrackUrl(): string {
-    return buildCourierTrackUrl(this.trackResult);
+    return buildCourierTrackUrl(this.trackResult, { adminApiUrl: environment.adminApiUrl });
+  }
+
+  /** True when tracking details live on the courier's site, not the timeline. */
+  isExternalTracking(): boolean {
+    const mode = this.trackResult?.courierMode;
+    return mode === 'link' || mode === 'resolver';
   }
 
   /** True when the booking has a chosen import duty (DAP or DP). */
