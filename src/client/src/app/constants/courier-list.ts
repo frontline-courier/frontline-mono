@@ -352,8 +352,8 @@ export const courierLists = [
     CourierId: 62,
     Courier: 'SHREE TIRUPATHI Normal',
     Description: '',
-    Track: 'http://www.shreetirupaticourier.net/Frm_DocTrack.aspx?docno=<AWB>',
-    Mode: 2,
+    Track: '/api/tracking/shree-tirupati?awb=<AWB>',
+    Mode: 4,
     Status: 0,
   },
   {

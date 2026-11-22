@@ -125,6 +125,7 @@ const CourierDrawer = ({ isOpen, onClose, onSubmit, editingCourier, error }: Cou
                 <option value={1}>Internal</option>
                 <option value={2}>Link</option>
                 <option value={3}>API</option>
+                <option value={4}>Resolver (server-side)</option>
               </select>
             </div>
             

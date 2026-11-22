@@ -3,6 +3,7 @@ import test from 'node:test';
 import {
   PUBLIC_BOOKING_FIELDS,
   getCourierModeDisplay,
+  getPublicCourierTracking,
   toPublicBooking,
 } from '../helpers/publicBooking';
 
@@ -97,8 +98,48 @@ test('returns null for a missing booking', () => {
 test('maps courier modes consistently', () => {
   assert.equal(getCourierModeDisplay(2), 'link');
   assert.equal(getCourierModeDisplay(3), 'api');
+  assert.equal(getCourierModeDisplay(4), 'resolver');
   assert.equal(getCourierModeDisplay(1), 'internal');
   assert.equal(getCourierModeDisplay('2'), 'link');
   assert.equal(getCourierModeDisplay(null), 'internal');
   assert.equal(getCourierModeDisplay(undefined), 'internal');
+});
+
+test('routes Shree Tirupati through the admin resolver even with the legacy link', () => {
+  const tracking = getPublicCourierTracking({
+    CourierId: 62,
+    Courier: 'SHREE TIRUPATHI Normal',
+    Track: 'http://www.shreetirupaticourier.net/Frm_DocTrack.aspx?docno=<AWB>',
+    Mode: 2,
+  });
+
+  assert.equal(tracking.courierTrack, '/api/tracking/shree-tirupati?awb=<AWB>');
+  assert.equal(tracking.courierMode, 'resolver');
+});
+
+test('keeps regular courier tracking configuration unchanged', () => {
+  const tracking = getPublicCourierTracking({
+    CourierId: 1,
+    Courier: 'DTDC Normal',
+    Track: 'https://tracking.dtdc.com/track/<AWB>',
+    Mode: 2,
+  });
+
+  assert.equal(tracking.courierTrack, 'https://tracking.dtdc.com/track/<AWB>');
+  assert.equal(tracking.courierMode, 'link');
+});
+
+test('enriches a Shree Tirupati booking with a resolver link', () => {
+  const publicBooking = toPublicBooking(
+    { ...fullBooking(), courier: 62 },
+    {
+      CourierId: 62,
+      Courier: 'SHREE TIRUPATHI Normal',
+      Track: 'http://www.shreetirupaticourier.net/Frm_DocTrack.aspx?docno=<AWB>',
+      Mode: 2,
+    },
+  ) as Record<string, unknown>;
+
+  assert.equal(publicBooking.courierTrack, '/api/tracking/shree-tirupati?awb=<AWB>');
+  assert.equal(publicBooking.courierMode, 'resolver');
 });

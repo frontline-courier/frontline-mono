@@ -1,3 +1,8 @@
+import {
+  isShreeTirupatiCourier,
+  SHREE_TIRUPATI_RESOLVER_PATH,
+} from './shreeTirupatiTracking';
+
 /**
  * Fields that are safe to expose through the unauthenticated public tracking
  * endpoint. Keep this list minimal and only add fields that the tracking UI
@@ -29,7 +34,29 @@ export function getCourierModeDisplay(mode: number | string | null | undefined):
   const numericMode = Number(mode);
   if (numericMode === 2) return 'link';
   if (numericMode === 3) return 'api';
+  if (numericMode === 4) return 'resolver';
   return 'internal';
+}
+
+/**
+ * Some couriers reject direct deep links and only expose a tracking page after
+ * a server-side form POST. Those couriers use the admin API as a resolver and
+ * are rendered like external links by the client.
+ */
+export function getPublicCourierTracking(
+  courier: Record<string, any> | null | undefined,
+): { courierTrack: string; courierMode: string } {
+  if (isShreeTirupatiCourier(courier)) {
+    return {
+      courierTrack: SHREE_TIRUPATI_RESOLVER_PATH,
+      courierMode: 'resolver',
+    };
+  }
+
+  return {
+    courierTrack: courier?.Track ?? '',
+    courierMode: getCourierModeDisplay(courier?.Mode),
+  };
 }
 
 /**
@@ -54,9 +81,11 @@ export function toPublicBooking(
   }
 
   if (courier) {
+    const tracking = getPublicCourierTracking(courier);
+
     result.courierName = courier.Courier ?? '';
-    result.courierTrack = courier.Track ?? '';
-    result.courierMode = getCourierModeDisplay(courier.Mode);
+    result.courierTrack = tracking.courierTrack;
+    result.courierMode = tracking.courierMode;
   }
 
   return result;
