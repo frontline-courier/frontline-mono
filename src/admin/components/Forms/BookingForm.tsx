@@ -11,6 +11,7 @@ import { importDutyOptions } from '../../constants/importDutyOptions';
 import { creditStatusOptions, paymentModes } from '../../constants/paymentModes';
 import PaymentModeSelect from './PaymentModeSelect';
 import { toDatetimeLocalString } from '../../helpers/dateHelpers';
+import { buildBookingFormValues, buildCloneFormValues } from '../../helpers/bookingFormValues';
 
 const hasSelectedValue = (value: number) => value > 0 || 'Please select a value';
 const isFiniteNumber = (value: number | undefined) => value === undefined || (typeof value === 'number' && Number.isFinite(value)) || 'Please enter a valid number';
@@ -21,14 +22,6 @@ const parseNumericInput = (value: string) => {
 
   const parsedValue = Number(value);
   return Number.isFinite(parsedValue) ? parsedValue : Number.NaN;
-};
-const getNumericFieldValue = (value: unknown) => {
-  if (value === '' || value === null || value === undefined) {
-    return undefined;
-  }
-
-  const parsedValue = Number(value);
-  return Number.isFinite(parsedValue) ? parsedValue : undefined;
 };
 const INTERNATIONAL_SHIPMENT_MODE = 2;
 const CREDIT_PAYMENT_MODE = 'Credit';
@@ -57,6 +50,7 @@ export default function BookingForm() {
   const router = useRouter();
   const { id } = router.query;
   const pageType = getPageType(router.pathname);
+  const isClone = pageType === PageTypes.CLONE;
   const { user, error: userError, isLoading: isUserLoading } = useUser();
   const defaultFormValues = useMemo(() => getDefaultBookingFormValues(), []);
 
@@ -107,20 +101,11 @@ export default function BookingForm() {
         );
 
         if (bookingResponse && bookingResponse.data) {
-          reset({
-            ...defaultFormValues,
-            ...bookingResponse.data,
-            bookedDate: toDatetimeLocalString(bookingResponse.data.bookedDate),
-            bookedBy: bookingResponse.data.bookedBy || '',
-            paymentMode: bookingResponse.data.paymentMode || '',
-            creditStatus: bookingResponse.data.creditStatus || '',
-            creditNotes: bookingResponse.data.creditNotes || '',
-            branch: bookingResponse.data.branch || '',
-            bookingAmount: getNumericFieldValue(bookingResponse.data.bookingAmount),
-            dueAmount: getNumericFieldValue(bookingResponse.data.dueAmount),
-            actualWeight: getNumericFieldValue(bookingResponse.data.actualWeight),
-            insured: bookingResponse.data.insured === true,
-          });
+          reset(
+            isClone
+              ? buildCloneFormValues(bookingResponse.data, defaultFormValues)
+              : buildBookingFormValues(bookingResponse.data, defaultFormValues),
+          );
           if (pageType === PageTypes.DELETE) {
             setDelete(true);
           }
@@ -135,7 +120,7 @@ export default function BookingForm() {
     };
 
     fetchData();
-  }, [defaultFormValues, id, pageType, reset]);
+  }, [defaultFormValues, id, isClone, pageType, reset]);
 
   useEffect(() => {
     if (shipmentMode !== INTERNATIONAL_SHIPMENT_MODE) {
@@ -233,6 +218,15 @@ export default function BookingForm() {
 
     {!loader && !loadingCouriers && !errorCouriers && (
       <form onSubmit={handleSubmit(onSubmit)} className="m-4 p-4 w-full lg:w-2/3">
+        {isClone && (
+          <div className="alert alert-info mb-4">
+            <div className="flex-1">
+              <label>
+                Cloned booking loaded. The AWB is cleared and the booking date is set to now. Enter a new AWB and save to create a new booking.
+              </label>
+            </div>
+          </div>
+        )}
         <div className="grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="form-control">
             <label className="label p-1">
@@ -538,7 +532,7 @@ export default function BookingForm() {
         <div className="modal-action">
           <div className="btn btn-wide"><button type="button" onClick={router.back}>Back to Bookings</button></div>
           {/* <label htmlFor="my-modal-2" className="btn btn-primary btn-wide" onClick={insertBooking}>Save</label> */}
-          {!loader && pageType !== PageTypes.VIEW && <input type="submit" className="btn btn-primary btn-wide" disabled={!formState.isValid}></input>}
+          {!loader && pageType !== PageTypes.VIEW && <input type="submit" value={isClone ? 'Create Cloned Booking' : 'Submit'} className="btn btn-primary btn-wide" disabled={!formState.isValid}></input>}
         </div>
 
       </form>

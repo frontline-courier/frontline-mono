@@ -7,7 +7,7 @@ import { getDoxType } from '../../models/DoxType';
 import { getShipmentMode } from '../../models/shipmentMode';
 import { getTransportMode } from '../../models/transportMode';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { AiFillEdit, AiFillRead } from 'react-icons/ai';
+import { AiFillEdit, AiFillRead, AiOutlineCopy } from 'react-icons/ai';
 import { MdUpdate, MdAdd } from 'react-icons/md';
 import DeletePage from './delete';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -383,6 +383,7 @@ const BookingPage = () => {
           <ul tabIndex={0} className="booking-action-menu menu dropdown-content p-1 shadow bg-base-100 rounded-box w-40 right-0 top-full mt-2 z-[60]">
             <li><a href={`/bookings/${row._id}/edit`}> <AiFillEdit className="mr-2" /> Edit</a></li>
             <li><a href={`/bookings/${row._id}/view`}> <AiFillRead className="mr-2" /> View</a></li>
+            <li><a href={`/bookings/clone/${row._id}`}> <AiOutlineCopy className="mr-2" /> Clone</a></li>
             {/* <li><a> <AiFillDelete className="mr-2" onClick={handleDeleteModel} /> Delete</a></li> */}
             <li><a href={`/bookings/${row._id}/status`}> <MdUpdate className="mr-2" /> Edit/Update Status</a></li>
             {/* <li><a> <FaMapMarkedAlt className="mr-2" /> Check Status</a></li> */}
