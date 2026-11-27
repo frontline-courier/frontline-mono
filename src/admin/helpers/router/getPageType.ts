@@ -7,6 +7,8 @@ export function getPageType(pathName: string) {
         return PageTypes.EDIT
     } else if (pathName.toLowerCase().includes('view')) {
         return PageTypes.VIEW
+    } else if (pathName.toLowerCase().includes('clone')) {
+        return PageTypes.CLONE
     } else {
         return PageTypes.NEW;
     }
